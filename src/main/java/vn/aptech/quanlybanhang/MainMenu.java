@@ -34,17 +34,17 @@ public class MainMenu implements BaseMenu {
     @Override
     public void displayMenu() {
         System.out.println("==============================");
-        System.out.println("= Phần mềm quản lý bán hàng =");
+        System.out.println("= Ph?n M?m Qu?n L� Si�u Th? =");
         System.out.println("==============================");
-        System.out.println("1. Quản lý Danh mục");
-        System.out.println("0. Thoát");
+        System.out.println("1. Qu?n l� danh m?c");
+        System.out.println("0. Tho�t");
     }
-
+    
     @Override
     public void start(Scanner scanner) {
         int choice = -1;
         this.displayMenu();
-        System.out.println("Nhập lựa chọn [0-1]: ");
+        System.out.println("Nhập lựa ch�?n [0-1]: ");
         choice = scanner.nextInt();
         switch(choice) {
             case 1:
