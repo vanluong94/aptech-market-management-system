@@ -11,6 +11,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Category;
+import vn.aptech.quanlybanhang.menu.AuthMenu;
 import vn.aptech.quanlybanhang.menu.BaseMenu;
 import vn.aptech.quanlybanhang.menu.CategoryMenu;
 import vn.aptech.quanlybanhang.service.CategoryService;
@@ -34,24 +35,30 @@ public class MainMenu implements BaseMenu {
     @Override
     public void displayMenu() {
         System.out.println("==============================");
-        System.out.println("= Ph?n M?m Qu?n Lý Siêu Th? =");
+        System.out.println("= Ph?n M?m Qu?n Lï¿½ Siï¿½u Th? =");
         System.out.println("==============================");
-        System.out.println("1. Qu?n lý danh m?c");
-        System.out.println("0. Thoát");
+        System.out.println("1. Qu?n lï¿½ danh m?c");
+        System.out.println("2. Dang nhap");
+        System.out.println("0. Thoï¿½t");
     }
     
     @Override
     public void start(Scanner scanner) {
         int choice = -1;
         this.displayMenu();
-        System.out.println("Nháº­p lá»±a chá»?n [0-1]: ");
+        System.out.println("Nháº­p lá»±a chï¿½?n [0-1]: ");
         choice = scanner.nextInt();
+        scanner.nextLine();
         switch(choice) {
             case 1:
                 CategoryMenu categoryMenu = new CategoryMenu();
                 categoryMenu.start(scanner);
                 break;
             case 2:
+                AuthMenu authMenu = new AuthMenu();
+                authMenu.start(scanner);
+                break;
+            case 0:
                 System.exit(0);
         }
     }
