@@ -4,7 +4,7 @@ package vn.aptech.quanlybanhang.entities;
 /**
  *
  * @author VuxxLong
-  */
+ */
 public class Employee {
     private int employeeId;
     private String userName;
