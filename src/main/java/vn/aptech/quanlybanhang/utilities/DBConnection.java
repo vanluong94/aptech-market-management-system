@@ -21,7 +21,7 @@ public class DBConnection {
 //    private final static String user = "lab";
 //    private final static String password = "";
 //    private final static String url = "jdbc:mysql://localhost:3306/quanlybanhang";
-    private static final String CONNECTION_URL = "jdbc:mysql://localhost:3306/quanlybanhang?user=lab&password=";
+    private static final String CONNECTION_URL = "jdbc:mysql://localhost:3306/quanlysieuthi?user=lab&password=";
 
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
         Class.forName(DRIVER);
