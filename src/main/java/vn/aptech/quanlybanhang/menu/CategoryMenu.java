@@ -6,6 +6,7 @@
 package vn.aptech.quanlybanhang.menu;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +31,8 @@ public class CategoryMenu implements BaseMenu {
         System.out.println("=====================");
         System.out.println("= Quản lý Danh mục =");
         System.out.println("=====================");
-        System.out.println("1. Thêm danh mục");
+        System.out.println("1. Danh sách danh mục");
+        System.out.println("2. Thêm danh mục");
         System.out.println("0. Thoát");
     }
 
@@ -44,6 +46,17 @@ public class CategoryMenu implements BaseMenu {
             scanner.nextLine();
             switch(choice) {
                 case 1:
+                    System.out.println("Danh sách danh mục");
+                    List<Category> categories = categoryService.findAll();
+                    if (categories.isEmpty()) {
+                        System.out.println("Danh mục trống!");
+                    } else {
+                        for (Category category : categories) {
+                            System.out.println(category.toString());
+                        }
+                    }
+                    break;
+                case 2:
                     System.out.println("Nhập tên danh mục: ");
                     String categoryName = scanner.nextLine();
                     if (categoryName.length() > 0) {

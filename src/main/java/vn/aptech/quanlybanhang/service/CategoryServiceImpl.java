@@ -6,6 +6,7 @@
 package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
+import java.util.List;
 import vn.aptech.quanlybanhang.dao.CategoryDAO;
 import vn.aptech.quanlybanhang.dao.CategoryDAOImpl;
 import vn.aptech.quanlybanhang.entities.Category;
@@ -42,6 +43,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findById(int id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Category> findAll() throws SQLException {
+        return categoryDAO.findAll();
     }
     
 }
