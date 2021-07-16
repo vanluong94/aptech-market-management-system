@@ -23,15 +23,6 @@ import vn.aptech.quanlybanhang.utilities.DBConnection;
  */
 public class MainMenu implements BaseMenu {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        MainMenu mainMenu = new MainMenu();
-        mainMenu.start(scanner);
-    }
-
     @Override
     public void displayMenu() {
         System.out.println("==============================");
