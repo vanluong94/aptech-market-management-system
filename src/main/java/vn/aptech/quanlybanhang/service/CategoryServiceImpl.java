@@ -40,9 +40,19 @@ public class CategoryServiceImpl implements CategoryService {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws SQLException
+     * @throws Exception
+     */
     @Override
-    public Category findById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Category findById(int id) throws SQLException, Exception {
+        if (id < 1) {
+            throw new Exception("ID không ???c ?? tr?ng!");
+        }
+        return categoryDAO.findById(id);
     }
 
     @Override

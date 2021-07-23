@@ -33,6 +33,7 @@ public class CategoryMenu implements BaseMenu {
         System.out.println("=====================");
         System.out.println("1. Danh sách danh mục");
         System.out.println("2. Thêm danh mục");
+        System.out.println("3. Xem chi ti?t Danh m?c");
         System.out.println("0. Thoát");
     }
 
@@ -41,7 +42,7 @@ public class CategoryMenu implements BaseMenu {
         try {
             int choice = -1;
             this.displayMenu();
-            System.out.println("Vui lòng nhập lựa chọn [0-1]: ");
+            System.out.println("Vui lòng nhập lựa ch�?n [0-1]: ");
             choice = scanner.nextInt();
             scanner.nextLine();
             switch(choice) {
@@ -64,11 +65,21 @@ public class CategoryMenu implements BaseMenu {
                         if (categoryService.saveOrUpdate(category)) {
                             System.out.println("Thêm danh mục mới thành công!");
                         } else {
-                            System.out.println("Đã xảy ra lỗi!");
+                            System.out.println("�?ã xảy ra lỗi!");
                         }
 
                     } else {
-                        System.out.println("Tên danh mục không được bỏ trống!");
+                        System.out.println("Tên danh mục không được b�? trống!");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Nh?p ID danh m?c mu?n xem");
+                    int categoryId = scanner.nextInt();
+                    Category category = categoryService.findById(categoryId);
+                    if (category == null) {
+                        System.out.println("Kh�ng t�m th?y Danh m?c n�y!");
+                    } else {
+                        System.out.println(category.toString());
                     }
                     break;
                 case 0:
