@@ -42,7 +42,7 @@ public class CategoryMenu implements BaseMenu {
         try {
             int choice = -1;
             this.displayMenu();
-            System.out.println("Vui lòng nhập lựa ch�?n [0-1]: ");
+            System.out.println("Vui lòng nhập lựa ch�?n [0-1]: ");
             choice = scanner.nextInt();
             scanner.nextLine();
             switch(choice) {
@@ -62,13 +62,13 @@ public class CategoryMenu implements BaseMenu {
                     String categoryName = scanner.nextLine();
                     if (!categoryName.trim().equals("")) {
                         Category category = new Category(categoryName.trim());
-                        if (categoryService.saveOrUpdate(category)) {
+                        if (categoryService.create(category)) {
                             System.out.println("Thêm danh mục mới thành công!");
                         } else {
-                            System.out.println("�?ã xảy ra lỗi!");
+                            System.out.println("�?ã xảy ra lỗi!");
                         }
                     } else {
-                        System.out.println("T�n danh m?c b?t bu?c nh?p!");
+                        System.out.println("T�n danh m?c b?t bu?c nh?p!");
                     }
                     break;
                 case 3:
@@ -76,7 +76,7 @@ public class CategoryMenu implements BaseMenu {
                     int categoryId = scanner.nextInt();
                     Category category = categoryService.findById(categoryId);
                     if (category == null) {
-                        System.out.println("Kh�ng t�m th?y Danh m?c n�y!");
+                        System.out.println("Kh�ng t�m th?y Danh m?c n�y!");
                     } else {
                         System.out.println(category.toString());
                     }

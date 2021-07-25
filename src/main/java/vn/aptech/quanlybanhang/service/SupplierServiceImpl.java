@@ -21,12 +21,12 @@ public class SupplierServiceImpl implements SupplierService {
     }
     
     @Override
-    public boolean saveOrUpdate(Supplier object) throws SQLException, Exception {
+    public boolean create(Supplier object) throws SQLException, Exception {
         if (object == null) {
             throw new Exception ("Danh muc khong duoc de trong");
             
         }
-        return supplierDAO.saveOrUpdate(object);
+        return supplierDAO.create(object);
     }
 
     @Override
@@ -52,6 +52,11 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public List<Supplier> findAll() throws SQLException {
         return supplierDAO.findAll();
+    }
+
+    @Override
+    public boolean update(Supplier object) throws SQLException, Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

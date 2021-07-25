@@ -61,7 +61,7 @@ public class DiscountMenu implements BaseMenu{
                     
                     if (discountName.length() > 0) {
                         Discount discount = new Discount(discountName);
-                        if (discountService.saveOrUpdate(discount)) {
+                        if (discountService.create(discount)) {
                             System.out.println("Them chuong trinh giam gia thanh cong!");
                         }else{
                             System.out.println("Da xay ra loi!");

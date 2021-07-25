@@ -29,11 +29,11 @@ public class CategoryServiceImpl implements CategoryService {
      * @throws Exception
      */
     @Override
-    public boolean saveOrUpdate(Category object) throws SQLException, Exception {
+    public boolean create(Category object) throws SQLException, Exception {
         if (Objects.requireNonNull(object.getCategoryName()) == null) {
             throw new IllegalArgumentException("Danh mục không được trống.");
         }
-        return categoryDAO.saveOrUpdate(object);
+        return categoryDAO.create(object);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findById(int id) throws SQLException, Exception {
         if (id < 1) {
-            throw new Exception("ID kh�ng ???c ?? tr?ng!");
+            throw new Exception("ID kh�ng ???c ?? tr?ng!");
         }
         return categoryDAO.findById(id);
     }
@@ -59,6 +59,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findAll() throws SQLException {
         return categoryDAO.findAll();
+    }
+
+    @Override
+    public boolean update(Category object) throws SQLException, Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

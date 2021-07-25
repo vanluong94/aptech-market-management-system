@@ -22,11 +22,11 @@ public class DiscountServiceImpl implements DiscountService {
     
     
     @Override
-    public boolean saveOrUpdate(Discount object) throws SQLException, Exception {
+    public boolean create(Discount object) throws SQLException, Exception {
         if (object == null) {
             throw new Exception ("Ten chuong trinh khong duoc de trong!");
         }
-        return discountDAO.saveOrUpdate(object);
+        return discountDAO.create(object);
     }
 
     @Override
@@ -52,6 +52,11 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public List<Discount> findAll() throws SQLException {
         return discountDAO.findAll();
+    }
+
+    @Override
+    public boolean update(Discount object) throws SQLException, Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

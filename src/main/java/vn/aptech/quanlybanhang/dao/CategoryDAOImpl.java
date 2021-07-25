@@ -24,7 +24,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     private final static String SQL_GET_ONE = "SELECT * FROM categories WHERE category_id = ?";
 
     @Override
-    public boolean saveOrUpdate(Category object) throws SQLException {
+    public boolean create(Category object) throws SQLException {
         int rowsAffected = -1;
         try {
             Connection conn = DBConnection.getConnection();
@@ -47,7 +47,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public Category findById(int id) throws SQLException {
-        // Tìm chi ti?t Danh m?c
+        // Tï¿½m chi ti?t Danh m?c
         Category category = null;
         Connection conn = null;
         ResultSet rs = null;
@@ -88,6 +88,11 @@ public class CategoryDAOImpl implements CategoryDAO {
             Logger.getLogger(CategoryDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return categories;
+    }
+
+    @Override
+    public boolean update(Category object) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

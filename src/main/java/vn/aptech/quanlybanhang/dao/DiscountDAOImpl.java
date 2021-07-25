@@ -23,7 +23,7 @@ public class DiscountDAOImpl implements DiscountDAO {
     private final static String SQL_DELETE = "DELETE FROM discounts WHERE discount_id = ?";
     
     @Override
-    public boolean saveOrUpdate(Discount object) throws SQLException {
+    public boolean create(Discount object) throws SQLException {
         int rowsAffected = -1;
         Connection conn = null;
         try {
@@ -101,5 +101,10 @@ public class DiscountDAOImpl implements DiscountDAO {
             Logger.getLogger(DiscountDAOImpl.class.getSimpleName()).log(Level.SEVERE,null,e);
         }
         return discounts;
+    }
+
+    @Override
+    public boolean update(Discount object) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
