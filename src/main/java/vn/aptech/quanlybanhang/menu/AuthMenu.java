@@ -5,36 +5,29 @@
  */
 package vn.aptech.quanlybanhang.menu;
 
-import java.util.Scanner;
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.service.AuthService;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
+import vn.aptech.quanlybanhang.utilities.AppScanner;
 
 /**
  *
  * @author anhnbt
  */
-public class AuthMenu implements BaseMenu {
+public class AuthMenu extends Menu {
 
     private AuthService authService;
 
     public AuthMenu() {
         this.authService = new AuthServiceImpl();
     }
-    
-    @Override
-    public void displayMenu() {
-        System.out.println("=============");
-        System.out.println("Dang nhap he thong");
-        System.out.println("=============");
-    }
 
     @Override
-    public void start(Scanner scanner) {
+    public void start() {
         System.out.println("Nhap tai khoan: ");
-        String username = scanner.nextLine();
+        String username = AppScanner.getScanner().nextLine();
         System.out.println("Nhap mat khau: ");
-        String password = scanner.nextLine();
+        String password = AppScanner.getScanner().nextLine();
         // kiem tra khong duoc de trong
         Employee employee = new Employee(username, password);
         Employee emp = authService.login(employee);
@@ -46,6 +39,11 @@ public class AuthMenu implements BaseMenu {
         } else {
             System.out.println("Nhap sai tai khoan va mat khau. Vui long nhap lai!");
         }
+    }
+
+    @Override
+    public void handle(int choice) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

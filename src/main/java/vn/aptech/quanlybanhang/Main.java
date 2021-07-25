@@ -27,10 +27,9 @@ public class Main {
             /* App start */
             
 //            DBConnection.getConnection();
-//            DBConnection.showTables();
-            Scanner scanner = new Scanner(System.in);
+            
             MainMenu mainMenu = new MainMenu();
-            mainMenu.start(scanner);
+            mainMenu.start();
             
 //            DBConnection.closeConnection(); // connection should be closed to avoid database connection sleeps on server.
             /* App close */

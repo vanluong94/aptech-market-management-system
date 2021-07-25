@@ -5,16 +5,26 @@ package vn.aptech.quanlybanhang.menu;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Scanner;
 import vn.aptech.quanlybanhang.entities.Discount;
 import vn.aptech.quanlybanhang.service.DiscountService;
 import vn.aptech.quanlybanhang.service.DiscountServiceImpl;
+import vn.aptech.quanlybanhang.utilities.AppScanner;
 
 /**
  *
  * @author Vu Duy Long <vuduylong1999@gmail.com>
  */
-public class DiscountMenu implements BaseMenu{
+public class DiscountMenu extends Menu{
+    
+    private final String TITLE = "Quan ly danh sach Giam gia";
+    private final int[] CHOICES = {1,2,5,0}; // for validation purpose
+    private final String[] MENU_ITEMS = {
+        "1. Danh sach Chuong trinh giam gia",
+        "2. Them mot Chuong trinh giam gia moi",
+        "3. Xem chi tiet mot Chuong trinh giam gia",
+        "4. Xoa mot Chuong trinh giam gia",
+        "0. Thoat",
+    };
     
     private final DiscountService discountService;
 
@@ -23,26 +33,8 @@ public class DiscountMenu implements BaseMenu{
     }
 
     @Override
-    public void displayMenu() {
-        
-        System.out.println("=====================");
-        System.out.println("= Quan ly danh sach Nha Cung Cap =");
-        System.out.println("=====================");
-        System.out.println("1. Danh sach Chuong trinh giam gia");
-        System.out.println("2. Them mot Chuong trinh giam gia moi");
-        System.out.println("3. Xem chi tiet mot Chuong trinh giam gia");
-        System.out.println("4. Xoa mot Chuong trinh giam gia");
-        System.out.println("0. Thoat");
-    }
-
-    @Override
-    public void start(Scanner scanner) {
+    public void handle(int choice) {
         try {
-            int choice = -1;
-            this.displayMenu();
-            System.out.println("Vui long nhap lua chon [0-4]");
-            choice = scanner.nextInt();
-            scanner.nextLine();
             switch(choice){
                 case 1:
                     System.out.println("Danh sach Chuong Trinh Giam Gia");
@@ -57,7 +49,7 @@ public class DiscountMenu implements BaseMenu{
                     break;
                 case 2:
                     System.out.println("Nhap ten chuong trinh giam gia :");
-                    String discountName = scanner.nextLine();
+                    String discountName = AppScanner.getScanner().nextLine();
                     
                     if (discountName.length() > 0) {
                         Discount discount = new Discount(discountName);
@@ -70,7 +62,7 @@ public class DiscountMenu implements BaseMenu{
                     break;
                 case 3:
                     System.out.println("Nhap ID chuong trinh giam gia muon kiem tra :");
-                    int discountId = scanner.nextInt();
+                    int discountId = AppScanner.getScanner().nextInt();
                     Discount discount = discountService.findById(discountId);
                     if (discount == null) {
                         System.out.println("Khong tim thay ID Chuong trinh giam gia phu hop!");
@@ -80,7 +72,7 @@ public class DiscountMenu implements BaseMenu{
                     break;
                 case 4:
                     System.out.println("Nhap ID chuong trinh giam gia muon xoa :");
-                    discountId = scanner.nextInt();
+                    discountId = AppScanner.getScanner().nextInt();
                     if (discountService.deleteById(discountId)) {
                         System.out.println("Xoa thanh cong Chuong trinh giam gia ");
                     }else{
@@ -96,9 +88,6 @@ public class DiscountMenu implements BaseMenu{
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-        
     }
-
-    
     
 }
