@@ -7,6 +7,7 @@ package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import vn.aptech.quanlybanhang.dao.CategoryDAO;
 import vn.aptech.quanlybanhang.dao.CategoryDAOImpl;
 import vn.aptech.quanlybanhang.entities.Category;
@@ -29,8 +30,8 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public boolean saveOrUpdate(Category object) throws SQLException, Exception {
-        if (object == null) {
-            throw new Exception("Danh mục không được trống.");
+        if (Objects.requireNonNull(object.getCategoryName()) == null) {
+            throw new IllegalArgumentException("Danh mục không được trống.");
         }
         return categoryDAO.saveOrUpdate(object);
     }
