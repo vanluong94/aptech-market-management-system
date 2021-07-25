@@ -20,11 +20,6 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public boolean saveOrUpdate(Brand object) throws SQLException, Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public boolean deleteById(int id) throws SQLException {
         return this.brandDAO.deleteById(id);
     }
@@ -40,8 +35,8 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public boolean insert(Brand brand) throws SQLException {
-        return this.brandDAO.insert(brand);
+    public boolean create(Brand brand) throws SQLException {
+        return this.brandDAO.create(brand);
     }
 
     @Override

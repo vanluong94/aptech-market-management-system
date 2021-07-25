@@ -56,7 +56,7 @@ public class SupplierMenu extends Menu{
                     
                     if (supplierName.length() > 0 && supplierAddress.length() > 0 ) {
                         Supplier supplier = new Supplier(supplierName,supplierAddress);
-                        if (supplierService.saveOrUpdate(supplier)) {
+                        if (supplierService.create(supplier)) {
                             System.out.println("Them nha cung cap thanh cong!");
                         }else{
                             System.out.println("Da xay ra loi!");

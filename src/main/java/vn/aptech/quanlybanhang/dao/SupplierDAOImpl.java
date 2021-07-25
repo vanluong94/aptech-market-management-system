@@ -23,7 +23,7 @@ public class SupplierDAOImpl implements SupplierDAO {
     private final static String SQL_DELETE = "DELETE FROM suppliers WHERE supplier_id = ?";
     
     @Override
-    public boolean saveOrUpdate(Supplier object) throws SQLException {
+    public boolean create(Supplier object) throws SQLException {
         int rowsAffected = -1;
         try {
             Connection conn = DBConnection.getConnection();
@@ -108,12 +108,6 @@ public class SupplierDAOImpl implements SupplierDAO {
         return suppliers;
     }
 
-    @Override
-    public boolean insert(Supplier object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public boolean update(Supplier object) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

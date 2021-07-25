@@ -58,12 +58,11 @@ public class CategoryMenu extends Menu {
                     String categoryName = AppScanner.getScanner().nextLine();
                     if (categoryName.length() > 0) {
                         Category category = new Category(categoryName);
-                        if (categoryService.saveOrUpdate(category)) {
+                        if (categoryService.create(category)) {
                             System.out.println("Thêm danh mục mới thành công!");
                         } else {
                             System.out.println("Đã xảy ra lỗi!");
                         }
-
                     } else {
                         System.out.println("Tên danh mục không được bỏ trống!");
                     }

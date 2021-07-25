@@ -39,11 +39,6 @@ public class BrandDAOImpl implements BrandDAO {
     }
 
     @Override
-    public boolean saveOrUpdate(Brand brand) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public boolean deleteById(int id) throws SQLException {
         try {
             String sql = "DELETE FROM brands WHERE brand_id = ?";
@@ -79,7 +74,7 @@ public class BrandDAOImpl implements BrandDAO {
     }
 
     @Override
-    public boolean insert(Brand brand) throws SQLException {
+    public boolean create(Brand brand) throws SQLException {
         try {
             String sql = "INSERT INTO brands (brand_name, brand_add) VALUES (?,?)";
             PreparedStatement st = DBConnection.getConnection().prepareStatement(sql);

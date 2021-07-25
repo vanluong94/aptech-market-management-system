@@ -7,6 +7,7 @@ package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import vn.aptech.quanlybanhang.dao.CategoryDAO;
 import vn.aptech.quanlybanhang.dao.CategoryDAOImpl;
 import vn.aptech.quanlybanhang.entities.Category;
@@ -28,11 +29,11 @@ public class CategoryServiceImpl implements CategoryService {
      * @throws Exception
      */
     @Override
-    public boolean saveOrUpdate(Category object) throws SQLException, Exception {
-        if (object == null) {
-            throw new Exception("Danh mục không được trống.");
+    public boolean create(Category object) throws SQLException, Exception {
+        if (Objects.requireNonNull(object.getCategoryName()) == null) {
+            throw new IllegalArgumentException("Danh mục không được trống.");
         }
-        return categoryDAO.saveOrUpdate(object);
+        return categoryDAO.create(object);
     }
 
     @Override
@@ -58,11 +59,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findAll() throws SQLException {
         return categoryDAO.findAll();
-    }
-
-    @Override
-    public boolean insert(Category object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

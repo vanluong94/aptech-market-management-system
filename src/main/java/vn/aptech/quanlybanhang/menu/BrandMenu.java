@@ -106,7 +106,7 @@ public class BrandMenu extends Menu implements BaseMenu {
         brand.setBrandName(AppScanner.scanStringWithMessage("[Tên Nhãn hàng]: "));
         brand.setBrandAdd(AppScanner.scanStringWithMessage("[Địa chỉ Nhãn hàng]: "));
 
-        this.brandService.insert(brand);
+        this.brandService.create(brand);
 
         System.out.println("\nThêm Nhãn hàng thành công");
         
