@@ -16,6 +16,8 @@ import java.util.List;
 public interface BaseDAO<T> {
     boolean saveOrUpdate(T object) throws SQLException;
     boolean deleteById(int id) throws SQLException;
+    boolean insert(T object) throws SQLException;
+    boolean update(T object) throws SQLException;
     T findById(int id) throws SQLException;
     List<T> findAll() throws SQLException;
 }
