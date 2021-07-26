@@ -23,7 +23,7 @@ public class BrandMenu extends Menu implements BaseMenu {
         "0. Thoát",
     };
 
-    private final BrandServiceImpl brandService;
+    private final BrandService brandService;
 
     public BrandMenu() {
         this.brandService = new BrandServiceImpl();
