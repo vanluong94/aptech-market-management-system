@@ -108,7 +108,6 @@ public class SupplierDAOImpl implements SupplierDAO {
         return suppliers;
     }
 
-    @Override
     public boolean update(Supplier object) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

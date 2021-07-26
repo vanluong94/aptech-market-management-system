@@ -7,44 +7,40 @@ package vn.aptech.quanlybanhang.menu;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.service.CategoryService;
 import vn.aptech.quanlybanhang.service.CategoryServiceImpl;
+import vn.aptech.quanlybanhang.utilities.AppScanner;
 
 /**
  *
  * @author anhnbt
  */
-public class CategoryMenu implements BaseMenu {
+public class CategoryMenu extends Menu {
+    
+    private final String TITLE = "Quản lý Danh mục";
+    private final int[] CHOICES = {1,2,3,0}; // for validation purpose
+    private final String[] MENU_ITEMS = {
+        "1. Danh sách danh mục",
+        "2. Thêm danh mục",
+        "3. Xem chi tiết Danh mục",
+        "0. Thoát",
+    };
     
     private final CategoryService categoryService;
 
     public CategoryMenu() {
+        
+        this.setMenuItems(this.MENU_ITEMS);
+        this.setTitle(this.TITLE);
+        this.setChoices(this.CHOICES);
+        
         this.categoryService = new CategoryServiceImpl();
-    }
-    
-    @Override
-    public void displayMenu() {
-        System.out.println("=====================");
-        System.out.println("= Quản lý Danh mục =");
-        System.out.println("=====================");
-        System.out.println("1. Danh sách danh mục");
-        System.out.println("2. Thêm danh mục");
-        System.out.println("3. Xem chi ti?t Danh m?c");
-        System.out.println("0. Thoát");
     }
 
     @Override
-    public void start(Scanner scanner) {
+    public void handle(int choice) {
         try {
-            int choice = -1;
-            this.displayMenu();
-            System.out.println("Vui lòng nhập lựa ch�?n [0-1]: ");
-            choice = scanner.nextInt();
-            scanner.nextLine();
             switch(choice) {
                 case 1:
                     System.out.println("Danh sách danh mục");
@@ -59,24 +55,24 @@ public class CategoryMenu implements BaseMenu {
                     break;
                 case 2:
                     System.out.println("Nhập tên danh mục: ");
-                    String categoryName = scanner.nextLine();
-                    if (!categoryName.trim().equals("")) {
-                        Category category = new Category(categoryName.trim());
+                    String categoryName = AppScanner.getScanner().nextLine();
+                    if (categoryName.length() > 0) {
+                        Category category = new Category(categoryName);
                         if (categoryService.create(category)) {
                             System.out.println("Thêm danh mục mới thành công!");
                         } else {
-                            System.out.println("�?ã xảy ra lỗi!");
+                            System.out.println("Đã xảy ra lỗi!");
                         }
                     } else {
-                        System.out.println("T�n danh m?c b?t bu?c nh?p!");
+                        System.out.println("Tên danh mục không được bỏ trống!");
                     }
                     break;
                 case 3:
-                    System.out.println("Nh?p ID danh m?c mu?n xem");
-                    int categoryId = scanner.nextInt();
+                    System.out.println("Nhập ID danh mục muốn xem");
+                    int categoryId = AppScanner.getScanner().nextInt();
                     Category category = categoryService.findById(categoryId);
                     if (category == null) {
-                        System.out.println("Kh�ng t�m th?y Danh m?c n�y!");
+                        System.out.println("Không tìm thấy Danh mục này!");
                     } else {
                         System.out.println(category.toString());
                     }
@@ -90,5 +86,4 @@ public class CategoryMenu implements BaseMenu {
             System.out.println(ex.getMessage());
         }
     }
-    
 }

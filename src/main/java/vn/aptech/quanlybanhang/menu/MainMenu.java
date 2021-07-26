@@ -15,39 +15,44 @@ import vn.aptech.quanlybanhang.menu.AuthMenu;
 import vn.aptech.quanlybanhang.menu.BaseMenu;
 import vn.aptech.quanlybanhang.menu.CategoryMenu;
 import vn.aptech.quanlybanhang.service.CategoryService;
+import vn.aptech.quanlybanhang.utilities.AppScanner;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 
 /**
  *
  * @author anhnbt
  */
-public class MainMenu implements BaseMenu {
-
-    @Override
-    public void displayMenu() {
-        System.out.println("==============================");
-        System.out.println("= Phần Mềm Quản Lý Siêu Thị =");
-        System.out.println("==============================");
-        System.out.println("1. Quản lý danh mục");
-        System.out.println("2. Đăng Nhập");
-        System.out.println("0. Thoát");
+public class MainMenu extends Menu {
+    
+    private final String TITLE = "Phần Mềm Quản Lý Siêu Thị";
+    private final int[] CHOICES = {1,2,5,0}; // for validation purpose
+    private final String[] MENU_ITEMS = {
+        "1. Quản lý danh mục",
+        "2. Đăng Nhập",
+        "5. Quản lý Nhãn hàng",
+        "0. Thoát",
+    };
+    
+    public MainMenu(){
+        this.setMenuItems(this.MENU_ITEMS);
+        this.setTitle(this.TITLE);
+        this.setChoices(this.CHOICES);
     }
 
     @Override
-    public void start(Scanner scanner) {
-        int choice = -1;
-        this.displayMenu();
-        System.out.println("Nhập lựa chọn [0-1]: ");
-        choice = scanner.nextInt();
-        scanner.nextLine();
+    public void handle(int choice) {
         switch (choice) {
             case 1:
                 CategoryMenu categoryMenu = new CategoryMenu();
-                categoryMenu.start(scanner);
+                categoryMenu.start();
                 break;
             case 2:
                 AuthMenu authMenu = new AuthMenu();
-                authMenu.start(scanner);
+                authMenu.start();
+                break;
+            case 5:
+                BrandMenu menu = new BrandMenu();
+                menu.start();
                 break;
             case 0:
                 System.exit(0);

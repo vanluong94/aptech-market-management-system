@@ -47,7 +47,8 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public Category findById(int id) throws SQLException {
-        // T�m chi ti?t Danh m?c
+        
+        // Tìm chi tiết danh mục
         Category category = null;
         Connection conn = null;
         ResultSet rs = null;
@@ -94,5 +95,5 @@ public class CategoryDAOImpl implements CategoryDAO {
     public boolean update(Category object) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

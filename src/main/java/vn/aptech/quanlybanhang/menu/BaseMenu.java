@@ -13,5 +13,5 @@ import java.util.Scanner;
  */
 public interface BaseMenu {
     void displayMenu();
-    void start(Scanner scanner);
+    void start();
 }

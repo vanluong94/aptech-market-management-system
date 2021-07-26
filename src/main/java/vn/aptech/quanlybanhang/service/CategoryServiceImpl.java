@@ -51,7 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findById(int id) throws SQLException, Exception {
         if (id < 1) {
-            throw new Exception("ID kh�ng ???c ?? tr?ng!");
+            throw new Exception("ID không được để trống!");
         }
         return categoryDAO.findById(id);
     }
@@ -62,7 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public boolean update(Category object) throws SQLException, Exception {
+    public boolean update(Category object) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

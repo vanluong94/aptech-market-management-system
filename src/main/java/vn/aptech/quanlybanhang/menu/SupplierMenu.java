@@ -6,46 +6,36 @@ package vn.aptech.quanlybanhang.menu;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Scanner;
 import vn.aptech.quanlybanhang.entities.Supplier;
 import vn.aptech.quanlybanhang.service.SupplierService;
 import vn.aptech.quanlybanhang.service.SupplierServiceImpl;
+import vn.aptech.quanlybanhang.utilities.AppScanner;
 
 /**
  *
  * @author VuxxLong
  */
-public class SupplierMenu implements BaseMenu{
+public class SupplierMenu extends Menu{
 
+    private final String TITLE = "Quan ly danh sach Nha Cung Cap";
+    private final int[] CHOICES = {1,2,5,0}; // for validation purpose
+    private final String[] MENU_ITEMS = {
+       "1. Danh sach Nha cung cap",
+        "2. Them Nha cung cap",
+        "3. Xem chi tiet Nha cung cap",
+        "4. Xoa 1 Nha cung cap",
+        "0. Thoat",
+    };
+    
     private final SupplierService supplierService;
 
     public SupplierMenu() {
         this.supplierService = new SupplierServiceImpl();
     }
-    
-    
-    @Override
-    public void displayMenu() {
-
-        System.out.println("=====================");
-        System.out.println("= Quan ly danh sach Nha Cung Cap =");
-        System.out.println("=====================");
-        System.out.println("1. Danh sach Nha cung cap");
-        System.out.println("2. Them Nha cung cap");
-        System.out.println("3. Xem chi tiet Nha cung cap");
-        System.out.println("4. Xoa 1 Nha cung cap");
-        System.out.println("0. Thoat");
-        
-    }
 
     @Override
-    public void start(Scanner scanner) {
+    public void handle(int choice) {
         try {
-            int choice = -1;
-            this.displayMenu();
-            System.out.println("Vui long nhap lua chon [0-4]");
-            choice = scanner.nextInt();
-            scanner.nextLine();
             switch(choice){
                 case 1:
                     System.out.println("Danh sach Nha Cung Cap");
@@ -60,9 +50,9 @@ public class SupplierMenu implements BaseMenu{
                     break;
                 case 2:
                     System.out.println("Nhap ten nha cung cap :");
-                    String supplierName = scanner.nextLine();
+                    String supplierName = AppScanner.getScanner().nextLine();
                     System.out.println("Nhap dia chi nha cung cap :");
-                    String supplierAddress = scanner.nextLine();
+                    String supplierAddress = AppScanner.getScanner().nextLine();
                     
                     if (supplierName.length() > 0 && supplierAddress.length() > 0 ) {
                         Supplier supplier = new Supplier(supplierName,supplierAddress);
@@ -75,7 +65,7 @@ public class SupplierMenu implements BaseMenu{
                     break;
                 case 3:
                     System.out.println("Nhap ID nha cung cap muon kiem tra : ");
-                    int supplierId = scanner.nextInt();
+                    int supplierId = AppScanner.getScanner().nextInt();
                     Supplier supplier = supplierService.findById(supplierId);
                     if (supplier == null) {
                         System.out.println("Khong tim thay ID nha cung cap phu hop");
@@ -85,7 +75,7 @@ public class SupplierMenu implements BaseMenu{
                     break;
                 case 4:
                     System.out.println("Nhap ID nha cung cap muon xoa : ");
-                    supplierId = scanner.nextInt();
+                    supplierId = AppScanner.getScanner().nextInt();
                     if (supplierService.deleteById(supplierId)) {
                         System.out.println("Xoa thanh cong Nha cung cap!");
                     }else{
@@ -102,7 +92,6 @@ public class SupplierMenu implements BaseMenu{
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-
     }
     
 }
