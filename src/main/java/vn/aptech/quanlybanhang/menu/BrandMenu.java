@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Brand;
+import vn.aptech.quanlybanhang.service.BrandService;
 import vn.aptech.quanlybanhang.service.BrandServiceImpl;
 import vn.aptech.quanlybanhang.ui.HeaderUI;
 import vn.aptech.quanlybanhang.ui.TableUI;
@@ -29,7 +30,7 @@ public class BrandMenu extends Menu implements BaseMenu {
         "0. Thoát",
     };
     
-    private final BrandServiceImpl brandService;
+    private final BrandService brandService;
 
     public BrandMenu() {
         
@@ -99,7 +100,7 @@ public class BrandMenu extends Menu implements BaseMenu {
 
     }
 
-    public void handleAddBrand() throws SQLException {
+    public void handleAddBrand() throws SQLException, Exception {
         
         Brand brand = new Brand();
 
@@ -183,6 +184,7 @@ public class BrandMenu extends Menu implements BaseMenu {
             System.out.println("\n\n");
             
             List<Brand> brands = this.brandService.searchByName(search);
+            
 
             if (!brands.isEmpty()) {
                 

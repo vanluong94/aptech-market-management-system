@@ -107,6 +107,7 @@ public class BrandDAOImpl implements BrandDAO {
         return false;
     }
     
+    @Override
     public List<Brand> searchByName(String name) throws SQLException, ClassNotFoundException{
         
         List<Brand> foundBrands = new ArrayList<>();

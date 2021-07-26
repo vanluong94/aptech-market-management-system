@@ -44,6 +44,7 @@ public class BrandServiceImpl implements BrandService {
         return this.brandDAO.update(object);
     }
     
+    @Override
     public List<Brand> searchByName(String name) throws SQLException, ClassNotFoundException{
         return this.brandDAO.searchByName(name);
     }
