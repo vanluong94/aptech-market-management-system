@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Brand;
+import vn.aptech.quanlybanhang.exception.InputInvalidException;
 import vn.aptech.quanlybanhang.service.BrandService;
 import vn.aptech.quanlybanhang.service.BrandServiceImpl;
 import vn.aptech.quanlybanhang.ui.HeaderUI;
@@ -123,29 +124,35 @@ public class BrandMenu extends Menu implements BaseMenu {
             
             retry = false;
             
-            int id = AppScanner.scanIntWithMessage("Nhập ID nhãn hàng cần sửa: ");
-            Brand brand = this.brandService.findById(id);
+            try{
+                int id = AppScanner.scanIntWithMessage("Nhập ID nhãn hàng cần sửa: ");
+                Brand brand = this.brandService.findById(id);
 
-            if(brand == null){
-                System.out.println("ID không tồn tại");
+                if(brand == null){
+                    System.out.println("ID không tồn tại");
+                    retry = true;
+                }else{
+                    System.out.println("\n\nNhập thông tin mới cho nhãn hàng, bỏ trống nếu giữ nguyên.");
+                    String newName = AppScanner.scanStringWithMessage("[Tên Nhãn hàng]: ", true);
+                    String newAdd = AppScanner.scanStringWithMessage("[Địa chỉ Nhãn hàng]: ", true);
+
+                    if(newName.length() > 0){
+                        brand.setBrandName(newName);
+                    }
+
+                    if(newAdd.length() > 0){
+                        brand.setBrandAdd(newAdd);
+                    }
+
+                    this.brandService.update(brand);
+
+                    System.out.println("Cập nhật thông tin thành công!");
+                }
+            }catch(InputInvalidException e){
+                System.out.println(e.getMessage());
                 retry = true;
-            }else{
-                System.out.println("\n\nNhập thông tin mới cho nhãn hàng, bỏ trống nếu giữ nguyên.");
-                String newName = AppScanner.scanStringWithMessage("[Tên Nhãn hàng]: ", true);
-                String newAdd = AppScanner.scanStringWithMessage("[Địa chỉ Nhãn hàng]: ", true);
-                
-                if(newName.length() > 0){
-                    brand.setBrandName(newName);
-                }
-                
-                if(newAdd.length() > 0){
-                    brand.setBrandAdd(newAdd);
-                }
-                
-                this.brandService.update(brand);
-                
-                System.out.println("Cập nhật thông tin thành công!");
             }
+            
             
         }while(retry);
         
@@ -161,15 +168,21 @@ public class BrandMenu extends Menu implements BaseMenu {
             
             retry = false;
             
-            int id = AppScanner.scanIntWithMessage("Nhập ID nhãn hàng muốn xóa: ");
-            Brand brand = this.brandService.findById(id);
+            try{
+                int id = AppScanner.scanIntWithMessage("Nhập ID nhãn hàng muốn xóa: ");
+                Brand brand = this.brandService.findById(id);
 
-            if(brand == null){
-                System.out.println("ID không tồn tại");
+                if (brand == null) {
+                    System.out.println("ID không tồn tại");
+                    retry = true;
+                } else {
+                    this.brandService.deleteById(brand.getBrandId());
+                }
+            }catch(InputInvalidException e){
+                System.out.println(e.getMessage());
                 retry = true;
-            }else{
-                this.brandService.deleteById(brand.getBrandId());
             }
+            
             
         }while(retry);
         

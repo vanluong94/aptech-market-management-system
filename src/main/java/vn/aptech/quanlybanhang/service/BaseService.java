@@ -16,7 +16,7 @@ import java.util.List;
 public interface BaseService<T> {
     boolean create(T object) throws SQLException, Exception;
     boolean update(T object) throws SQLException, Exception;
-    boolean deleteById(int id) throws SQLException;
+    boolean deleteById(int id) throws SQLException, Exception;
     T findById(int id) throws SQLException, Exception;
     List<T> findAll() throws SQLException;
 }

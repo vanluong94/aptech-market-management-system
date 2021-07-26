@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 import vn.aptech.quanlybanhang.dao.BrandDAOImpl;
 import vn.aptech.quanlybanhang.entities.Brand;
+import vn.aptech.quanlybanhang.exception.InputInvalidException;
 
 
 public class BrandServiceImpl implements BrandService {
@@ -20,12 +21,18 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public boolean deleteById(int id) throws SQLException {
+    public boolean deleteById(int id) throws SQLException, Exception {
+        if(id < 1){
+            throw new InputInvalidException("ID không hợp lệ");
+        }
         return this.brandDAO.deleteById(id);
     }
 
     @Override
     public Brand findById(int id) throws SQLException, Exception {
+        if(id < 1){
+            throw new InputInvalidException("ID không hợp lệ");
+        }
         return this.brandDAO.findById(id);
     }
 
