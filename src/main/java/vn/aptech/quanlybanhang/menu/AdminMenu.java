@@ -44,6 +44,7 @@ public class AdminMenu extends Menu {
 
     @Override
     public void handle(int choice) {
+        System.out.print("Chon 1 tuy chon: ");
         Scanner sc = new Scanner(System.in);
         try {
             switch (choice) {
@@ -51,11 +52,13 @@ public class AdminMenu extends Menu {
                     System.out.println("Danh sach nhan vien");
                     this.handleDisplayAllEmployee();
                     System.out.println("[1].Them nhan vien \n[2].Xem chi tiet nhan vien\n[3].Sua 1 nhan vien\n[4].Xoa 1 nhan vien\n[5].Ve menu chinh\n[6].Exit");
+                    System.out.print("Chon 1 tuy chon: ");
                     int choice2 = sc.nextInt();
                     switch (choice2) {
                         case 1:
                             this.handleCreateEmployee();
                             System.out.println("1.Ve menu chinh\n2.Exit ");
+                            System.out.print("Chon 1 tuy chon: ");
                             int choice3 = sc.nextInt();
                             if (choice3 == 1) {
                                 break;
@@ -67,6 +70,7 @@ public class AdminMenu extends Menu {
                         case 2:
                             this.handleViewEmployeeOne();
                             System.out.println("1.Ve menu chinh\n2.Exit ");
+                            System.out.print("Chon 1 tuy chon: ");
                             choice3 = sc.nextInt();
                             if (choice3 == 1) {
                                 break;
@@ -78,6 +82,7 @@ public class AdminMenu extends Menu {
                         case 3:
                             this.handleUpdateEmployee();
                             System.out.println("1.Ve menu chinh\n2.Exit ");
+                            System.out.print("Chon 1 tuy chon: ");
                             choice3 = sc.nextInt();
                             if (choice3 == 1) {
                                 break;
@@ -88,6 +93,7 @@ public class AdminMenu extends Menu {
                         case 4:
                             this.handleDeleteEmployeeOne();
                             System.out.println("1.Ve menu chinh\n2.Exit ");
+                            System.out.print("Chon 1 tuy chon: ");
                             choice3 = sc.nextInt();
                             if (choice3 == 1) {
                                 break;
@@ -105,6 +111,7 @@ public class AdminMenu extends Menu {
                 case 2:
                     this.handleCreateEmployee();
                     System.out.println("1.Ve menu chinh\n2.Exit ");
+                    System.out.print("Chon 1 tuy chon: ");
                     int choice3 = sc.nextInt();
                     if (choice3 == 1) {
                         break;
@@ -116,6 +123,7 @@ public class AdminMenu extends Menu {
                 case 3:
                     this.handleViewEmployeeOne();
                     System.out.println("1.Ve menu chinh\n2.Exit ");
+                    System.out.print("Chon 1 tuy chon: ");
                     choice3 = sc.nextInt();
                     if (choice3 == 1) {
                         break;
@@ -127,6 +135,7 @@ public class AdminMenu extends Menu {
                 case 4:
                     this.handleUpdateEmployee();
                     System.out.println("1.Ve menu chinh\n2.Exit ");
+                    System.out.print("Chon 1 tuy chon: ");
                     choice3 = sc.nextInt();
                     if (choice3 == 1) {
                         break;
@@ -138,6 +147,7 @@ public class AdminMenu extends Menu {
                 case 5:
                     this.handleDeleteEmployeeOne();
                     System.out.println("1.Ve menu chinh\n2.Exit ");
+                    System.out.print("Chon 1 tuy chon: ");
                     choice3 = sc.nextInt();
                     if (choice3 == 1) {
                         break;
