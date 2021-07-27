@@ -40,13 +40,18 @@ public class AuthMenu extends Menu {
         Employee emp = authService.login(employee);
         if (emp != null) {
             System.out.println("Dang nhap thanh cong!");
-            System.out.println("Chao mung " + username +  "!");
+            
             try {
                 // Kiem tra role neu la admin thi mo menu admin
                 Employee checkRole = employeeService.findByUsernamePassword(username, password);
                 if (checkRole.getDepartment().equals("ROLE_ADMIN")) {
+                    System.out.println("Ban la Quan Tri Vien. Ban se duoc chuyen den trang Quan Tri Vien !");
                     AdminMenu adminMenu = new AdminMenu();
                     adminMenu.start();
+                }
+                else{
+                System.out.println("Chao mung " + username +  "!");
+                    System.out.println("Moi ban den trang nhan vien !");
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(AuthMenu.class.getName()).log(Level.SEVERE, null, ex);

@@ -30,7 +30,7 @@ public class DBConnection {
 //    private static final String CONNECTION_URL = "jdbc:mysql://35.247.137.54:3306/aptech_java_project?user=aptech_participant&password=tT2uOgleWf0n";
 
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
-        if (conn == null) {
+      //  if (conn == null) {
             // build connection url
             String url = String.format("jdbc:mysql://%s:%s/%s", serverName, port, databaseName);
 
@@ -39,7 +39,7 @@ public class DBConnection {
             System.out.println("Connecting to MySQL...");
             conn = DriverManager.getConnection(url, user, password);
             System.out.println("Connected to database.");
-        }
+      //  }
 
         return conn;
     }

@@ -161,7 +161,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             pstmt.setString(4, object.getDepartment());
             pstmt.setString(5, object.getUserName());
             pstmt.setString(6, object.getPassword());
-            pstmt.setInt(1, id);
+            pstmt.setInt(7, id);
             rs = pstmt.executeUpdate();
             if (rs > 0) {
                 return true;
