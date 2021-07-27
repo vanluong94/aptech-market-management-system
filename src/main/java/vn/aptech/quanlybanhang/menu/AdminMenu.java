@@ -15,7 +15,7 @@ import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 
-import vn.aptech.quanlybanhang.utilities.AppScanner;
+
 
 /**
  *
@@ -115,6 +115,7 @@ public class AdminMenu extends Menu {
                     }
                 case 3:
                     this.handleViewEmployeeOne();
+                    System.out.println("1.Ve menu chinh\n2.Exit ");
                     choice3 = sc.nextInt();
                     if (choice3 == 1) {
                         break;
@@ -125,6 +126,7 @@ public class AdminMenu extends Menu {
                     }
                 case 4:
                     this.handleUpdateEmployee();
+                    System.out.println("1.Ve menu chinh\n2.Exit ");
                     choice3 = sc.nextInt();
                     if (choice3 == 1) {
                         break;
@@ -135,6 +137,7 @@ public class AdminMenu extends Menu {
                     }
                 case 5:
                     this.handleDeleteEmployeeOne();
+                    System.out.println("1.Ve menu chinh\n2.Exit ");
                     choice3 = sc.nextInt();
                     if (choice3 == 1) {
                         break;
@@ -186,36 +189,84 @@ public class AdminMenu extends Menu {
     public void handleCreateEmployee() throws Exception {
         System.out.println("-----------------------------------");
         System.out.println("---------Tao moi nhan vien----------");
+        Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten nhan vien : ");
-        String employeeName = AppScanner.getScanner().nextLine();
+        String employeeName = sc.nextLine();
+        if (employeeName.length() == 0) {
+            System.out.println("Ten khong duoc de trong !");
+            System.out.print("Nhap ten nhan vien : ");
+            employeeName = sc.nextLine();
+        }
         System.out.print("Nhap dia chi nhan vien : ");
-        String employeeAddress = AppScanner.getScanner().nextLine();
+        String employeeAddress = sc.nextLine();
+        if (employeeAddress.length() == 0) {
+            System.out.println("Dia chi khong duoc de trong !");
+            System.out.print("Nhap dia chi nhan vien : ");
+            employeeAddress = sc.nextLine();
+        }
         System.out.print("Nhap so dien thoai : ");
-        String employeePhone = AppScanner.getScanner().nextLine();
+        String employeePhone = sc.nextLine();
+        if (employeePhone.length() == 0) {
+            System.out.println("So dien thoai khong duoc de trong !");
+            System.out.print("Nhap so dien thoai : ");
+            employeePhone = sc.nextLine();
+        }
         System.out.print("Nhap chuc vu (chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY): ");
-        String employeeDepartment = AppScanner.getScanner().nextLine();
+        String employeeDepartment = sc.nextLine();
+        if (employeeDepartment.length() == 0) {
+            System.out.println("Chuc vu khong duoc de trong !");
+            System.out.print("Nhap chuc vu : ");
+            employeeDepartment = sc.nextLine();
+        }
+        if (!employeeDepartment.equals("ROLE_ADMIN")||!employeeDepartment.equals("ROLE_EMPLOYEE_CASHER") || !employeeDepartment.equals("ROLE_EMPLOYEE_INVENTORY") ) {
+            System.out.println("chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY !");
+            System.out.print("Nhap chuc vu : ");
+            employeeDepartment = sc.nextLine();
+        }
         System.out.print("Tao Usename: ");
-        String employeeUsername = AppScanner.getScanner().nextLine();
+        String employeeUsername = sc.nextLine();
+        if (employeeUsername.length() == 0) {
+            System.out.println("Username khong duoc de trong !");
+            System.out.print("Tao Usename: ");
+            employeeUsername = sc.nextLine();
+        }
+        if (employeeUsername.length() < 6) {
+            System.out.println("Username tu 6 ki tu tro len !");
+            System.out.print("Tao Usename: ");
+            employeeUsername = sc.nextLine();
+        }
         System.out.print("Tao Password : ");
-        String employeePassword = AppScanner.getScanner().nextLine();
+        String employeePassword = sc.nextLine();
+        if (employeePassword.length() == 0) {
+            System.out.println("Password khong duoc de trong !");
+            System.out.print("Tao Password: ");
+            employeePassword = sc.nextLine();
+        }
+        if (employeePassword.length() < 6) {
+            System.out.println("Password phai tu 6 ki tu tro len !");
+            System.out.print("Tao Password: ");
+            employeePassword = sc.nextLine();
+        }
 
-        if (employeeName.length() > 0 && employeeAddress.length() > 0 && employeePhone.length() > 0 && employeeDepartment.length() > 0 && employeeUsername.length() > 5 && employeePassword.length() > 6) {
+      //  if (employeeName.length() > 0 && employeeAddress.length() > 0 && employeePhone.length() > 0 && employeeDepartment.length() > 0 && employeeUsername.length() > 5 && employeePassword.length() > 6) {
             Employee employee = new Employee(employeeName, employeeAddress, employeePhone, employeeDepartment, employeeUsername, employeePassword);
             if (employeeService.create(employee)) {
                 System.out.println("Them nhan vien thanh cong!");
             } else {
                 System.out.println("Da xay ra loi!");
             }
-        } else {
-            System.out.println("Nhap sai!");
-        }
+    //    }
+//        else {
+//            System.out.println("Nhap sai!");
+//        }
     }
 
     public void handleViewEmployeeOne() throws Exception {
         System.out.println("---------------------------------");
         System.out.println("-------Chi tiet nhan vien--------");
+        Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ID nhan vien : ");
-        int employeeId = AppScanner.getScanner().nextInt();
+        int employeeId = sc.nextInt();
         Employee employee = employeeService.findById(employeeId);
         if (employee == null) {
             System.out.println("Khong tim thay ID nhan vien");
@@ -227,8 +278,9 @@ public class AdminMenu extends Menu {
     public void handleDeleteEmployeeOne() throws Exception {
         System.out.println("--------------------------------");
         System.out.println("---------Xoa nhan vien----------");
+        Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ID nhan vien muon xoa : ");
-        int employeeId = AppScanner.getScanner().nextInt();
+        int employeeId = sc.nextInt();
         if (employeeService.deleteById(employeeId)) {
             System.out.println("Xoa nhan vien thanh cong!");
         } else {
@@ -241,31 +293,90 @@ public class AdminMenu extends Menu {
         System.out.println("---------Sua nhan vien----------");
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ID nhan vien muon sua : ");
-        int employeeId = AppScanner.getScanner().nextInt();
-        System.out.print("Sua ten nhan vien thanh : ");
-        String employeeName = AppScanner.getScanner().nextLine();
+        int employeeId = -999;
+         employeeId = sc.nextInt();
+        if (employeeId == -999) {
+            System.out.println("Id khong duoc de trong !");
+            System.out.print("Nhap ID nhan vien : ");
+            employeeId = sc.nextInt();
+        }
         sc.nextLine();
+        System.out.print("Sua ten nhan vien thanh : ");
+        String employeeName = sc.nextLine();
+        if (employeeName.length() == 0) {
+            System.out.println("Ten khong duoc de trong !");
+            System.out.print("Sua ten nhan vien thanh : ");
+            employeeName = sc.nextLine();
+        }
         System.out.print("Sua dia chi nhan vien thanh : ");
-        String employeeAddress = AppScanner.getScanner().nextLine();
-        System.out.print("Sua so dien thoai thanh : ");
-        String employeePhone = AppScanner.getScanner().nextLine();
-        System.out.print("Sua chuc vu thanh(chi nhap ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY): ");
-        String employeeDepartment = AppScanner.getScanner().nextLine();
-        System.out.print("Sua Usename:");
-        String employeeUsername = AppScanner.getScanner().nextLine();
-        System.out.print("Sua Password : ");
-        String employeePassword = AppScanner.getScanner().nextLine();
+        String employeeAddress = sc.nextLine();
+        if (employeeAddress.length() == 0) {
+            System.out.println("Dia chi khong duoc de trong !");
+            System.out.print("Sua dia chi nhan vien thanh : ");
+            employeeAddress = sc.nextLine();
+        }
+        System.out.print("Sua so dien thoai thanh: ");
+        String employeePhone = sc.nextLine();
+        if (employeePhone.length() == 0) {
+            System.out.println("So dien thoai khong duoc de trong !");
+            System.out.print("Sua so dien thoai thanh: ");
+            employeePhone = sc.nextLine();
+        }
+        System.out.print("Sua chuc vu thanh (chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY): ");
+        String employeeDepartment = sc.nextLine();
+        if (employeeDepartment.length() == 0) {
+            System.out.println("Chuc vu khong duoc de trong !");
+            System.out.print("Sua chuc vu thanh : ");
+            employeeDepartment = sc.nextLine();
+        }
+        if (!employeeDepartment.equals("ROLE_ADMIN")||!employeeDepartment.equals("ROLE_EMPLOYEE_CASHER") || !employeeDepartment.equals("ROLE_EMPLOYEE_INVENTORY") ) {
+            System.out.println("chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY !");
+            System.out.print("Nhap chuc vu : ");
+            employeeDepartment = sc.nextLine();
+        }
+        System.out.print("Tao Usename: ");
+        String employeeUsername = sc.nextLine();
+        if (employeeUsername.length() == 0) {
+            System.out.println("Username khong duoc de trong !");
+            System.out.print("Tao Usename: ");
+            employeeUsername = sc.nextLine();
+        }
+        if (employeeUsername.length() < 6) {
+            System.out.println("Username tu 6 ki tu tro len !");
+            System.out.print("Tao Usename: ");
+            employeeUsername = sc.nextLine();
+        }
+        System.out.print("Tao Password : ");
+        String employeePassword = sc.nextLine();
+        if (employeePassword.length() == 0) {
+            System.out.println("Password khong duoc de trong !");
+            System.out.print("Tao Password: ");
+            employeePassword = sc.nextLine();
+        }
+        if (employeePassword.length() < 6) {
+            System.out.println("Password phai tu 6 ki tu tro len !");
+            System.out.print("Tao Password: ");
+            employeePassword = sc.nextLine();
+        }
 
-        if (employeeName.length() > 0 && employeeAddress.length() > 0 && employeePhone.length() > 0 && employeeDepartment.length() > 0 && employeeUsername.length() > 5 && employeePassword.length() > 6) {
+      if (employeeName.length() > 0 && employeeAddress.length() > 0 && employeePhone.length() > 0 && employeeDepartment.length() > 0 && employeeUsername.length() > 5 && employeePassword.length() > 6) {
             Employee employee2 = new Employee(employeeName, employeeAddress, employeePhone, employeeDepartment, employeeUsername, employeePassword);
             if (employeeService.updateById(employee2, employeeId)) {
                 System.out.println("Sua nhan vien thanh cong!");
             } else {
                 System.out.println("Da xay ra loi!");
             }
-        } else {
+        } 
+        
+        else {
             System.out.println("Da nhap sai!");
 
+        }
+    }
+    
+    public void checkName(int name){
+        if (name<0) {
+            System.out.println("Ten khong duoc de trong!");
         }
     }
 }

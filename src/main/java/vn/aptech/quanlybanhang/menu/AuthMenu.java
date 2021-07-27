@@ -45,7 +45,7 @@ public class AuthMenu extends Menu {
                 // Kiem tra role neu la admin thi mo menu admin
                 Employee checkRole = employeeService.findByUsernamePassword(username, password);
                 if (checkRole.getDepartment().equals("ROLE_ADMIN")) {
-                    System.out.println("Ban la Quan Tri Vien. Ban se duoc chuyen den trang Quan Tri Vien !");
+                    System.out.println("\nBan la Quan Tri Vien !\nBan se duoc chuyen den trang Quan Tri Vien !");
                     AdminMenu adminMenu = new AdminMenu();
                     adminMenu.start();
                 }
