@@ -34,8 +34,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public boolean create(Employee object) throws SQLException {
         int rowsAffected = -1;
+        Connection conn = null;
         try {
-            Connection conn = DBConnection.getConnection();
+            conn = DBConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT);
             pstmt.setString(1, object.getEmployee_name());
             pstmt.setString(2, object.getEmployee_add());
@@ -48,6 +49,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             throw ex;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SupplierDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
         }
         return rowsAffected > 0;
     }
@@ -59,8 +64,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public boolean deleteById(int id) throws SQLException {
-        Connection conn = null;
         int rs = -1;
+        Connection conn = null;
         try {
             conn = DBConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE);
@@ -75,6 +80,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             throw e;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SupplierDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
         }
         return rs > 0;
     }
@@ -113,13 +122,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public List<Employee> findAll() throws SQLException {
         List<Employee> employees = new ArrayList<>();
+        Connection conn = null;
         try {
-            Connection conn = DBConnection.getConnection();
+            conn = DBConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = pstmt.executeQuery();
-            
+
             while (rs.next()) {
-                 Employee employee = new Employee();
+                Employee employee = new Employee();
                 employee.setEmployeeId(rs.getInt("employee_id"));
                 employee.setEmployee_name(rs.getString("employee_name"));
                 employee.setEmployee_add(rs.getString("employee_add"));
@@ -130,30 +140,21 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 employees.add(employee);
             }
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(SupplierDAOImpl.class.getName()).log(Level.SEVERE,null,ex);
+            Logger.getLogger(SupplierDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
         }
-        
         return employees;
-//        ArrayList<Employee> employees = new ArrayList<Employee>();
-//        try {
-//            Statement st = DBConnection.getConnection().createStatement();
-//            ResultSet rs = st.executeQuery(SQL_SELECT_ALL);
-//
-//            while (rs.next()) {
-//                employees.add(this.transferRSToEmployee(rs));
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(BrandDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//        return employees;
     }
 
     @Override
     public boolean updateById(Employee object, int id) throws SQLException {
         int rs = -1;
+        Connection conn = null;
         try {
-            Connection conn = DBConnection.getConnection();
+            conn = DBConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE);
             pstmt.setString(1, object.getEmployee_name());
             pstmt.setString(2, object.getEmployee_add());
@@ -172,6 +173,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             throw ex;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SupplierDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
         }
         return rs > 0;
     }
@@ -207,18 +212,5 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         }
         return employee;
     }
-
-//    private Employee transferRSToEmployee(ResultSet rs) throws SQLException {
-//        Employee employee = new Employee();
-//
-//        employee.setEmployeeId(rs.getInt("employee_id"));
-//        employee.setEmployee_name(rs.getString("employee_name"));
-//        employee.setEmployee_add(rs.getString("employee_add"));
-//        employee.setEmployee_phone(rs.getString("employee_phone"));
-//        employee.setDepartment(rs.getString("department"));
-//        employee.setUserName(rs.getString("username"));
-//        employee.setPassword(rs.getString("password"));
-//        return employee;
-//    }
 
 }

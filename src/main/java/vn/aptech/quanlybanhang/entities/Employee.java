@@ -57,6 +57,15 @@ public class Employee {
         this.password = password;
     }
     
+    public Employee(String employee_name, String employee_add, String employee_phone, String department, String username,String password ){
+        this.employee_name = employee_name;
+        this.employee_add = employee_add;
+        this.employee_phone = employee_phone;
+        this.department = department;
+        this.userName = username;
+        this.password = password;
+    }
+    
     /**
      * @return the employeeId
      */
@@ -98,12 +107,16 @@ public class Employee {
     public void setPassword(String password) {
         this.password = password;
     }
-    public Employee(String employee_name, String employee_add, String employee_phone, String department, String username,String password ){
-        this.employee_name = employee_name;
-        this.employee_add = employee_add;
-        this.employee_phone = employee_phone;
-        this.department = department;
-        this.userName = username;
-        this.password = password;
+
+    @Override
+    public String toString() {
+        
+        return "employeeId : " + employeeId + "\nuserName : " + userName + "\npassword : " + password + "\nemployee_add = " + employee_add + "\nemployee_name : " + employee_name + "\nemployee_phone : " + employee_phone + "\ndepartment : " + department + '}';
+    }
+    public void showOne(){
+        System.out.println("====== Chi tiet nhan vien ======");
+        System.out.println("Chi tiet nhan vien "+ employee_name +" :");
+        System.out.println("employeeId : " + employeeId + "\nuserName : " + userName + "\npassword : " + password + "\nemployee_add : " + employee_add + "\nemployee_name : " + employee_name + "\nemployee_phone : " + employee_phone + "\ndepartment : " + department );
+        System.out.println("--------------------------------");
     }
 }

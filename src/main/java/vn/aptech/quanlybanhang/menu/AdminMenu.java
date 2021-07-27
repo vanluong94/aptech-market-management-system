@@ -14,8 +14,7 @@ import vn.aptech.quanlybanhang.entities.Supplier;
 import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
-
-
+import vn.aptech.quanlybanhang.utilities.AppScanner;
 
 /**
  *
@@ -228,7 +227,7 @@ public class AdminMenu extends Menu {
             System.out.print("Nhap chuc vu : ");
             employeeDepartment = sc.nextLine();
         }
-        if (!employeeDepartment.equals("ROLE_ADMIN")||!employeeDepartment.equals("ROLE_EMPLOYEE_CASHER") || !employeeDepartment.equals("ROLE_EMPLOYEE_INVENTORY") ) {
+        if (!employeeDepartment.equals("ROLE_ADMIN") || !employeeDepartment.equals("ROLE_EMPLOYEE_CASHER") || !employeeDepartment.equals("ROLE_EMPLOYEE_INVENTORY")) {
             System.out.println("chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY !");
             System.out.print("Nhap chuc vu : ");
             employeeDepartment = sc.nextLine();
@@ -258,14 +257,14 @@ public class AdminMenu extends Menu {
             employeePassword = sc.nextLine();
         }
 
-      //  if (employeeName.length() > 0 && employeeAddress.length() > 0 && employeePhone.length() > 0 && employeeDepartment.length() > 0 && employeeUsername.length() > 5 && employeePassword.length() > 6) {
-            Employee employee = new Employee(employeeName, employeeAddress, employeePhone, employeeDepartment, employeeUsername, employeePassword);
-            if (employeeService.create(employee)) {
-                System.out.println("Them nhan vien thanh cong!");
-            } else {
-                System.out.println("Da xay ra loi!");
-            }
-    //    }
+        //  if (employeeName.length() > 0 && employeeAddress.length() > 0 && employeePhone.length() > 0 && employeeDepartment.length() > 0 && employeeUsername.length() > 5 && employeePassword.length() > 6) {
+        Employee employee = new Employee(employeeName, employeeAddress, employeePhone, employeeDepartment, employeeUsername, employeePassword);
+        if (employeeService.create(employee)) {
+            System.out.println("Them nhan vien thanh cong!");
+        } else {
+            System.out.println("Da xay ra loi!");
+        }
+        //    }
 //        else {
 //            System.out.println("Nhap sai!");
 //        }
@@ -274,14 +273,15 @@ public class AdminMenu extends Menu {
     public void handleViewEmployeeOne() throws Exception {
         System.out.println("---------------------------------");
         System.out.println("-------Chi tiet nhan vien--------");
-        Scanner sc = new Scanner(System.in);
+
         System.out.print("Nhap ID nhan vien : ");
-        int employeeId = sc.nextInt();
+        int employeeId = AppScanner.getScanner().nextInt();
         Employee employee = employeeService.findById(employeeId);
         if (employee == null) {
             System.out.println("Khong tim thay ID nhan vien");
         } else {
-            System.out.println(employee.toString());
+            employee.showOne();
+
         }
     }
 
@@ -304,7 +304,7 @@ public class AdminMenu extends Menu {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ID nhan vien muon sua : ");
         int employeeId = -999;
-         employeeId = sc.nextInt();
+        employeeId = sc.nextInt();
         if (employeeId == -999) {
             System.out.println("Id khong duoc de trong !");
             System.out.print("Nhap ID nhan vien : ");
@@ -339,7 +339,7 @@ public class AdminMenu extends Menu {
             System.out.print("Sua chuc vu thanh : ");
             employeeDepartment = sc.nextLine();
         }
-        if (!employeeDepartment.equals("ROLE_ADMIN")||!employeeDepartment.equals("ROLE_EMPLOYEE_CASHER") || !employeeDepartment.equals("ROLE_EMPLOYEE_INVENTORY") ) {
+        if (!employeeDepartment.equals("ROLE_ADMIN") || !employeeDepartment.equals("ROLE_EMPLOYEE_CASHER") || !employeeDepartment.equals("ROLE_EMPLOYEE_INVENTORY")) {
             System.out.println("chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY !");
             System.out.print("Nhap chuc vu : ");
             employeeDepartment = sc.nextLine();
@@ -369,23 +369,21 @@ public class AdminMenu extends Menu {
             employeePassword = sc.nextLine();
         }
 
-      if (employeeName.length() > 0 && employeeAddress.length() > 0 && employeePhone.length() > 0 && employeeDepartment.length() > 0 && employeeUsername.length() > 5 && employeePassword.length() > 6) {
+        if (employeeName.length() > 0 && employeeAddress.length() > 0 && employeePhone.length() > 0 && employeeDepartment.length() > 0 && employeeUsername.length() > 5 && employeePassword.length() > 6) {
             Employee employee2 = new Employee(employeeName, employeeAddress, employeePhone, employeeDepartment, employeeUsername, employeePassword);
             if (employeeService.updateById(employee2, employeeId)) {
                 System.out.println("Sua nhan vien thanh cong!");
             } else {
                 System.out.println("Da xay ra loi!");
             }
-        } 
-        
-        else {
+        } else {
             System.out.println("Da nhap sai!");
 
         }
     }
-    
-    public void checkName(int name){
-        if (name<0) {
+
+    public void checkName(int name) {
+        if (name < 0) {
             System.out.println("Ten khong duoc de trong!");
         }
     }
