@@ -19,7 +19,6 @@ import java.util.logging.Logger;
  */
 public class DBConnection {
 
-<<<<<<< Updated upstream
     private static Connection conn;
 
     private final static String DRIVER          = "com.mysql.cj.jdbc.Driver";
@@ -29,16 +28,6 @@ public class DBConnection {
     private final static String user            = "aptech_participant";
     private final static String password        = "tT2uOgleWf0n";
 //    private static final String CONNECTION_URL = "jdbc:mysql://35.247.137.54:3306/aptech_java_project?user=aptech_participant&password=tT2uOgleWf0n";
-=======
-    private final static String DRIVER = "com.mysql.cj.jdbc.Driver";
-//    private final static String serverName = "localhost";
-//    private final static String port = "3306";
-//    private final static String databaseName = "quanlybanhang";
-//    private final static String user = "lab";
-//    private final static String password = "";
-//    private final static String url = "jdbc:mysql://localhost:3306/quanlybanhang";
-    private static final String CONNECTION_URL = "jdbc:mysql://localhost:3307/quanlysieuthi?user=lab&password=";
->>>>>>> Stashed changes
 
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
         if (conn == null) {
