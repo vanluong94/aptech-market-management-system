@@ -216,7 +216,7 @@ public class BrandMenu extends Menu implements BaseMenu {
                     rows.add(row);
                 }
 
-                String[] headers = {"ID", "Tên Nhãn Hàng", "Địa chỉ"};
+                String[] headers = {"ID", "Name", "Address"};
 
                 TableUI theTable = new TableUI(headers, rows);
                 theTable.display();
