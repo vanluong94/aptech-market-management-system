@@ -18,45 +18,21 @@ import java.util.logging.Logger;
  * @author vanluong
  */
 public class DBConnection {
-
-<<<<<<< Updated upstream
-    private static Connection conn;
-
     private final static String DRIVER          = "com.mysql.cj.jdbc.Driver";
     private final static String serverName      = "35.247.137.54";
     private final static String port            = "3306";
     private final static String databaseName    = "aptech_java_project";
     private final static String user            = "aptech_participant";
     private final static String password        = "tT2uOgleWf0n";
-//    private static final String CONNECTION_URL = "jdbc:mysql://35.247.137.54:3306/aptech_java_project?user=aptech_participant&password=tT2uOgleWf0n";
-=======
-    private final static String DRIVER = "com.mysql.cj.jdbc.Driver";
-//    private final static String serverName = "localhost";
-//    private final static String port = "3306";
-//    private final static String databaseName = "quanlybanhang";
-//    private final static String user = "lab";
-//    private final static String password = "";
-//    private final static String url = "jdbc:mysql://localhost:3306/quanlybanhang";
     private static final String CONNECTION_URL = "jdbc:mysql://localhost:3307/quanlysieuthi?user=lab&password=";
->>>>>>> Stashed changes
 
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
-        if (conn == null) {
-            // build connection url
-            String url = String.format("jdbc:mysql://%s:%s/%s", serverName, port, databaseName);
-
-            // get connection
-            Class.forName(DRIVER);
-            System.out.println("Connecting to MySQL...");
-            conn = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to database.");
-        }
-
+        String url = String.format("jdbc:mysql://%s:%s/%s", serverName, port, databaseName);
+        Class.forName(DRIVER);
+        System.out.println("Connecting to MySQL...");
+        Connection conn = DriverManager.getConnection(url, user, password);
+        System.out.println("Connected to database.");
         return conn;
-    }
-    
-    public static void closeConnection() throws SQLException{
-        conn.close();
     }
 
     public static void showTables() throws SQLException, ClassNotFoundException {
