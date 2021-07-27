@@ -62,15 +62,15 @@ Các bước implement Menu class
 
 1. Class Menu cần phải được set các property sau trong constructor: 
 
-- `this.setMenuItems(String[] menuItems)` - Chuỗi các String cho menu choice
+- `this.setMenuItems(String[] menuItems)`
 - `this.setTitle(String title)` - Tên Menu
 - `this.setChoices(int[] choices)` - Chuỗi các lựa chọn hợp lệ, sử dụng để validate giá trị int choice user nhập vào.
 
 2. Implement abstract method `public void handle(int choice){}` từ parent class Menu.
 
-- Thay vì các code để handle choice đều gộp chung vào switch - case trong `BaseMenu.start(Scanner scanner)`, method `Menu.handle(int choice)` truyền vào choice user đã chọn (sau khi validate), xử lý switch - case trong đây. Nếu code handle cho từng case quá dài, nên chia nhỏ vào các method riêng.
+- Thay vì các code để handle choice đều gộp chung vào switch - case trong `BaseMenu.start(Scanner scanner)`, method `Method.handle(int choice)` truyền vào validated choice user đã chọn, xử lý switch - case trong đây. Nếu code handle cho từng case quá dài, nên chia nhỏ vào các method riêng.
 
-Cách lấy `Scanner` trong class Menu có thể tham khảo tại [đây](#appscanner)
+Cách lấy `Scanner scanner` trong class Menu có thể tham khảo tại [đây](#appscanner)
 #### Kết quả
 ```
 +------------------------------------------------+
@@ -109,8 +109,6 @@ public class TableUI {
 ```java
 // Query lấy List<Brand> từ database
 List<Brand> brands = brandService.findAll();
-
-// Khai báo và khởi tạo ArrayList để chứa các rows
 List<Object[]> rows = new ArrayList<>();
 
 /*
@@ -128,7 +126,7 @@ for (Brand brand : brands) {
 }
 
 // Set header cho table
-String[] headers = {"ID", "Tên", "Địa chỉ"};
+String[] headers = {"ID", "Name", "Address"};
 
 // Khởi tạo TableUI và gọi đến display() method để hiển thị
 TableUI theTable = new TableUI(headers, rows);
@@ -138,7 +136,7 @@ theTable.display();
 #### Kết quả
 ```
 +----------------------------------------------------------------------------------------------------+
-| ID  | Tên                  | Địa chỉ                                                               |
+| ID  | Name                 | Address                                                               |
 +----------------------------------------------------------------------------------------------------+
 | 1   | P&G                  | 11/F, MPlaza, 39 Le Duan Blvd. District 1, Ho Chi Minh City Vietnam   |
 | 2   | Unilever             | A2-3, Khu công nghiệp Tây Bắc Củ Chi, Huyện Củ Chi, Tp Hồ Chí Minh    |
@@ -173,7 +171,7 @@ Thêm Nhãn hàng thành công!
 
 ### Class AppScanner
 Việc phải truyền tham số Scanner vào mỗi hàm `BaseMenu.start()` khá là bất tiện, nhất là khi có class Menu, luồng xử lý choice đã chia nhỏ thành các method khác nhau để block code xử lý choice dễ nhìn hơn.
-Nên mình thêm class `vn.aptech.quanlybanhang.utilities.AppScanner` để gọi đến 1 instance global Scanner xuyên suốt quá trình app chạy.
+Nên mình thêm class `vn.aptech.quanlybanhang.utilities.AppScanner` để gọi đến 1 biến global Scanner xuyên suốt quá trình app chạy.
 
 #### Lợi ích
 - Gọi instance Scanner ở bất cứ đâu với method `AppScanner.getScanner()`, ví dụ: `AppScanner.getScanner().nextLine()`
@@ -195,7 +193,7 @@ public class AppScanner {
 
 Ví dụ:
 ```java
-int id = AppScanner.scanIntWithMessage("Nhập ID nhãn hàng cần sửa: ");
+AppScanner.scanIntWithMessage("Nhập ID nhãn hàng cần sửa: ");
 ```
 
 Kết quả:
