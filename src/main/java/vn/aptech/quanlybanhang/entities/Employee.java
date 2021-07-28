@@ -1,4 +1,3 @@
-
 package vn.aptech.quanlybanhang.entities;
 
 /**
@@ -6,33 +5,37 @@ package vn.aptech.quanlybanhang.entities;
  * @author VuxxLong
  */
 public class Employee {
+
     private int employeeId;
     private String userName;
     private String password;
-    private String employee_add,employee_name,employee_phone,department;
+    private String address;
+private String name;
+private String phone;
+private String department;
 
-    public String getEmployee_add() {
-        return employee_add;
+    public String getAddress() {
+        return address;
     }
 
-    public void setEmployee_add(String employee_add) {
-        this.employee_add = employee_add;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getEmployee_name() {
-        return employee_name;
+    public String getName() {
+        return name;
     }
 
-    public void setEmployee_name(String employee_name) {
-        this.employee_name = employee_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getEmployee_phone() {
-        return employee_phone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setEmployee_phone(String employee_phone) {
-        this.employee_phone = employee_phone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getDepartment() {
@@ -42,7 +45,12 @@ public class Employee {
     public void setDepartment(String department) {
         this.department = department;
     }
+
+
     
+
+    
+
     public Employee() {
     }
 
@@ -56,16 +64,16 @@ public class Employee {
         this.userName = userName;
         this.password = password;
     }
-    
-    public Employee(String employee_name, String employee_add, String employee_phone, String department, String username,String password ){
-        this.employee_name = employee_name;
-        this.employee_add = employee_add;
-        this.employee_phone = employee_phone;
+
+    public Employee(String name, String address, String phone, String department, String username, String password) {
+        this.name = name;
+        this.address= address;
+        this.phone = phone;
         this.department = department;
         this.userName = username;
         this.password = password;
     }
-    
+
     /**
      * @return the employeeId
      */
@@ -108,15 +116,16 @@ public class Employee {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        
-        return "employeeId : " + employeeId + "\nuserName : " + userName + "\npassword : " + password + "\nemployee_add = " + employee_add + "\nemployee_name : " + employee_name + "\nemployee_phone : " + employee_phone + "\ndepartment : " + department + '}';
-    }
-    public void showOne(){
+    public void showOne() {
         System.out.println("====== Chi tiet nhan vien ======");
-        System.out.println("Chi tiet nhan vien "+ employee_name +" :");
-        System.out.println("employeeId : " + employeeId + "\nuserName : " + userName + "\npassword : " + password + "\nemployee_add : " + employee_add + "\nemployee_name : " + employee_name + "\nemployee_phone : " + employee_phone + "\ndepartment : " + department );
+        System.out.println("Chi tiet nhan vien " + name + " :");
+        System.out.println("Ho ten : " + name );
+        System.out.println("Dia chi: " + address );
+        System.out.println("So dien thoai: " + phone );
+        System.out.println("Chuc vu : " + department );
+        System.out.println("ID : " + employeeId );
+        System.out.println("UserName : " + userName);
+        System.out.println("Password : " + password );
         System.out.println("--------------------------------");
     }
 }

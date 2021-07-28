@@ -177,9 +177,9 @@ public class AdminMenu extends Menu {
         for (Employee employee : employees) {
             Object[] row = {
                 employee.getEmployeeId(),
-                employee.getEmployee_name(),
-                employee.getEmployee_add(),
-                employee.getEmployee_phone(),
+                employee.getName(),
+                employee.getAddress(),
+                employee.getPhone(),
                 employee.getDepartment(),
                 employee.getUserName(),
                 employee.getPassword()
@@ -201,73 +201,68 @@ public class AdminMenu extends Menu {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten nhan vien : ");
         String employeeName = sc.nextLine();
-        if (employeeName.length() == 0) {
+        while (employeeName.length() == 0) {
             System.out.println("Ten khong duoc de trong !");
             System.out.print("Nhap ten nhan vien : ");
             employeeName = sc.nextLine();
         }
         System.out.print("Nhap dia chi nhan vien : ");
         String employeeAddress = sc.nextLine();
-        if (employeeAddress.length() == 0) {
+        while (employeeAddress.length() == 0) {
             System.out.println("Dia chi khong duoc de trong !");
             System.out.print("Nhap dia chi nhan vien : ");
             employeeAddress = sc.nextLine();
         }
         System.out.print("Nhap so dien thoai : ");
         String employeePhone = sc.nextLine();
-        if (employeePhone.length() == 0) {
+        while (employeePhone.length() == 0) {
             System.out.println("So dien thoai khong duoc de trong !");
             System.out.print("Nhap so dien thoai : ");
             employeePhone = sc.nextLine();
         }
         System.out.print("Nhap chuc vu (chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY): ");
         String employeeDepartment = sc.nextLine();
-        if (employeeDepartment.length() == 0) {
+        while (employeeDepartment.length() == 0) {
             System.out.println("Chuc vu khong duoc de trong !");
             System.out.print("Nhap chuc vu : ");
             employeeDepartment = sc.nextLine();
         }
-        if (!employeeDepartment.equals("ROLE_ADMIN") || !employeeDepartment.equals("ROLE_EMPLOYEE_CASHER") || !employeeDepartment.equals("ROLE_EMPLOYEE_INVENTORY")) {
+        while (!employeeDepartment.equals("ROLE_ADMIN") && !employeeDepartment.equals("ROLE_EMPLOYEE_CASHER") && !employeeDepartment.equals("ROLE_EMPLOYEE_INVENTORY")) {
             System.out.println("chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY !");
             System.out.print("Nhap chuc vu : ");
             employeeDepartment = sc.nextLine();
         }
         System.out.print("Tao Usename: ");
         String employeeUsername = sc.nextLine();
-        if (employeeUsername.length() == 0) {
+        while (employeeUsername.length() == 0) {
             System.out.println("Username khong duoc de trong !");
             System.out.print("Tao Usename: ");
             employeeUsername = sc.nextLine();
         }
-        if (employeeUsername.length() < 6) {
+        while (employeeUsername.length() < 6) {
             System.out.println("Username tu 6 ki tu tro len !");
             System.out.print("Tao Usename: ");
             employeeUsername = sc.nextLine();
         }
         System.out.print("Tao Password : ");
         String employeePassword = sc.nextLine();
-        if (employeePassword.length() == 0) {
+        while (employeePassword.length() == 0) {
             System.out.println("Password khong duoc de trong !");
             System.out.print("Tao Password: ");
             employeePassword = sc.nextLine();
         }
-        if (employeePassword.length() < 6) {
+        while (employeePassword.length() < 6) {
             System.out.println("Password phai tu 6 ki tu tro len !");
             System.out.print("Tao Password: ");
             employeePassword = sc.nextLine();
         }
-
-        //  if (employeeName.length() > 0 && employeeAddress.length() > 0 && employeePhone.length() > 0 && employeeDepartment.length() > 0 && employeeUsername.length() > 5 && employeePassword.length() > 6) {
         Employee employee = new Employee(employeeName, employeeAddress, employeePhone, employeeDepartment, employeeUsername, employeePassword);
         if (employeeService.create(employee)) {
             System.out.println("Them nhan vien thanh cong!");
         } else {
             System.out.println("Da xay ra loi!");
         }
-        //    }
-//        else {
-//            System.out.println("Nhap sai!");
-//        }
+
     }
 
     public void handleViewEmployeeOne() throws Exception {
@@ -305,7 +300,7 @@ public class AdminMenu extends Menu {
         System.out.print("Nhap ID nhan vien muon sua : ");
         int employeeId = -999;
         employeeId = sc.nextInt();
-        if (employeeId == -999) {
+        while (employeeId == -999) {
             System.out.println("Id khong duoc de trong !");
             System.out.print("Nhap ID nhan vien : ");
             employeeId = sc.nextInt();
@@ -313,59 +308,59 @@ public class AdminMenu extends Menu {
         sc.nextLine();
         System.out.print("Sua ten nhan vien thanh : ");
         String employeeName = sc.nextLine();
-        if (employeeName.length() == 0) {
+        while (employeeName.length() == 0) {
             System.out.println("Ten khong duoc de trong !");
             System.out.print("Sua ten nhan vien thanh : ");
             employeeName = sc.nextLine();
         }
         System.out.print("Sua dia chi nhan vien thanh : ");
         String employeeAddress = sc.nextLine();
-        if (employeeAddress.length() == 0) {
+        while (employeeAddress.length() == 0) {
             System.out.println("Dia chi khong duoc de trong !");
             System.out.print("Sua dia chi nhan vien thanh : ");
             employeeAddress = sc.nextLine();
         }
         System.out.print("Sua so dien thoai thanh: ");
         String employeePhone = sc.nextLine();
-        if (employeePhone.length() == 0) {
+        while (employeePhone.length() == 0) {
             System.out.println("So dien thoai khong duoc de trong !");
             System.out.print("Sua so dien thoai thanh: ");
             employeePhone = sc.nextLine();
         }
         System.out.print("Sua chuc vu thanh (chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY): ");
         String employeeDepartment = sc.nextLine();
-        if (employeeDepartment.length() == 0) {
+        while (employeeDepartment.length() == 0) {
             System.out.println("Chuc vu khong duoc de trong !");
             System.out.print("Sua chuc vu thanh : ");
             employeeDepartment = sc.nextLine();
         }
-        if (!employeeDepartment.equals("ROLE_ADMIN") || !employeeDepartment.equals("ROLE_EMPLOYEE_CASHER") || !employeeDepartment.equals("ROLE_EMPLOYEE_INVENTORY")) {
+        while (!employeeDepartment.equals("ROLE_ADMIN") && !employeeDepartment.equals("ROLE_EMPLOYEE_CASHER") && !employeeDepartment.equals("ROLE_EMPLOYEE_INVENTORY")) {
             System.out.println("chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY !");
-            System.out.print("Nhap chuc vu : ");
+            System.out.print("Sua chuc vu thanh : ");
             employeeDepartment = sc.nextLine();
         }
-        System.out.print("Tao Usename: ");
+        System.out.print("Tao Usename moi: ");
         String employeeUsername = sc.nextLine();
-        if (employeeUsername.length() == 0) {
+        while (employeeUsername.length() == 0) {
             System.out.println("Username khong duoc de trong !");
-            System.out.print("Tao Usename: ");
+            System.out.print("Tao Usename moi: ");
             employeeUsername = sc.nextLine();
         }
-        if (employeeUsername.length() < 6) {
+        while (employeeUsername.length() < 6) {
             System.out.println("Username tu 6 ki tu tro len !");
-            System.out.print("Tao Usename: ");
+            System.out.print("Tao Usename moi: ");
             employeeUsername = sc.nextLine();
         }
-        System.out.print("Tao Password : ");
+        System.out.print("Tao Password moi: ");
         String employeePassword = sc.nextLine();
-        if (employeePassword.length() == 0) {
+        while (employeePassword.length() == 0) {
             System.out.println("Password khong duoc de trong !");
-            System.out.print("Tao Password: ");
+            System.out.print("Tao Password moi: ");
             employeePassword = sc.nextLine();
         }
-        if (employeePassword.length() < 6) {
+        while (employeePassword.length() < 6) {
             System.out.println("Password phai tu 6 ki tu tro len !");
-            System.out.print("Tao Password: ");
+            System.out.print("Tao Password moi: ");
             employeePassword = sc.nextLine();
         }
 

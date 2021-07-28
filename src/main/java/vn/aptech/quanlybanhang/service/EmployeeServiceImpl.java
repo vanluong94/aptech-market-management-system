@@ -17,17 +17,19 @@ import vn.aptech.quanlybanhang.entities.Employee;
  *
  * @author Admin
  */
-public class EmployeeServiceImpl implements EmployeeService{
-     private final EmployeeDAO employeeDAO;
+public class EmployeeServiceImpl implements EmployeeService {
+
+    private final EmployeeDAO employeeDAO;
 
     public EmployeeServiceImpl() {
         this.employeeDAO = new EmployeeDAOImpl();
     }
+
     @Override
     public boolean create(Employee object) throws SQLException, Exception {
         if (object == null) {
-            throw new Exception ("Doi tuong khong duoc de trong");
-            
+            throw new Exception("Doi tuong khong duoc de trong");
+
         }
         return employeeDAO.create(object);
     }
@@ -41,7 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     public boolean deleteById(int id) throws SQLException, Exception {
         if (id < 1) {
             try {
-                throw new Exception ("ID khong hop le!");
+                throw new Exception("ID khong hop le!");
             } catch (Exception ex) {
                 Logger.getLogger(SupplierServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -66,11 +68,11 @@ public class EmployeeServiceImpl implements EmployeeService{
     public boolean updateById(Employee object, int id) throws SQLException {
         if (object == null) {
             try {
-                throw new Exception ("Doi tuong khong duoc de trong");
+                throw new Exception("Doi tuong khong duoc de trong");
             } catch (Exception ex) {
                 Logger.getLogger(EmployeeServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
         if (id < 1) {
             try {
@@ -83,17 +85,17 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public Employee findByUsernamePassword(String username, String password) throws SQLException {
+    public Employee findByUsernameAndPassword(String username, String password) throws SQLException {
         if (username == null || password == null) {
             try {
-                throw new Exception ("Username va Password duoc de trong");
+                throw new Exception("Username va Password duoc de trong");
             } catch (Exception ex) {
                 Logger.getLogger(EmployeeServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
-        
-        return employeeDAO.findByUsernamePassword(username, password);
+
+        return employeeDAO.findByUsernameAndPassword(username, password);
     }
-    
+
 }

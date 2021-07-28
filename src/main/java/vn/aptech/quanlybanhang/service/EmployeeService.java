@@ -8,12 +8,13 @@ package vn.aptech.quanlybanhang.service;
 import java.sql.SQLException;
 import vn.aptech.quanlybanhang.entities.Employee;
 
-
 /**
  *
  * @author Admin
  */
-public interface EmployeeService extends BaseService<Employee>{
-     boolean updateById(Employee object, int id) throws SQLException;
-     Employee findByUsernamePassword(String username, String password) throws SQLException;
+public interface EmployeeService extends BaseService<Employee> {
+
+    boolean updateById(Employee object, int id) throws SQLException;
+
+    Employee findByUsernameAndPassword(String username, String password) throws SQLException;
 }

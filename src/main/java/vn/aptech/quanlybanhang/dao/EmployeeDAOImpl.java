@@ -38,9 +38,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         try {
             conn = DBConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT);
-            pstmt.setString(1, object.getEmployee_name());
-            pstmt.setString(2, object.getEmployee_add());
-            pstmt.setString(3, object.getEmployee_phone());
+            pstmt.setString(1, object.getName());
+            pstmt.setString(2, object.getAddress());
+            pstmt.setString(3, object.getPhone());
             pstmt.setString(4, object.getDepartment());
             pstmt.setString(5, object.getUserName());
             pstmt.setString(6, object.getPassword());
@@ -71,11 +71,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE);
             pstmt.setInt(1, id);
             rs = pstmt.executeUpdate();
-            if (rs > 0) {
-                return true;
-            } else {
-                return false;
-            }
+
         } catch (SQLException e) {
             throw e;
         } catch (ClassNotFoundException ex) {
@@ -100,9 +96,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             if (rs.next()) {
                 employee = new Employee();
                 employee.setEmployeeId(rs.getInt("employee_id"));
-                employee.setEmployee_name(rs.getString("employee_name"));
-                employee.setEmployee_add(rs.getString("employee_add"));
-                employee.setEmployee_phone(rs.getString("employee_phone"));
+                employee.setName(rs.getString("employee_name"));
+                employee.setAddress(rs.getString("employee_add"));
+                employee.setPhone(rs.getString("employee_phone"));
                 employee.setDepartment(rs.getString("department"));
                 employee.setUserName(rs.getString("username"));
                 employee.setPassword(rs.getString("password"));
@@ -127,13 +123,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             conn = DBConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = pstmt.executeQuery();
-
             while (rs.next()) {
                 Employee employee = new Employee();
                 employee.setEmployeeId(rs.getInt("employee_id"));
-                employee.setEmployee_name(rs.getString("employee_name"));
-                employee.setEmployee_add(rs.getString("employee_add"));
-                employee.setEmployee_phone(rs.getString("employee_phone"));
+                employee.setName(rs.getString("employee_name"));
+                employee.setAddress(rs.getString("employee_add"));
+                employee.setPhone(rs.getString("employee_phone"));
                 employee.setDepartment(rs.getString("department"));
                 employee.setUserName(rs.getString("username"));
                 employee.setPassword(rs.getString("password"));
@@ -156,19 +151,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         try {
             conn = DBConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE);
-            pstmt.setString(1, object.getEmployee_name());
-            pstmt.setString(2, object.getEmployee_add());
-            pstmt.setString(3, object.getEmployee_phone());
+            pstmt.setString(1, object.getName());
+            pstmt.setString(2, object.getAddress());
+            pstmt.setString(3, object.getPhone());
             pstmt.setString(4, object.getDepartment());
             pstmt.setString(5, object.getUserName());
             pstmt.setString(6, object.getPassword());
             pstmt.setInt(7, id);
             rs = pstmt.executeUpdate();
-            if (rs > 0) {
-                return true;
-            } else {
-                return false;
-            }
         } catch (SQLException ex) {
             throw ex;
         } catch (ClassNotFoundException ex) {
@@ -182,7 +172,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     @Override
-    public Employee findByUsernamePassword(String username, String password) throws SQLException {
+    public Employee findByUsernameAndPassword(String username, String password) throws SQLException {
         Employee employee = null;
         Connection conn = null;
         try {
@@ -194,9 +184,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             if (rs.next()) {
                 employee = new Employee();
                 employee.setEmployeeId(rs.getInt("employee_id"));
-                employee.setEmployee_name(rs.getString("employee_name"));
-                employee.setEmployee_add(rs.getString("employee_add"));
-                employee.setEmployee_phone(rs.getString("employee_phone"));
+                employee.setName(rs.getString("employee_name"));
+                employee.setAddress(rs.getString("employee_add"));
+                employee.setPhone(rs.getString("employee_phone"));
                 employee.setDepartment(rs.getString("department"));
                 employee.setUserName(rs.getString("username"));
                 employee.setPassword(rs.getString("password"));
