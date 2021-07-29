@@ -24,16 +24,12 @@ public class DiscountDAOImpl implements DiscountDAO {
     @Override
     public boolean create(Discount object) throws SQLException {
         int rowsAffected = -1;
-        Connection conn = null;
-        try {
-            conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT);
             pstmt.setString(1, object.getName());
             rowsAffected = pstmt.executeUpdate();
         } catch (SQLException ex) {
             throw ex;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DiscountDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rowsAffected > 0;
     }
@@ -41,16 +37,12 @@ public class DiscountDAOImpl implements DiscountDAO {
     @Override
     public boolean deleteById(int id) throws SQLException {
         int rs = -1;
-        Connection conn = null;
-        try {
-            conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE);
             pstmt.setInt(1, id);
             rs = pstmt.executeUpdate();
         } catch (SQLException e) {
             throw e;
-        } catch (ClassNotFoundException e) {
-            Logger.getLogger(DiscountDAOImpl.class.getName()).log(Level.SEVERE, null, e);
         }
         return rs > 0;
     }
@@ -71,8 +63,6 @@ public class DiscountDAOImpl implements DiscountDAO {
             }
         } catch (SQLException e) {
             throw e;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DiscountDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (conn != null) {
                 conn.close();
@@ -84,8 +74,7 @@ public class DiscountDAOImpl implements DiscountDAO {
     @Override
     public List<Discount> findAll() throws SQLException {
         List<Discount> discounts = new ArrayList<>();
-        try {
-            Connection conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -94,8 +83,8 @@ public class DiscountDAOImpl implements DiscountDAO {
                 discount.setName(rs.getString("discount_name"));
                 discounts.add(discount);
             }
-        } catch (ClassNotFoundException e) {
-            Logger.getLogger(DiscountDAOImpl.class.getSimpleName()).log(Level.SEVERE, null, e);
+        } catch (SQLException e) {
+            throw e;
         }
         return discounts;
     }

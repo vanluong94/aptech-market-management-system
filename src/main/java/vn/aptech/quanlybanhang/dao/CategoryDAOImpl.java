@@ -11,14 +11,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 
-
 public class CategoryDAOImpl implements CategoryDAO {
-    
+
     private final static String SQL_INSERT = "INSERT INTO categories (categoryName) VALUES (?)";
     private final static String SQL_SELECT_ALL = "SELECT * FROM categories";
     private final static String SQL_GET_ONE = "SELECT * FROM categories WHERE category_id = ?";
@@ -26,16 +23,13 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public boolean create(Category object) throws SQLException {
         int rowsAffected = -1;
-        try {
-            Connection conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt;
             pstmt = conn.prepareCall(SQL_INSERT);
             pstmt.setString(1, object.getCategoryName());
             rowsAffected = pstmt.executeUpdate();
-        } catch (SQLException ex) {
-            throw ex;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(CategoryDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            throw e;
         }
         return rowsAffected > 0;
     }
@@ -47,27 +41,18 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public Category findById(int id) throws SQLException {
-        
-        // Tìm chi tiết danh mục
         Category category = null;
-        Connection conn = null;
-        ResultSet rs = null;
-        try {
-            conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE);
             pstmt.setInt(1, id);
-            rs = pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-               category = new Category();
-               category.setCategoryId(rs.getInt("category_id"));
-               category.setCategoryName(rs.getString("category_name"));
+                category = new Category();
+                category.setCategoryId(rs.getInt("category_id"));
+                category.setCategoryName(rs.getString("category_name"));
             }
         } catch (SQLException e) {
             throw e;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(CategoryDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) conn.close();
         }
         return category;
     }
@@ -75,8 +60,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public List<Category> findAll() throws SQLException {
         List<Category> categories = new ArrayList<>();
-        try {
-            Connection conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -85,8 +69,8 @@ public class CategoryDAOImpl implements CategoryDAO {
                 category.setCategoryName(rs.getString("categoryName"));
                 categories.add(category);
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(CategoryDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            throw e;
         }
         return categories;
     }

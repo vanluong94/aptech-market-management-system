@@ -32,8 +32,6 @@ public class SupplierDAOImpl implements SupplierDAO {
             rowsAffected = pstmt.executeUpdate();
         } catch (SQLException ex) {
             throw ex;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(SupplierDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rowsAffected > 0;
     }
@@ -49,8 +47,6 @@ public class SupplierDAOImpl implements SupplierDAO {
             rs = pstmt.executeUpdate();
         } catch (SQLException e) {
             throw e;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(SupplierDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs > 0;
     }
@@ -72,8 +68,6 @@ public class SupplierDAOImpl implements SupplierDAO {
             }
         } catch (SQLException e) {
             throw e;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(SupplierDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (conn != null) {
                 conn.close();
@@ -85,25 +79,21 @@ public class SupplierDAOImpl implements SupplierDAO {
     @Override
     public List<Supplier> findAll() throws SQLException {
         List<Supplier> suppliers = new ArrayList<>();
-        try {
-            Connection conn = DBConnection.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                Supplier supplier = new Supplier();
-                supplier.setId(rs.getInt("supplier_id"));
-                supplier.setName(rs.getString("supplier_name"));
-                supplier.setAddress(rs.getString("supplier_add"));
-                suppliers.add(supplier);
-            }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(SupplierDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            Supplier supplier = new Supplier();
+            supplier.setId(rs.getInt("supplier_id"));
+            supplier.setName(rs.getString("supplier_name"));
+            supplier.setAddress(rs.getString("supplier_add"));
+            suppliers.add(supplier);
         }
 
         return suppliers;
     }
 
+    @Override
     public boolean update(Supplier object) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
