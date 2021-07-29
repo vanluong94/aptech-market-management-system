@@ -5,11 +5,17 @@
  */
 package vn.aptech.quanlybanhang.menu;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.dao.EmployeeDAOImpl;
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.service.AuthService;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
+import vn.aptech.quanlybanhang.service.EmployeeService;
+import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
-
+import vn.aptech.quanlybanhang.menu.AdminMenu;
 /**
  *
  * @author anhnbt
@@ -17,11 +23,12 @@ import vn.aptech.quanlybanhang.utilities.AppScanner;
 public class AuthMenu extends Menu {
 
     private AuthService authService;
-
+    private EmployeeService employeeService;
     public AuthMenu() {
         this.authService = new AuthServiceImpl();
+        this.employeeService = new EmployeeServiceImpl();
     }
-
+    
     @Override
     public void start() {
         System.out.println("Nhap tai khoan: ");
@@ -33,9 +40,23 @@ public class AuthMenu extends Menu {
         Employee emp = authService.login(employee);
         if (emp != null) {
             System.out.println("Dang nhap thanh cong!");
-            System.out.println("Chao mung " + username + "!");
-            // Kiem tra role neu la admin thi mo menu admin
-            // Nguoc lai thi mo menu employee
+            
+            try {
+                // Kiem tra role neu la admin thi mo menu admin
+                Employee checkRole = employeeService.findByUsernameAndPassword(username, password);
+                if (checkRole.getDepartment().equals("ROLE_ADMIN")) {
+                    System.out.println("\nBan la Quan Tri Vien !\nBan se duoc chuyen den trang Quan Tri Vien !");
+                    AdminMenu adminMenu = new AdminMenu();
+                    adminMenu.start();
+                }
+                else{
+                System.out.println("Chao mung " + username +  "!");
+                    System.out.println("Moi ban den trang nhan vien !");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AuthMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         } else {
             System.out.println("Nhap sai tai khoan va mat khau. Vui long nhap lai!");
         }

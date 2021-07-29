@@ -24,13 +24,14 @@ import vn.aptech.quanlybanhang.utilities.DBConnection;
  */
 public class MainMenu extends Menu {
     
-    private final String TITLE = "Phần Mềm Quản Lý Siêu Thị";
-    private final int[] CHOICES = {1,2,5,0}; // for validation purpose
+    private final String TITLE = "Phan mem Quan ly Sieu Thi";
+    private final int[] CHOICES = {1,2,3,5,0}; // for validation purpose
     private final String[] MENU_ITEMS = {
-        "1. Quản lý danh mục",
-        "2. Đăng Nhập",
-        "5. Quản lý Nhãn hàng",
-        "0. Thoát",
+        "1. Quan ly Danh muc",
+        "2. Dang nhap",
+        "3. Quan ly Kho",
+        "5. Quan ly Nhan hang",
+        "0. Thoat",
     };
     
     public MainMenu(){
@@ -49,6 +50,10 @@ public class MainMenu extends Menu {
             case 2:
                 AuthMenu authMenu = new AuthMenu();
                 authMenu.start();
+                break;
+            case 3:
+                ProductMenu productMenu = new ProductMenu();
+                productMenu.start();
                 break;
             case 5:
                 BrandMenu menu = new BrandMenu();

@@ -7,69 +7,66 @@ package vn.aptech.quanlybanhang.entities;
  *
  * @author VuxxLong
  */
-public class Supplier {
-    private int supplierId;
-    private String supplierName;
-    private String supplierAddress;
-    
-    public Supplier(){
-        
+public class Supplier extends BaseEntity {
+
+    private int id;
+    private String name;
+    private String address;
+
+    public Supplier() {
+
     }
 
     public Supplier(String supplierName, String supplierAddress) {
-        this.supplierName = supplierName;
-        this.supplierAddress = supplierAddress;
+        this.name = supplierName;
+        this.address = supplierAddress;
     }
 
     /**
-     * @return the supplierId
+     * @return the id
      */
-    public int getSupplierId() {
-        return supplierId;
+    public int getId() {
+        return id;
     }
 
     /**
-     * @param supplierId the supplierId to set
+     * @param id the id to set
      */
-    public void setSupplierId(int supplierId) {
-        this.supplierId = supplierId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
-     * @return the supplierName
+     * @return the name
      */
-    public String getSupplierName() {
-        return supplierName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param supplierName the supplierName to set
+     * @param name the name to set
      */
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
-     * @return the supplierAddress
+     * @return the address
      */
-    public String getSupplierAddress() {
-        return supplierAddress;
+    public String getAddress() {
+        return address;
     }
 
     /**
-     * @param supplierAddress the supplierAddress to set
+     * @param address the address to set
      */
-    public void setSupplierAddress(String supplierAddress) {
-        this.supplierAddress = supplierAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override
     public String toString() {
-        return "Supplier { " + "ID : " + supplierId + " || SupplierName = " + supplierName + " || SupplierAdress = " + supplierAddress + " }";
+        return "Supplier { " + "ID : " + id + " || SupplierName = " + name + " || SupplierAdress = " + address + " }";
     }
-    
-    
-    
-    
-    
+
 }
