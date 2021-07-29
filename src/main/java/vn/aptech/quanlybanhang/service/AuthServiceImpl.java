@@ -13,6 +13,8 @@ import vn.aptech.quanlybanhang.entities.Employee;
 public class AuthServiceImpl implements AuthService {
     
     private AuthDAO authDAO;
+    
+    private static Employee currentEmployee;
 
     public AuthServiceImpl() {
         this.authDAO = new AuthDAOImpl();
@@ -20,7 +22,30 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Employee login(Employee emp) {
-        return authDAO.login(emp.getUserName(), emp.getPassword());
+        
+        Employee employee = authDAO.login(emp.getUserName(), emp.getPassword());
+        
+        if(employee != null){
+            setCurrentEmployee(employee);
+        }
+        
+        return employee;
+    }
+
+    public static void logout() {
+        setCurrentEmployee(null);
+    }
+    
+    public static Employee getCurrentEmployee() {
+        return currentEmployee;
+    }
+
+    private static void setCurrentEmployee(Employee emp) {
+        currentEmployee = emp;
+    }
+    
+    public static boolean isLoggedIn(){
+        return getCurrentEmployee() != null;
     }
     
 }
