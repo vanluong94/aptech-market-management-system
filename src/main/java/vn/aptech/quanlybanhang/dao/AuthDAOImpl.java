@@ -29,7 +29,7 @@ public class AuthDAOImpl implements AuthDAO {
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 emp = new Employee();
-                emp.setEmployeeId(rs.getInt("employeeId"));
+                emp.setEmployeeId(rs.getInt("employee_id"));
                 emp.setUserName(rs.getString("username"));
             }
         } catch (SQLException ex) {
