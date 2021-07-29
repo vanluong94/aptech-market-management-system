@@ -5,91 +5,118 @@
 
 ## Hướng dẫn sử dụng Base UI
 
-### Class extends Menu
-Menu là một `abstract class` base sử dụng để hiển thị và vận hành cho Menu.
+### Giới thiệu sơ
+Giao diện của app sẽ được hình thành xoay quanh 2 thực thể là `Menu` và `Page`, cả 2 đều là `abstract class extends MenuItem`
+![Cấu trúc Menu Entity](https://i.imgur.com/m02U7Cr.png)
+
+### Xây dựng Menu
+Menu là một `abstract class` sử dụng để hiển thị và vận hành cho Menu.
 
 #### Ví dụ
 ```java
-public class BrandMenu extends Menu implements BaseMenu {
+public class BrandMenu extends Menu {
 
-    private final String TITLE = "Quản lý Nhãn hàng";
-    private final int[] CHOICES = {1,2,3,4,5,0}; // for validation purpose
-    private final String[] MENU_ITEMS = {
-        "1. Danh sách Nhãn hàng",
-        "2. Thêm Nhãn hàng",
-        "3. Sửa Nhãn hàng",
-        "4. Xóa Nhãn hàng",
-        "5. Tìm Nhãn hàng",
-        "0. Thoát",
-    };
-
-    private final BrandService brandService;
-
-    public BrandMenu() {
-        this.brandService = new BrandServiceImpl();
+    @Override
+    protected LinkedHashMap<Integer, MenuItem> registerMenuItems() {
+        LinkedHashMap<Integer, MenuItem> menuItems = new LinkedHashMap<>();
         
-        this.setMenuItems(this.MENU_ITEMS);
-        this.setTitle(this.TITLE);
-        this.setChoices(this.CHOICES);
+        menuItems.put(1, new BrandListingPage());
+        menuItems.put(2, new BrandCreatePage());
+        menuItems.put(3, new BrandEditPage());
+        menuItems.put(4, new BrandDeletePage());
+        menuItems.put(5, new BrandSearchPage());
+        
+        menuItems.put(0, new ExitMenuItem());
+        menuItems.put(-1, new GoBackMenuItem());
+        
+        return menuItems;
     }
 
-    public void handle(int choice) {
-        try {
-            switch (choice) {
-                case 1:
-                    this.handleDisplayAllBrands();
-                    break;
-                case 2:
-                    HeaderUI.display("Thêm Nhãn Hàng");
-                    this.handleAddBrand();
-                    break;
-                case 0:
-                    System.exit(0);
-                    break;
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(BrandMenu.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(BrandMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    @Override
+    protected String registerMenuTitle() {
+        return "Quản lý Nhãn hàng";
     }
 }
 ```
 
-Các bước implement Menu class
+#### Implements các abstract methods
+- ` String registerMenuTitle()` - Required - Trả lại chuỗi cho Tiêu đề của Menu. (Tiêu đề này xuất hiện trên Title, Breadcrumb, và parent Menu).
+- `LinkedHashMap<Integer, MenuItem> registerMenuItems()` - Required - Khởi tạo và trả lại `LinkedHashMap<Integer, MenuItem>` chứa các cặp `<Key,Value>` tương ứng với số lựa chọn cho MenuItem và instance của MenuItem (có thể là `Page` hoặc `Menu`) đó.
+- `String getBreadcrumbPathName()` - Optional - Sử dụng tên khác để hiển thị trên Breadcrumb
 
-1. Class Menu cần phải được set các property sau trong constructor: 
-
-- `this.setMenuItems(String[] menuItems)`
-- `this.setTitle(String title)` - Tên Menu
-- `this.setChoices(int[] choices)` - Chuỗi các lựa chọn hợp lệ, sử dụng để validate giá trị int choice user nhập vào.
-
-2. Implement abstract method `public void handle(int choice){}` từ parent class Menu.
-
-- Thay vì các code để handle choice đều gộp chung vào switch - case trong `BaseMenu.start(Scanner scanner)`, method `Method.handle(int choice)` truyền vào validated choice user đã chọn, xử lý switch - case trong đây. Nếu code handle cho từng case quá dài, nên chia nhỏ vào các method riêng.
-
-Cách lấy `Scanner scanner` trong class Menu có thể tham khảo tại [đây](#appscanner)
 #### Kết quả
 ```
 +------------------------------------------------+
+|            Menu > Quản lý Nhãn hàng            |
++------------------------------------------------+
+|                                                |
 |               Quản lý Nhãn hàng                |
+|                                                |
 +------------------------------------------------+
-| 1. Danh sách Nhãn hàng                         |
-| 2. Thêm Nhãn hàng                              |
-| 3. Sửa Nhãn hàng                               |
-| 4. Xóa Nhãn hàng                               |
-| 5. Tìm Nhãn hàng                               |
-| 0. Thoát                                       |
+| 1. Danh Sach Nhan Hang                         |
+| 2. Them Nhan Hang                              |
+| 3. Sua Nhan Hang                               |
+| 4. Xoa Nhan Hang                               |
+| 5. Tim Nhan Hang                               |
+| 0. Thoat                                       |
+| -1. Quay lai                                   |
 +------------------------------------------------+
-Vui lòng nhập lựa chọn: askokaos
+Vui lòng nhập lựa chọn: kokoeg
 Giá trị không phù hợp.
-Vui lòng nhập lựa chọn: 124981249
-Lựa chọn không khả dụng
 Vui lòng nhập lựa chọn: 1
 Connecting to MySQL...
 ```
+
+### Xây dựng Page
+`Page` là một `MenuItem`. Khác với `Menu`, `Page` chỉ để hiển thị nội dung.
+
+```java
+public class BrandListingPage extends Page {
+
+    @Override
+    public void displayContent() {
+        // Code hiển thị bảng danh sách các nhãn hàng tại đây
+    }
+
+    @Override
+    public String getTitle() {
+        return "Danh Sach Nhan Hang";
+    }
+    
+}
+```
+#### Implements các abstract methods
+- `void displayContent()` - Required - Nơi đặt code hiển thị và xử lý các tính năng trong Page.
+- `String getTitle()` - Required - Trả lại Tiêu đề cho Page (tiêu đề hiển thị ở Header, Breadcrumb và parent Menu).
+- `String getBreadcrumbPathName()` - Optional - Sử dụng tên khác để hiển thị trên Breadcrumb
+
+#### Kết quả
+```
++----------------------------------------------------------------+
+|         Menu > Quản lý Nhãn hàng > Danh Sach Nhan Hang         |
++----------------------------------------------------------------+
+|                                                                |
+|                      Danh Sach Nhan Hang                       |
+|                                                                |
++----------------------------------------------------------------+
+...Connecting to MySQL
+...Connected to database.
++----------------------------------------------------------------------------------------------------+
+| ID  | Name                 | Address                                                               |
++----------------------------------------------------------------------------------------------------+
+| 1   | P&G                  | 11/F, MPlaza, 39 Le Duan Blvd. District 1, Ho Chi Minh City Vietnam   |
+| 2   | Unilever             | A2-3, Khu công nghiệp Tây Bắc Củ Chi, Huyện Củ Chi, Tp Hồ Chí Minh    |
+| 3   | DH FOODS             | Lầu 9, 728-730 Võ Văn Kiệt, Phường 01, Quận 5, Thành phố Hồ Chí Minh  |
+| 4   | Vinamilk             | Số 10, Đường Tân Trào, phường Tân Phú, quận 7, Tp. HCM                |
+| 5   | Masan                | Số 39 Lê Duẩn, Phường Bến Nghé, Quận 1, Tp. Hồ Chí Minh, Việt Nam     |
+| 6   | Trung Nguyên Legend  | 82-84 Bùi Thị Xuân, P. Bến Thành, Q.1, Tp Hồ Chí Minh                 |
+| 7   | ACECOOK              | Lô số II-3,Đường số 11,Nhóm CN II, Khu Công nghiệp Tân Bình, Phườn... |
++----------------------------------------------------------------------------------------------------+
+Nhan phim [enter] de quay tro lai:...  
+```
+
+#### Lưu ý
+Phần `Nhan phim [enter] de quay tro lai:...` ở cuối Page sẽ được tự động xử lý, không cần thêm code cho tính năng này.
 
 ### TableUI
 Base UI để hiển thị data thành Table
