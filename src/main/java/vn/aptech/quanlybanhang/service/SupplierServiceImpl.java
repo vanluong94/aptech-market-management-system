@@ -11,7 +11,6 @@ import vn.aptech.quanlybanhang.dao.SupplierDAO;
 import vn.aptech.quanlybanhang.dao.SupplierDAOImpl;
 import vn.aptech.quanlybanhang.entities.Supplier;
 
-
 public class SupplierServiceImpl implements SupplierService {
 
     private final SupplierDAO supplierDAO;
@@ -19,12 +18,12 @@ public class SupplierServiceImpl implements SupplierService {
     public SupplierServiceImpl() {
         this.supplierDAO = new SupplierDAOImpl();
     }
-    
+
     @Override
     public boolean create(Supplier object) throws SQLException, Exception {
         if (object == null) {
-            throw new Exception ("Danh muc khong duoc de trong");
-            
+            throw new Exception("Danh muc khong duoc de trong");
+
         }
         return supplierDAO.create(object);
     }
@@ -33,7 +32,7 @@ public class SupplierServiceImpl implements SupplierService {
     public boolean deleteById(int id) throws SQLException {
         if (id < 1) {
             try {
-                throw new Exception ("ID khong hop le!");
+                throw new Exception("ID khong hop le!");
             } catch (Exception ex) {
                 Logger.getLogger(SupplierServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -58,5 +57,5 @@ public class SupplierServiceImpl implements SupplierService {
     public boolean update(Supplier object) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

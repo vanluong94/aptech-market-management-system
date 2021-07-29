@@ -9,6 +9,6 @@ import vn.aptech.quanlybanhang.entities.Discount;
  *
  * @author Vu Duy Long <vuduylong1999@gmail.com>
  */
-public interface DiscountService extends BaseService<Discount>{
-    
+public interface DiscountService extends BaseService<Discount> {
+
 }

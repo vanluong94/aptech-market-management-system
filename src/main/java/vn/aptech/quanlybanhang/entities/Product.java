@@ -6,8 +6,10 @@ package vn.aptech.quanlybanhang.entities;
 /**
  *
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ * @author Vu Duy Long <vuduylong1999@gmail.com>
  */
 public class Product extends BaseEntity {
+
     private int id;
     private Brand brand;
     private Category category;
@@ -36,7 +38,7 @@ public class Product extends BaseEntity {
         this.price = price;
         this.quantityInStock = quantityInStock;
     }
-    
+
     /**
      *
      * @param id
@@ -164,6 +166,10 @@ public class Product extends BaseEntity {
     public void setQuantityInStock(int quantityInStock) {
         this.quantityInStock = quantityInStock;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Product { " + "ID : " + id + " || Brand ID : " + getBrand() + " || Category ID : " + getCategory() + " || Employee ID : " + getEmployee() + " || Product Name : " + name + " || Product Price : " + price + " || Product Stock : " + quantityInStock + " } ";
+    }
+
 }

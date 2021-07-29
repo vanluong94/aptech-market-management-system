@@ -1,17 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.dao.ProductDAO;
 import vn.aptech.quanlybanhang.dao.ProductDAOImpl;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.exception.InputInvalidException;
 
+/**
+ *
+ * @author Vu Duy Long <vuduylong1999@gmail.com>
+ */
 public class ProductServiceImpl implements ProductService {
 
     private final ProductDAO productDAO;
@@ -80,4 +84,15 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public List<Product> findByCategoryId(int id) throws SQLException, ClassNotFoundException {
+        if (id < 1) {
+            try {
+                throw new Exception("ID khong hop le!");
+            } catch (Exception ex) {
+                Logger.getLogger(ProductServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return productDAO.findByCategoryId(id);
+    }
 }

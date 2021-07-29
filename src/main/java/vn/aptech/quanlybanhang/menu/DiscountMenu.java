@@ -14,18 +14,17 @@ import vn.aptech.quanlybanhang.utilities.AppScanner;
  *
  * @author Vu Duy Long <vuduylong1999@gmail.com>
  */
-public class DiscountMenu extends Menu{
-    
+public class DiscountMenu extends Menu {
+
     private final String TITLE = "Quan ly danh sach Giam gia";
-    private final int[] CHOICES = {1,2,5,0}; // for validation purpose
+    private final int[] CHOICES = {1, 2, 5, 0}; // for validation purpose
     private final String[] MENU_ITEMS = {
         "1. Danh sach Chuong trinh giam gia",
         "2. Them mot Chuong trinh giam gia moi",
         "3. Xem chi tiet mot Chuong trinh giam gia",
         "4. Xoa mot Chuong trinh giam gia",
-        "0. Thoat",
-    };
-    
+        "0. Thoat",};
+
     private final DiscountService discountService;
 
     public DiscountMenu() {
@@ -35,13 +34,13 @@ public class DiscountMenu extends Menu{
     @Override
     public void handle(int choice) {
         try {
-            switch(choice){
+            switch (choice) {
                 case 1:
                     System.out.println("Danh sach Chuong Trinh Giam Gia");
                     List<Discount> discounts = discountService.findAll();
                     if (discounts.isEmpty()) {
                         System.out.println("Danh sach trong");
-                    }else{
+                    } else {
                         for (Discount discount : discounts) {
                             System.out.println(discount.toString());
                         }
@@ -50,12 +49,12 @@ public class DiscountMenu extends Menu{
                 case 2:
                     System.out.println("Nhap ten chuong trinh giam gia :");
                     String discountName = AppScanner.getScanner().nextLine();
-                    
+
                     if (discountName.length() > 0) {
                         Discount discount = new Discount(discountName);
                         if (discountService.create(discount)) {
                             System.out.println("Them chuong trinh giam gia thanh cong!");
-                        }else{
+                        } else {
                             System.out.println("Da xay ra loi!");
                         }
                     }
@@ -66,7 +65,7 @@ public class DiscountMenu extends Menu{
                     Discount discount = discountService.findById(discountId);
                     if (discount == null) {
                         System.out.println("Khong tim thay ID Chuong trinh giam gia phu hop!");
-                    }else{
+                    } else {
                         System.out.println(discount.toString());
                     }
                     break;
@@ -75,7 +74,7 @@ public class DiscountMenu extends Menu{
                     discountId = AppScanner.getScanner().nextInt();
                     if (discountService.deleteById(discountId)) {
                         System.out.println("Xoa thanh cong Chuong trinh giam gia ");
-                    }else{
+                    } else {
                         System.out.println("Da xay ra loi!");
                     }
                     break;
@@ -89,5 +88,5 @@ public class DiscountMenu extends Menu{
             System.out.println(ex.getMessage());
         }
     }
-    
+
 }
