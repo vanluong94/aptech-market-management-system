@@ -12,12 +12,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.ui.HelperUI;
 
 /**
  * @author anhnbt
  * @author vanluong
  */
 public class DBConnection {
+    
+    public static Connection conn;
+    
     private final static String DRIVER          = "com.mysql.cj.jdbc.Driver";
     private final static String serverName      = "35.247.137.54";
     private final static String port            = "3306";
@@ -27,12 +31,32 @@ public class DBConnection {
     private static final String CONNECTION_URL = "jdbc:mysql://localhost:3307/quanlysieuthi?user=lab&password=";
 
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
-        String url = String.format("jdbc:mysql://%s:%s/%s", serverName, port, databaseName);
-        Class.forName(DRIVER);
-        System.out.println("Connecting to MySQL...");
-        Connection conn = DriverManager.getConnection(url, user, password);
-        System.out.println("Connected to database.");
+        
+        if( conn == null || conn.isClosed() ){
+            String url = String.format("jdbc:mysql://%s:%s/%s", serverName, port, databaseName);
+            Class.forName(DRIVER);
+
+            HelperUI.displayMargin();
+            System.out.println("...Connecting to MySQL");
+
+            conn = DriverManager.getConnection(url, user, password);
+
+            System.out.println("...Connected to database.");
+            HelperUI.displayMargin();
+        }
+        
         return conn;
+        
+    }
+    
+    public static void maybeCloseConnection(){
+        try {
+            if(conn != null && conn.isClosed()){
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static void showTables() throws SQLException, ClassNotFoundException {

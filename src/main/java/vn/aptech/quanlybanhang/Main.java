@@ -6,10 +6,9 @@
 package vn.aptech.quanlybanhang;
 
 import java.sql.SQLException;
-import vn.aptech.quanlybanhang.menu.MainMenu;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.menu.MainMenu;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 
 /**
@@ -22,23 +21,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-//        try {
-            
-            /* App start */
-            
-//            DBConnection.getConnection();
-            
+        try {
             MainMenu mainMenu = new MainMenu();
             mainMenu.start();
-            
-//            DBConnection.closeConnection(); // connection should be closed to avoid database connection sleeps on server.
-            /* App close */
-            
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        } finally {
+            DBConnection.maybeCloseConnection();
+        }
     }
 }
-

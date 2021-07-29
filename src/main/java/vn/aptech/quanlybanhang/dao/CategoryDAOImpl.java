@@ -36,6 +36,8 @@ public class CategoryDAOImpl implements CategoryDAO {
             throw ex;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(CategoryDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         return rowsAffected > 0;
     }
@@ -57,6 +59,7 @@ public class CategoryDAOImpl implements CategoryDAO {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE);
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
+            
             if (rs.next()) {
                category = new Category();
                category.setCategoryId(rs.getInt("category_id"));
@@ -87,6 +90,8 @@ public class CategoryDAOImpl implements CategoryDAO {
             }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(CategoryDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         return categories;
     }

@@ -35,6 +35,8 @@ public class SupplierDAOImpl implements SupplierDAO {
             throw ex;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SupplierDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         return rowsAffected > 0;
     }
@@ -57,6 +59,8 @@ public class SupplierDAOImpl implements SupplierDAO {
             throw e;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SupplierDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         return rs > 0;
     }
@@ -103,6 +107,8 @@ public class SupplierDAOImpl implements SupplierDAO {
             }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SupplierDAOImpl.class.getName()).log(Level.SEVERE,null,ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         
         return suppliers;

@@ -35,6 +35,8 @@ public class DiscountDAOImpl implements DiscountDAO {
             throw ex;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DiscountDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         return rowsAffected > 0;
     }
@@ -56,6 +58,8 @@ public class DiscountDAOImpl implements DiscountDAO {
             throw e;
         }catch(ClassNotFoundException e){
             Logger.getLogger(DiscountDAOImpl.class.getName()).log(Level.SEVERE,null,e);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         return rs > 0;
     }
@@ -99,6 +103,8 @@ public class DiscountDAOImpl implements DiscountDAO {
             }
         } catch (ClassNotFoundException e) {
             Logger.getLogger(DiscountDAOImpl.class.getSimpleName()).log(Level.SEVERE,null,e);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         return discounts;
     }

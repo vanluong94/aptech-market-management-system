@@ -32,6 +32,8 @@ public class BrandDAOImpl implements BrandDAO {
             }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(BrandDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
 
         return brands;
@@ -48,6 +50,8 @@ public class BrandDAOImpl implements BrandDAO {
             return st.execute();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(BrandDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         return false;
     }
@@ -67,6 +71,8 @@ public class BrandDAOImpl implements BrandDAO {
             
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(BrandDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         
         return null;
@@ -84,6 +90,8 @@ public class BrandDAOImpl implements BrandDAO {
             return st.executeUpdate() > 0;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(BrandDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         
         return false;
@@ -102,6 +110,8 @@ public class BrandDAOImpl implements BrandDAO {
             return st.executeUpdate() > 0;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(BrandDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         
         return false;
@@ -110,18 +120,24 @@ public class BrandDAOImpl implements BrandDAO {
     @Override
     public List<Brand> searchByName(String name) throws SQLException, ClassNotFoundException{
         
-        List<Brand> foundBrands = new ArrayList<>();
+        try{
+            List<Brand> foundBrands = new ArrayList<>();
         
-        String sql = "SELECT * FROM brands WHERE brand_name LIKE ?";
-        PreparedStatement st = DBConnection.getConnection().prepareStatement(sql);
-        st.setString(1, "%" + name + "%");
-        ResultSet rs = st.executeQuery();
-        
-        while(rs.next()){
-            foundBrands.add(transferRSToBrand(rs));
+            String sql = "SELECT * FROM brands WHERE brand_name LIKE ?";
+            PreparedStatement st = DBConnection.getConnection().prepareStatement(sql);
+            st.setString(1, "%" + name + "%");
+            ResultSet rs = st.executeQuery();
+            DBConnection.maybeCloseConnection();
+
+            while(rs.next()){
+                foundBrands.add(transferRSToBrand(rs));
+            }
+
+            return foundBrands;
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         
-        return foundBrands;
     }
     
     protected Brand transferRSToBrand(ResultSet rs) throws SQLException{
