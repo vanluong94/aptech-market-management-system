@@ -5,6 +5,8 @@
  */
 package vn.aptech.quanlybanhang.ui;
 
+import vn.aptech.quanlybanhang.menu.Breadcrumb;
+
 /**
  *
  * @author vanluong
@@ -12,18 +14,27 @@ package vn.aptech.quanlybanhang.ui;
 public class HeaderUI {
     
     public static void display(String title){
-        
         int lineLength = title.length() + 20; //means padding 20 for both sides
-        
-        displayMargin();
+        HelperUI.displayMargin();
         displayBorder(lineLength);
         displayHeader(title, lineLength);
         displayBorder(lineLength);
-                
     }
     
-    protected static void displayMargin(){
-        System.out.println("\n\n");
+    public static void displayWithBreadcrumb(String title){
+        
+        String breadcrumb = Breadcrumb.getBreadcrumb();
+        int lineLength = title.length() > breadcrumb.length() ? title.length() : breadcrumb.length();
+        lineLength += 20;  //means padding 20 for both sides
+        
+        HelperUI.displayMargin();
+        displayBorder(lineLength);
+        displayHeader(breadcrumb, lineLength);
+        displayBorder(lineLength);
+        displayHeader("", lineLength);
+        displayHeader(title, lineLength);
+        displayHeader("", lineLength);
+        displayBorder(lineLength);
     }
     
     protected static void displayHeader(String title, int length) {
@@ -46,7 +57,7 @@ public class HeaderUI {
         System.out.println(String.format(lineFormat, " "));
         
     }
-
+    
     protected static void displayBorder(int length) {
         int dotCount = length - 2;
         String borderFormat = "+%" + dotCount + "s+";

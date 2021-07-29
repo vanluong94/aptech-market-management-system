@@ -3,47 +3,48 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package vn.aptech.quanlybanhang.menu;
+package vn.aptech.quanlybanhang.pages;
 
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.service.AuthService;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
+import vn.aptech.quanlybanhang.ui.HeaderUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 
-/**
- *
- * @author anhnbt
- */
-public class AuthMenu extends Menu {
 
-    private AuthService authService;
-
-    public AuthMenu() {
-        this.authService = new AuthServiceImpl();
-    }
-
+public class AuthPage extends Page {
+    
     @Override
-    public void start() {
-        System.out.println("Nhap tai khoan: ");
-        String username = AppScanner.getScanner().nextLine();
-        System.out.println("Nhap mat khau: ");
-        String password = AppScanner.getScanner().nextLine();
+    public void start(){
+        HeaderUI.display(this.getTitle());
+        this.displayContent();
+    }
+    
+    @Override
+    public void displayContent() {
+           
+        AuthService authService = new AuthServiceImpl();
+        
+        String username = AppScanner.scanStringWithMessage("Nhap tai khoan: ");
+        String password = AppScanner.scanStringWithMessage("Nhap mat khau: ");
+        
         // kiem tra khong duoc de trong
         Employee employee = new Employee(username, password);
+        
         Employee emp = authService.login(employee);
         if (emp != null) {
             System.out.println("Dang nhap thanh cong!");
             System.out.println("Chao mung " + username + "!");
             // Kiem tra role neu la admin thi mo menu admin
-            // Nguoc lai thi mo menu employee
         } else {
             System.out.println("Nhap sai tai khoan va mat khau. Vui long nhap lai!");
         }
+        
     }
 
     @Override
-    public void handle(int choice) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getTitle() {
+        return "Dang Nhap";
     }
     
 }

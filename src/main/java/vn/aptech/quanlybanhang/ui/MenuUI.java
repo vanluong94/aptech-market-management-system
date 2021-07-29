@@ -5,41 +5,60 @@
  */
 package vn.aptech.quanlybanhang.ui;
 
+import java.util.List;
+import java.util.Map;
+import vn.aptech.quanlybanhang.menu.Breadcrumb;
+import vn.aptech.quanlybanhang.menu.MenuItem;
+
 /**
  *
  * @author vanluong
  */
-public abstract class MenuUI {
+public abstract class MenuUI extends MenuItem {
     
-    protected String title;
-    protected String[] menuItems;
-    protected int[] choices;
-    
+    Map<Integer, MenuItem> menuItems;
+    List<String> menuItemLines;
     private int lineLength = 50;
-    
-    public void display() {
 
+    protected abstract List<String> getMenuItemLines();
+
+
+    public void displayMenu() {
+        
+        HelperUI.displayMargin();
+            
         // minimum 50 chars
-        for (String menuItem : this.getMenuItems()) {
+        for (String menuItem : this.getMenuItemLines()) {
             if (menuItem.length() > lineLength) {
                 this.setLineLength(menuItem.length());
             }
         }
 
+        // check title length
         if (this.getTitle().length() > lineLength) {
             this.setLineLength(this.getTitle().length());
         }
 
+        // check breadcrumb length
+        String breadcrumb = Breadcrumb.getBreadcrumb();
+        if(breadcrumb.length() > lineLength){
+            this.setLineLength(breadcrumb.length());
+        }
+        
         // Print Header
         displayBorder();
+        displayHeader(Breadcrumb.getBreadcrumb());
+        displayBorder();
+        displayHeader(""); 
         displayHeader(this.getTitle());
+        displayHeader(""); 
         displayBorder();
 
-        // Print Content
-        for (String menuItem : this.getMenuItems()) {
+        // Print Menu List
+        for (String menuItem : this.getMenuItemLines()) {
             displayLine(menuItem);
         }
-
+        
         // Print close border
         displayBorder();
     }
@@ -72,30 +91,6 @@ public abstract class MenuUI {
         int dotCount = this.getLineLength() - 2;
         String borderFormat = "+%" + dotCount + "s+";
         System.out.println(String.format(borderFormat, " ").replace(" ", "-"));
-    }
-    
-    protected int[] getChoices() {
-        return choices;
-    }
-
-    protected void setChoices(int[] choices) {
-        this.choices = choices;
-    }
-
-    protected String getTitle() {
-        return title;
-    }
-
-    protected void setTitle(String title) {
-        this.title = title;
-    }
-
-    protected String[] getMenuItems() {
-        return menuItems;
-    }
-
-    protected void setMenuItems(String[] menuItems) {
-        this.menuItems = menuItems;
     }
 
     private int getLineLength() {
