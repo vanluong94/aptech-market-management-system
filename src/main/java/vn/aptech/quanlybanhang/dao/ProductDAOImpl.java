@@ -6,19 +6,37 @@ package vn.aptech.quanlybanhang.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 
 public class ProductDAOImpl implements ProductDAO {
-
+    private final static String SQL_GET_ONE = "INSERT * FROM products WHERE product_id = ?";
     private final static String SQL_GET_BY_CATEGORY_ID = "SELECT * FROM products WHERE category_id = ?";
-    private final static String SQL_GET_ONE = "SELECT * FROM products WHERE product_id = ?";
+    private final static String SQL_INSERT = "INSERT INTO `products` (`brand_id`, `category_id`, `employee_id`, `product_name`,"
+            + " `product_price`, `product_stock`) VALUES (?, ?, ?, ?, ?, ?);";
 
+    /**
+     *
+     * @param object
+     * @return
+     * @throws SQLException
+     */
     @Override
     public boolean create(Product object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int rowsAffected = -1;
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT);
+            pstmt.setInt(1, object.getBrand().getBrandId());
+            pstmt.setInt(2, object.getCategory().getCategoryId());
+            pstmt.setInt(3, object.getEmployee().getEmployeeId());
+            pstmt.setString(4, object.getName());
+            pstmt.setDouble(5, object.getPrice());
+            pstmt.setInt(6, object.getQuantityInStock());
+            rowsAffected = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        }
+        return rowsAffected > 0;
     }
 
     @Override
@@ -34,9 +52,7 @@ public class ProductDAOImpl implements ProductDAO {
     @Override
     public Product findById(int id) throws SQLException {
         Product product = null;
-        Connection conn = null;
-        try {
-            conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE);
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
@@ -52,12 +68,6 @@ public class ProductDAOImpl implements ProductDAO {
             }
         } catch (SQLException e) {
             throw e;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProductDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                conn.close();
-            }
         }
         return product;
     }
@@ -67,11 +77,10 @@ public class ProductDAOImpl implements ProductDAO {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
     public List<Product> findByCategoryId(int id) throws SQLException {
         List<Product> products = new ArrayList<>();
-        Connection conn = null;
-        try {
-            conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_BY_CATEGORY_ID);
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
@@ -88,12 +97,6 @@ public class ProductDAOImpl implements ProductDAO {
             }
         } catch (SQLException e) {
             throw e;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(SupplierDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                conn.close();
-            }
         }
         return products;
     }

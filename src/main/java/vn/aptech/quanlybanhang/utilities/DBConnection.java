@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.utilities;
 
@@ -10,7 +8,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -18,20 +15,25 @@ import java.util.logging.Logger;
  * @author vanluong
  */
 public class DBConnection {
-    private final static String DRIVER          = "com.mysql.cj.jdbc.Driver";
-    private final static String serverName      = "35.247.137.54";
-    private final static String port            = "3306";
-    private final static String databaseName    = "aptech_java_project";
-    private final static String user            = "aptech_participant";
-    private final static String password        = "tT2uOgleWf0n";
+    private final static String DRIVER         = "com.mysql.cj.jdbc.Driver";
+    private final static String SERVER         = "35.247.137.54";
+    private final static String PORT           = "3306";
+    private final static String DATABASE       = "aptech_java_project";
+    private final static String USER           = "aptech_participant";
+    private final static String PASSWORD       = "tT2uOgleWf0n";
     private static final String CONNECTION_URL = "jdbc:mysql://localhost:3307/quanlysieuthi?user=lab&password=";
 
-    public static Connection getConnection() throws SQLException, ClassNotFoundException {
-        String url = String.format("jdbc:mysql://%s:%s/%s", serverName, port, databaseName);
-        Class.forName(DRIVER);
-        System.out.println("Connecting to MySQL...");
-        Connection conn = DriverManager.getConnection(url, user, password);
-        System.out.println("Connected to database.");
+    public static Connection getConnection() {
+        Connection conn = null;
+        try {
+            String url = String.format("jdbc:mysql://%s:%s/%s", SERVER, PORT, DATABASE);
+            Class.forName(DRIVER);
+//            System.out.println("Connecting to MySQL...");
+            conn = DriverManager.getConnection(url, USER, PASSWORD);
+//            System.out.println("Connected to database.");
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Exception when DBConnection.getConnection: " + e.getMessage());
+        }
         return conn;
     }
 
@@ -43,9 +45,9 @@ public class DBConnection {
         if (tables.next()) {
             System.out.println("\nDatabase tables:");
 
-            do{
+            do {
                 System.out.println("   + " + tables.getString(1));
-            }while (tables.next());
+            } while (tables.next());
         } else {
             System.out.println("No tables found.");
         }
