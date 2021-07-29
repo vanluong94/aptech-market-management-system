@@ -81,8 +81,8 @@ public class CategoryDAOImpl implements CategoryDAO {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Category category = new Category();
-                category.setCategoryId(rs.getInt("categoryId"));
-                category.setCategoryName(rs.getString("categoryName"));
+                category.setCategoryId(rs.getInt("category_id"));
+                category.setCategoryName(rs.getString("category_name"));
                 categories.add(category);
             }
         } catch (ClassNotFoundException ex) {
