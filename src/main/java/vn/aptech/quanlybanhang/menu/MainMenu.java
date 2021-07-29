@@ -42,14 +42,4 @@ public class MainMenu extends Menu {
         return "Menu";
     }
     
-    @Override
-    public void display(){
-        while (!AuthServiceImpl.isLoggedIn()) {
-            AuthPage authPage = new AuthPage();
-            authPage.start();
-        }
-
-        super.display();
-    }
-    
 }

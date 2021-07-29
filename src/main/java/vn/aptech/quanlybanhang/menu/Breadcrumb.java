@@ -36,4 +36,8 @@ public class Breadcrumb {
     public static MenuItem getLastItem(){
         return menuItems.get(menuItems.size() - 1);
     }
+    
+    public static void reset(){
+        menuItems.clear();
+    }
 }

@@ -46,6 +46,10 @@ public class TableUI {
 
     }
 
+    public TableUI(String[] headers) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public void display() {
         this.displayBorder();
         this.displayRowHeader();

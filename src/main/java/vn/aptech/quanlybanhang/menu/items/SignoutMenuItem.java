@@ -5,8 +5,7 @@
  */
 package vn.aptech.quanlybanhang.menu.items;
 
-import vn.aptech.quanlybanhang.menu.MainMenu;
-import vn.aptech.quanlybanhang.menu.Menu;
+import vn.aptech.quanlybanhang.Main;
 import vn.aptech.quanlybanhang.menu.MenuItem;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 import vn.aptech.quanlybanhang.ui.HelperUI;
@@ -29,8 +28,7 @@ public class SignoutMenuItem extends MenuItem {
         HelperUI.displayMargin();
         System.out.println("Dang xuat thanh cong!");
         
-        Menu mainMenu = new MainMenu();
-        mainMenu.start();
+        Main.start();
     }
     
 }

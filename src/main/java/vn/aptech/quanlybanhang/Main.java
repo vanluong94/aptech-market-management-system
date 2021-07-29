@@ -5,10 +5,8 @@
  */
 package vn.aptech.quanlybanhang;
 
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import vn.aptech.quanlybanhang.menu.MainMenu;
+import vn.aptech.quanlybanhang.menu.Breadcrumb;
+import vn.aptech.quanlybanhang.pages.AuthPage;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 
 /**
@@ -22,10 +20,15 @@ public class Main {
      */
     public static void main(String[] args) {
         try {
-            MainMenu mainMenu = new MainMenu();
-            mainMenu.start();
+            start();
         } finally {
             DBConnection.maybeCloseConnection();
         }
+    }
+    
+    public static void start(){
+        Breadcrumb.reset();
+        AuthPage authPage = new AuthPage();
+        authPage.start();
     }
 }
