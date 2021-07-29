@@ -23,18 +23,18 @@ import vn.aptech.quanlybanhang.utilities.DBConnection;
  * @author anhnbt
  */
 public class MainMenu extends Menu {
-    
+
     private final String TITLE = "Phan mem Quan ly Sieu Thi";
-    private final int[] CHOICES = {1,2,3,5,0}; // for validation purpose
+    private final int[] CHOICES = {1, 2, 3, 4, 5, 0}; // for validation purpose
     private final String[] MENU_ITEMS = {
         "1. Quan ly Danh muc",
         "2. Dang nhap",
         "3. Quan ly Kho",
+        "4. Quan ly San pham",
         "5. Quan ly Nhan hang",
-        "0. Thoat",
-    };
-    
-    public MainMenu(){
+        "0. Thoat",};
+
+    public MainMenu() {
         this.setMenuItems(this.MENU_ITEMS);
         this.setTitle(this.TITLE);
         this.setChoices(this.CHOICES);
@@ -52,6 +52,11 @@ public class MainMenu extends Menu {
                 authMenu.start();
                 break;
             case 3:
+//                ProductMenu productMenu = new ProductMenu();
+//                productMenu.start();
+                System.out.println("Chua co menu");
+                break;
+            case 4:
                 ProductMenu productMenu = new ProductMenu();
                 productMenu.start();
                 break;
@@ -63,5 +68,5 @@ public class MainMenu extends Menu {
                 System.exit(0);
         }
     }
-    
+
 }

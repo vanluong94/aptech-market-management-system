@@ -76,4 +76,57 @@ public class AppScanner {
             }
         }
     }
+
+    public static int scanIntWithMessage(String message, boolean canBeEmpty){
+        while (true) {
+            try {
+                System.out.print(message);
+                int input = getScanner().nextInt();
+                
+                if(!canBeEmpty && input == 0) {
+                    System.out.println("Giá trị không được bỏ trống");
+                } else {
+                    return input;
+                }
+                getScanner().nextLine(); // clear line
+                return input;
+            } catch (java.util.InputMismatchException e) {
+                getScanner().nextLine(); // clear line in case input mismatch
+                System.out.println("Giá trị không phù hợp.");
+            }
+        }
+    }
+
+    public static double scanDoubleWithMessage(String message) {
+        while (true) {
+            try {
+                System.out.print(message);
+                double input = getScanner().nextDouble();
+                getScanner().nextLine(); // clear line
+                return input;
+            } catch (java.util.InputMismatchException e) {
+                getScanner().nextLine(); // clear line in case input mismatch
+                System.out.println("Giá trị không phù hợp.");
+            }
+        }
+    }
+    
+    public static double scanDoubleWithMessage(String message, boolean canBeEmpty) {
+        while (true) {
+            double input = 0;
+            try {
+                System.out.print(message);
+                input = getScanner().nextDouble();
+                getScanner().nextLine(); // clear line
+                
+                if(!canBeEmpty && input == 0) {
+                    System.out.println("Giá trị không được bỏ trống");
+                } else {
+                    return input;
+                }
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Giá trị không phù hợp.");
+            }
+        }
+    }
 }

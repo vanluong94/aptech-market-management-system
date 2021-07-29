@@ -95,4 +95,9 @@ public class ProductServiceImpl implements ProductService {
         }
         return productDAO.findByCategoryId(id);
     }
+
+    @Override
+    public List<Product> findByName(String name) throws SQLException {
+        return productDAO.findByName(name);
+    }
 }

@@ -16,4 +16,6 @@ public interface ProductDAO extends BaseDAO<Product> {
 
     List<Product> findByCategoryId(int id) throws SQLException, ClassNotFoundException;
 
+    List<Product> findByName(String name) throws SQLException;
+
 }
