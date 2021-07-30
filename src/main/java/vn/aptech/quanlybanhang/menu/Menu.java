@@ -82,6 +82,7 @@ public abstract class Menu extends MenuUI {
         this.menuItems = menuItems;
     }
     
+    @Override
     public String getTitle() {
         return this.registerMenuTitle();
     }
