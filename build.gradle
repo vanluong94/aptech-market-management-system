@@ -4,7 +4,7 @@ apply plugin: 'application'
 
 
 description = 'Project Java 1'
-    group = 'vn.aptech'
+group = 'vn.aptech'
 
 mainClassName = 'vn.aptech.quanlybanhang.Main'
 
@@ -18,7 +18,5 @@ dependencies {
 }
 
 run {
-
-standardInput = System.in
-
+    standardInput = System.in
 }

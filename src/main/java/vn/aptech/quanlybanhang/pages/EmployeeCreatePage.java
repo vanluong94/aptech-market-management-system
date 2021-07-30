@@ -21,8 +21,6 @@ public class EmployeeCreatePage extends Page {
         try {
             EmployeeService employeeService = new EmployeeServiceImpl();
             
-            System.out.println("-----------------------------------");
-            System.out.println("---------Tao moi nhan vien----------");
             Scanner sc = new Scanner(System.in);
             System.out.print("Nhap ten nhan vien : ");
             String employeeName = sc.nextLine();

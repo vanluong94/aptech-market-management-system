@@ -7,9 +7,7 @@ package vn.aptech.quanlybanhang.menu;
 
 import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
 import vn.aptech.quanlybanhang.menu.items.SignoutMenuItem;
-import vn.aptech.quanlybanhang.pages.AuthPage;
 import java.util.LinkedHashMap;
-import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 
 /**
  *
@@ -26,7 +24,7 @@ public class MainMenu extends Menu {
     protected final LinkedHashMap<Integer, MenuItem> registerMenuItems() {
         LinkedHashMap<Integer, MenuItem> menuItems = new LinkedHashMap<>();
         
-//        menuItems.put(1, new ProductMenu());
+        menuItems.put(1, new ProductMenu());
         menuItems.put(2, new CategoryMenu());
         menuItems.put(3, new DiscountMenu());
         menuItems.put(4, new SupplierMenu());
@@ -41,5 +39,5 @@ public class MainMenu extends Menu {
     public String getBreadcrumbPathName(){
         return "Menu";
     }
-    
+
 }

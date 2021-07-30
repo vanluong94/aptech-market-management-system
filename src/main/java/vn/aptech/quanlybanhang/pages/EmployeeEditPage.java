@@ -18,9 +18,6 @@ public class EmployeeEditPage extends Page {
     public void displayContent() {
         try {
             EmployeeService employeeService = new EmployeeServiceImpl();
-
-            System.out.println("--------------------------------");
-            System.out.println("---------Sua nhan vien----------");
             Scanner sc = new Scanner(System.in);
             System.out.print("Nhap ID nhan vien muon sua : ");
             int employeeId = -999;

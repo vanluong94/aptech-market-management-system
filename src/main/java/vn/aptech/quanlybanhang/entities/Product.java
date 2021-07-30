@@ -3,11 +3,15 @@
  */
 package vn.aptech.quanlybanhang.entities;
 
+import java.util.Date;
+
 /**
  *
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ * @author Vu Duy Long <vuduylong1999@gmail.com>
  */
 public class Product extends BaseEntity {
+
     private int id;
     private Brand brand;
     private Category category;
@@ -36,7 +40,7 @@ public class Product extends BaseEntity {
         this.price = price;
         this.quantityInStock = quantityInStock;
     }
-    
+
     /**
      *
      * @param id
@@ -164,6 +168,18 @@ public class Product extends BaseEntity {
     public void setQuantityInStock(int quantityInStock) {
         this.quantityInStock = quantityInStock;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Product { " + "ID : " + id + " || Brand ID : " + getBrand() + " || Category ID : " + getCategory() + " || Employee ID : " + getEmployee() + " || Product Name : " + name + " || Product Price : " + price + " || Product Stock : " + quantityInStock + " } ";
+    }
+
+    public void setCreatedAt(Date date) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setUpdatedAt(Date date) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

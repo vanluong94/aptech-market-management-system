@@ -19,10 +19,6 @@ public class EmployeeDetailPage extends Page {
     public void displayContent() {
         try {
             EmployeeService employeeService = new EmployeeServiceImpl();
-            
-            System.out.println("---------------------------------");
-            System.out.println("-------Chi tiet nhan vien--------");
-            
             System.out.print("Nhap ID nhan vien : ");
             int employeeId = AppScanner.getScanner().nextInt();
             Employee employee = employeeService.findById(employeeId);

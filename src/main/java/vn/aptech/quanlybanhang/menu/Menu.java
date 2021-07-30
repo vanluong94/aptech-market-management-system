@@ -18,8 +18,6 @@ public abstract class Menu extends MenuUI {
     
     private LinkedHashMap<Integer, MenuItem> menuItems;
     
-    private String title;
-
     protected abstract LinkedHashMap<Integer, MenuItem> registerMenuItems();
     protected abstract String registerMenuTitle();
             
@@ -57,6 +55,7 @@ public abstract class Menu extends MenuUI {
         return this.getChoices().contains(choice);
     }
     
+    @Override
     protected List<String> getMenuItemLines(){
         
         List<String> menuItemLines = new ArrayList<>();

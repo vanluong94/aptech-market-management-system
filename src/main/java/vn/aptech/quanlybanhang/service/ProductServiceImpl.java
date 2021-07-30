@@ -1,17 +1,20 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.dao.ProductDAO;
 import vn.aptech.quanlybanhang.dao.ProductDAOImpl;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.exception.InputInvalidException;
 
+/**
+ *
+ * @author Vu Duy Long <vuduylong1999@gmail.com>
+ */
 public class ProductServiceImpl implements ProductService {
 
     private final ProductDAO productDAO;
@@ -22,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean create(Product product) throws SQLException, Exception {
-        this.validateProductData(product);
+        
         return this.productDAO.create(product);
     }
 
@@ -37,15 +40,20 @@ public class ProductServiceImpl implements ProductService {
         if (id < 1) {
             throw new InputInvalidException("ID khong hop le");
         }
+        ValidateCommon.validateNullObject(id, "id");
         return this.productDAO.deleteById(id);
     }
 
     @Override
     public Product findById(int id) throws SQLException, Exception {
-
         if (id < 1) {
             throw new InputInvalidException("ID khong hop le");
         }
+        ValidateCommon.validateNullObject(id, "id");
+//        Product product = this.productDAO.findById(id);
+//        if (product == null) {
+//            throw new CommonException(Response.OBJECT_NOT_FOUND, MessageCommon.getMessage(MessageContent.OBJECT_NOT_FOUND, "id"));
+//        }
         return this.productDAO.findById(id);
     }
 
@@ -55,20 +63,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public void validateProductData(Product product) throws InputInvalidException {
+        
+        ValidateCommon.validateNullObject(product.getBrand(), "brand");
+        ValidateCommon.validateNullObject(product.getCategory(), "category");
+        ValidateCommon.validateNullObject(product.getEmployee(), "employee");
+        ValidateCommon.validateNullObject(product.getName(), "name");
+        ValidateCommon.validateNullObject(product.getPrice(), "price");
+        ValidateCommon.validateNullObject(product.getQuantityInStock(), "quantityInStock");
+        
         if (product.getName().trim().length() == 0) {
             throw new InputInvalidException("Ten san pham khong duoc bo trong");
-        }
-
-        if (product.getEmployee() == null) {
-            throw new InputInvalidException("Hay dang nhap de tiep tuc");
-        }
-
-        if (product.getCategory() == null) {
-            throw new InputInvalidException("Hay chon Danh muc cho san pham");
-        }
-
-        if (product.getBrand() == null) {
-            throw new InputInvalidException("Hay chon Thuong hieu cho san pham");
         }
 
         if (product.getQuantityInStock() == 0) {
@@ -80,4 +84,19 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public List<Product> findByCategoryId(int id) throws SQLException {
+        ValidateCommon.validateNullObject(id, "id");
+        return productDAO.findByCategoryId(id);
+    }
+
+    @Override
+    public List<Product> findByName(String name) throws SQLException {
+        ValidateCommon.validateNullObject(name, "name");
+//        List<Product> products = productDAO.findByName(name);
+//        if (ArrayListCommon.isNullOrEmpty(products)) {
+//            throw new CommonException(Response.DATA_NOT_FOUND);
+//        }
+        return productDAO.findByName(name);
+    }
 }
