@@ -174,6 +174,93 @@ theTable.display();
 +----------------------------------------------------------------------------------------------------+
 ```
 
+#### Các kiểu sử dụng TableUI khác
+Sử dụng TableUI để hiển thị chi tiết nhân viên
+
+Ví dụ 1:
+```java
+System.out.println("====== Chi tiet nhan vien ======");
+
+List<Object[]> rows = new ArrayList<>();
+String[] headers = {"", ""};
+
+
+Object[] rowName = {"Ho Ten", name};
+Object[] rowAddr = {"Dia Chi", address};
+Object[] rowPhone = {"So Dien Thoai", phone};
+Object[] rowDept = {"Chuc Vu", department};
+Object[] rowID = {"ID", employeeId};
+Object[] rowUsername = {"Username", userName};
+Object[] rowPassword = {"Password", password};
+
+Collections.addAll(rows, rowName, rowAddr, rowPhone, rowDept, rowID, rowUsername, rowPassword );
+
+TableUI theTable = new TableUI(headers, rows);
+theTable.displayBorder();
+theTable.displayRows();
+theTable.displayBorder();
+```
+
+```
+====== Chi tiet nhan vien ======
++----------------------------------+
+| Ho Ten         | Nguyen Van A    |
+| Dia Chi        | 19 Nguyen Trai  |
+| So Dien Thoai  | 0123456789      |
+| Chuc Vu        | ROLE_ADMIN      |
+| ID             | 1               |
+| Username       | admin           |
+| Password       | admin           |
++----------------------------------+
+```
+
+Ví dụ 2:
+
+```java
+System.out.println("====== Chi tiet nhan vien ======");
+
+List<Object[]> rows = new ArrayList<>();
+String[] headers = {"", ""};
+
+
+Object[] rowName = {"Ho Ten", name};
+Object[] rowAddr = {"Dia Chi", address};
+Object[] rowPhone = {"So Dien Thoai", phone};
+Object[] rowDept = {"Chuc Vu", department};
+Object[] rowID = {"ID", employeeId};
+Object[] rowUsername = {"Username", userName};
+Object[] rowPassword = {"Password", password};
+
+Collections.addAll(rows, rowName, rowAddr, rowPhone, rowDept, rowID, rowUsername, rowPassword );
+
+TableUI theTable = new TableUI(headers, rows);
+
+theTable.displayBorder();
+for (Object[] row : theTable.getRows()) {
+    theTable.displayRow(row);
+    theTable.displayBorder();
+}
+```
+
+```
+====== Chi tiet nhan vien ======
++----------------------------------+
+| Ho Ten         | Nguyen Van A    |
++----------------------------------+
+| Dia Chi        | 19 Nguyen Trai  |
++----------------------------------+
+| So Dien Thoai  | 0123456789      |
++----------------------------------+
+| Chuc Vu        | ROLE_ADMIN      |
++----------------------------------+
+| ID             | 1               |
++----------------------------------+
+| Username       | admin           |
++----------------------------------+
+| Password       | admin           |
++----------------------------------+
+```
+
 ### HeaderUI
 Có thể sử dụng để hiển thị tiêu đề giao diện trang chức năng.
 
@@ -192,7 +279,6 @@ this.handleAddBrand();
 
 Thêm Nhãn hàng thành công!
 ```
-
 
 ## Hướng dẫn sử dụng Utilities
 
