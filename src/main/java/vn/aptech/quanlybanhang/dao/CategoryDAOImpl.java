@@ -59,7 +59,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public List<Category> findAll() throws SQLException {
-        List<Category> categories = new ArrayList<>();
+        List<Category> categories = new ArrayList<Category>();
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = pstmt.executeQuery();

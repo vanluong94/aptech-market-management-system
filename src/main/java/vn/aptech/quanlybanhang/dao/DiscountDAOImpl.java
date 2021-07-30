@@ -73,7 +73,7 @@ public class DiscountDAOImpl implements DiscountDAO {
 
     @Override
     public List<Discount> findAll() throws SQLException {
-        List<Discount> discounts = new ArrayList<>();
+        List<Discount> discounts = new ArrayList<Discount>();
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = pstmt.executeQuery();

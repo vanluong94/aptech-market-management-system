@@ -80,7 +80,7 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public List<Product> findByCategoryId(int id) throws SQLException {
-        List<Product> products = new ArrayList<>();
+        List<Product> products = new ArrayList<Product>();
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_BY_CATEGORY_ID);
             pstmt.setInt(1, id);
@@ -110,7 +110,7 @@ public class ProductDAOImpl implements ProductDAO {
      */
     @Override
     public List<Product> findByName(String name) throws SQLException {
-        List<Product> products = new ArrayList<>();
+        List<Product> products = new ArrayList<Product>();
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM products where product_name LIKE ?");
             pstmt.setString(1, "%" + name + "%");

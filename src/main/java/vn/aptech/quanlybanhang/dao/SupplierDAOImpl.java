@@ -78,7 +78,7 @@ public class SupplierDAOImpl implements SupplierDAO {
 
     @Override
     public List<Supplier> findAll() throws SQLException {
-        List<Supplier> suppliers = new ArrayList<>();
+        List<Supplier> suppliers = new ArrayList<Supplier>();
         Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
         ResultSet rs = pstmt.executeQuery();

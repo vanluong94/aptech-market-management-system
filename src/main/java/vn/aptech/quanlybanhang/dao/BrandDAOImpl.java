@@ -21,8 +21,8 @@ public class BrandDAOImpl implements BrandDAO {
     private final static String SQL_SELECT_ONE = "SELECT * FROM brands WHERE brand_id = ?";
 
     @Override
-    public ArrayList<Brand> findAll() throws SQLException {
-        ArrayList<Brand> brands = new ArrayList<>();
+    public List<Brand> findAll() throws SQLException {
+        List<Brand> brands = new ArrayList<Brand>();
         try (Connection conn = DBConnection.getConnection()) {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(SQL_SELECT_ALL);
@@ -105,7 +105,7 @@ public class BrandDAOImpl implements BrandDAO {
     @Override
     public List<Brand> searchByName(String name) throws SQLException, ClassNotFoundException {
 
-        List<Brand> foundBrands = new ArrayList<>();
+        List<Brand> foundBrands = new ArrayList<Brand>();
 
         String sql = "SELECT * FROM brands WHERE brand_name LIKE ?";
         PreparedStatement st = DBConnection.getConnection().prepareStatement(sql);
