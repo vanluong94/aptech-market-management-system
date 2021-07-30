@@ -19,14 +19,12 @@ public class EmployeeDetailPage extends Page {
     public void displayContent() {
         try {
             EmployeeService employeeService = new EmployeeServiceImpl();
-            System.out.print("Nhap ID nhan vien : ");
-            int employeeId = AppScanner.getScanner().nextInt();
+            int employeeId = AppScanner.scanIntWithMessage("Nhap ID nhan vien : ");
             Employee employee = employeeService.findById(employeeId);
             if (employee == null) {
                 System.out.println("Khong tim thay ID nhan vien");
             } else {
                 employee.showOne();
-                
             }
         } catch (Exception ex) {
             Logger.getLogger(EmployeeDetailPage.class.getName()).log(Level.SEVERE, null, ex);
