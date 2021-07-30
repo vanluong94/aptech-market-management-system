@@ -10,8 +10,6 @@ import vn.aptech.quanlybanhang.entities.Discount;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 
 public class DiscountDAOImpl implements DiscountDAO {

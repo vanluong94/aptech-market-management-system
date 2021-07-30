@@ -8,7 +8,6 @@ package vn.aptech.quanlybanhang.pages;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vn.aptech.quanlybanhang.dao.EmployeeDAOImpl;
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.menu.AdminMenu;
 import vn.aptech.quanlybanhang.menu.MainMenu;
