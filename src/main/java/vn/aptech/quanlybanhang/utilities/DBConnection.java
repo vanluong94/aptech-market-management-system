@@ -23,7 +23,6 @@ public class DBConnection {
     private final static String DATABASE = "aptech_java_project";
     private final static String USER = "aptech_participant";
     private final static String PASSWORD = "tT2uOgleWf0n";
-//    private static final String CONNECTION_URL = "jdbc:mysql://localhost:3307/quanlysieuthi?user=lab&password=";
 
     public static Connection getConnection() {
 

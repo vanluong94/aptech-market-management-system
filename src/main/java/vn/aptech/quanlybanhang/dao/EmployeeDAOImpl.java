@@ -107,7 +107,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public List<Employee> findAll() throws SQLException {
-
         List<Employee> employees = new ArrayList<Employee>();
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
@@ -123,8 +122,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 employee.setPassword(rs.getString("password"));
                 employees.add(employee);
             }
-        } finally {
-            DBConnection.maybeCloseConnection();
+        } catch (SQLException e) {
+            throw e;
         }
         return employees;
     }
@@ -132,7 +131,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public boolean updateById(Employee object, int id) throws SQLException {
         int rs = -1;
-
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE);
             pstmt.setString(1, object.getName());
@@ -145,8 +143,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             rs = pstmt.executeUpdate();
         } catch (SQLException ex) {
             throw ex;
-        } finally {
-            DBConnection.maybeCloseConnection();
         }
         return rs > 0;
     }
@@ -154,7 +150,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public Employee findByUsernameAndPassword(String username, String password) throws SQLException {
         Employee employee = null;
-
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE_BY_USERNAME_PASSWORD);
             pstmt.setString(1, username);
@@ -172,8 +167,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             }
         } catch (SQLException e) {
             throw e;
-        } finally {
-             DBConnection.maybeCloseConnection();
         }
         return employee;
     }

@@ -23,15 +23,13 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public boolean create(Category object) throws SQLException {
         int rowsAffected = -1;
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt;
             pstmt = conn.prepareCall(SQL_INSERT);
             pstmt.setString(1, object.getCategoryName());
             rowsAffected = pstmt.executeUpdate();
-        } catch (SQLException ex) {
-            throw ex;
-        } finally {
-            DBConnection.maybeCloseConnection();
+        } catch (SQLException e) {
+            throw e;
         }
         return rowsAffected > 0;
     }
@@ -44,7 +42,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public Category findById(int id) throws SQLException {
         Category category = null;
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE);
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
@@ -62,7 +60,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public List<Category> findAll() throws SQLException {
         List<Category> categories = new ArrayList<Category>();
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -73,8 +71,6 @@ public class CategoryDAOImpl implements CategoryDAO {
             }
         } catch (SQLException e) {
             throw e;
-        } finally {
-            DBConnection.maybeCloseConnection();
         }
         return categories;
     }
