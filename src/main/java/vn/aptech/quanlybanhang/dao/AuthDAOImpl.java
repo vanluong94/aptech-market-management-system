@@ -34,8 +34,8 @@ public class AuthDAOImpl implements AuthDAO {
             }
         } catch (SQLException ex) {
             Logger.getLogger(AuthDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AuthDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         return emp;
     }

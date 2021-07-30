@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package vn.aptech.quanlybanhang.menu;
-
-import java.util.Scanner;
+package vn.aptech.quanlybanhang.ui;
 
 /**
  *
- * @author anhnbt
+ * @author vanluong
  */
-public interface BaseMenu {
-    void displayMenu();
-    void start();
+public class HelperUI {
+    public static void displayMargin(){
+        System.out.println("\n\n");
+    }
 }

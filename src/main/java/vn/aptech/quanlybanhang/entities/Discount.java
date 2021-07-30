@@ -7,50 +7,49 @@ package vn.aptech.quanlybanhang.entities;
  *
  * @author Vu Duy Long <vuduylong1999@gmail.com>
  */
-public class Discount {
-    private int discountId;
-    private String discountName;
+public class Discount extends BaseEntity {
+
+    private int id;
+    private String name;
 
     public Discount() {
     }
 
-    public Discount( String discountName) {
-        this.discountName = discountName;
+    public Discount(String name) {
+        this.name = name;
     }
 
     /**
-     * @return the discountId
+     * @return the id
      */
-    public int getDiscountId() {
-        return discountId;
+    public int getId() {
+        return id;
     }
 
     /**
-     * @param discountId the discountId to set
+     * @param id the id to set
      */
-    public void setDiscountId(int discountId) {
-        this.discountId = discountId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
-     * @return the discountName
+     * @return the name
      */
-    public String getDiscountName() {
-        return discountName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param discountName the discountName to set
+     * @param name the name to set
      */
-    public void setDiscountName(String discountName) {
-        this.discountName = discountName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Discount { " + "DiscountId = " + discountId + ", DiscountName = " + discountName + " } ";
+        return "Discount { " + "DiscountId = " + id + ", DiscountName = " + name + " } ";
     }
-    
-    
-    
+
 }

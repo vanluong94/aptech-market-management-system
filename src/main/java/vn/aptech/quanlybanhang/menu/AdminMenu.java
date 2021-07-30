@@ -5,381 +5,42 @@
  */
 package vn.aptech.quanlybanhang.menu;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import vn.aptech.quanlybanhang.entities.Employee;
-import vn.aptech.quanlybanhang.entities.Supplier;
-import vn.aptech.quanlybanhang.service.EmployeeService;
-import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
-import vn.aptech.quanlybanhang.ui.TableUI;
-import vn.aptech.quanlybanhang.utilities.AppScanner;
+import java.util.LinkedHashMap;
+import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
+import vn.aptech.quanlybanhang.menu.items.SignoutMenuItem;
+import vn.aptech.quanlybanhang.pages.EmployeeCreatePage;
+import vn.aptech.quanlybanhang.pages.EmployeeDeletePage;
+import vn.aptech.quanlybanhang.pages.EmployeeDetailPage;
+import vn.aptech.quanlybanhang.pages.EmployeeEditPage;
+import vn.aptech.quanlybanhang.pages.EmployeeListingPage;
 
 /**
  *
  * @author Admin
  */
 public class AdminMenu extends Menu {
-
-    private final String TITLE = "DAY LA TRANG QUAN TRI NHAN VIEN";
-    private final int[] CHOICES = {1, 2, 3, 4, 5, 0}; // for validation purpose
-    private final String[] MENU_ITEMS = {
-        "1. Danh sach nhan vien",
-        "2. Them nhan vien",
-        "3. Xem chi tiet nhan vien",
-        "4. Sua 1 nhan vien",
-        "5. Xoa 1 nhan vien",
-        "0. Thoat",};
-
-    private final EmployeeService employeeService;
-
-    public AdminMenu() {
-        this.employeeService = new EmployeeServiceImpl();
-        this.setMenuItems(this.MENU_ITEMS);
-        this.setTitle(this.TITLE);
-        this.setChoices(this.CHOICES);
+    @Override
+    protected LinkedHashMap<Integer, MenuItem> registerMenuItems() {
+        LinkedHashMap<Integer, MenuItem> menuItems = new LinkedHashMap<>();
+        
+        menuItems.put(1, new EmployeeListingPage());
+        menuItems.put(2, new EmployeeCreatePage());
+        menuItems.put(3, new EmployeeDetailPage());
+        menuItems.put(4, new EmployeeEditPage());
+        menuItems.put(5, new EmployeeDeletePage());
+        menuItems.put(6, new SignoutMenuItem());
+        menuItems.put(0, new ExitMenuItem());
+        
+        return menuItems;
     }
 
     @Override
-    public void handle(int choice) {
-        System.out.print("Chon 1 tuy chon: ");
-        Scanner sc = new Scanner(System.in);
-        try {
-            switch (choice) {
-                case 1:
-                    System.out.println("Danh sach nhan vien");
-                    this.handleDisplayAllEmployee();
-                    System.out.println("[1].Them nhan vien \n[2].Xem chi tiet nhan vien\n[3].Sua 1 nhan vien\n[4].Xoa 1 nhan vien\n[5].Ve menu chinh\n[6].Exit");
-                    System.out.print("Chon 1 tuy chon: ");
-                    int choice2 = sc.nextInt();
-                    switch (choice2) {
-                        case 1:
-                            this.handleCreateEmployee();
-                            System.out.println("1.Ve menu chinh\n2.Exit ");
-                            System.out.print("Chon 1 tuy chon: ");
-                            int choice3 = sc.nextInt();
-                            if (choice3 == 1) {
-                                break;
-                            }
-                            if (choice3 == 2) {
-                                System.exit(0);
-                            }
-
-                        case 2:
-                            this.handleViewEmployeeOne();
-                            System.out.println("1.Ve menu chinh\n2.Exit ");
-                            System.out.print("Chon 1 tuy chon: ");
-                            choice3 = sc.nextInt();
-                            if (choice3 == 1) {
-                                break;
-                            }
-                            if (choice3 == 2) {
-                                System.exit(0);
-                            }
-
-                        case 3:
-                            this.handleUpdateEmployee();
-                            System.out.println("1.Ve menu chinh\n2.Exit ");
-                            System.out.print("Chon 1 tuy chon: ");
-                            choice3 = sc.nextInt();
-                            if (choice3 == 1) {
-                                break;
-                            }
-                            if (choice3 == 2) {
-                                System.exit(0);
-                            }
-                        case 4:
-                            this.handleDeleteEmployeeOne();
-                            System.out.println("1.Ve menu chinh\n2.Exit ");
-                            System.out.print("Chon 1 tuy chon: ");
-                            choice3 = sc.nextInt();
-                            if (choice3 == 1) {
-                                break;
-                            }
-                            if (choice3 == 2) {
-                                System.exit(0);
-                            }
-                        case 5:
-                            break;
-                        case 6:
-                            System.out.println("Tam Biet!");
-                            System.exit(0);
-                    }
-                    break;
-                case 2:
-                    this.handleCreateEmployee();
-                    System.out.println("1.Ve menu chinh\n2.Exit ");
-                    System.out.print("Chon 1 tuy chon: ");
-                    int choice3 = sc.nextInt();
-                    if (choice3 == 1) {
-                        break;
-                    }
-                    if (choice3 == 2) {
-                        System.out.println("Tam Biet!");
-                        System.exit(0);
-                    }
-                case 3:
-                    this.handleViewEmployeeOne();
-                    System.out.println("1.Ve menu chinh\n2.Exit ");
-                    System.out.print("Chon 1 tuy chon: ");
-                    choice3 = sc.nextInt();
-                    if (choice3 == 1) {
-                        break;
-                    }
-                    if (choice3 == 2) {
-                        System.out.println("Tam Biet!");
-                        System.exit(0);
-                    }
-                case 4:
-                    this.handleUpdateEmployee();
-                    System.out.println("1.Ve menu chinh\n2.Exit ");
-                    System.out.print("Chon 1 tuy chon: ");
-                    choice3 = sc.nextInt();
-                    if (choice3 == 1) {
-                        break;
-                    }
-                    if (choice3 == 2) {
-                        System.out.println("Tam Biet!");
-                        System.exit(0);
-                    }
-                case 5:
-                    this.handleDeleteEmployeeOne();
-                    System.out.println("1.Ve menu chinh\n2.Exit ");
-                    System.out.print("Chon 1 tuy chon: ");
-                    choice3 = sc.nextInt();
-                    if (choice3 == 1) {
-                        break;
-                    }
-                    if (choice3 == 2) {
-                        System.out.println("Tam Biet!");
-                        System.exit(0);
-                    }
-                case 0:
-                    System.out.println("Tam Biet!");
-                    System.exit(0);
-                    break;
-            }
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
+    protected String registerMenuTitle() {
+        return "Quan Tri Nhan Vien";
     }
-
-    public void handleDisplayAllEmployee() throws SQLException {
-
-        List<Employee> employees = employeeService.findAll();
-        List<Object[]> rows = new ArrayList<>();
-
-        // transfer data to table row
-        for (Employee employee : employees) {
-            Object[] row = {
-                employee.getEmployeeId(),
-                employee.getName(),
-                employee.getAddress(),
-                employee.getPhone(),
-                employee.getDepartment(),
-                employee.getUserName(),
-                employee.getPassword()
-            };
-
-            rows.add(row);
-        }
-
-        String[] headers = {"ID", "Name", "Address", "Phone", "Department", "Username", "Password"};
-
-        TableUI theTable = new TableUI(headers, rows);
-        theTable.display();
-
-    }
-
-    public void handleCreateEmployee() throws Exception {
-        System.out.println("-----------------------------------");
-        System.out.println("---------Tao moi nhan vien----------");
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Nhap ten nhan vien : ");
-        String employeeName = sc.nextLine();
-        while (employeeName.length() == 0) {
-            System.out.println("Ten khong duoc de trong !");
-            System.out.print("Nhap ten nhan vien : ");
-            employeeName = sc.nextLine();
-        }
-        System.out.print("Nhap dia chi nhan vien : ");
-        String employeeAddress = sc.nextLine();
-        while (employeeAddress.length() == 0) {
-            System.out.println("Dia chi khong duoc de trong !");
-            System.out.print("Nhap dia chi nhan vien : ");
-            employeeAddress = sc.nextLine();
-        }
-        System.out.print("Nhap so dien thoai : ");
-        String employeePhone = sc.nextLine();
-        while (employeePhone.length() == 0) {
-            System.out.println("So dien thoai khong duoc de trong !");
-            System.out.print("Nhap so dien thoai : ");
-            employeePhone = sc.nextLine();
-        }
-        System.out.print("Nhap chuc vu (chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY): ");
-        String employeeDepartment = sc.nextLine();
-        while (employeeDepartment.length() == 0) {
-            System.out.println("Chuc vu khong duoc de trong !");
-            System.out.print("Nhap chuc vu : ");
-            employeeDepartment = sc.nextLine();
-        }
-        while (!employeeDepartment.equals("ROLE_ADMIN") && !employeeDepartment.equals("ROLE_EMPLOYEE_CASHER") && !employeeDepartment.equals("ROLE_EMPLOYEE_INVENTORY")) {
-            System.out.println("chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY !");
-            System.out.print("Nhap chuc vu : ");
-            employeeDepartment = sc.nextLine();
-        }
-        System.out.print("Tao Usename: ");
-        String employeeUsername = sc.nextLine();
-        while (employeeUsername.length() == 0) {
-            System.out.println("Username khong duoc de trong !");
-            System.out.print("Tao Usename: ");
-            employeeUsername = sc.nextLine();
-        }
-        while (employeeUsername.length() < 6) {
-            System.out.println("Username tu 6 ki tu tro len !");
-            System.out.print("Tao Usename: ");
-            employeeUsername = sc.nextLine();
-        }
-        System.out.print("Tao Password : ");
-        String employeePassword = sc.nextLine();
-        while (employeePassword.length() == 0) {
-            System.out.println("Password khong duoc de trong !");
-            System.out.print("Tao Password: ");
-            employeePassword = sc.nextLine();
-        }
-        while (employeePassword.length() < 6) {
-            System.out.println("Password phai tu 6 ki tu tro len !");
-            System.out.print("Tao Password: ");
-            employeePassword = sc.nextLine();
-        }
-        Employee employee = new Employee(employeeName, employeeAddress, employeePhone, employeeDepartment, employeeUsername, employeePassword);
-        if (employeeService.create(employee)) {
-            System.out.println("Them nhan vien thanh cong!");
-        } else {
-            System.out.println("Da xay ra loi!");
-        }
-
-    }
-
-    public void handleViewEmployeeOne() throws Exception {
-        System.out.println("---------------------------------");
-        System.out.println("-------Chi tiet nhan vien--------");
-
-        System.out.print("Nhap ID nhan vien : ");
-        int employeeId = AppScanner.getScanner().nextInt();
-        Employee employee = employeeService.findById(employeeId);
-        if (employee == null) {
-            System.out.println("Khong tim thay ID nhan vien");
-        } else {
-            employee.showOne();
-
-        }
-    }
-
-    public void handleDeleteEmployeeOne() throws Exception {
-        System.out.println("--------------------------------");
-        System.out.println("---------Xoa nhan vien----------");
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Nhap ID nhan vien muon xoa : ");
-        int employeeId = sc.nextInt();
-        if (employeeService.deleteById(employeeId)) {
-            System.out.println("Xoa nhan vien thanh cong!");
-        } else {
-            System.out.println("Da xay ra loi!");
-        }
-    }
-
-    public void handleUpdateEmployee() throws SQLException {
-        System.out.println("--------------------------------");
-        System.out.println("---------Sua nhan vien----------");
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Nhap ID nhan vien muon sua : ");
-        int employeeId = -999;
-        employeeId = sc.nextInt();
-        while (employeeId == -999) {
-            System.out.println("Id khong duoc de trong !");
-            System.out.print("Nhap ID nhan vien : ");
-            employeeId = sc.nextInt();
-        }
-        sc.nextLine();
-        System.out.print("Sua ten nhan vien thanh : ");
-        String employeeName = sc.nextLine();
-        while (employeeName.length() == 0) {
-            System.out.println("Ten khong duoc de trong !");
-            System.out.print("Sua ten nhan vien thanh : ");
-            employeeName = sc.nextLine();
-        }
-        System.out.print("Sua dia chi nhan vien thanh : ");
-        String employeeAddress = sc.nextLine();
-        while (employeeAddress.length() == 0) {
-            System.out.println("Dia chi khong duoc de trong !");
-            System.out.print("Sua dia chi nhan vien thanh : ");
-            employeeAddress = sc.nextLine();
-        }
-        System.out.print("Sua so dien thoai thanh: ");
-        String employeePhone = sc.nextLine();
-        while (employeePhone.length() == 0) {
-            System.out.println("So dien thoai khong duoc de trong !");
-            System.out.print("Sua so dien thoai thanh: ");
-            employeePhone = sc.nextLine();
-        }
-        System.out.print("Sua chuc vu thanh (chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY): ");
-        String employeeDepartment = sc.nextLine();
-        while (employeeDepartment.length() == 0) {
-            System.out.println("Chuc vu khong duoc de trong !");
-            System.out.print("Sua chuc vu thanh : ");
-            employeeDepartment = sc.nextLine();
-        }
-        while (!employeeDepartment.equals("ROLE_ADMIN") && !employeeDepartment.equals("ROLE_EMPLOYEE_CASHER") && !employeeDepartment.equals("ROLE_EMPLOYEE_INVENTORY")) {
-            System.out.println("chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY !");
-            System.out.print("Sua chuc vu thanh : ");
-            employeeDepartment = sc.nextLine();
-        }
-        System.out.print("Tao Usename moi: ");
-        String employeeUsername = sc.nextLine();
-        while (employeeUsername.length() == 0) {
-            System.out.println("Username khong duoc de trong !");
-            System.out.print("Tao Usename moi: ");
-            employeeUsername = sc.nextLine();
-        }
-        while (employeeUsername.length() < 6) {
-            System.out.println("Username tu 6 ki tu tro len !");
-            System.out.print("Tao Usename moi: ");
-            employeeUsername = sc.nextLine();
-        }
-        System.out.print("Tao Password moi: ");
-        String employeePassword = sc.nextLine();
-        while (employeePassword.length() == 0) {
-            System.out.println("Password khong duoc de trong !");
-            System.out.print("Tao Password moi: ");
-            employeePassword = sc.nextLine();
-        }
-        while (employeePassword.length() < 6) {
-            System.out.println("Password phai tu 6 ki tu tro len !");
-            System.out.print("Tao Password moi: ");
-            employeePassword = sc.nextLine();
-        }
-
-        if (employeeName.length() > 0 && employeeAddress.length() > 0 && employeePhone.length() > 0 && employeeDepartment.length() > 0 && employeeUsername.length() > 5 && employeePassword.length() > 6) {
-            Employee employee2 = new Employee(employeeName, employeeAddress, employeePhone, employeeDepartment, employeeUsername, employeePassword);
-            if (employeeService.updateById(employee2, employeeId)) {
-                System.out.println("Sua nhan vien thanh cong!");
-            } else {
-                System.out.println("Da xay ra loi!");
-            }
-        } else {
-            System.out.println("Da nhap sai!");
-
-        }
-    }
-
-    public void checkName(int name) {
-        if (name < 0) {
-            System.out.println("Ten khong duoc de trong!");
-        }
+    
+    @Override
+    public String getBreadcrumbPathName(){
+        return "Menu";
     }
 }
