@@ -16,7 +16,7 @@ import vn.aptech.quanlybanhang.pages.SupplierListingPage;
  *
  * @author VuxxLong
  */
-public class SupplierMenu extends Menu{
+public class SupplierMenu extends Menu {
 
     @Override
     protected LinkedHashMap<Integer, MenuItem> registerMenuItems() {
@@ -37,5 +37,5 @@ public class SupplierMenu extends Menu{
     protected String registerMenuTitle() {
         return "Quan Ly Nha Cung Cap";
     }
-    
+
 }

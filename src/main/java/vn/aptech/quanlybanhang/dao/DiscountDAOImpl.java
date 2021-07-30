@@ -22,14 +22,12 @@ public class DiscountDAOImpl implements DiscountDAO {
     @Override
     public boolean create(Discount object) throws SQLException {
         int rowsAffected = -1;
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT);
             pstmt.setString(1, object.getName());
             rowsAffected = pstmt.executeUpdate();
         } catch (SQLException ex) {
             throw ex;
-        } finally {
-            DBConnection.maybeCloseConnection();
         }
         return rowsAffected > 0;
     }
@@ -37,14 +35,12 @@ public class DiscountDAOImpl implements DiscountDAO {
     @Override
     public boolean deleteById(int id) throws SQLException {
         int rs = -1;
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE);
             pstmt.setInt(1, id);
             rs = pstmt.executeUpdate();
         } catch (SQLException e) {
             throw e;
-        } finally {
-            DBConnection.maybeCloseConnection();
         }
         return rs > 0;
     }
@@ -76,8 +72,8 @@ public class DiscountDAOImpl implements DiscountDAO {
     @Override
     public List<Discount> findAll() throws SQLException {
         List<Discount> discounts = new ArrayList<Discount>();
-        try ( Connection conn = DBConnection.getConnection()) {
-            PreparedStatement pstmt = DBConnection.getConnection().prepareStatement(SQL_SELECT_ALL);
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Discount discount = new Discount();
@@ -87,8 +83,6 @@ public class DiscountDAOImpl implements DiscountDAO {
             }
         } catch (SQLException e) {
             throw e;
-        } finally {
-            DBConnection.maybeCloseConnection();
         }
         return discounts;
     }

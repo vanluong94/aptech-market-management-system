@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean create(Product product) throws SQLException, Exception {
-        
+        this.validateProductData(product);
         return this.productDAO.create(product);
     }
 
@@ -37,18 +37,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean deleteById(int id) throws SQLException, Exception {
-        if (id < 1) {
-            throw new InputInvalidException("ID khong hop le");
-        }
         ValidateCommon.validateNullObject(id, "id");
         return this.productDAO.deleteById(id);
     }
 
     @Override
     public Product findById(int id) throws SQLException, Exception {
-        if (id < 1) {
-            throw new InputInvalidException("ID khong hop le");
-        }
         ValidateCommon.validateNullObject(id, "id");
 //        Product product = this.productDAO.findById(id);
 //        if (product == null) {
