@@ -18,8 +18,8 @@ public class TableUI {
 
     private int lineLength = 0;
     private String[] headers;
-    private List<Integer> columns = new ArrayList<>();
-    private List<Object[]> rows = new ArrayList<>();
+    private List<Integer> columns = new ArrayList<Integer>();
+    private List<Object[]> rows = new ArrayList<Object[]>();
 
     public TableUI(String[] headers, List<Object[]> rows) {
 

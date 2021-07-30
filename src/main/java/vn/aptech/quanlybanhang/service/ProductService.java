@@ -13,7 +13,7 @@ import vn.aptech.quanlybanhang.entities.Product;
  */
 public interface ProductService extends BaseService<Product> {
 
-    public List<Product> findByCategoryId(int id) throws SQLException, ClassNotFoundException;
+    public List<Product> findByCategoryId(int id) throws SQLException;
 
     /**
      *

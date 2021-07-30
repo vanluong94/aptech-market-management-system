@@ -171,7 +171,7 @@ public class AdminMenu extends Menu {
     public void handleDisplayAllEmployee() throws SQLException {
 
         List<Employee> employees = employeeService.findAll();
-        List<Object[]> rows = new ArrayList<>();
+        List<Object[]> rows = new ArrayList<Object[]>();
 
         // transfer data to table row
         for (Employee employee : employees) {

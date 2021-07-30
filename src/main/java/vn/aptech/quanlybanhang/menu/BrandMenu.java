@@ -81,7 +81,7 @@ public class BrandMenu extends Menu implements BaseMenu {
     public void handleDisplayAllBrands() throws SQLException {
         
         List<Brand> brands = brandService.findAll();
-        List<Object[]> rows = new ArrayList<>();
+        List<Object[]> rows = new ArrayList<Object[]>();
 
         // transfer data to table row
         for (Brand brand : brands) {
@@ -106,7 +106,7 @@ public class BrandMenu extends Menu implements BaseMenu {
         Brand brand = new Brand();
 
         brand.setBrandName(AppScanner.scanStringWithMessage("[Tên Nhãn hàng]: "));
-        brand.setBrandAdd(AppScanner.scanStringWithMessage("[Địa chỉ Nhãn hàng]: "));
+        brand.setBrandAdd(AppScanner.scanStringWithMessage("[�?ịa chỉ Nhãn hàng]: "));
 
         this.brandService.create(brand);
 
@@ -132,9 +132,9 @@ public class BrandMenu extends Menu implements BaseMenu {
                     System.out.println("ID không tồn tại");
                     retry = true;
                 }else{
-                    System.out.println("\n\nNhập thông tin mới cho nhãn hàng, bỏ trống nếu giữ nguyên.");
+                    System.out.println("\n\nNhập thông tin mới cho nhãn hàng, b�? trống nếu giữ nguyên.");
                     String newName = AppScanner.scanStringWithMessage("[Tên Nhãn hàng]: ", true);
-                    String newAdd = AppScanner.scanStringWithMessage("[Địa chỉ Nhãn hàng]: ", true);
+                    String newAdd = AppScanner.scanStringWithMessage("[�?ịa chỉ Nhãn hàng]: ", true);
 
                     if(newName.length() > 0){
                         brand.setBrandName(newName);
@@ -203,7 +203,7 @@ public class BrandMenu extends Menu implements BaseMenu {
                 
                 System.out.println( String.format( "Các nhãn hàng được tìm thấy dựa theo tên \"%s\"", search ) );
                 
-                List<Object[]> rows = new ArrayList<>();
+                List<Object[]> rows = new ArrayList<Object[]>();
 
                 // transfer data to table row
                 for (Brand brand : brands) {

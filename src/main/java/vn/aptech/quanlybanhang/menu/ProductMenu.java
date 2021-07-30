@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.common.MessageCommon;
+import vn.aptech.quanlybanhang.common.MessageContent;
+import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
@@ -92,7 +95,7 @@ public class ProductMenu extends Menu {
                 if (product == null) {
                     System.out.println("ID không tồn tại!");
                 } else {
-                    System.out.println("Các trường đánh dấu * bắt buộc nhập. Nhấn <enter> để giữ lại thông tin cũ.");
+                    System.out.println("Các trư�?ng đánh dấu * bắt buộc nhập. Nhấn <enter> để giữ lại thông tin cũ.");
                     String name = AppScanner.scanStringWithMessage("Tên sản phẩm: ");
                     double price = AppScanner.scanDoubleWithMessage("Giá: ");
                     int qty = AppScanner.scanIntWithMessage("Số lượng: ");
@@ -125,24 +128,22 @@ public class ProductMenu extends Menu {
         String choice = null;
         do {
             try {
-                String search = AppScanner.scanStringWithMessage("Tìm sản phẩm cần sửa theo tên: ");
+                String search = AppScanner.scanStringWithMessage("Tìm kiếm sản phẩm cần sửa theo tên: ");
                 List<Product> products = this.productService.findByName(search);
                 if (products.isEmpty()) {
-                    System.out.println("Không tìm thấy sản phẩm nào!");
+                    System.out.println(MessageCommon.getMessage(MessageContent.OBJECT_NOT_FOUND, search));
                 } else {
                     System.out.println(String.format("Các sản phẩm được tìm thấy theo tên: \"%s\"", search));
-                    List<Object[]> rows = new ArrayList<>();
-                    DecimalFormat formatter = new DecimalFormat("###,###,###");
-                    products.forEach((Product product) -> {
+                    List<Object[]> rows = new ArrayList<Object[]>();
+                    for (Product product : products) {
                         Object[] row = {
                             product.getId(),
                             product.getName(),
-                            formatter.format(product.getPrice()) + " VND",
+                            StringCommon.convertDoubleToVND(product.getPrice()),
                             product.getQuantityInStock()
                         };
-                        
                         rows.add(row);
-                    });
+                    }
                     String[] headers = {"ID", "Name", "Price", "Quantity"};
                     TableUI tableUI = new TableUI(headers, rows);
                     tableUI.display();
