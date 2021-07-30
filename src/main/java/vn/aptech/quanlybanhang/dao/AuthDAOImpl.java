@@ -32,12 +32,12 @@ public class AuthDAOImpl implements AuthDAO {
                 emp.setEmployeeId(rs.getInt("employee_id"));
                 emp.setUserName(rs.getString("username"));
             }
-            
-            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(AuthDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(AuthDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
         }
         return emp;
     }
