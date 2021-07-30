@@ -5,49 +5,86 @@
  */
 package vn.aptech.quanlybanhang.menu;
 
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import vn.aptech.quanlybanhang.exception.MenuException;
 import vn.aptech.quanlybanhang.ui.MenuUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 
-public abstract class Menu extends MenuUI implements BaseMenu {
+public abstract class Menu extends MenuUI {
     
-    public abstract void handle(int choice);
-
-    @Override
-    public void displayMenu() {
-        this.display();
+    private LinkedHashMap<Integer, MenuItem> menuItems;
+    
+    protected abstract LinkedHashMap<Integer, MenuItem> registerMenuItems();
+    protected abstract String registerMenuTitle();
+            
+    protected void handle(int choice) throws MenuException{
+        if( isChoiceValid(choice) ){
+            this.getMenuItems().get(choice).start();
+        } else {
+            throw new MenuException("Lựa chọn không khả dụng");
+        }
     }
 
     @Override
-    public void start() {
+    public void display() {
         
         this.displayMenu();
         
-        int choice = -1;
+        boolean retry = false;
         
         do{
-            choice = AppScanner.scanIntWithMessage("Vui lòng nhập lựa chọn: ");
-
-            if( isChoiceValid(choice) ){
-                this.handle(choice);
-                this.start(); // start this menu again after handle job is done
-            }else{
-                System.out.println("Lựa chọn không khả dụng");
+            
+            retry = false;
+            
+            try {
+                this.handle(AppScanner.scanIntWithMessage("Vui lòng nhập lựa chọn: "));
+            } catch (MenuException ex) {
+                System.out.println(ex.getMessage());
+                retry = true;
             }
-
-        }while( !isChoiceValid(choice) );
+            
+        }while( retry );
 
     }
     
-    
     public boolean isChoiceValid(int choice){
-        for(int _choice : this.getChoices()){
-            if(_choice == choice){
-                return true;
-            }
+        return this.getChoices().contains(choice);
+    }
+    
+    @Override
+    protected List<String> getMenuItemLines(){
+        
+        List<String> menuItemLines = new ArrayList<>();
+        for (Map.Entry<Integer, MenuItem> entry : this.getMenuItems().entrySet()) {
+            menuItemLines.add(String.format("%d. %s", entry.getKey(), entry.getValue().getTitle()));
         }
-        return false;
+        
+        return menuItemLines;
+        
+    }
+    
+    protected Set<Integer> getChoices() {
+        return this.getMenuItems().keySet();
+    }
+    
+    protected LinkedHashMap<Integer, MenuItem> getMenuItems() {
+        if(menuItems == null){
+            menuItems = this.registerMenuItems();
+        }
+        return menuItems;
+    }
+
+    protected void setMenuItems(LinkedHashMap<Integer, MenuItem> menuItems) {
+        this.menuItems = menuItems;
+    }
+    
+    @Override
+    public String getTitle() {
+        return this.registerMenuTitle();
     }
 
 }

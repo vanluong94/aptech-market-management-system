@@ -73,7 +73,14 @@ public class TableUI {
         String output = "";
 
         for (int i = 0; i < row.length; i++) {
-            output += String.format("| %-" + (this.getColLength(i) - 2) + "s", row[i]);
+            int thisLength = this.getColLength(i) - 2;
+            String thisContent = row[i].toString();
+            
+            if(thisContent.length() > thisLength){
+                thisContent = thisContent.substring(0, thisLength - 4) + "...";
+            }
+            
+            output += String.format("| %-" + (thisLength) + "s", thisContent);
         }
 
         output += "|";
