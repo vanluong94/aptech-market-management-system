@@ -11,20 +11,18 @@ import vn.aptech.quanlybanhang.dao.DiscountDAO;
 import vn.aptech.quanlybanhang.dao.DiscountDAOImpl;
 import vn.aptech.quanlybanhang.entities.Discount;
 
-
 public class DiscountServiceImpl implements DiscountService {
-    
+
     private final DiscountDAO discountDAO;
-            
-    public DiscountServiceImpl(){
+
+    public DiscountServiceImpl() {
         this.discountDAO = new DiscountDAOImpl();
     }
-    
-    
+
     @Override
     public boolean create(Discount object) throws SQLException, Exception {
         if (object == null) {
-            throw new Exception ("Ten chuong trinh khong duoc de trong!");
+            throw new Exception("Ten chuong trinh khong duoc de trong!");
         }
         return discountDAO.create(object);
     }
@@ -33,7 +31,7 @@ public class DiscountServiceImpl implements DiscountService {
     public boolean deleteById(int id) throws SQLException {
         if (id < 1) {
             try {
-                throw new Exception ("ID khong hop le!");
+                throw new Exception("ID khong hop le!");
             } catch (Exception ex) {
                 Logger.getLogger(DiscountServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -57,5 +55,5 @@ public class DiscountServiceImpl implements DiscountService {
     public boolean update(Discount object) throws SQLException, Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

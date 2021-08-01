@@ -9,6 +9,6 @@ import vn.aptech.quanlybanhang.entities.Supplier;
  *
  * @author VuxxLong
  */
-public interface SupplierDAO extends BaseDAO<Supplier>{
-    
+public interface SupplierDAO extends BaseDAO<Supplier> {
+
 }

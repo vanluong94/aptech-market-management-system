@@ -30,8 +30,6 @@ public class SupplierDAOImpl implements SupplierDAO {
             rowsAffected = pstmt.executeUpdate();
         } catch (SQLException ex) {
             throw ex;
-        } finally {
-            DBConnection.maybeCloseConnection();
         }
         return rowsAffected > 0;
     }
@@ -47,8 +45,6 @@ public class SupplierDAOImpl implements SupplierDAO {
             rs = pstmt.executeUpdate();
         } catch (SQLException e) {
             throw e;
-        } finally {
-            DBConnection.maybeCloseConnection();
         }
         return rs > 0;
     }
@@ -80,9 +76,7 @@ public class SupplierDAOImpl implements SupplierDAO {
 
     @Override
     public List<Supplier> findAll() throws SQLException {
-        
         List<Supplier> suppliers = new ArrayList<Supplier>();
-        
         try {
             
             Connection conn = DBConnection.getConnection();
@@ -95,11 +89,10 @@ public class SupplierDAOImpl implements SupplierDAO {
                 supplier.setAddress(rs.getString("supplier_add"));
                 suppliers.add(supplier);
             }
-            
         } finally {
             DBConnection.maybeCloseConnection();
         }
-        
+
         return suppliers;
     }
 

@@ -9,6 +9,6 @@ import vn.aptech.quanlybanhang.entities.Supplier;
  *
  * @author VuxxLong
  */
-public interface SupplierService extends BaseService<Supplier>{
-    
+public interface SupplierService extends BaseService<Supplier> {
+
 }
