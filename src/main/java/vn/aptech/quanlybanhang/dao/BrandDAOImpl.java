@@ -111,16 +111,17 @@ public class BrandDAOImpl implements BrandDAO {
     public List<Brand> searchByName(String name) throws SQLException, ClassNotFoundException {
 
         List<Brand> foundBrands = new ArrayList<Brand>();
-
         String sql = "SELECT * FROM brands WHERE brand_name LIKE ?";
-        PreparedStatement st = DBConnection.getConnection().prepareStatement(sql);
-        st.setString(1, "%" + name + "%");
-        ResultSet rs = st.executeQuery();
+        
+        try(PreparedStatement st = DBConnection.getConnection().prepareStatement(sql)){
+            st.setString(1, "%" + name + "%");
+            ResultSet rs = st.executeQuery();
 
-        while (rs.next()) {
-            foundBrands.add(transferRSToBrand(rs));
+            while (rs.next()) {
+                foundBrands.add(transferRSToBrand(rs));
+            }
         }
-
+        
         return foundBrands;
     }
 

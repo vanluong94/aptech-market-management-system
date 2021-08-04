@@ -4,6 +4,8 @@
 package vn.aptech.quanlybanhang.dao;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.Brand;
@@ -44,8 +46,34 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public boolean update(Product object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean update(Product product) throws SQLException {
+        int rowEffected = -1;
+
+        String updateSQL = "UPDATE `products` SET "
+                + "`brand_id` = ?"
+                + ", `category_id` = ?"
+                + ", `employee_id` = ?"
+                + ", `product_name` = ?"
+                + ", `product_price` = ?"
+                + ", `product_stock` = ?"
+                + ", `updated_date` = ?"
+                + "WHERE product_id = ?;";
+
+        try ( PreparedStatement st = DBConnection.getConnection().prepareStatement(updateSQL)) {
+
+            st.setInt(1, product.getBrand().getBrandId());
+            st.setInt(2, product.getCategory().getCategoryId());
+            st.setInt(3, product.getEmployee().getEmployeeId());
+            st.setString(4, product.getName());
+            st.setDouble(5, product.getPrice());
+            st.setInt(6, product.getQuantityInStock());
+            st.setString(7, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s")));
+            st.setInt(8, product.getId());
+
+            rowEffected = st.executeUpdate();
+        }
+
+        return rowEffected > -1;
     }
 
     @Override
