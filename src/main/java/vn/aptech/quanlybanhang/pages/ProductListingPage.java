@@ -5,12 +5,32 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.entities.Product;
+import vn.aptech.quanlybanhang.entities.Supplier;
+import vn.aptech.quanlybanhang.service.ProductService;
+import vn.aptech.quanlybanhang.service.ProductServiceImpl;
+
 
 public class ProductListingPage extends Page {
 
     @Override
     public void displayContent() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            ProductService productService = new ProductServiceImpl();
+            List<Product> products = productService.findAll();
+            if (products.isEmpty()) {
+                System.out.println("Danh sach trong");
+            } else {
+                for (Product product : products) {
+                    System.out.println(product.toString());
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ProductDetailPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

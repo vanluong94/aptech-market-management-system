@@ -6,15 +6,19 @@ package vn.aptech.quanlybanhang.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import vn.aptech.quanlybanhang.entities.Brand;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 
 public class ProductDAOImpl implements ProductDAO {
 
+    private final static String SQL_SELECT_ALL = "SELECT * FROM products";
     private final static String SQL_GET_ONE = "SELECT * FROM products WHERE product_id = ?";
     private final static String SQL_GET_BY_CATEGORY_ID = "SELECT * FROM products WHERE category_id = ?";
     private final static String SQL_INSERT = "INSERT INTO `products` (`brand_id`, `category_id`, `employee_id`, `product_name`,"
             + " `product_price`, `product_stock`) VALUES (?, ?, ?, ?, ?, ?);";
+    private final static String SQL_DELETE = "DELETE FROM products WHERE product_id = ?";
+
     /**
      *
      * @param object
@@ -46,7 +50,22 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public boolean deleteById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int temp = -1;
+        Connection conn = null;
+        try {
+            conn = DBConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE);
+            pstmt.setInt(1, id);
+            temp = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return temp > 0;
     }
 
     @Override
@@ -74,7 +93,25 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public List<Product> findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Product> products = new ArrayList<Product>();
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("product_id"));
+//                product.getBrand().setBrandId(rs.getInt("brand_id"));
+//                product.getCategory().setCategoryId(rs.getInt("category_id"));
+//                product.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                product.setName(rs.getString("product_name"));
+                product.setPrice(rs.getDouble("product_price"));
+                product.setQuantityInStock(rs.getInt("product_stock"));
+                products.add(product);
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return products;
     }
 
     @Override
@@ -87,9 +124,9 @@ public class ProductDAOImpl implements ProductDAO {
             while (rs.next()) {
                 Product product = new Product();
                 product.setId(rs.getInt("product_id"));
-                product.getBrand().setBrandId(rs.getInt("brand_id"));
-                product.getCategory().setCategoryId(rs.getInt("category_id"));
-                product.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+//                product.getBrand().setBrandId(rs.getInt("brand_id"));
+//                product.getCategory().setCategoryId(rs.getInt("category_id"));
+//                product.getEmployee().setEmployeeId(rs.getInt("employee_id"));
                 product.setName(rs.getString("product_name"));
                 product.setPrice(rs.getDouble("product_price"));
                 product.setQuantityInStock(rs.getInt("product_stock"));
