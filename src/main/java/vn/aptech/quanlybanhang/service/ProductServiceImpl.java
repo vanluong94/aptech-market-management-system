@@ -5,6 +5,8 @@ package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.dao.ProductDAO;
 import vn.aptech.quanlybanhang.dao.ProductDAOImpl;
@@ -37,7 +39,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean deleteById(int id) throws SQLException, Exception {
-        ValidateCommon.validateNullObject(id, "id");
+        if (id<1) {
+            try {
+                throw new Exception ("ID khong hop le!");
+            } catch (Exception e) {
+                  Logger.getLogger(ProductServiceImpl.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
         return this.productDAO.deleteById(id);
     }
 

@@ -33,7 +33,7 @@ public class ProductDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sach San Pham";
+        return "Tim san pham trong kho theo ID San pham";
     }
     
 }
