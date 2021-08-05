@@ -21,7 +21,7 @@ import vn.aptech.quanlybanhang.utilities.AppScanner;
  *
  * @author vanluong
  */
-class ProductSearchPage extends Page {
+public class ProductSearchPage extends Page {
 
     @Override
     public void displayContent() {

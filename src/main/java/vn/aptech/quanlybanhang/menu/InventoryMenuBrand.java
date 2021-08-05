@@ -5,16 +5,17 @@
  */
 package vn.aptech.quanlybanhang.menu;
 
-import vn.aptech.quanlybanhang.menu.items.GoBackMenuItem;
-import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
 import java.util.LinkedHashMap;
+import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
+import vn.aptech.quanlybanhang.menu.items.GoBackMenuItem;
 import vn.aptech.quanlybanhang.pages.BrandCreatePage;
 import vn.aptech.quanlybanhang.pages.BrandDeletePage;
 import vn.aptech.quanlybanhang.pages.BrandEditPage;
 import vn.aptech.quanlybanhang.pages.BrandListingPage;
 import vn.aptech.quanlybanhang.pages.BrandSearchPage;
 
-public class BrandMenu extends Menu {
+
+public class InventoryMenuBrand extends Menu {
 
     @Override
     protected LinkedHashMap<Integer, MenuItem> registerMenuItems() {
@@ -34,6 +35,7 @@ public class BrandMenu extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quản lý Nhãn hàng";
+        return "Quan ly Nhan hang";
     }
+    
 }
