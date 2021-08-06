@@ -5,15 +5,12 @@
  */
 package vn.aptech.quanlybanhang.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Employee;
-import vn.aptech.quanlybanhang.utilities.DBConnection;
-
+import vn.aptech.quanlybanhang.service.EmployeeService;
+import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
 
 public class AuthDAOImpl implements AuthDAO {
 
@@ -21,22 +18,12 @@ public class AuthDAOImpl implements AuthDAO {
     public Employee login(String username, String password) {
         Employee emp = null;
         try {
-            Connection conn = DBConnection.getConnection();
-            String queryString = "SELECT * FROM employees WHERE username = ? AND password = ?";
-            PreparedStatement pstmt = conn.prepareStatement(queryString);
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                emp = new Employee();
-                emp.setEmployeeId(rs.getInt("employee_id"));
-                emp.setUserName(rs.getString("username"));
-            }
+            EmployeeService empService = new EmployeeServiceImpl();
+            emp = empService.findByUsernameAndPassword(username, password);
         } catch (SQLException ex) {
             Logger.getLogger(AuthDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            DBConnection.maybeCloseConnection();
         }
+
         return emp;
     }
 
@@ -44,5 +31,5 @@ public class AuthDAOImpl implements AuthDAO {
     public Employee findById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
