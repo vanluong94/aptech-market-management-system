@@ -8,6 +8,7 @@ package vn.aptech.quanlybanhang.menu;
 import java.util.LinkedHashMap;
 import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
 import vn.aptech.quanlybanhang.menu.items.SignoutMenuItem;
+import vn.aptech.quanlybanhang.pages.ChangePasswordPage;
 
 /**
  *
@@ -25,8 +26,9 @@ public class InventoryMenu extends Menu {
         menuItems.put(4, new InventoryMenuSupplier());
         menuItems.put(5, new InventoryMenuOrder());
         menuItems.put(6, new InventoryMenuStatistic());
+        menuItems.put(7, new ChangePasswordPage());
         
-        menuItems.put(7, new SignoutMenuItem());
+        menuItems.put(8, new SignoutMenuItem());
         menuItems.put(0, new ExitMenuItem());
         
         return menuItems;
