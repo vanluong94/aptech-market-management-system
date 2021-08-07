@@ -54,8 +54,13 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public boolean update(Supplier object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean update(Supplier id) throws SQLException {
+        return this.supplierDAO.update(id);
+    }
+
+    @Override
+    public List<Supplier> searchByName(String name) throws SQLException, ClassNotFoundException {
+        return this.supplierDAO.searchByName(name);
     }
 
 }
