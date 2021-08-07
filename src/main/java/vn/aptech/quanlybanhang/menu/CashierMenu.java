@@ -9,8 +9,8 @@ import java.util.LinkedHashMap;
 import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
 import vn.aptech.quanlybanhang.menu.items.SignoutMenuItem;
 import vn.aptech.quanlybanhang.pages.CashierStatisticPage;
+import vn.aptech.quanlybanhang.pages.ChangePasswordPage;
 import vn.aptech.quanlybanhang.pages.OrderCreatePage;
-import vn.aptech.quanlybanhang.pages.PageChangePassword;
 
 /**
  *
@@ -27,7 +27,7 @@ public class CashierMenu extends Menu {
         menuItems.put(3, new CashierMenuProduct());
         menuItems.put(4, new CashierMenuCategory());
         menuItems.put(5, new CashierStatisticPage());
-        menuItems.put(6, new PageChangePassword());
+        menuItems.put(6, new ChangePasswordPage());
         
         menuItems.put(7, new SignoutMenuItem());
         menuItems.put(0, new ExitMenuItem());

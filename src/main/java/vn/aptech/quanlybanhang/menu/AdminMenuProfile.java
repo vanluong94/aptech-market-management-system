@@ -8,7 +8,7 @@ package vn.aptech.quanlybanhang.menu;
 import java.util.LinkedHashMap;
 import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
 import vn.aptech.quanlybanhang.menu.items.GoBackMenuItem;
-import vn.aptech.quanlybanhang.pages.PageChangePassword;
+import vn.aptech.quanlybanhang.pages.ChangePasswordPage;
 import vn.aptech.quanlybanhang.pages.PageUpdateProfile;
 
 /**
@@ -21,7 +21,7 @@ public class AdminMenuProfile extends Menu {
     protected LinkedHashMap<Integer, MenuItem> registerMenuItems() {
         LinkedHashMap<Integer, MenuItem> menuItems = new LinkedHashMap<>();
 
-        menuItems.put(1, new PageChangePassword());
+        menuItems.put(1, new ChangePasswordPage());
         menuItems.put(2, new PageUpdateProfile());
 
         menuItems.put(0, new ExitMenuItem());
