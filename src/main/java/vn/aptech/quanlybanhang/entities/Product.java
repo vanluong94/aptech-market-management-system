@@ -17,7 +17,7 @@ public class Product extends BaseEntity {
     private String name;
     private double price;
     private int quantityInStock;
-
+    
     public Product() {
     }
 
@@ -171,5 +171,6 @@ public class Product extends BaseEntity {
     public String toString() {
         return "Product { " + "ID : " + id + " || Brand ID : " + getBrand() + " || Category ID : " + getCategory() + " || Employee ID : " + getEmployee() + " || Product Name : " + name + " || Product Price : " + price + " || Product Stock : " + quantityInStock + " } ";
     }
+
 
 }
