@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.entities.Employee;
  * @author anhnbt
  */
 public interface AuthService {
+
     Employee login(Employee emp);
-    
+
 }
