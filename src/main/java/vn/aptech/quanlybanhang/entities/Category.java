@@ -1,17 +1,19 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.entities;
 
 /**
  *
  * @author anhnbt
+ * @author vanluong
  */
 public class Category {
+
     private int categoryId;
     private String categoryName;
+
+    private int productsCount;
 
     public Category() {
     }
@@ -19,7 +21,7 @@ public class Category {
     public Category(String categoryName) {
         this.categoryName = categoryName;
     }
-    
+
     /**
      * @return the categoryId
      */
@@ -48,9 +50,18 @@ public class Category {
         this.categoryName = categoryName;
     }
 
+    public int getProductsCount() {
+        return productsCount;
+    }
+
+    public void setProductsCount(int productsCount) {
+        this.productsCount = productsCount;
+    }
+
     @Override
     public String toString() {
-        return "Category{" + "categoryId=" + categoryId + ", categoryName=" + categoryName + '}';
+        return "[ID] " + categoryId + "\n"
+                + "[Ten] " + categoryName + "\n";
     }
-    
+
 }

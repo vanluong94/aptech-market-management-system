@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.dao;
 
@@ -14,16 +12,19 @@ import java.util.List;
 import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 
+/**
+ * @author vanluong
+ */
 public class CategoryDAOImpl implements CategoryDAO {
 
-    private final static String SQL_INSERT = "INSERT INTO categories (categoryName) VALUES (?)";
-    private final static String SQL_SELECT_ALL = "SELECT * FROM categories";
+    private final static String SQL_INSERT = "INSERT INTO categories (category_name) VALUES (?)";
     private final static String SQL_GET_ONE = "SELECT * FROM categories WHERE category_id = ?";
+    private final static String SQL_DELETE = "DELETE FROM categories WHERE category_id = ?";
 
     @Override
     public boolean create(Category object) throws SQLException {
         int rowsAffected = -1;
-        try (Connection conn = DBConnection.getConnection()) {
+        try ( Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt;
             pstmt = conn.prepareCall(SQL_INSERT);
             pstmt.setString(1, object.getCategoryName());
@@ -36,13 +37,18 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public boolean deleteById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int rowsAffected = -1;
+        try ( PreparedStatement st = DBConnection.getConnection().prepareStatement(SQL_DELETE)) {
+            st.setInt(1, id);
+            rowsAffected = st.executeUpdate();
+        }
+        return rowsAffected > 0;
     }
 
     @Override
     public Category findById(int id) throws SQLException {
         Category category = null;
-        try (Connection conn = DBConnection.getConnection()) {
+        try ( Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE);
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
@@ -59,14 +65,22 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public List<Category> findAll() throws SQLException {
-        List<Category> categories = new ArrayList<Category>();
-        try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
+        List<Category> categories = new ArrayList<>();
+        try ( Connection conn = DBConnection.getConnection()) {
+            String sql = "SELECT categories.*, COUNT(product_id) as products_count"
+                    + " FROM categories"
+                    + " LEFT JOIN products ON categories.category_id = products.category_id"
+                    + " GROUP BY categories.category_id";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Category category = new Category();
+
                 category.setCategoryId(rs.getInt("category_id"));
                 category.setCategoryName(rs.getString("category_name"));
+                category.setProductsCount(rs.getInt("products_count"));
+
                 categories.add(category);
             }
         } catch (SQLException e) {
@@ -76,8 +90,46 @@ public class CategoryDAOImpl implements CategoryDAO {
     }
 
     @Override
-    public boolean update(Category object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean update(Category category) throws SQLException {
+        int rowsAffected = -1;
+        String sql = "UPDATE categories SET category_name = ? WHERE category_id = ?";
+
+        try ( PreparedStatement st = DBConnection.getConnection().prepareStatement(sql)) {
+            st.setString(1, category.getCategoryName());
+            st.setInt(2, category.getCategoryId());
+
+            rowsAffected = st.executeUpdate();
+        }
+
+        return rowsAffected > 0;
+    }
+
+    @Override
+    public List<Category> searchByName(String name) throws SQLException {
+
+        List<Category> categories = new ArrayList<>();
+        String sql = "SELECT categories.*, COUNT(product_id) as products_count"
+                + " FROM categories"
+                + " LEFT JOIN products ON categories.category_id = products.category_id"
+                + " WHERE categories.category_name LIKE ?"
+                + " GROUP BY categories.category_id";
+
+        try ( PreparedStatement st = DBConnection.getConnection().prepareStatement(sql)) {
+            st.setString(1, "%" + name + "%");
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Category category = new Category();
+
+                category.setCategoryId(rs.getInt("category_id"));
+                category.setCategoryName(rs.getString("category_name"));
+                category.setProductsCount(rs.getInt("products_count"));
+
+                categories.add(category);
+            }
+        }
+
+        return categories;
     }
 
 }
