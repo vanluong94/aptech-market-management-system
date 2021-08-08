@@ -20,6 +20,16 @@ public class CategoryDAOImpl implements CategoryDAO {
     private final static String SQL_INSERT = "INSERT INTO categories (category_name) VALUES (?)";
     private final static String SQL_GET_ONE = "SELECT * FROM categories WHERE category_id = ?";
     private final static String SQL_DELETE = "DELETE FROM categories WHERE category_id = ?";
+    private final static String SQL_UPDATE = "UPDATE categories SET category_name = ? WHERE category_id = ?";
+    private final static String SQL_GET_ALL = "SELECT categories.*, COUNT(product_id) as products_count"
+            + " FROM categories"
+            + " LEFT JOIN products ON categories.category_id = products.category_id"
+            + " GROUP BY categories.category_id";
+    private final static String SQL_SEARCH = "SELECT categories.*, COUNT(product_id) as products_count"
+            + " FROM categories"
+            + " LEFT JOIN products ON categories.category_id = products.category_id"
+            + " WHERE categories.category_name LIKE ?"
+            + " GROUP BY categories.category_id";
 
     @Override
     public boolean create(Category object) throws SQLException {
@@ -67,12 +77,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     public List<Category> findAll() throws SQLException {
         List<Category> categories = new ArrayList<>();
         try ( Connection conn = DBConnection.getConnection()) {
-            String sql = "SELECT categories.*, COUNT(product_id) as products_count"
-                    + " FROM categories"
-                    + " LEFT JOIN products ON categories.category_id = products.category_id"
-                    + " GROUP BY categories.category_id";
-
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+            PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ALL);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Category category = new Category();
@@ -92,9 +97,8 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public boolean update(Category category) throws SQLException {
         int rowsAffected = -1;
-        String sql = "UPDATE categories SET category_name = ? WHERE category_id = ?";
 
-        try ( PreparedStatement st = DBConnection.getConnection().prepareStatement(sql)) {
+        try ( PreparedStatement st = DBConnection.getConnection().prepareStatement(SQL_UPDATE)) {
             st.setString(1, category.getCategoryName());
             st.setInt(2, category.getCategoryId());
 
@@ -108,13 +112,8 @@ public class CategoryDAOImpl implements CategoryDAO {
     public List<Category> searchByName(String name) throws SQLException {
 
         List<Category> categories = new ArrayList<>();
-        String sql = "SELECT categories.*, COUNT(product_id) as products_count"
-                + " FROM categories"
-                + " LEFT JOIN products ON categories.category_id = products.category_id"
-                + " WHERE categories.category_name LIKE ?"
-                + " GROUP BY categories.category_id";
 
-        try ( PreparedStatement st = DBConnection.getConnection().prepareStatement(sql)) {
+        try ( PreparedStatement st = DBConnection.getConnection().prepareStatement(SQL_SEARCH)) {
             st.setString(1, "%" + name + "%");
             ResultSet rs = st.executeQuery();
 
