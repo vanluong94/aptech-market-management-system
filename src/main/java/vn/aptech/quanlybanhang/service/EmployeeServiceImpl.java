@@ -35,8 +35,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public boolean update(Employee object) throws SQLException, Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean update(Employee emp) throws SQLException, Exception {
+        return employeeDAO.update(emp);
     }
 
     @Override

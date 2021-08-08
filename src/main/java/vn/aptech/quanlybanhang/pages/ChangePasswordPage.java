@@ -41,6 +41,7 @@ public class ChangePasswordPage extends Page {
                         employee.setPassword(newPassword);
                         if (employeeService.update(employee)) {
                             System.out.println("Đổi mật khẩu thành công");
+                            break;
                         } else {
                             System.out.println("Đã xảy ra lỗi");
                         }

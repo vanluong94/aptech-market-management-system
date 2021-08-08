@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.dao;
 
@@ -17,6 +15,7 @@ import vn.aptech.quanlybanhang.utilities.DBConnection;
 /**
  *
  * @author Admin
+ * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  */
 public class EmployeeDAOImpl implements EmployeeDAO {
 
@@ -24,7 +23,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     private final static String SQL_INSERT = "INSERT INTO employees(employee_name,employee_add,employee_phone,department,username,password) VALUE(?,?,?,?,?,?)";
     private final static String SQL_GET_ONE = "SELECT * FROM employees WHERE employee_id = ?";
     private final static String SQL_DELETE = "DELETE FROM employees WHERE employee_id = ?";
-    private final static String SQL_UPDATE = "UPDATE employees SET employee_name = ?, employee_add = ?, employee_phone = ?,department = ?, username = ?, password = ?  WHERE employee_id = ?";
+    private final static String SQL_UPDATE = "UPDATE employees SET employee_name = ?, employee_add = ?, employee_phone = ?, "
+            + "department = ?, username = ?, password = ? WHERE employee_id = ?";
     private final static String SQL_GET_ONE_BY_USERNAME_PASSWORD = "SELECT * FROM employees WHERE username = ? AND password = ?";
 
     @Override
@@ -51,9 +51,29 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return rowsAffected > 0;
     }
 
+    /**
+     *
+     * @param emp
+     * @return
+     * @throws SQLException
+     */
     @Override
-    public boolean update(Employee object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean update(Employee emp) throws SQLException {
+        int rowsAffected = -1;
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE);
+            pstmt.setString(1, emp.getName());
+            pstmt.setString(2, emp.getAddress());
+            pstmt.setString(3, emp.getPhone());
+            pstmt.setString(4, emp.getDepartment());
+            pstmt.setString(5, emp.getUserName());
+            pstmt.setString(6, emp.getPassword());
+            pstmt.setInt(7, emp.getEmployeeId());
+            rowsAffected = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        }
+        return rowsAffected > 0;
     }
 
     @Override
@@ -108,7 +128,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public List<Employee> findAll() throws SQLException {
         List<Employee> employees = new ArrayList<Employee>();
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -131,7 +151,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public boolean updateById(Employee object, int id) throws SQLException {
         int rs = -1;
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE);
             pstmt.setString(1, object.getName());
             pstmt.setString(2, object.getAddress());
@@ -150,7 +170,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public Employee findByUsernameAndPassword(String username, String password) throws SQLException {
         Employee employee = null;
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE_BY_USERNAME_PASSWORD);
             pstmt.setString(1, username);
             pstmt.setString(2, password);
