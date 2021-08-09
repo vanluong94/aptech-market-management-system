@@ -40,7 +40,7 @@ public class AuthPage extends Page {
             System.out.println("Dang nhap thanh cong!");
 
             // Mo menu theo role tuong ung
-            switch (emp.getDepartment()) {
+            switch (emp.getDepartment().name()) {
                 case "ROLE_ADMIN":
                     AdminMenu adminMenu = new AdminMenu();
                     adminMenu.start();

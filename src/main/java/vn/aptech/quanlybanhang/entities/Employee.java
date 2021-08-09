@@ -10,9 +10,9 @@ public class Employee {
     private String userName;
     private String password;
     private String address;
-private String name;
-private String phone;
-private String department;
+    private String name;
+    private String phone;
+    private Department department;
 
     public String getAddress() {
         return address;
@@ -38,18 +38,13 @@ private String department;
         this.phone = phone;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(Department department) {
         this.department = department;
     }
-
-
-    
-
-    
 
     public Employee() {
     }
@@ -65,9 +60,9 @@ private String department;
         this.password = password;
     }
 
-    public Employee(String name, String address, String phone, String department, String username, String password) {
+    public Employee(String name, String address, String phone, Department department, String username, String password) {
         this.name = name;
-        this.address= address;
+        this.address = address;
         this.phone = phone;
         this.department = department;
         this.userName = username;
@@ -119,13 +114,13 @@ private String department;
     public void showOne() {
         System.out.println("====== Chi tiet nhan vien ======");
         System.out.println("Chi tiet nhan vien " + name + " :");
-        System.out.println("Ho ten : " + name );
-        System.out.println("Dia chi: " + address );
-        System.out.println("So dien thoai: " + phone );
-        System.out.println("Chuc vu : " + department );
-        System.out.println("ID : " + employeeId );
+        System.out.println("Ho ten : " + name);
+        System.out.println("Dia chi: " + address);
+        System.out.println("So dien thoai: " + phone);
+        System.out.println("Chuc vu : " + department);
+        System.out.println("ID : " + employeeId);
         System.out.println("UserName : " + userName);
-        System.out.println("Password : " + password );
+        System.out.println("Password : " + password);
         System.out.println("--------------------------------");
     }
 }

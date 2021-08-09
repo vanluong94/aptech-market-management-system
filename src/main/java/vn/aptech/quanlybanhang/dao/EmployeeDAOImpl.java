@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import vn.aptech.quanlybanhang.entities.Department;
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 
@@ -37,7 +38,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             pstmt.setString(1, object.getName());
             pstmt.setString(2, object.getAddress());
             pstmt.setString(3, object.getPhone());
-            pstmt.setString(4, object.getDepartment());
+            pstmt.setString(4, object.getDepartment().name());
             pstmt.setString(5, object.getUserName());
             pstmt.setString(6, object.getPassword());
             rowsAffected = pstmt.executeUpdate();
@@ -65,7 +66,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             pstmt.setString(1, emp.getName());
             pstmt.setString(2, emp.getAddress());
             pstmt.setString(3, emp.getPhone());
-            pstmt.setString(4, emp.getDepartment());
+            pstmt.setString(4, emp.getDepartment().name());
             pstmt.setString(5, emp.getUserName());
             pstmt.setString(6, emp.getPassword());
             pstmt.setInt(7, emp.getEmployeeId());
@@ -111,7 +112,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 employee.setName(rs.getString("employee_name"));
                 employee.setAddress(rs.getString("employee_add"));
                 employee.setPhone(rs.getString("employee_phone"));
-                employee.setDepartment(rs.getString("department"));
+                employee.setDepartment(Department.valueOf(rs.getString("department")));
                 employee.setUserName(rs.getString("username"));
                 employee.setPassword(rs.getString("password"));
             }
@@ -137,7 +138,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 employee.setName(rs.getString("employee_name"));
                 employee.setAddress(rs.getString("employee_add"));
                 employee.setPhone(rs.getString("employee_phone"));
-                employee.setDepartment(rs.getString("department"));
+                employee.setDepartment(Department.valueOf(rs.getString("department")));
                 employee.setUserName(rs.getString("username"));
                 employee.setPassword(rs.getString("password"));
                 employees.add(employee);
@@ -156,7 +157,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             pstmt.setString(1, object.getName());
             pstmt.setString(2, object.getAddress());
             pstmt.setString(3, object.getPhone());
-            pstmt.setString(4, object.getDepartment());
+            pstmt.setString(4, object.getDepartment().name());
             pstmt.setString(5, object.getUserName());
             pstmt.setString(6, object.getPassword());
             pstmt.setInt(7, id);
@@ -181,7 +182,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 employee.setName(rs.getString("employee_name"));
                 employee.setAddress(rs.getString("employee_add"));
                 employee.setPhone(rs.getString("employee_phone"));
-                employee.setDepartment(rs.getString("department"));
+                employee.setDepartment(Department.valueOf(rs.getString("department")));
                 employee.setUserName(rs.getString("username"));
                 employee.setPassword(rs.getString("password"));
             }
