@@ -8,6 +8,7 @@ package vn.aptech.quanlybanhang.pages;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.entities.Department;
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
@@ -43,18 +44,21 @@ public class EmployeeCreatePage extends Page {
                 System.out.print("Nhap so dien thoai : ");
                 employeePhone = sc.nextLine();
             }
-            System.out.print("Nhap chuc vu (chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY): ");
-            String employeeDepartment = sc.nextLine();
-            while (employeeDepartment.length() == 0) {
+            System.out.printf("Nhap chuc vu (chi nhap 1=%s, 2=%s hoac 3=%s): \n", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY);
+            int employeeDepartment = sc.nextInt();
+            while (employeeDepartment == 0) {
                 System.out.println("Chuc vu khong duoc de trong !");
-                System.out.print("Nhap chuc vu : ");
-                employeeDepartment = sc.nextLine();
+                System.out.print("Nhap chuc vu: ");
+                employeeDepartment = sc.nextInt();
             }
-            while (!employeeDepartment.equals("ROLE_ADMIN") && !employeeDepartment.equals("ROLE_EMPLOYEE_CASHER") && !employeeDepartment.equals("ROLE_EMPLOYEE_INVENTORY")) {
-                System.out.println("chi nhap ROLE_ADMIN, ROLE_EMPLOYEE_CASHER hoac ROLE_EMPLOYEE_INVENTORY !");
+            while (employeeDepartment != Department.ROLE_ADMIN.getValue() 
+                    && employeeDepartment != Department.ROLE_EMPLOYEE_CASHER.getValue() 
+                    && employeeDepartment != Department.ROLE_EMPLOYEE_INVENTORY.getValue()) {
+                System.out.printf("Chi nhap 1=%s, 2=%s hoac 3=%s !\n", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY);
                 System.out.print("Nhap chuc vu : ");
-                employeeDepartment = sc.nextLine();
+                employeeDepartment = sc.nextInt();
             }
+            sc.nextLine();
             System.out.print("Tao Usename: ");
             String employeeUsername = sc.nextLine();
             while (employeeUsername.length() == 0) {
@@ -79,7 +83,7 @@ public class EmployeeCreatePage extends Page {
                 System.out.print("Tao Password: ");
                 employeePassword = sc.nextLine();
             }
-            Employee employee = new Employee(employeeName, employeeAddress, employeePhone, employeeDepartment, employeeUsername, employeePassword);
+            Employee employee = new Employee(employeeName, employeeAddress, employeePhone, Department.fromInt(employeeDepartment), employeeUsername, employeePassword);
             if (employeeService.create(employee)) {
                 System.out.println("Them nhan vien thanh cong!");
             } else {
