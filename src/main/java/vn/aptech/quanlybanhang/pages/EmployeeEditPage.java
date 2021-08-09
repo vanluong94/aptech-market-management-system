@@ -1,19 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.pages;
 
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vn.aptech.quanlybanhang.constant.Constant;
 import vn.aptech.quanlybanhang.entities.Department;
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
+import vn.aptech.quanlybanhang.utilities.Md5;
 
+/**
+ *
+ * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ */
 public class EmployeeEditPage extends Page {
 
     @Override
@@ -97,7 +99,7 @@ public class EmployeeEditPage extends Page {
                     && employeeDepartment > 0 
                     && employeeUsername.length() > 5 
                     && employeePassword.length() > 5) {
-                Employee employee2 = new Employee(employeeName, employeeAddress, employeePhone, Department.fromInt(employeeDepartment), employeeUsername, employeePassword);
+                Employee employee2 = new Employee(employeeName, employeeAddress, employeePhone, Department.fromInt(employeeDepartment), employeeUsername, Md5.encode(employeePassword));
                 if (employeeService.updateById(employee2, employeeId)) {
                     System.out.println("Sua nhan vien thanh cong!");
                 } else {
