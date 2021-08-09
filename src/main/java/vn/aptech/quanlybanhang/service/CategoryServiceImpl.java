@@ -38,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public boolean deleteById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return categoryDAO.deleteById(id);
     }
 
     /**
@@ -63,7 +63,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public boolean update(Category object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return categoryDAO.update(object);
+    }
+    
+    @Override
+    public List<Category> searchByName(String name) throws SQLException {
+        return categoryDAO.searchByName(name);
     }
     
 }
