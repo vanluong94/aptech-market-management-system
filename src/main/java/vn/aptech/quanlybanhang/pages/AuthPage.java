@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.pages;
 
@@ -13,7 +11,12 @@ import vn.aptech.quanlybanhang.service.AuthService;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 import vn.aptech.quanlybanhang.ui.HeaderUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.Md5;
 
+/**
+ *
+ * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ */
 public class AuthPage extends Page {
 
     @Override
@@ -32,7 +35,7 @@ public class AuthPage extends Page {
         String password = AppScanner.scanStringWithMessage("Nhap mat khau: ");
 
         // kiem tra khong duoc de trong
-        Employee employee = new Employee(username, password);
+        Employee employee = new Employee(username, Md5.encode(password));
 
         Employee emp = authService.login(employee);
         if (emp != null) {

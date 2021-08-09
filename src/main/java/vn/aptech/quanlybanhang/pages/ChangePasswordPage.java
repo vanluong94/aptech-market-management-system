@@ -10,6 +10,7 @@ import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.Md5;
 
 /**
  *
@@ -29,7 +30,7 @@ public class ChangePasswordPage extends Page {
             do {
                 String password = AppScanner.scanStringWithMessage("Mật khẩu hiện tại*: ", false);
                 Employee employee = AuthServiceImpl.getCurrentEmployee();
-                if (!employee.getPassword().equals(password)) {
+                if (!employee.getPassword().equals(Md5.encode(password))) {
                     System.out.println("Mật khẩu hiện tại không đúng");
                 } else {
                     String newPassword = AppScanner.scanStringWithMessage("Mật khẩu mới*: ", false);
@@ -38,7 +39,7 @@ public class ChangePasswordPage extends Page {
                     if (!newPassword.equals(confirmPassword)) {
                         System.out.println("Mật khẩu xác nhận không đúng");
                     } else {
-                        employee.setPassword(newPassword);
+                        employee.setPassword(Md5.encode(newPassword));
                         if (employeeService.update(employee)) {
                             System.out.println("Đổi mật khẩu thành công");
                             break;
