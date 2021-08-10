@@ -25,8 +25,10 @@ public class AdminMenu extends Menu {
         menuItems.put(5, new AdminMenuCategory());
         menuItems.put(6, new AdminMenuOrder());
         menuItems.put(7, new AdminMenuProfile());
+        menuItems.put(8, new AdminMenuDiscount());
+
         
-        menuItems.put(8, new SignoutMenuItem());
+        menuItems.put(9, new SignoutMenuItem());
         menuItems.put(0, new ExitMenuItem());
         
         return menuItems;
@@ -34,7 +36,7 @@ public class AdminMenu extends Menu {
 
     @Override
     protected final String registerMenuTitle() {
-        return "Phần Mềm Quản Lý Siêu Thị";
+        return "Phan mem quan ly Sieu Thi";
     }
     
     @Override
