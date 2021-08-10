@@ -25,25 +25,22 @@ import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 
-
-
-
 public class EmployeeSearchPage extends Page {
 
     @Override
     public void displayContent() {
         int check = 0;
         EmployeeDAOImpl employeeDAOImpl = new EmployeeDAOImpl();
-        do {              
+        do {
             try {
-            System.out.println("Nhap vao ten nhan vien can tim kiem: ");
-            Scanner sc = new Scanner(System.in);
-            String tk = sc.nextLine();
+                System.out.println("Nhap vao ten nhan vien can tim kiem: ");
+                Scanner sc = new Scanner(System.in);
+                String tk = sc.nextLine();
                 List<Employee> employees = employeeDAOImpl.findByNameEmployee(tk);
                 if (employees.isEmpty()) {
                     System.out.println(MessageCommon.getMessage(MessageContent.OBJECT_NOT_FOUND, tk));
                 } else {
-                    System.out.println("Ket qua tim kiem voi tu '"+tk +"':");
+                    System.out.println("Ket qua tim kiem voi tu '" + tk + "':");
                     List<Object[]> rows = new ArrayList<Object[]>();
                     for (Employee ep : employees) {
                         Object[] row = {
@@ -53,15 +50,15 @@ public class EmployeeSearchPage extends Page {
                             ep.getPhone(),
                             ep.getDepartment(),
                             ep.getUserName(),
-                            ep.getPassword()                
+                            ep.getPassword()
                         };
                         rows.add(row);
                     }
-                    String[] headers = {"ID", "Name", "Address", "Phone","Department","UserName","Password"};
+                    String[] headers = {"ID", "Name", "Address", "Phone", "Department", "UserName", "Password"};
                     TableUI tableUI = new TableUI(headers, rows);
                     tableUI.display();
                 }
-               String choice = AppScanner.scanStringWithMessage("Bạn có muốn tìm sản phẩm khác không? [y/N]: ");
+                String choice = AppScanner.scanStringWithMessage("Bạn có muốn tìm sản phẩm khác không? [y/N]: ");
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }
@@ -75,5 +72,5 @@ public class EmployeeSearchPage extends Page {
     public String getTitle() {
         return "Tim kiem Nhan vien";
     }
-    
+
 }

@@ -59,7 +59,7 @@ public class ProductDAOImpl implements ProductDAO {
                 + ", `updated_date` = ?"
                 + "WHERE product_id = ?;";
 
-        try ( PreparedStatement st = DBConnection.getConnection().prepareStatement(updateSQL)) {
+        try (PreparedStatement st = DBConnection.getConnection().prepareStatement(updateSQL)) {
 
             st.setInt(1, product.getBrand().getBrandId());
             st.setInt(2, product.getCategory().getCategoryId());

@@ -29,6 +29,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             + "department = ?, username = ?, password = ? WHERE employee_id = ?";
     private final static String SQL_GET_ONE_BY_USERNAME_PASSWORD = "SELECT * FROM employees WHERE username = ? AND password = ?";
     private final static String SQL_FIND_BY_NAME = "SELECT * FROM employees WHERE employee_name LIKE ?";
+
     @Override
     public boolean create(Employee object) throws SQLException {
         int rowsAffected = -1;
@@ -196,28 +197,28 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public List<Employee> findByNameEmployee(String username) throws SQLException {
         List<Employee> employees = new ArrayList<>();
-        String a = "%"+username+"%";
-        try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement pstmt = conn.prepareStatement(SQL_FIND_BY_NAME);
-            pstmt.setString(1,a);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Employee employee = new Employee();
-                employee.setEmployeeId(rs.getInt("employee_id"));
-                employee.setName(rs.getString("employee_name"));
-                employee.setAddress(rs.getString("employee_add"));
-                employee.setPhone(rs.getString("employee_phone"));
-                employee.setDepartment(Department.valueOf(rs.getString("department")));
-                employee.setUserName(rs.getString("username"));
-                employee.setPassword(rs.getString("password"));
-                employees.add(employee);
+        if (username.trim().length() > 0) {
+            String a = "%" + username + "%";
+            try (Connection conn = DBConnection.getConnection()) {
+                PreparedStatement pstmt = conn.prepareStatement(SQL_FIND_BY_NAME);
+                pstmt.setString(1, a);
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    Employee employee = new Employee();
+                    employee.setEmployeeId(rs.getInt("employee_id"));
+                    employee.setName(rs.getString("employee_name"));
+                    employee.setAddress(rs.getString("employee_add"));
+                    employee.setPhone(rs.getString("employee_phone"));
+                    employee.setDepartment(Department.valueOf(rs.getString("department")));
+                    employee.setUserName(rs.getString("username"));
+                    employee.setPassword(rs.getString("password"));
+                    employees.add(employee);
+                }
+            } catch (SQLException e) {
+                throw e;
             }
-        } catch (SQLException e) {
-            throw e;
         }
         return employees;
     }
 
-   
-    
 }
