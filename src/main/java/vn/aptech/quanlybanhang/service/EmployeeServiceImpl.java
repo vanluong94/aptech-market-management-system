@@ -89,7 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee findByUsernameAndPassword(String username, String password) throws SQLException {
         if (username == null || password == null) {
             try {
-                throw new Exception("Username va Password duoc de trong");
+                throw new Exception("Username va Password khong duoc de trong");
             } catch (Exception ex) {
                 Logger.getLogger(EmployeeServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -99,6 +99,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeDAO.findByUsernameAndPassword(username, password);
     }
 
+    public List<Employee> findByNameEmployee(String username) throws SQLException {
+        if (username == null ) {
+            try {
+                throw new Exception("Username khong duoc de trong");
+            } catch (Exception ex) {
+                Logger.getLogger(EmployeeServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+        return employeeDAO.findByNameEmployee(username);
+    }
+    
     @Override
     public PaginatedResults<Employee> select(int page) throws SQLException, Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
