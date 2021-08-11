@@ -6,6 +6,7 @@
 package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
+import java.util.List;
 import vn.aptech.quanlybanhang.entities.Employee;
 
 /**
@@ -17,4 +18,5 @@ public interface EmployeeService extends BaseService<Employee> {
     boolean updateById(Employee object, int id) throws SQLException;
 
     Employee findByUsernameAndPassword(String username, String password) throws SQLException;
+    List<Employee> findByNameEmployee(String username)throws SQLException;
 }
