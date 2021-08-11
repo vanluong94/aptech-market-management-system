@@ -36,7 +36,7 @@ public class ProductSearchPage extends Page {
                 if (products.isEmpty()) {
                     System.out.println(MessageCommon.getMessage(MessageContent.OBJECT_NOT_FOUND, search));
                 } else {
-                    System.out.println(String.format("Các sản phẩm được tìm thấy theo tên: \"%s\"", search));
+                    System.out.println(String.format("Cac san pham duoc tim thay theo ten: \"%s\"", search));
                     List<Object[]> rows = new ArrayList<Object[]>();
                     for (Product product : products) {
                         Object[] row = {
@@ -51,7 +51,7 @@ public class ProductSearchPage extends Page {
                     TableUI tableUI = new TableUI(headers, rows);
                     tableUI.display();
                 }
-                choice = AppScanner.scanStringWithMessage("Bạn có muốn tìm sản phẩm khác không? [y/N]: ");
+                choice = AppScanner.scanStringWithMessage("Ban co muon tim san pham khac khong? [y/N]: ");
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }

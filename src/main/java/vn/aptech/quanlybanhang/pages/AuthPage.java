@@ -57,7 +57,7 @@ public class AuthPage extends Page {
                     inventoryMenu.start();
                     break;
                 default:
-                    System.out.println("Tài khoản không có quyền truy cập hợp lệ.");
+                    System.out.println("Tai khoan khong co quyen truy cap hop le!");
                     System.exit(0);
                     break;
             }

@@ -37,7 +37,7 @@ public class CashierMenu extends Menu {
 
     @Override
     protected final String registerMenuTitle() {
-        return "Phần Mềm Quản Lý Siêu Thị";
+        return "Phan mem Quan ly Sieu Thi";
     }
     
     @Override
