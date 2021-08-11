@@ -54,7 +54,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     public boolean update(Discount object) throws SQLException, Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.discountDAO.update(object);
     }
 
     @Override
