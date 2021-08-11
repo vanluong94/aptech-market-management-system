@@ -28,8 +28,9 @@ public class AuthPage extends Page {
 
     @Override
     public void displayContent() {
-
-        AuthService authService = new AuthServiceImpl();
+        int check = 0;
+        do {            
+            AuthService authService = new AuthServiceImpl();
 
         String username = AppScanner.scanStringWithMessage("Nhap tai khoan: ");
         String password = AppScanner.scanStringWithMessage("Nhap mat khau: ");
@@ -38,8 +39,9 @@ public class AuthPage extends Page {
         Employee employee = new Employee(username, Md5.encode(password));
 
         Employee emp = authService.login(employee);
+        
         if (emp != null) {
-            
+            check =1;
             System.out.println("Dang nhap thanh cong!");
 
             // Mo menu theo role tuong ung
@@ -66,6 +68,7 @@ public class AuthPage extends Page {
             System.out.println("Nhap sai tai khoan va mat khau. Vui long nhap lai!");
         }
 
+        } while (check == 0);
     }
 
     @Override
