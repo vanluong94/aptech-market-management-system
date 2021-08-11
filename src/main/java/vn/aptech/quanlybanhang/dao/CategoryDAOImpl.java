@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
  * @author vanluong
@@ -129,6 +130,11 @@ public class CategoryDAOImpl implements CategoryDAO {
         }
 
         return categories;
+    }
+
+    @Override
+    public PaginatedResults<Category> select(int page) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

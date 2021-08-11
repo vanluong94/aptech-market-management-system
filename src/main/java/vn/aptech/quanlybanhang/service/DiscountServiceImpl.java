@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.dao.DiscountDAO;
 import vn.aptech.quanlybanhang.dao.DiscountDAOImpl;
 import vn.aptech.quanlybanhang.entities.Discount;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 public class DiscountServiceImpl implements DiscountService {
 
@@ -53,6 +54,11 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     public boolean update(Discount object) throws SQLException, Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PaginatedResults<Discount> select(int page) throws SQLException, Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

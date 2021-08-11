@@ -12,6 +12,7 @@ import java.util.List;
 import vn.aptech.quanlybanhang.entities.Department;
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
  *
@@ -190,6 +191,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             throw e;
         }
         return employee;
+    }
+
+    @Override
+    public PaginatedResults<Employee> select(int page) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

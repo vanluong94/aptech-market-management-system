@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Supplier;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 public class SupplierDAOImpl implements SupplierDAO {
 
@@ -130,5 +131,10 @@ public class SupplierDAOImpl implements SupplierDAO {
             }
         }
         return foundSuppliers;
+    }
+
+    @Override
+    public PaginatedResults<Supplier> select(int page) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

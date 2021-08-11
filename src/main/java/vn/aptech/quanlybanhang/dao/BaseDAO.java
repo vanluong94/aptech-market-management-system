@@ -5,6 +5,7 @@ package vn.aptech.quanlybanhang.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
  *
@@ -17,4 +18,5 @@ public interface BaseDAO<T> {
     boolean deleteById(int id) throws SQLException;
     T findById(int id) throws SQLException;
     List<T> findAll() throws SQLException;
+    PaginatedResults<T> select(int page) throws SQLException;
 }

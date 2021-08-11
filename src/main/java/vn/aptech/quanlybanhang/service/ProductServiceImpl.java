@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.dao.ProductDAO;
 import vn.aptech.quanlybanhang.dao.ProductDAOImpl;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.exception.InputInvalidException;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
  *
@@ -101,4 +102,10 @@ public class ProductServiceImpl implements ProductService {
 //        }
         return productDAO.findByName(name);
     }
+
+    @Override
+    public PaginatedResults<Product> select(int page) throws SQLException, Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

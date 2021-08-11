@@ -11,6 +11,7 @@ import java.util.List;
 import vn.aptech.quanlybanhang.entities.Brand;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 public class ProductDAOImpl implements ProductDAO {
 
@@ -198,6 +199,11 @@ public class ProductDAOImpl implements ProductDAO {
             throw e;
         }
         return products;
+    }
+
+    @Override
+    public PaginatedResults<Product> select(int page) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
