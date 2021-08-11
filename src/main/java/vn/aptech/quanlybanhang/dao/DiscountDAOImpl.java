@@ -10,6 +10,8 @@ import vn.aptech.quanlybanhang.entities.Discount;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 
 public class DiscountDAOImpl implements DiscountDAO {
@@ -18,7 +20,8 @@ public class DiscountDAOImpl implements DiscountDAO {
     private final static String SQL_INSERT = "INSERT INTO discounts (discount_name) VALUE (?)";
     private final static String SQL_GET_ONE = "SELECT * FROM discounts WHERE discount_id = ?";
     private final static String SQL_DELETE = "DELETE FROM discounts WHERE discount_id = ?";
-
+    private final static String SQL_UPDATE = "UPDATE discounts SET discount_name = ? WHERE discount_id = ?";
+    
     @Override
     public boolean create(Discount object) throws SQLException {
         int rowsAffected = -1;
@@ -88,7 +91,17 @@ public class DiscountDAOImpl implements DiscountDAO {
     }
 
     @Override
-    public boolean update(Discount object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean update(Discount discount) throws SQLException {
+        int rs = -1;
+        try ( Connection conn = DBConnection.getConnection()){
+            PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE);
+                pstmt.setString(1, discount.getName());
+                pstmt.setInt(2, discount.getId());
+                
+                rs = pstmt.executeUpdate();
+        } catch (Exception e) {
+            Logger.getLogger(DiscountDAOImpl.class.getName()).log(Level.SEVERE,null,e);
+        }
+        return rs > 0;
     }
 }
