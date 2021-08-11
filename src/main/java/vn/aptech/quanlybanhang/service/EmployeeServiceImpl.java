@@ -99,8 +99,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeDAO.findByUsernameAndPassword(username, password);
     }
 
+    @Override
     public List<Employee> findByNameEmployee(String username) throws SQLException {
-        if (username == null ) {
+        if (username == null) {
             try {
                 throw new Exception("Username khong duoc de trong");
             } catch (Exception ex) {
@@ -111,7 +112,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return employeeDAO.findByNameEmployee(username);
     }
-    
+
     @Override
     public PaginatedResults<Employee> select(int page) throws SQLException, Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -63,7 +63,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public boolean update(Employee emp) throws SQLException {
         int rowsAffected = -1;
-        try (Connection conn = DBConnection.getConnection()) {
+        try ( Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE);
             pstmt.setString(1, emp.getName());
             pstmt.setString(2, emp.getAddress());
@@ -131,7 +131,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public List<Employee> findAll() throws SQLException {
         List<Employee> employees = new ArrayList<Employee>();
-        try (Connection conn = DBConnection.getConnection()) {
+        try ( Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -154,7 +154,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public boolean updateById(Employee object, int id) throws SQLException {
         int rs = -1;
-        try (Connection conn = DBConnection.getConnection()) {
+        try ( Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE);
             pstmt.setString(1, object.getName());
             pstmt.setString(2, object.getAddress());
@@ -173,7 +173,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public Employee findByUsernameAndPassword(String username, String password) throws SQLException {
         Employee employee = null;
-        try (Connection conn = DBConnection.getConnection()) {
+        try ( Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE_BY_USERNAME_PASSWORD);
             pstmt.setString(1, username);
             pstmt.setString(2, password);
@@ -199,7 +199,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         List<Employee> employees = new ArrayList<>();
         if (username.trim().length() > 0) {
             String a = "%" + username + "%";
-            try (Connection conn = DBConnection.getConnection()) {
+            try ( Connection conn = DBConnection.getConnection()) {
                 PreparedStatement pstmt = conn.prepareStatement(SQL_FIND_BY_NAME);
                 pstmt.setString(1, a);
                 ResultSet rs = pstmt.executeQuery();
@@ -220,10 +220,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         }
         return employees;
     }
-    
+
     @Override
-     public PaginatedResults<Employee> select(int page) throws SQLException {
+    public PaginatedResults<Employee> select(int page) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-     }
+    }
 
 }
