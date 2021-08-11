@@ -24,11 +24,12 @@ public class InventoryMenu extends Menu {
         menuItems.put(2, new InventoryMenuProduct());
         menuItems.put(3, new InventoryMenuCategory());
         menuItems.put(4, new InventoryMenuSupplier());
-        menuItems.put(5, new InventoryMenuOrder());
-        menuItems.put(6, new InventoryMenuStatistic());
-        menuItems.put(7, new ChangePasswordPage());
+        menuItems.put(5, new InventoryMenuBrand());
+        menuItems.put(6, new InventoryMenuOrder());
+        menuItems.put(7, new InventoryMenuStatistic());
+        menuItems.put(8, new ChangePasswordPage());
         
-        menuItems.put(8, new SignoutMenuItem());
+        menuItems.put(9, new SignoutMenuItem());
         menuItems.put(0, new ExitMenuItem());
         
         return menuItems;
