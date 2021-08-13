@@ -11,6 +11,7 @@ import java.util.Objects;
 import vn.aptech.quanlybanhang.dao.CategoryDAO;
 import vn.aptech.quanlybanhang.dao.CategoryDAOImpl;
 import vn.aptech.quanlybanhang.entities.Category;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 
 public class CategoryServiceImpl implements CategoryService {
@@ -70,5 +71,10 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> searchByName(String name) throws SQLException {
         return categoryDAO.searchByName(name);
     }
-    
+
+    @Override
+    public PaginatedResults<Category> select(int page) throws SQLException, Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

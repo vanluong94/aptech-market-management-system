@@ -10,6 +10,7 @@ import java.util.List;
 import vn.aptech.quanlybanhang.dao.BrandDAOImpl;
 import vn.aptech.quanlybanhang.entities.Brand;
 import vn.aptech.quanlybanhang.exception.InputInvalidException;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 
 public class BrandServiceImpl implements BrandService {
@@ -54,6 +55,14 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public List<Brand> searchByName(String name) throws SQLException, ClassNotFoundException{
         return this.brandDAO.searchByName(name);
+    }
+
+    @Override
+    public PaginatedResults<Brand> select(int page) throws SQLException, IllegalArgumentException {
+        if(page < 1){
+            throw new IllegalArgumentException("page is invalid");
+        }
+        return this.brandDAO.select(page);
     }
     
 }

@@ -7,6 +7,7 @@ package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
  *
@@ -19,4 +20,5 @@ public interface BaseService<T> {
     boolean deleteById(int id) throws SQLException, Exception;
     T findById(int id) throws SQLException, Exception;
     List<T> findAll() throws SQLException;
+    PaginatedResults<T> select(int page) throws SQLException, Exception;
 }

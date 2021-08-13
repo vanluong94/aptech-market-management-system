@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 public class DiscountDAOImpl implements DiscountDAO {
 
@@ -103,5 +104,10 @@ public class DiscountDAOImpl implements DiscountDAO {
             Logger.getLogger(DiscountDAOImpl.class.getName()).log(Level.SEVERE,null,e);
         }
         return rs > 0;
+    }
+
+    @Override
+    public PaginatedResults<Discount> select(int page) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
