@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Brand;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 public class BrandDAOImpl implements BrandDAO {
 
@@ -19,11 +20,13 @@ public class BrandDAOImpl implements BrandDAO {
     private final static String SQL_SELECT_ALL = "SELECT * FROM brands";
     private final static String SQL_DELETE = "DELETE FROM brands WHERE brand_id = ?";
     private final static String SQL_SELECT_ONE = "SELECT * FROM brands WHERE brand_id = ?";
+    private final static String SQL_SELECT_ALL_PAGINATION = "SELECT * FROM brands LIMIT ?,?";
+    private final static String SQL_COUNT_ALL = "SELECT count(*) as total FROM brands";
 
     @Override
     public List<Brand> findAll() throws SQLException {
         List<Brand> brands = new ArrayList<Brand>();
-        try (Connection conn = DBConnection.getConnection()) {
+        try ( Connection conn = DBConnection.getConnection()) {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(SQL_SELECT_ALL);
             while (rs.next()) {
@@ -33,6 +36,38 @@ public class BrandDAOImpl implements BrandDAO {
             throw e;
         }
         return brands;
+    }
+
+    public PaginatedResults<Brand> select(int page) throws SQLException {
+        
+        PaginatedResults<Brand> pagination = new PaginatedResults<>(page, PER_PAGE);
+        
+        List<Brand> brands = new ArrayList<Brand>();
+        
+        try ( Connection conn = DBConnection.getConnection()) {
+            
+            Statement stTotal = conn.createStatement();
+            ResultSet rsTotal = stTotal.executeQuery(SQL_COUNT_ALL);
+            if (rsTotal.next()) {
+                pagination.setTotalItems(rsTotal.getInt("total"));
+            }
+
+            PreparedStatement stSelect = conn.prepareStatement(SQL_SELECT_ALL_PAGINATION);
+            stSelect.setInt(1, pagination.getOffset());
+            stSelect.setInt(2, pagination.getPerPage());
+            ResultSet rsSelect = stSelect.executeQuery();
+            
+            while(rsSelect.next()){
+                brands.add(this.transferRSToBrand(rsSelect));
+            }
+            
+            pagination.setResults(brands);
+            
+        } catch (SQLException e) {
+            throw e;
+        }
+        
+        return pagination;
     }
 
     @Override

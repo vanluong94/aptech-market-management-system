@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.dao.EmployeeDAO;
 import vn.aptech.quanlybanhang.dao.EmployeeDAOImpl;
 import vn.aptech.quanlybanhang.entities.Employee;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
  *
@@ -100,7 +101,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> findByNameEmployee(String username) throws SQLException {
-        if (username == null ) {
+        if (username == null) {
             try {
                 throw new Exception("Username khong duoc de trong");
             } catch (Exception ex) {
@@ -110,6 +111,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         return employeeDAO.findByNameEmployee(username);
+    }
+
+    @Override
+    public PaginatedResults<Employee> select(int page) throws SQLException, Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

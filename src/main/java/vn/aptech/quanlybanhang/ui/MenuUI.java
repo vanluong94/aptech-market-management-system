@@ -1,14 +1,14 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.ui;
 
 import java.util.List;
 import java.util.Map;
+import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.menu.Breadcrumb;
 import vn.aptech.quanlybanhang.menu.MenuItem;
+import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 
 /**
  *
@@ -52,6 +52,13 @@ public abstract class MenuUI extends MenuItem {
         displayHeader(""); 
         displayHeader(this.getTitle());
         displayHeader(""); 
+        displayBorder();
+        
+        Employee emp = AuthServiceImpl.getCurrentEmployee();
+        if(emp != null){
+            displayHeader(String.format("Xin chao, %s <%s>", emp.getName(), emp.getUserName()));
+        }
+        
         displayBorder();
 
         // Print Menu List

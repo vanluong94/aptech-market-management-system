@@ -108,6 +108,8 @@ public class TableUI {
 
         if (thisLength > this.getColLength(i) && thisLength <= this.getColMaxLength()) {
             this.getColumns().set(i, thisLength);
+        } else if ( thisLength > this.getColMaxLength() ) { // in case it's longer than limit, then we must use the maximum value accepted
+            this.getColumns().set(i, this.getColMaxLength());
         }
     }
 

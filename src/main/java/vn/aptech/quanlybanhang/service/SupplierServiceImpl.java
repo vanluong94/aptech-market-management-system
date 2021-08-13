@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.dao.SupplierDAO;
 import vn.aptech.quanlybanhang.dao.SupplierDAOImpl;
 import vn.aptech.quanlybanhang.entities.Supplier;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 public class SupplierServiceImpl implements SupplierService {
 
@@ -61,6 +62,11 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public List<Supplier> searchByName(String name) throws SQLException, ClassNotFoundException {
         return this.supplierDAO.searchByName(name);
+    }
+
+    @Override
+    public PaginatedResults<Supplier> select(int page) throws SQLException, Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
