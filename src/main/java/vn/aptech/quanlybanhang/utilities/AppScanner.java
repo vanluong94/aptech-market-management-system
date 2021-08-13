@@ -17,7 +17,7 @@ public class AppScanner {
 
     public static Scanner getScanner() {
         if (AppScanner.scanner == null) {
-            setScanner(new Scanner(System.in));
+            setScanner(new Scanner(System.in, "UTF-8"));
         }
         return scanner;
     }
