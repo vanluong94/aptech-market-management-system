@@ -14,11 +14,17 @@ public class Product extends BaseEntity {
     private Brand brand;
     private Category category;
     private Employee employee;
+    private Supplier supplier;
     private String name;
     private double price;
     private int quantityInStock;
     
     public Product() {
+        // Init object
+        this.brand = new Brand();
+        this.supplier = new Supplier();
+        this.employee = new Employee();
+        this.category = new Category();
     }
 
     /**
@@ -118,6 +124,14 @@ public class Product extends BaseEntity {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
+    
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
 
     /**
      *
@@ -171,6 +185,5 @@ public class Product extends BaseEntity {
     public String toString() {
         return "Product { " + "ID : " + id + " || Brand ID : " + getBrand() + " || Category ID : " + getCategory() + " || Employee ID : " + getEmployee() + " || Product Name : " + name + " || Product Price : " + price + " || Product Stock : " + quantityInStock + " } ";
     }
-
 
 }

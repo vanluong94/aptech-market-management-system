@@ -8,11 +8,19 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import vn.aptech.quanlybanhang.entities.Brand;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.entities.ImportProduct;
 import vn.aptech.quanlybanhang.entities.Product;
+import vn.aptech.quanlybanhang.service.ImportProductService;
+import vn.aptech.quanlybanhang.service.ImportProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
+/**
+ *
+ * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ */
 public class ProductDAOImpl implements ProductDAO {
 
     private final static String SQL_SELECT_ALL = "SELECT * FROM products";
@@ -21,6 +29,12 @@ public class ProductDAOImpl implements ProductDAO {
     private final static String SQL_INSERT = "INSERT INTO `products` (`brand_id`, `category_id`, `employee_id`, `product_name`,"
             + " `product_price`, `product_stock`) VALUES (?, ?, ?, ?, ?, ?);";
     private final static String SQL_DELETE = "DELETE FROM products WHERE product_id = ?";
+    
+    private final ImportProductService importProductService;
+
+    public ProductDAOImpl() {
+        this.importProductService = new ImportProductServiceImpl();
+    }
 
     /**
      *
@@ -31,8 +45,11 @@ public class ProductDAOImpl implements ProductDAO {
     @Override
     public boolean create(Product object) throws SQLException {
         int rowsAffected = -1;
-        try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT);
+        Connection conn = null;
+        try {
+            conn = DBConnection.getConnection();
+            conn.setAutoCommit(false);
+            PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
             pstmt.setInt(1, object.getBrand().getBrandId());
             pstmt.setInt(2, object.getCategory().getCategoryId());
             pstmt.setInt(3, object.getEmployee().getEmployeeId());
@@ -40,8 +57,32 @@ public class ProductDAOImpl implements ProductDAO {
             pstmt.setDouble(5, object.getPrice());
             pstmt.setInt(6, object.getQuantityInStock());
             rowsAffected = pstmt.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                ResultSet rs = pstmt.getGeneratedKeys();
+                if (rs.next()) {
+                    object.setId(rs.getInt(1));
+                    ImportProduct importProduct = new ImportProduct();
+                    importProduct.setEmployee(object.getEmployee());
+                    importProduct.setSupplier(object.getSupplier());
+                    importProduct.setProduct(object);
+                    importProduct.setQuantity(object.getQuantityInStock());
+                    importProduct.setPrice(object.getPrice());
+                    if (!importProductService.create(importProduct)) {
+                        rowsAffected = -1;
+                    }
+                }
+            }
+            conn.commit();
         } catch (SQLException e) {
             throw e;
+        } catch (Exception ex) {
+            Logger.getLogger(ProductDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                conn.setAutoCommit(true);
+                conn.close();
+            }
         }
         return rowsAffected > 0;
     }
@@ -201,6 +242,23 @@ public class ProductDAOImpl implements ProductDAO {
         return products;
     }
 
+    private Product mapRersultSetToObject(ResultSet rs) throws SQLException {
+        Product product = new Product();
+        try {
+            product.setId(rs.getInt("product_id"));
+            product.getBrand().setBrandId(rs.getInt("brand_id"));
+            product.getSupplier().setId(rs.getInt("supplier_id"));
+            product.getCategory().setCategoryId(rs.getInt("category_id"));
+            product.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+            product.setName(rs.getString("product_name"));
+            product.setPrice(rs.getDouble("product_price"));
+            product.setQuantityInStock(rs.getInt("product_stock"));
+        } catch (SQLException ex) {
+            throw ex;
+        }
+        return product;
+    }
+    
     @Override
     public PaginatedResults<Product> select(int page) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
