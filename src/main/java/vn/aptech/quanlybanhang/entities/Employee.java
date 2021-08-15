@@ -120,7 +120,6 @@ public class Employee {
         System.out.println("Chuc vu : " + department);
         System.out.println("ID : " + employeeId);
         System.out.println("UserName : " + userName);
-        System.out.println("Password : " + password);
         System.out.println("--------------------------------");
     }
 }

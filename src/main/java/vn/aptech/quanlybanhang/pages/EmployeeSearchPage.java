@@ -40,12 +40,11 @@ public class EmployeeSearchPage extends Page {
                             ep.getAddress(),
                             ep.getPhone(),
                             ep.getDepartment(),
-                            ep.getUserName(),
-                            ep.getPassword()
+                            ep.getUserName()
                         };
                         rows.add(row);
                     }
-                    String[] headers = {"ID", "Name", "Address", "Phone", "Department", "UserName", "Password"};
+                    String[] headers = {"ID", "Name", "Address", "Phone", "Department", "UserName"};
                     TableUI tableUI = new TableUI(headers, rows);
                     tableUI.display();
                 }
