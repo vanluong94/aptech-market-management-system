@@ -32,7 +32,7 @@ public class ProductOutOfStockPage extends Page {
                 PaginatedResults<Product> results = productService.selectOutOfStock(page);
                 
                 if(results.getResults().isEmpty()) {
-                    System.out.println("<Khong tim thay Nhan Hang nao>");
+                    System.out.println("<Khong co SP nao het hang>");
                     return;
                 }
                 
