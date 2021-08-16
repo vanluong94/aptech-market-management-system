@@ -83,7 +83,7 @@ public class PaginatedResults<T> {
                 System.out.println("2. Trang truoc");
             }
 
-            System.out.println("3. Di toi trang");
+            System.out.println("3. Chọn trang");
             System.out.println("-1. Quay lai");
         }
 

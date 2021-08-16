@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import vn.aptech.quanlybanhang.common.MessageCommon;
 import vn.aptech.quanlybanhang.common.MessageContent;
-import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
@@ -42,7 +41,7 @@ public class ProductSearchPage extends Page {
                         Object[] row = {
                             product.getId(),
                             product.getName(),
-                            StringCommon.convertDoubleToVND(product.getPrice()),
+                            product.getPriceString(),
                             product.getQuantityInStock()
                         };
                         rows.add(row);
