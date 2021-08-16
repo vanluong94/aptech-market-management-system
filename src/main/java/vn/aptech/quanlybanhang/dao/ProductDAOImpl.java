@@ -20,8 +20,11 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 /**
  *
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class ProductDAOImpl implements ProductDAO {
+
+    private final static int PER_PAGE = 10;
 
     private final static String SQL_SELECT_ALL = "SELECT * FROM products";
     private final static String SQL_GET_ONE = "SELECT * FROM products WHERE product_id = ?";
@@ -29,6 +32,15 @@ public class ProductDAOImpl implements ProductDAO {
     private final static String SQL_INSERT = "INSERT INTO `products` (`brand_id`, `category_id`, `employee_id`, `product_name`,"
             + " `product_price`, `product_stock`) VALUES (?, ?, ?, ?, ?, ?);";
     private final static String SQL_DELETE = "DELETE FROM products WHERE product_id = ?";
+    private final static String SQL_SELECT_OUT_STOCK = "SELECT "
+            + " products.*, categories.category_name, brands.brand_name, employees.employee_name, suppliers.supplier_name"
+            + " FROM products"
+            + " LEFT JOIN brands ON products.brand_id = brands.brand_id"
+            + " LEFT JOIN categories ON products.category_id = categories.category_id"
+            + " LEFT JOIN employees ON products.employee_id = employees.employee_id"
+            + " LEFT JOIN suppliers ON products.supplier_id = suppliers.supplier_id"
+            + " WHERE product_stock = 0"
+            + " LIMIT ?,?";
     
     private final ImportProductService importProductService;
 
@@ -240,6 +252,46 @@ public class ProductDAOImpl implements ProductDAO {
             throw e;
         }
         return products;
+    }
+
+
+    @Override
+    public PaginatedResults<Product> selectOutOfStock(int page) throws SQLException {
+
+        PaginatedResults<Product> pagination = new PaginatedResults<>(page, PER_PAGE);
+        List<Product> products = new ArrayList<>();
+
+        try ( Connection conn = DBConnection.getConnection()) {
+            
+            // query items
+            PreparedStatement stSelect = conn.prepareStatement(SQL_SELECT_OUT_STOCK);
+            stSelect.setInt(1, pagination.getOffset());
+            stSelect.setInt(2, pagination.getPerPage());
+            ResultSet rs = stSelect.executeQuery();
+
+            while (rs.next()) {
+                Product product = this.mapRersultSetToObject(rs);
+
+                product.getBrand().setBrandName(rs.getString("brand_name"));
+                product.getSupplier().setName(rs.getString("supplier_name"));
+                product.getCategory().setCategoryName(rs.getString("category_name"));
+                product.getEmployee().setName(rs.getString("employee_name"));
+
+                products.add(product);
+            }
+
+            pagination.setResults(products);
+
+            // query count
+            String sqlCount = PaginatedResults.parseCountSQL(SQL_SELECT_OUT_STOCK);
+            Statement st = DBConnection.getConnection().createStatement();
+            ResultSet countRs = st.executeQuery(sqlCount);
+            if (countRs.next()) {
+                pagination.setTotalItems(countRs.getInt(1));
+            }
+        }
+
+        return pagination;
     }
 
     private Product mapRersultSetToObject(ResultSet rs) throws SQLException {

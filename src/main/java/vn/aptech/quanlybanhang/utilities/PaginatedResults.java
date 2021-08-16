@@ -149,4 +149,10 @@ public class PaginatedResults<T> {
     public boolean isPageValid(int checkPage) {
         return checkPage > 1 && checkPage < this.getTotalPages();
     }
+    
+    public static String parseCountSQL(String selectSQL) {
+        return selectSQL
+                .replaceFirst("SELECT((\\n|.)+)FROM", "SELECT COUNT(*) FROM")
+                .replaceFirst("LIMIT (\\n|.+)", "");
+    }
 }
