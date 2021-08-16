@@ -122,4 +122,16 @@ public class Employee {
         System.out.println("UserName : " + userName);
         System.out.println("--------------------------------");
     }
+    
+    public boolean isAdmin() {
+        return this.getDepartment().equals(Department.ROLE_ADMIN);
+    }
+    
+    public boolean isInventory() {
+        return this.getDepartment().equals(Department.ROLE_EMPLOYEE_INVENTORY);
+    }
+    
+    public boolean isCashier() {
+        return this.getDepartment().equals(Department.ROLE_EMPLOYEE_CASHER);
+    }
 }
