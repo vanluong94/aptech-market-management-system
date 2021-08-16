@@ -3,6 +3,7 @@
  */
 package vn.aptech.quanlybanhang.entities;
 
+import vn.aptech.quanlybanhang.common.StringCommon;
 /**
  *
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
@@ -156,7 +157,11 @@ public class Product extends BaseEntity {
     public double getPrice() {
         return price;
     }
-
+    
+    public String getPriceString() {
+        return StringCommon.convertDoubleToVND(price);
+    }
+    
     /**
      *
      * @param price
