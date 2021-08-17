@@ -43,7 +43,7 @@ public class ImportProductServiceImpl implements ImportProductService {
 
     @Override
     public List<ImportProduct> findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return importProductDAO.findAll();
     }
 
     @Override

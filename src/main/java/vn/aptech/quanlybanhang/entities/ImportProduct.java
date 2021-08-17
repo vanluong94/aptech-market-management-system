@@ -18,6 +18,12 @@ public class ImportProduct {
     private double price;
     private Date createdAt;
 
+    public ImportProduct() {
+        this.supplier = new Supplier();
+        this.product = new Product();
+        this.employee = new Employee();
+    }
+    
     /**
      * @return the id
      */

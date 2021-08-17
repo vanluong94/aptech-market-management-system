@@ -5,9 +5,12 @@ package vn.aptech.quanlybanhang.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.ImportProduct;
+import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
@@ -16,6 +19,7 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  */
 public class ImportProductDAOImpl implements ImportProductDAO {
+    private final static String SQL_SELECT_ALL = "SELECT * FROM v_import_product;";
     private final static String SQL_INSERT = "INSERT INTO `import_products` (`supplier_id`, `product_id`, `employee_id`, `product_quantity`,"
             + " `product_price`) VALUES (?, ?, ?, ?, ?);";
     
@@ -57,7 +61,29 @@ public class ImportProductDAOImpl implements ImportProductDAO {
 
     @Override
     public List<ImportProduct> findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<ImportProduct> importProducts = new ArrayList<ImportProduct>();
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                ImportProduct importProduct = new ImportProduct();
+                importProduct.setId(rs.getInt("import_product_id"));
+                
+                importProduct.getSupplier().setId(rs.getInt("supplier_id"));
+                importProduct.getSupplier().setName(rs.getString("supplier_name"));
+
+                importProduct.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                importProduct.getEmployee().setName(rs.getString("employee_name"));
+                
+                importProduct.setPrice(rs.getDouble("product_price"));
+                importProduct.setQuantity(rs.getInt("product_quantity"));
+                importProduct.setCreatedAt(rs.getTimestamp("date_added"));
+                importProducts.add(importProduct);
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return importProducts;
     }
 
     @Override
