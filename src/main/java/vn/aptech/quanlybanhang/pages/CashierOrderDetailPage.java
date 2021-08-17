@@ -15,11 +15,11 @@ public class CashierOrderDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tim Hoa Don theo ID";
+        return "Tìm Hóa đơn theo ID";
     }
     
     @Override
     public String getBreadcrumbPathName(){
-        return "Tim Kiem";
+        return "Tìm kiếm ";
     }
 }

@@ -23,7 +23,7 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public boolean create(Discount object) throws SQLException, Exception {
         if (object == null) {
-            throw new Exception("Ten chuong trinh khong duoc de trong!");
+            throw new Exception("Tên chương trình không được để trống!");
         }
         return discountDAO.create(object);
     }
@@ -32,7 +32,7 @@ public class DiscountServiceImpl implements DiscountService {
     public boolean deleteById(int id) throws SQLException {
         if (id < 1) {
             try {
-                throw new Exception("ID khong hop le!");
+                throw new Exception("ID không hợp lệ!");
             } catch (Exception ex) {
                 Logger.getLogger(DiscountServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -43,7 +43,7 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public Discount findById(int id) throws SQLException, Exception {
         if (id < 1) {
-            throw new Exception("ID khong hop le!");
+            throw new Exception("ID không hợp lệ!");
         }
         return discountDAO.findById(id);
     }

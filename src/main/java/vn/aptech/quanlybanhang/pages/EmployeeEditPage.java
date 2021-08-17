@@ -23,73 +23,73 @@ public class EmployeeEditPage extends Page {
         try {
             EmployeeService employeeService = new EmployeeServiceImpl();
             Scanner sc = new Scanner(System.in);
-            System.out.print("Nhap ID nhan vien muon sua : ");
+            System.out.print("Nhập ID Nhân viên muốn sửa : ");
             int employeeId = -999;
             employeeId = sc.nextInt();
             while (employeeId == -999) {
-                System.out.println("Id khong duoc de trong !");
-                System.out.print("Nhap ID nhan vien : ");
+                System.out.println("Id không được để trống !");
+                System.out.print("Nhập ID Nhân viên : ");
                 employeeId = sc.nextInt();
             }
             sc.nextLine();
-            System.out.print("Sua ten nhan vien thanh : ");
+            System.out.print("Sửa tên Nhân viên thanh : ");
             String employeeName = sc.nextLine();
             while (employeeName.length() == 0) {
-                System.out.println("Ten khong duoc de trong !");
-                System.out.print("Sua ten nhan vien thanh : ");
+                System.out.println("Tên không được để trống !");
+                System.out.print("Sửa tên Nhân viên thanh : ");
                 employeeName = sc.nextLine();
             }
-            System.out.print("Sua dia chi nhan vien thanh : ");
+            System.out.print("Sửa Địa chỉ Nhân viên thanh : ");
             String employeeAddress = sc.nextLine();
             while (employeeAddress.length() == 0) {
-                System.out.println("Dia chi khong duoc de trong !");
-                System.out.print("Sua dia chi nhan vien thanh : ");
+                System.out.println("Địa chỉ không được để trống !");
+                System.out.print("Sửa Địa chỉ Nhân viên thanh : ");
                 employeeAddress = sc.nextLine();
             }
-            System.out.print("Sua so dien thoai thanh: ");
+            System.out.print("Sửa số điện thoại thanh: ");
             String employeePhone = sc.nextLine();
             while (employeePhone.length() == 0) {
-                System.out.println("So dien thoai khong duoc de trong !");
-                System.out.print("Sua so dien thoai thanh: ");
+                System.out.println("Số điện thoại không được để trống !");
+                System.out.print("Sửa số điện thoại thanh: ");
                 employeePhone = sc.nextLine();
             }
-            System.out.printf("Sua chuc vu thanh (chi nhap 1=%s, 2=%s hoac 3=%s): \n", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY);
+            System.out.printf("Sửa chức vụ thanh (chi nhập 1=%s, 2=%s hoac 3=%s): \n", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY);
             int employeeDepartment = sc.nextInt();
             while (employeeDepartment == 0) {
-                System.out.println("Chuc vu khong duoc de trong !");
-                System.out.print("Sua chuc vu thanh : ");
+                System.out.println("Chức vụ không được để trống !");
+                System.out.print("Sửa chức vụ thanh : ");
                 employeeDepartment = sc.nextInt();
             }
             while (employeeDepartment != Department.ROLE_ADMIN.getValue() 
                     && employeeDepartment != Department.ROLE_EMPLOYEE_CASHER.getValue() 
                     && employeeDepartment != Department.ROLE_EMPLOYEE_INVENTORY.getValue()) {
-                System.out.printf("Chi nhap 1=%s, 2=%s hoac 3=%s !\n", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY);
-                System.out.print("Sua chuc vu thanh : ");
+                System.out.printf("Chi nhập 1=%s, 2=%s hoac 3=%s !\n", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY);
+                System.out.print("Sửa chức vụ thanh : ");
                 employeeDepartment = sc.nextInt();
             }
             sc.nextLine();
-            System.out.print("Tao Usename moi: ");
+            System.out.print("Tạo Usename mới: ");
             String employeeUsername = sc.nextLine();
             while (employeeUsername.length() == 0) {
-                System.out.println("Username khong duoc de trong !");
-                System.out.print("Tao Usename moi: ");
+                System.out.println("Username không được để trống !");
+                System.out.print("Tạo Usename mới: ");
                 employeeUsername = sc.nextLine();
             }
             while (employeeUsername.length() < 6) {
-                System.out.println("Username tu 6 ki tu tro len !");
-                System.out.print("Tao Usename moi: ");
+                System.out.println("Username từ 6 ký tự trở lên !");
+                System.out.print("Tạo Usename mới: ");
                 employeeUsername = sc.nextLine();
             }
-            System.out.print("Tao Password moi: ");
+            System.out.print("Tạo Password mới: ");
             String employeePassword = sc.nextLine();
             while (employeePassword.length() == 0) {
-                System.out.println("Password khong duoc de trong !");
-                System.out.print("Tao Password moi: ");
+                System.out.println("Password không được để trống !");
+                System.out.print("Tạo Password mới: ");
                 employeePassword = sc.nextLine();
             }
             while (employeePassword.length() < 6) {
-                System.out.println("Password phai tu 6 ki tu tro len !");
-                System.out.print("Tao Password moi: ");
+                System.out.println("Password phải từ 6 ký tự trở lên !");
+                System.out.print("Tạo Password mới: ");
                 employeePassword = sc.nextLine();
             }
 
@@ -101,12 +101,12 @@ public class EmployeeEditPage extends Page {
                     && employeePassword.length() > 5) {
                 Employee employee2 = new Employee(employeeName, employeeAddress, employeePhone, Department.fromInt(employeeDepartment), employeeUsername, Md5.encode(employeePassword));
                 if (employeeService.updateById(employee2, employeeId)) {
-                    System.out.println("Sua nhan vien thanh cong!");
+                    System.out.println("Sửa Nhân viên thành công!");
                 } else {
-                    System.out.println("Da xay ra loi!");
+                    System.out.println("Đã xảy ra lỗi!");
                 }
             } else {
-                System.out.println("Da nhap sai!");
+                System.out.println("Đã nhập sai!");
 
             }
         } catch (Exception ex) {
@@ -116,7 +116,7 @@ public class EmployeeEditPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Sua Nhan Vien";
+        return "Sửa Nhân viên";
     }
 
 }

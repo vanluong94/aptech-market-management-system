@@ -29,7 +29,7 @@ public class CashierMenuOrder extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Tra cuu Hoa Don";
+        return "Tra cứu Hóa đơn";
     }
     
 }

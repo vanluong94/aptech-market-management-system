@@ -20,12 +20,12 @@ public class DiscountDeletePage extends Page {
         try {
             DiscountService discountService = new DiscountServiceImpl();
             
-            System.out.println("Nhap ID chuong trinh giam gia muon xoa :");
+            System.out.println("Nhập ID chương trình giảm giá muốn xóa :");
             int discountId = AppScanner.getScanner().nextInt();
             if (discountService.deleteById(discountId)) {
-                System.out.println("Xoa thanh cong Chuong trinh giam gia ");
+                System.out.println("Xóa thành công Chương trình giảm giá ");
             } else {
-                System.out.println("Da xay ra loi!");
+                System.out.println("Đã xảy ra lỗi!");
             }
         } catch (Exception ex) {
             Logger.getLogger(DiscountDeletePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class DiscountDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xoa Chuong trinh giam gia";
+        return "Xóa Chương trình giảm giá";
     }
     
 }

@@ -96,21 +96,21 @@ public class PaginatedResults<T> {
         if (this.needsPagination()) {
             do {
 
-                int choice = AppScanner.scanIntWithMessage("Vui long nhap lua chon: ");
+                int choice = AppScanner.scanIntWithMessage("Vui lòng nhập lựa chọn: ");
 
                 switch (choice) {
                     case GO_NEXT:
                         if (this.hasNextPage()) {
                             targetPage = this.getCurrentPage() + 1;
                         } else {
-                            System.out.println("Khong co trang sau");
+                            System.out.println("Không có trang sau");
                         }
                         break;
                     case GO_PREV:
                         if (this.hasPrevPage()) {
                             targetPage = this.getCurrentPage() - 1;
                         } else {
-                            System.out.println("Khong co trang truoc");
+                            System.out.println("Không có trang trước");
                         }
                         break;
                     case GO_PAGE:

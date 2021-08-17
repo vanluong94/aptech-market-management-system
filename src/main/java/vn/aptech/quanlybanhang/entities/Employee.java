@@ -112,15 +112,15 @@ public class Employee {
     }
 
     public void showOne() {
-        System.out.println("====== Chi tiet nhan vien ======");
-        System.out.println("Chi tiet nhan vien " + name + " :");
-        System.out.println("Ho ten : " + name);
-        System.out.println("Dia chi: " + address);
-        System.out.println("So dien thoai: " + phone);
-        System.out.println("Chuc vu : " + department);
+        System.out.println("====== Chi tiết nhân viên ======");
+        System.out.println("Chi tiết Nhân viên " + name + " :");
+        System.out.println("Họ tên : " + name);
+        System.out.println("Địa chỉ: " + address);
+        System.out.println("Số điện thoại: " + phone);
+        System.out.println("Chức vụ : " + department);
         System.out.println("ID : " + employeeId);
         System.out.println("UserName : " + userName);
-        System.out.println("--------------------------------");
+        System.out.println("=================================");
     }
     
     public boolean isAdmin() {

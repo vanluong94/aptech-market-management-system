@@ -15,12 +15,12 @@ public class OrderSearchByCustomerPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tim kiem Don Hang theo Khach Hang";
+        return "Tìm kiếm Đơn hàng theo Khách hàng";
     }
     
     @Override
     public String getBreadcrumbPathName(){
-        return "Tim kiem Don Hang";
+        return "Tìm kiếm Đơn hàng";
     }
     
 }

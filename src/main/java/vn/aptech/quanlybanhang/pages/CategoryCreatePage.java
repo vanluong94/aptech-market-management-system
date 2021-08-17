@@ -16,7 +16,7 @@ public class CategoryCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Them Danh Muc";
+        return "Thêm Danh mục";
     }
 
     @Override

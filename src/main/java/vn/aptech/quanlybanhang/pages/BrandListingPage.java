@@ -34,7 +34,7 @@ public class BrandListingPage extends Page {
                 PaginatedResults<Brand> results = brandService.select(page);
                 
                 if(results.getResults().isEmpty()) {
-                    System.out.println("<Khong tim thay Nhan Hang nao>");
+                    System.out.println("<Không tìm thấy Nhãn hàng nào>");
                     return;
                 }
                 
@@ -50,7 +50,7 @@ public class BrandListingPage extends Page {
                     rows.add(row);
                 }
 
-                String[] headers = {"ID", "Name", "Address"};
+                String[] headers = {"ID", "Tên Nhãn hàng", "Địa chỉ"};
 
                 TableUI theTable = new TableUI(headers, rows);
                 theTable.display(); //table

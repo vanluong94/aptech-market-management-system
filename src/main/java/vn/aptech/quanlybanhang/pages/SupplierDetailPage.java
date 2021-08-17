@@ -19,11 +19,11 @@ public class SupplierDetailPage extends Page {
     public void displayContent() {
         try {
             SupplierService supplierService = new SupplierServiceImpl();
-            System.out.println("Nhap ID nha cung cap muon kiem tra : ");
+            System.out.println("Nhập ID Nhà cung cấp muốn kiem tra : ");
             int supplierId = AppScanner.getScanner().nextInt();
             Supplier supplier = supplierService.findById(supplierId);
             if (supplier == null) {
-                System.out.println("Khong tim thay ID nha cung cap phu hop");
+                System.out.println("Không tìm thấy ID Nhà cung cấp phù hợp");
             } else {
                 System.out.println(supplier.toString());
             }
@@ -34,7 +34,7 @@ public class SupplierDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xem chi tiet Nha Cung Cap";
+        return "Xem chi tiết Nha Cung Cap";
     }
     
 }

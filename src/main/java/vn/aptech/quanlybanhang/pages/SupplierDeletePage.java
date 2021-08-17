@@ -19,12 +19,12 @@ public class SupplierDeletePage extends Page {
         try {
             SupplierService supplierService = new SupplierServiceImpl();
             
-            System.out.println("Nhap ID nha cung cap muon xoa : ");
+            System.out.println("Nhập ID Nhà cung cấp muốn xóa : ");
             int supplierId = AppScanner.getScanner().nextInt();
             if (supplierService.deleteById(supplierId)) {
-                System.out.println("Xoa thanh cong Nha cung cap!");
+                System.out.println("Xóa thành công Nhà cung cấp!");
             } else {
-                System.out.println("Da xay ra loi!");
+                System.out.println("Đã xảy ra lỗi!");
             }
         } catch (Exception ex) {
             Logger.getLogger(SupplierDeletePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -33,7 +33,7 @@ public class SupplierDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xoa Nha Cung Cap";
+        return "Xóa Nha Cung Cap";
     }
     
 }

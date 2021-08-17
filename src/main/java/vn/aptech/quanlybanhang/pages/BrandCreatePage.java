@@ -39,7 +39,7 @@ public class BrandCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Them Nhan Hang";
+        return "Thêm Nhãn hàng";
     }
     
 }

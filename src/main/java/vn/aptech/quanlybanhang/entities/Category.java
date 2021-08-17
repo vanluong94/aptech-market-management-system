@@ -61,7 +61,7 @@ public class Category {
     @Override
     public String toString() {
         return "[ID] " + categoryId + "\n"
-                + "[Ten] " + categoryName + "\n";
+                + "[Tên] " + categoryName + "\n";
     }
 
 }

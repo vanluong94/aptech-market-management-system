@@ -54,7 +54,7 @@ public class BrandSearchPage extends Page {
                         rows.add(row);
                     }
                     
-                    String[] headers = {"ID", "Name", "Address"};
+                    String[] headers = {"ID", "Tên Nhãn hàng", "Địa chỉ"};
                     
                     TableUI theTable = new TableUI(headers, rows);
                     theTable.display();
@@ -63,9 +63,7 @@ public class BrandSearchPage extends Page {
                     System.out.println("Không tìm thấy nhãn hàng nào.");
                     retry = true;
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(BrandSearchPage.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
+            } catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(BrandSearchPage.class.getName()).log(Level.SEVERE, null, ex);
             }
         }while(retry);
@@ -73,7 +71,7 @@ public class BrandSearchPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tim Nhan Hang";
+        return "Tìm Nhãn hàng";
     }
     
 }

@@ -19,10 +19,10 @@ public class ProductDetailPage extends Page {
     public void displayContent() {
         try {
             ProductService productService = new ProductServiceImpl();
-            int productId = AppScanner.scanIntWithMessage("Nhap ID san phan ban muon xem : ");
+            int productId = AppScanner.scanIntWithMessage("Nhập ID Sản phẩm bạn muốn xem : ");
             Product product = productService.findById(productId);
             if (product == null) {
-                System.out.println("Khong tim thay ID San pham phu hop!");
+                System.out.println("Không tìm thấy ID Sản phẩm phù hợp!");
             } else {
                 System.out.println(product.toString());
             }
@@ -33,7 +33,7 @@ public class ProductDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tim san pham trong kho theo ID San pham";
+        return "Tim Sản phẩm trong kho theo ID Sản phẩm";
     }
     
 }

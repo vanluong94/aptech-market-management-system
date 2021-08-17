@@ -23,10 +23,10 @@ public class ProductCreatePage extends Page {
     public void displayContent() {
         ProductService productService = new ProductServiceImpl();
         Brand brandId = new Brand();
-        brandId.setBrandId(AppScanner.scanIntWithMessage("Nhap Brand ID : "));
+        brandId.setBrandId(AppScanner.scanIntWithMessage("Nhập Brand ID : "));
 
         Category categoryId = new Category();
-        categoryId.setCategoryId(AppScanner.scanIntWithMessage("Nhap Category ID :"));
+        categoryId.setCategoryId(AppScanner.scanIntWithMessage("Nhập Category ID :"));
 
 //        Employee employeeId = new Employee();
 //        employeeId.getEmployeeId();
@@ -35,17 +35,17 @@ public class ProductCreatePage extends Page {
 //        employeeId2.getCurrentEmployee();
         
         
-        String productName = AppScanner.scanStringWithMessage("Nhap ten San Pham :");
-        double productPrice = AppScanner.scanDoubleWithMessage("Gia tien :");
-        int productStock = AppScanner.scanIntWithMessage("So luong :");
+        String productName = AppScanner.scanStringWithMessage("Nhập tên Sản phẩm :");
+        double productPrice = AppScanner.scanDoubleWithMessage("giá tien :");
+        int productStock = AppScanner.scanIntWithMessage("số lượng :");
 
         Product productNew = new Product(brandId, categoryId, AuthServiceImpl.getCurrentEmployee(), productName, productPrice, productStock);
 
         try {
             if (productService.create(productNew)) {
-                System.out.println("Them San Pham moi thanh cong!");
+                System.out.println("Thêm Sản phẩm mới thành công!");
             } else {
-                System.out.println("Da xay ra loi");
+                System.out.println("Đã xảy ra lỗi");
             }
         } catch (Exception ex) {
             Logger.getLogger(ProductCreatePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,7 +54,7 @@ public class ProductCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tao San Pham";
+        return "Tạo Sản phẩm";
     }
 
 

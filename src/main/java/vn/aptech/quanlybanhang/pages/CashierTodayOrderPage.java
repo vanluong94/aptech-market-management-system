@@ -15,7 +15,7 @@ public class CashierTodayOrderPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Hoa Don hom nay";
+        return "Hóa đơn hôm nay";
     }
     
 }

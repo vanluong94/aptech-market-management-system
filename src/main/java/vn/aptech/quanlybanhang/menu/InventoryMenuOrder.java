@@ -33,7 +33,7 @@ public class InventoryMenuOrder extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Tra cuu Hoa don";
+        return "Tra cứu Hóa đơn";
     }
     
 }

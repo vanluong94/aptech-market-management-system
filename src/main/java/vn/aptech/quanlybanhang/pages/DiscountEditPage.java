@@ -23,20 +23,20 @@ public class DiscountEditPage extends Page {
         do {
             retry = false;
             try {
-                int id = AppScanner.scanIntWithMessage("Nhap ID Chuong trinh khuyen mai muon thay doi : ");
+                int id = AppScanner.scanIntWithMessage("Nhập ID Chương trình khuyen mai muốn thay đổi : ");
                 Discount discount = discountService.findById(id);
                 if (discount == null) {
-                    System.out.println("ID khong hop le!");
+                    System.out.println("ID không hợp lệ!");
                     retry = true;
                 }else{
-                    System.out.println("\nNhap ten moi cho Chuong trinh giam gia moi.");
-                    String reName = AppScanner.scanStringWithMessage("Nhap ten Chuong trinh giam gia moi : ");
+                    System.out.println("\nNhập tên mới cho Chương trình giảm giá mới.");
+                    String reName = AppScanner.scanStringWithMessage("Nhập tên Chương trình giảm giá mới : ");
                     
                     if (reName.length() > 0) {
                         discount.setName(reName);
                     }
                     discountService.update(discount);
-                    System.out.println("Doi ten thanh cong!");
+                    System.out.println("Doi tên thành công!");
                 }
             } catch (InputInvalidException e) {
                 System.out.println(e.getMessage());
@@ -50,7 +50,7 @@ public class DiscountEditPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Sua Chuong trinh Giam gia";
+        return "Sửa Chương trình giảm giá";
     }
     
 }

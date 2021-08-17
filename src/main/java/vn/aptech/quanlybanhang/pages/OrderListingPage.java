@@ -15,7 +15,7 @@ public class OrderListingPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sach Hoa don";
+        return "Danh sách Hóa đơn";
     }
     
 }

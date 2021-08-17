@@ -32,7 +32,7 @@ public class ProductOutOfStockPage extends Page {
                 PaginatedResults<Product> results = productService.selectOutOfStock(page);
                 
                 if(results.getResults().isEmpty()) {
-                    System.out.println("<Khong co SP nao het hang>");
+                    System.out.println("<Không có Sản phẩm nào hết hàng>");
                     return;
                 }
                 
@@ -62,11 +62,11 @@ public class ProductOutOfStockPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sach San Pham het hang";
+        return "Danh sách Sản phẩm hết hàng";
     }
     
     @Override
     public String getBreadcrumbPathName(){
-        return "San pham het hang";
+        return "Sản phẩm hết hàng";
     }
 }

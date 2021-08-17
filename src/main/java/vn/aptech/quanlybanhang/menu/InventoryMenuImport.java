@@ -29,7 +29,7 @@ public class InventoryMenuImport extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quan ly Nhap kho";
+        return "Quản lý Nhập kho";
     }
     
 }

@@ -63,7 +63,7 @@ public class ProductEditPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Sua San Pham";
+        return "Sửa Sản phẩm";
     }
     
 }

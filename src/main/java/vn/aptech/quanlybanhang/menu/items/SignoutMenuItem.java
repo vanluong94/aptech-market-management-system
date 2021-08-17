@@ -18,7 +18,7 @@ public class SignoutMenuItem extends MenuItem {
 
     @Override
     public String getTitle() {
-        return "Dang xuat";
+        return "Đăng xuất";
     }
 
     @Override
@@ -26,7 +26,7 @@ public class SignoutMenuItem extends MenuItem {
         AuthServiceImpl.logout();
         
         HelperUI.displayMargin();
-        System.out.println("Dang xuat thanh cong!");
+        System.out.println("Đăng xuất thành công!");
         
         Main.start();
     }

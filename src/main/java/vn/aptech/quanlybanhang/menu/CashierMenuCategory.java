@@ -31,7 +31,7 @@ public class CashierMenuCategory extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Tra cuu Danh Muc";
+        return "Tra cứu Danh mục";
     }
     
 }

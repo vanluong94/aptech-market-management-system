@@ -23,7 +23,7 @@ public class CategorySearchPage extends Page {
     @Override
     public void displayContent() {
 
-        String keyword = AppScanner.scanStringWithMessage("Nhap tu khoa cho ten Danh Muc can tim: ");
+        String keyword = AppScanner.scanStringWithMessage("Nhập từ khóa cho tên Danh mục cần tìm: ");
 
         CategoryService categoryService = new CategoryServiceImpl();
 
@@ -34,7 +34,7 @@ public class CategorySearchPage extends Page {
             System.out.println("\n\n");
 
             if (categories.isEmpty()) {
-                System.out.println("<Khong tim thay Danh muc nao>");
+                System.out.println("<Không tìm thấy Danh mục nào>");
             } else {
                 // transfer data to table row
                 for (Category cat : categories) {
@@ -47,7 +47,7 @@ public class CategorySearchPage extends Page {
                     rows.add(row);
                 }
 
-                String[] headers = {"ID", "Ten Danh Muc", "So San Pham"};
+                String[] headers = {"ID", "Tên Danh mục", "Số Sản Phẩm"};
 
                 TableUI theTable = new TableUI(headers, rows);
                 theTable.display();
@@ -59,7 +59,7 @@ public class CategorySearchPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tim kiem Danh Muc";
+        return "Tìm kiếm Danh mục";
     }
 
 }

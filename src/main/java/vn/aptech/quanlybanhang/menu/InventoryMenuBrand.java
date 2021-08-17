@@ -35,7 +35,7 @@ public class InventoryMenuBrand extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quan ly Nhan hang";
+        return "Quản lý Nhãn hàng";
     }
     
 }

@@ -35,7 +35,7 @@ public class AdminMenuDiscount extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quan ly Chuong trinh giam gia";
+        return "Quản lý Chương trình giảm giá";
     }
     
 }

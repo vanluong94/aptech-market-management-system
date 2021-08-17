@@ -23,30 +23,30 @@ public class CategoryDeletePage extends Page {
             Category theCat;
 
             do {
-                int id = AppScanner.scanIntWithMessage("\nNhap ID cho Danh Muc can xoa: ");
+                int id = AppScanner.scanIntWithMessage("\nNhập ID cho danh mục cần xóa: ");
 
                 CategoryService categoryService = new CategoryServiceImpl();
                 theCat = categoryService.findById(id);
 
                 if (theCat != null) {
 
-                    HeaderUI.display("Thong tin Danh Muc");
+                    HeaderUI.display("Thông tin Danh mục");
                     System.out.println(theCat.toString());
 
-                    String confirm = AppScanner.scanStringWithMessage("Ban co chac chan muon xoa Danh Muc nay? (Y/N): ");
+                    String confirm = AppScanner.scanStringWithMessage("Bạn có chắc muốn xóa Danh mục này? (Y/N): ");
 
                     if (confirm.toLowerCase().equals("y")) {
                         System.out.println(""); //margin line
                         if (categoryService.deleteById(theCat.getCategoryId())) {
-                            System.out.println("Xoa thanh cong ten danh muc!");
+                            System.out.println("Xóa thành công tên Danh mục!");
                         } else {
-                            System.out.println("Da xay ra loi, khong the xoa Danh Muc.");
+                            System.out.println("Đã xảy ra lỗi, không thể xóa Danh mục.");
                         }
                     } else {
                         theCat = null; // let user select category again
                     }
                 } else {
-                    System.out.println("ID Danh Muc khong ton tai.");
+                    System.out.println("ID Danh mục không tồn tại");
                 }
 
             } while (theCat == null);
@@ -58,7 +58,7 @@ public class CategoryDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xoa Danh muc";
+        return "Xóa Danh mục";
     }
 
 }

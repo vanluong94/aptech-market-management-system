@@ -21,7 +21,7 @@ public class CategoryListingPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh Sach Danh Muc";
+        return "Danh sách Danh mục";
     }
     
     @Override
@@ -31,7 +31,7 @@ public class CategoryListingPage extends Page {
             List<Category> categories = categoryService.findAll();
             
             if (categories.isEmpty()) {
-                System.out.println("<Khong tim thay Danh muc nao>");
+                System.out.println("<Không tìm thấy Danh mục nào>");
             } else {
                 
                 List<Object[]> rows = new ArrayList<>();
@@ -47,7 +47,7 @@ public class CategoryListingPage extends Page {
                     rows.add(row);
                 }
 
-                String[] headers = {"ID", "Ten Danh Muc", "So San Pham"};
+                String[] headers = {"ID", "Tên Danh mục", "Số Sản phẩm"};
 
                 TableUI theTable = new TableUI(headers, rows);
                 theTable.display();

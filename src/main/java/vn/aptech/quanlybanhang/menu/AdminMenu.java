@@ -36,7 +36,7 @@ public class AdminMenu extends Menu {
 
     @Override
     protected final String registerMenuTitle() {
-        return "Phan mem quan ly Sieu Thi";
+        return "Phần mềm quản lý Siêu Thị";
     }
     
     @Override

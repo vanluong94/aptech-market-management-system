@@ -37,9 +37,9 @@ public class BrandDeletePage extends Page {
                     System.out.println("ID không tồn tại");
                     retry = true;
                 } else if( brandService.deleteById(brand.getBrandId()) ){
-                    System.out.println("Xoa thanh cong!");
+                    System.out.println("Xóa thành công!");
                 } else {
-                    System.out.println("Da xay ra loi.");
+                    System.out.println("Đã xảy ra lỗi");
                 }
             }catch(InputInvalidException e){
                 System.out.println(e.getMessage());
@@ -54,7 +54,7 @@ public class BrandDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xoa Nhan Hang";
+        return "Xóa Nhan Hang";
     }
     
 }

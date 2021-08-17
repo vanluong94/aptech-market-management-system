@@ -36,7 +36,7 @@ public class AdminMenuOrder extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quan ly Hoa don";
+        return "Quản lý Hóa đơn";
     }
     
 }

@@ -24,14 +24,14 @@ public class EmployeeSearchPage extends Page {
         EmployeeDAOImpl employeeDAOImpl = new EmployeeDAOImpl();
         do {
             try {
-                System.out.println("Nhap vao ten nhan vien can tim kiem: ");
+                System.out.println("Nhập vào tên Nhân viên cần tìm kiếm: ");
                 Scanner sc = new Scanner(System.in);
                 String tk = sc.nextLine();
                 List<Employee> employees = employeeDAOImpl.findByNameEmployee(tk);
                 if (employees.isEmpty()) {
                     System.out.println(MessageCommon.getMessage(MessageContent.OBJECT_NOT_FOUND, tk));
                 } else {
-                    System.out.println("Ket qua tim kiem voi tu '" + tk + "':");
+                    System.out.println("Kết quả tìm kiếm với từ '" + tk + "':");
                     List<Object[]> rows = new ArrayList<Object[]>();
                     for (Employee ep : employees) {
                         Object[] row = {
@@ -44,7 +44,7 @@ public class EmployeeSearchPage extends Page {
                         };
                         rows.add(row);
                     }
-                    String[] headers = {"ID", "Name", "Address", "Phone", "Department", "UserName"};
+                    String[] headers = {"ID", "Tên", "Địa chỉ", "SDT", "Chức vụ", "Tài khoản"};
                     TableUI tableUI = new TableUI(headers, rows);
                     tableUI.display();
                 }
@@ -60,7 +60,7 @@ public class EmployeeSearchPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tim kiem Nhan vien";
+        return "Tìm kiếm Nhân viên";
     }
 
 }
