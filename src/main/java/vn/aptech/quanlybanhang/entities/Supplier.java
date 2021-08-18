@@ -64,9 +64,6 @@ public class Supplier extends BaseEntity {
         this.address = address;
     }
 
-    @Override
-    public String toString() {
-        return "Supplier { " + "ID : " + id + " || SupplierName = " + name + " || SupplierAdress = " + address + " }";
-    }
+    
 
 }

@@ -3,16 +3,22 @@
  */
 package vn.aptech.quanlybanhang.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Vu Duy Long <vuduylong1999@gmail.com>
+ * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  */
 public class Discount extends BaseEntity {
 
     private int id;
     private String name;
+    private List<ProductDiscount> productDiscounts;
 
     public Discount() {
+        this.productDiscounts = new ArrayList<>();
     }
 
     public Discount(String name) {
@@ -47,9 +53,18 @@ public class Discount extends BaseEntity {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Discount { " + "DiscountId = " + id + ", DiscountName = " + name + " } ";
+    /**
+     * @return the productDiscounts
+     */
+    public List<ProductDiscount> getProductDiscounts() {
+        return productDiscounts;
+    }
+
+    /**
+     * @param productDiscounts the productDiscounts to set
+     */
+    public void setProductDiscounts(List<ProductDiscount> productDiscounts) {
+        this.productDiscounts = productDiscounts;
     }
 
 }

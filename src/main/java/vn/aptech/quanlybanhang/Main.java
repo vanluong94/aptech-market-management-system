@@ -24,7 +24,8 @@ public class Main {
             init();
             start();
         } finally {
-            DBConnection.maybeCloseConnection();
+//            DBConnection.maybeCloseConnection();
+            System.out.println("Bye bye...");
         }
     }
     
