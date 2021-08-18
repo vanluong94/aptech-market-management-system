@@ -36,13 +36,12 @@ public class EmployeeListingPage extends Page {
                     employee.getPhone(),
                     employee.getDepartment(),
                     employee.getUserName(),
-                    employee.getPassword()
                 };
                 
                 rows.add(row);
             }
             
-            String[] headers = {"ID", "Name", "Address", "Phone", "Department", "Username", "Password"};
+            String[] headers = {"ID", "Name", "Address", "Phone", "Department", "Username"};
             
             TableUI theTable = new TableUI(headers, rows);
             theTable.display();

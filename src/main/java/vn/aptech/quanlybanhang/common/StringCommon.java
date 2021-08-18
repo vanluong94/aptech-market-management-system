@@ -3,8 +3,7 @@
  */
 package vn.aptech.quanlybanhang.common;
 
-import java.text.DecimalFormat;
-import vn.aptech.quanlybanhang.entities.Product;
+import java.text.NumberFormat;
 
 /**
  *
@@ -17,7 +16,6 @@ public class StringCommon {
     }
     
     public static String convertDoubleToVND(double input) {
-        DecimalFormat formatter = new DecimalFormat("###,###,###");
-        return formatter.format(input) + " VND";
+        return NumberFormat.getCurrencyInstance().format(input);
     }
 }

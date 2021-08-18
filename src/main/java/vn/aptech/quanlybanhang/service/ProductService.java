@@ -6,6 +6,7 @@ package vn.aptech.quanlybanhang.service;
 import java.sql.SQLException;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.Product;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
  *
@@ -22,4 +23,6 @@ public interface ProductService extends BaseService<Product> {
      * @throws java.sql.SQLException
      */
     public List<Product> findByName(String name) throws SQLException;
+    
+    public PaginatedResults<Product> selectOutOfStock(int page) throws SQLException;
 }

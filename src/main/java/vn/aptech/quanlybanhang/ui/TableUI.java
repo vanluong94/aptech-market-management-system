@@ -79,8 +79,13 @@ public class TableUI {
             if(thisContent.length() > thisLength){
                 thisContent = thisContent.substring(0, thisLength - 4) + "...";
             }
-            
-            output += String.format("| %-" + (thisLength) + "s", thisContent);
+
+            if (thisContent.endsWith("₫")) {
+                output += String.format("|%" + (thisLength) + "s ", thisContent); // align right with price
+            } else {
+                output += String.format("| %-" + (thisLength) + "s", thisContent);
+
+            }
         }
 
         output += "|";

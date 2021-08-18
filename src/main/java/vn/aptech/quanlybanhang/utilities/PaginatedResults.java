@@ -83,7 +83,7 @@ public class PaginatedResults<T> {
                 System.out.println("2. Trang truoc");
             }
 
-            System.out.println("3. Di toi trang");
+            System.out.println("3. Chọn trang");
             System.out.println("-1. Quay lai");
         }
 
@@ -148,5 +148,11 @@ public class PaginatedResults<T> {
 
     public boolean isPageValid(int checkPage) {
         return checkPage > 1 && checkPage < this.getTotalPages();
+    }
+    
+    public static String parseCountSQL(String selectSQL) {
+        return selectSQL
+                .replaceFirst("SELECT((\\n|.)+)FROM", "SELECT COUNT(*) FROM")
+                .replaceFirst("LIMIT (\\n|.+)", "");
     }
 }
