@@ -60,7 +60,8 @@ public class Category {
 
     @Override
     public String toString() {
-        return "[ID] " + categoryId + "[Ten] " + categoryName + "\n";
+        return "[ID] " + categoryId + "\n"
+                + "[Tên] " + categoryName + "\n";
     }
 
 }

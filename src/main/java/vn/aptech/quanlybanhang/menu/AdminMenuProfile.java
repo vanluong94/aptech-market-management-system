@@ -32,7 +32,7 @@ public class AdminMenuProfile extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quan ly Profile";
+        return "Quản lý Profile";
     }
     
 }

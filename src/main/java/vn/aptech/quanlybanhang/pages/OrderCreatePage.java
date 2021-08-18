@@ -128,7 +128,7 @@ public class OrderCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tao Don Hang";
+        return "Tạo Đơn hàng";
     }
 
 }

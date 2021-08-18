@@ -25,7 +25,7 @@ public abstract class Menu extends MenuUI {
         if( isChoiceValid(choice) ){
             this.getMenuItems().get(choice).start();
         } else {
-            throw new MenuException("Lua chon khong kha dung!");
+            throw new MenuException("Lựa chọn không khả dụng!");
         }
     }
 
@@ -41,7 +41,7 @@ public abstract class Menu extends MenuUI {
             retry = false;
             
             try {
-                this.handle(AppScanner.scanIntWithMessage("Vui long nhap lua chon: "));
+                this.handle(AppScanner.scanIntWithMessage("Vui lòng nhập lựa chọn: "));
             } catch (MenuException ex) {
                 System.out.println(ex.getMessage());
                 retry = true;

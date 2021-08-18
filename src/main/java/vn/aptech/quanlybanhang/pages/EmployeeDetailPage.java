@@ -19,10 +19,10 @@ public class EmployeeDetailPage extends Page {
     public void displayContent() {
         try {
             EmployeeService employeeService = new EmployeeServiceImpl();
-            int employeeId = AppScanner.scanIntWithMessage("Nhap ID nhan vien : ");
+            int employeeId = AppScanner.scanIntWithMessage("Nhập ID Nhân viên : ");
             Employee employee = employeeService.findById(employeeId);
             if (employee == null) {
-                System.out.println("Khong tim thay ID nhan vien");
+                System.out.println("Không tìm thấy ID Nhân viên");
             } else {
                 employee.showOne();
             }
@@ -33,7 +33,7 @@ public class EmployeeDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xem chi tiet Nhan Vien";
+        return "Xem chi tiết Nhân viên";
     }
     
 }

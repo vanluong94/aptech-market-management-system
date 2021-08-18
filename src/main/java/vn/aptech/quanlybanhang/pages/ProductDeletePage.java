@@ -19,12 +19,12 @@ public class ProductDeletePage extends Page {
         try {
             ProductService productService = new ProductServiceImpl();
             Scanner sc = new Scanner(System.in);
-            System.out.println("Nhap ID san pham muon xoa : ");
+            System.out.println("Nhập ID Sản phẩm muốn xóa : ");
             int productId = sc.nextInt();
             if (productService.deleteById(productId)) {
-                System.out.println("Xoa San pham thanh cong!");
+                System.out.println("Xóa Sản phẩm thành công!");
             }else{
-                System.out.println("Da xay ra loi");
+                System.out.println("Đã xảy ra lỗi");
             }
         } catch (Exception e) {
               Logger.getLogger(ProductServiceImpl.class.getName()).log(Level.SEVERE, null, e);
@@ -34,7 +34,7 @@ public class ProductDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xoa San Pham";
+        return "Xóa Sản phẩm";
     }
 
 }

@@ -19,18 +19,18 @@ public class SupplierCreatePage extends Page {
     public void displayContent() {
         SupplierService supplierService = new SupplierServiceImpl();   
         
-        System.out.println("Nhap ten nha cung cap :");
+        System.out.println("Nhập tên Nhà cung cấp :");
         String supplierName = AppScanner.getScanner().nextLine();
-        System.out.println("Nhap dia chi nha cung cap :");
+        System.out.println("Nhập Địa chỉ Nhà cung cấp :");
         String supplierAddress = AppScanner.getScanner().nextLine();
 
         if (supplierName.length() > 0 && supplierAddress.length() > 0) {
             try {
                 Supplier supplier = new Supplier(supplierName, supplierAddress);
                 if (supplierService.create(supplier)) {
-                    System.out.println("Them nha cung cap thanh cong!");
+                    System.out.println("Thêm Nhà cung cấp thành công!");
                 } else {
-                    System.out.println("Da xay ra loi!");
+                    System.out.println("Đã xảy ra lỗi!");
                 }
             } catch (Exception ex) {
                 Logger.getLogger(SupplierCreatePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -40,7 +40,7 @@ public class SupplierCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Them Nha Cung Cap";
+        return "Thêm Nha Cung Cap";
     }
     
 }

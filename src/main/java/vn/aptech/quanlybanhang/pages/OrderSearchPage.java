@@ -15,7 +15,7 @@ public class OrderSearchPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tim kiem Hoa Don";
+        return "Tìm kiếm Hóa đơn";
     }
     
 }

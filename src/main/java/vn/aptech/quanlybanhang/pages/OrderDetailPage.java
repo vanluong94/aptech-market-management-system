@@ -15,7 +15,7 @@ public class OrderDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Chi tiet Hoa Don";
+        return "Chi tiết Hóa đơn";
     }
     
 }

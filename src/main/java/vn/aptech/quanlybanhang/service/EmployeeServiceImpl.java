@@ -29,7 +29,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public boolean create(Employee object) throws SQLException, Exception {
         if (object == null) {
-            throw new Exception("Doi tuong khong duoc de trong");
+            throw new Exception("Doi tuong không được để trống");
 
         }
         return employeeDAO.create(object);
@@ -44,7 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public boolean deleteById(int id) throws SQLException, Exception {
         if (id < 1) {
             try {
-                throw new Exception("ID khong hop le!");
+                throw new Exception("ID không hợp lệ!");
             } catch (Exception ex) {
                 Logger.getLogger(SupplierServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -55,7 +55,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee findById(int id) throws SQLException, Exception {
         if (id < 1) {
-            throw new Exception("ID khong hop le!");
+            throw new Exception("ID không hợp lệ!");
         }
         return employeeDAO.findById(id);
     }
@@ -69,7 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public boolean updateById(Employee object, int id) throws SQLException {
         if (object == null) {
             try {
-                throw new Exception("Doi tuong khong duoc de trong");
+                throw new Exception("Doi tuong không được để trống");
             } catch (Exception ex) {
                 Logger.getLogger(EmployeeServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -77,7 +77,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         if (id < 1) {
             try {
-                throw new Exception("ID khong hop le!");
+                throw new Exception("ID không hợp lệ!");
             } catch (Exception ex) {
                 Logger.getLogger(EmployeeServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -89,7 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee findByUsernameAndPassword(String username, String password) throws SQLException {
         if (username == null || password == null) {
             try {
-                throw new Exception("Username va Password khong duoc de trong");
+                throw new Exception("Username va Password không được để trống");
             } catch (Exception ex) {
                 Logger.getLogger(EmployeeServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -103,7 +103,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> findByNameEmployee(String username) throws SQLException {
         if (username == null) {
             try {
-                throw new Exception("Username khong duoc de trong");
+                throw new Exception("Username không được để trống");
             } catch (Exception ex) {
                 Logger.getLogger(EmployeeServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }

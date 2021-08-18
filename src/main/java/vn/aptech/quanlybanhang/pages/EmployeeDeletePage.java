@@ -20,12 +20,12 @@ public class EmployeeDeletePage extends Page {
             EmployeeService employeeService = new EmployeeServiceImpl();
             
             Scanner sc = new Scanner(System.in);
-            System.out.print("Nhap ID nhan vien muon xoa : ");
+            System.out.print("Nhập ID Nhân viên muốn xóa : ");
             int employeeId = sc.nextInt();
             if (employeeService.deleteById(employeeId)) {
-                System.out.println("Xoa nhan vien thanh cong!");
+                System.out.println("Xóa Nhân viên thành công!");
             } else {
-                System.out.println("Da xay ra loi!");
+                System.out.println("Đã xảy ra lỗi!");
             }
         } catch (Exception ex) {
             Logger.getLogger(EmployeeDeletePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class EmployeeDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xoa Nhan Vien";
+        return "Xóa Nhân viên";
     }
     
 }

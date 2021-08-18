@@ -25,71 +25,71 @@ public class EmployeeCreatePage extends Page {
             EmployeeService employeeService = new EmployeeServiceImpl();
             
             Scanner sc = new Scanner(System.in);
-            System.out.print("Nhap ten nhan vien : ");
+            System.out.print("Nhập tên Nhân viên : ");
             String employeeName = sc.nextLine();
             while (employeeName.length() == 0) {
-                System.out.println("Ten khong duoc de trong !");
-                System.out.print("Nhap ten nhan vien : ");
+                System.out.println("Tên không được để trống !");
+                System.out.print("Nhập tên Nhân viên : ");
                 employeeName = sc.nextLine();
             }
-            System.out.print("Nhap dia chi nhan vien : ");
+            System.out.print("Nhập Địa chỉ Nhân viên : ");
             String employeeAddress = sc.nextLine();
             while (employeeAddress.length() == 0) {
-                System.out.println("Dia chi khong duoc de trong !");
-                System.out.print("Nhap dia chi nhan vien : ");
+                System.out.println("Địa chỉ không được để trống !");
+                System.out.print("Nhập Địa chỉ Nhân viên : ");
                 employeeAddress = sc.nextLine();
             }
-            System.out.print("Nhap so dien thoai : ");
+            System.out.print("Nhập số điện thoại : ");
             String employeePhone = sc.nextLine();
             while (employeePhone.length() == 0) {
-                System.out.println("So dien thoai khong duoc de trong !");
-                System.out.print("Nhap so dien thoai : ");
+                System.out.println("Số điện thoại không được để trống !");
+                System.out.print("Nhập số điện thoại : ");
                 employeePhone = sc.nextLine();
             }
-            System.out.printf("Nhap chuc vu (chi nhap 1=%s, 2=%s hoac 3=%s): \n", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY);
+            System.out.printf("Nhập chức vụ (chỉ nhập 1=%s, 2=%s hoac 3=%s): \n", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY);
             int employeeDepartment = sc.nextInt();
             while (employeeDepartment == 0) {
-                System.out.println("Chuc vu khong duoc de trong !");
-                System.out.print("Nhap chuc vu: ");
+                System.out.println("Chức vụ không được để trống !");
+                System.out.print("Nhập chức vụ: ");
                 employeeDepartment = sc.nextInt();
             }
             while (employeeDepartment != Department.ROLE_ADMIN.getValue() 
                     && employeeDepartment != Department.ROLE_EMPLOYEE_CASHER.getValue() 
                     && employeeDepartment != Department.ROLE_EMPLOYEE_INVENTORY.getValue()) {
-                System.out.printf("Chi nhap 1=%s, 2=%s hoac 3=%s !\n", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY);
-                System.out.print("Nhap chuc vu : ");
+                System.out.printf("Chi nhập 1=%s, 2=%s hoac 3=%s !\n", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY);
+                System.out.print("Nhập chức vụ : ");
                 employeeDepartment = sc.nextInt();
             }
             sc.nextLine();
-            System.out.print("Tao Usename: ");
+            System.out.print("Tạo Username: ");
             String employeeUsername = sc.nextLine();
             while (employeeUsername.length() == 0) {
-                System.out.println("Username khong duoc de trong !");
-                System.out.print("Tao Usename: ");
+                System.out.println("Username không được để trống !");
+                System.out.print("Tạo Usename: ");
                 employeeUsername = sc.nextLine();
             }
             while (employeeUsername.length() < 6) {
-                System.out.println("Username tu 6 ki tu tro len !");
-                System.out.print("Tao Usename: ");
+                System.out.println("Username từ 6 ký tự trở lên !");
+                System.out.print("Tạo Usename: ");
                 employeeUsername = sc.nextLine();
             }
-            System.out.print("Tao Password : ");
+            System.out.print("Tạo Password : ");
             String employeePassword = sc.nextLine();
             while (employeePassword.length() == 0) {
-                System.out.println("Password khong duoc de trong !");
-                System.out.print("Tao Password: ");
+                System.out.println("Password không được để trống !");
+                System.out.print("Tạo Password: ");
                 employeePassword = sc.nextLine();
             }
             while (employeePassword.length() < 6) {
-                System.out.println("Password phai tu 6 ki tu tro len !");
-                System.out.print("Tao Password: ");
+                System.out.println("Password phải từ 6 ký tự trở lên !");
+                System.out.print("Tạo Password: ");
                 employeePassword = sc.nextLine();
             }
             Employee employee = new Employee(employeeName, employeeAddress, employeePhone, Department.fromInt(employeeDepartment), employeeUsername, Md5.encode(employeePassword));
             if (employeeService.create(employee)) {
-                System.out.println("Them nhan vien thanh cong!");
+                System.out.println("Thêm Nhân viên thành công!");
             } else {
-                System.out.println("Da xay ra loi!");
+                System.out.println("Đã xảy ra lỗi!");
             }
         } catch (Exception ex) {
             Logger.getLogger(EmployeeCreatePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,7 +98,7 @@ public class EmployeeCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Them nhan vien";
+        return "Thêm Nhân viên";
     }
     
 }

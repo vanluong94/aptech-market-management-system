@@ -26,7 +26,7 @@ public class DiscountListingPage extends Page {
             
             List<Discount> discounts = discountService.findAll();
             if (discounts.isEmpty()) {
-                System.out.println("Danh sach trong");
+                System.out.println("Danh sách trống");
             } else {
                 for (Discount discount : discounts) {
                     System.out.println(discount.toString());
@@ -39,7 +39,7 @@ public class DiscountListingPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sach Chuong trinh giam gia";
+        return "Danh sách Chương trình giảm giá";
     }
     
 }

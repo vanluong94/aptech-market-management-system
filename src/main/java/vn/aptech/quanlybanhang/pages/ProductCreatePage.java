@@ -30,14 +30,14 @@ public class ProductCreatePage extends Page {
     public void displayContent() {
         try {
             Brand brand = new Brand();
-            brand.setBrandId(AppScanner.scanIntWithMessage("Nhap Brand ID : "));
+            brand.setBrandId(AppScanner.scanIntWithMessage("Nhập Brand ID: "));
 
             Category category = new Category();
-            category.setCategoryId(AppScanner.scanIntWithMessage("Nhap Category ID :"));
+            category.setCategoryId(AppScanner.scanIntWithMessage("Nhập Category ID: "));
 
-            String name = AppScanner.scanStringWithMessage("Nhap ten San Pham :");
-            double price = AppScanner.scanDoubleWithMessage("Gia tien :");
-            int qty = AppScanner.scanIntWithMessage("So luong :");
+            String name = AppScanner.scanStringWithMessage("Nhập tên Sản phẩm: ");
+            double price = AppScanner.scanDoubleWithMessage("Giá tiền: ");
+            int qty = AppScanner.scanIntWithMessage("Số lượng :");
 
             Product product = new Product();
             product.setBrand(brand);
@@ -47,9 +47,9 @@ public class ProductCreatePage extends Page {
             product.setPrice(price);
             product.setQuantityInStock(qty);
             if (productService.create(product)) {
-                System.out.println("Them San Pham moi thanh cong!");
+                System.out.println("Thêm Sản phẩm mới thành công!");
             } else {
-                System.out.println("Da xay ra loi");
+                System.out.println("Đã xảy ra lỗi");
             }
         } catch (Exception ex) {
             Logger.getLogger(ProductCreatePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -58,7 +58,7 @@ public class ProductCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tao San Pham";
+        return "Tạo Sản phẩm";
     }
 
 }

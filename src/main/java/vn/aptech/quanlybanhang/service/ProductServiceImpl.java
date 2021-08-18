@@ -44,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
     public boolean deleteById(int id) throws SQLException, Exception {
         if (id<1) {
             try {
-                throw new Exception ("ID khong hop le!");
+                throw new Exception ("ID không hợp lệ!");
             } catch (Exception e) {
                   Logger.getLogger(ProductServiceImpl.class.getName()).log(Level.SEVERE, null, e);
             }
@@ -77,15 +77,15 @@ public class ProductServiceImpl implements ProductService {
         ValidateCommon.validateNullObject(product.getQuantityInStock(), "quantityInStock");
         
         if (product.getName().trim().length() == 0) {
-            throw new InputInvalidException("Ten san pham khong duoc bo trong");
+            throw new InputInvalidException("Tên Sản phẩm không được bỏ trống");
         }
 
         if (product.getQuantityInStock() == 0) {
-            throw new InputInvalidException("Hay nhap So luong ton kho cho san pham");
+            throw new InputInvalidException("Hãy nhập số lượng tồn kho cho Sản phẩm");
         }
 
         if (product.getPrice() <= 0) {
-            throw new InputInvalidException("Hay nnhap Gia hop le cho san pham");
+            throw new InputInvalidException("Hãy nhập giá hợp lệ cho Sản phẩm");
         }
     }
 

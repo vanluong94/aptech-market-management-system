@@ -20,7 +20,7 @@ public class CategoryDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Chi Tiet Danh Muc";
+        return "Chi tiết Danh mục";
     }
 
     @Override

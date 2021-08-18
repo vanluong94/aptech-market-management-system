@@ -24,11 +24,11 @@ public class DiscountDetailPage extends Page {
         try {
             DiscountService discountService = new DiscountServiceImpl();
             
-            System.out.println("Nhap ID chuong trinh giam gia muon kiem tra :");
+            System.out.println("Nhập ID chương trình giảm giá muốn kiem tra :");
             int discountId = AppScanner.getScanner().nextInt();
             Discount discount = discountService.findById(discountId);
             if (discount == null) {
-                System.out.println("Khong tim thay ID Chuong trinh giam gia phu hop!");
+                System.out.println("Không tìm thấy ID Chương trình giảm giá phù hợp!");
             } else {
                 System.out.println(discount.toString());
             }
@@ -39,7 +39,7 @@ public class DiscountDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xem chi tiet Chuong trinh giam gia";
+        return "Xem chi tiết Chương trình giảm giá";
     }
     
 }

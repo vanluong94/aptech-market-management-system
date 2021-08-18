@@ -22,10 +22,10 @@ public class ProductCategoryPage extends Page {
         try {
             Product product = null;
             ProductService productService = new ProductServiceImpl();
-            int categoryId = AppScanner.scanIntWithMessage("Nhap ID Loai san pham ban muon xem : ");
+            int categoryId = AppScanner.scanIntWithMessage("Nhập ID Danh mục Sản phẩm bạn muốn xem : ");
             List<Product> products = productService.findByCategoryId(categoryId);
             if (products.isEmpty()) {
-                System.out.println("Danh sach trong");
+                System.out.println("Danh sách trống");
             } else {
                 System.out.println(product.toString());
             }
@@ -36,13 +36,13 @@ public class ProductCategoryPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xem danh sach San Pham theo Loai san pham";
+        return "Xem danh sach Sản phẩm theo Danh mục";
     }
     
     
     @Override
     public String getBreadcrumbPathName(){
-        return "Danh sach SP theo Loai";
+        return "Danh sách SP theo Danh mục";
     }
     
 }

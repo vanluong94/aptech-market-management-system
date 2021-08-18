@@ -52,7 +52,7 @@ public class EmployeeListingPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sach nhan vien";
+        return "Danh sách Nhân viên";
     }
     
 }

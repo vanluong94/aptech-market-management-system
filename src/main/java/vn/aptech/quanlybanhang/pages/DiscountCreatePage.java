@@ -20,16 +20,16 @@ public class DiscountCreatePage extends Page {
         
         DiscountService discountService = new DiscountServiceImpl();
         
-        System.out.println("Nhap ten chuong trinh giam gia :");
+        System.out.println("Nhập tên chương trình giảm giá :");
         String discountName = AppScanner.getScanner().nextLine();
 
         if (discountName.length() > 0) {
             try {
                 Discount discount = new Discount(discountName);
                 if (discountService.create(discount)) {
-                    System.out.println("Them chuong trinh giam gia thanh cong!");
+                    System.out.println("Thêm chương trình giảm giá thành công!");
                 } else {
-                    System.out.println("Da xay ra loi!");
+                    System.out.println("Đã xảy ra lỗi!");
                 }
             } catch (Exception ex) {
                 Logger.getLogger(DiscountCreatePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -39,7 +39,7 @@ public class DiscountCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Them Chuong Trinh Giam Gia";
+        return "Thêm Chương trình giảm giá";
     }
     
 }

@@ -38,7 +38,7 @@ public class AdminMenuEmployee extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quan ly Nhan vien";
+        return "Quản lý Nhân viên";
     }
 
 }

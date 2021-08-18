@@ -22,7 +22,7 @@ public class ProductListingPage extends Page {
             ProductService productService = new ProductServiceImpl();
             List<Product> products = productService.findAll();
             if (products.isEmpty()) {
-                System.out.println("Danh sach trong");
+                System.out.println("Danh sách trống");
             } else {
                 for (Product product : products) {
                     System.out.println(product.toString());
@@ -35,7 +35,7 @@ public class ProductListingPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sach San Pham";
+        return "Danh sách Sản phẩm";
     }
     
 }

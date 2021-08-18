@@ -22,15 +22,15 @@ public class SupplierEditPage extends Page {
         do {
             retry = false;
             try {
-                int id = AppScanner.scanIntWithMessage("Nhap ID cho Nha cung cap muon sua thong tin : ");
+                int id = AppScanner.scanIntWithMessage("Nhập ID cho Nhà cung cấp muốn sửa Thông tin : ");
                 Supplier supplier = supplierService.findById(id);
                 if (supplier == null) {
-                    System.out.println("ID khong hop le!");
+                    System.out.println("ID không hợp lệ!");
                     retry = true;
                 } else {
-                    System.out.println("\n\nNhap thong tin moi cho Nha cung cap,bo trong neu giu nguyen.");
-                    String newName = AppScanner.scanStringWithMessage("Nhap ten moi cho Nha cung cap : ");
-                    String newAdd = AppScanner.scanStringWithMessage("Nhap dia chi moi cho Nha cung cap : ");
+                    System.out.println("\n\nNhập Thông tin mới cho Nhà cung cấp, bỏ trống nếu giữ nguyên.");
+                    String newName = AppScanner.scanStringWithMessage("Nhập tên mới cho Nhà cung cấp : ");
+                    String newAdd = AppScanner.scanStringWithMessage("Nhập Địa chỉ mới cho Nhà cung cấp : ");
 
                     if (newName.length() > 0) {
                         supplier.setName(newName);
@@ -39,7 +39,7 @@ public class SupplierEditPage extends Page {
                         supplier.setAddress(newAdd);
                     }
                     supplierService.update(supplier);
-                    System.out.println("Cap nhat thanh cong!");
+                    System.out.println("Cập nhật thành công!");
                 }
             } catch (InputInvalidException e) {
                 System.out.println(e.getMessage());
@@ -53,7 +53,7 @@ public class SupplierEditPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Sua Nha cung cap";
+        return "Sửa Nhà cung cấp";
     }
 
 }

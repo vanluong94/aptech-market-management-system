@@ -34,7 +34,7 @@ public class AdminMenuProduct extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Tra cuu San Pham";
+        return "Tra cứu Sản phẩm";
     }
     
 }

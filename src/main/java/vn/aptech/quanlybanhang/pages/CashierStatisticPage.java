@@ -15,7 +15,7 @@ public class CashierStatisticPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Thong ke";
+        return "Thống kê";
     }
     
 }

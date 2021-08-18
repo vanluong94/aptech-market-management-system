@@ -39,7 +39,7 @@ public class ProductMenu extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quan ly danh sach San Pham";
+        return "Quản lý danh sach Sản phẩm";
     }
 
 }

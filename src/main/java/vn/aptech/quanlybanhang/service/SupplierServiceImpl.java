@@ -23,7 +23,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public boolean create(Supplier object) throws SQLException, Exception {
         if (object == null) {
-            throw new Exception("Danh muc khong duoc de trong");
+            throw new Exception("Danh mục không được để trống");
 
         }
         return supplierDAO.create(object);
@@ -33,7 +33,7 @@ public class SupplierServiceImpl implements SupplierService {
     public boolean deleteById(int id) throws SQLException {
         if (id < 1) {
             try {
-                throw new Exception("ID khong hop le!");
+                throw new Exception("ID không hợp lệ!");
             } catch (Exception ex) {
                 Logger.getLogger(SupplierServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -44,7 +44,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public Supplier findById(int id) throws SQLException, Exception {
         if (id < 1) {
-            throw new Exception("ID khong hop le!");
+            throw new Exception("ID không hợp lệ!");
         }
         return supplierDAO.findById(id);
     }

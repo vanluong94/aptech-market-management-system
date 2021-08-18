@@ -23,7 +23,7 @@ public class SupplierListingPage extends Page {
             
             List<Supplier> suppliers = supplierService.findAll();
             if (suppliers.isEmpty()) {
-                System.out.println("Danh sach trong");
+                System.out.println("Danh sách trống");
             } else {
                 for (Supplier supplier : suppliers) {
                     System.out.println(supplier.toString());

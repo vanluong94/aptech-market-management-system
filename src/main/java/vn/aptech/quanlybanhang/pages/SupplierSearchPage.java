@@ -24,15 +24,15 @@ public class SupplierSearchPage extends Page {
     public void displayContent() {
         SupplierService supplierService = new SupplierServiceImpl();
             try {
-                String search = AppScanner.scanStringWithMessage("Ten Nha cung cap can tim : ");
+                String search = AppScanner.scanStringWithMessage("Tên Nhà cung cấp cần tìm : ");
                 
                 List<Supplier> suppliers = supplierService.searchByName(search);
                 
                 if (suppliers.isEmpty()) {
-                    System.out.println("Khong tim thay Nha cung cap nao cung ten");
+                    System.out.println("Không tìm thấy Nhà cung cấp nao cung tên");
                     
                 } else {
-                    System.out.println("Cac nha cung cap duoc tim thay dua theo ten : ");
+                    System.out.println("Các Nhà cung cấp được tìm thấy dựa theo tên : ");
 //                    for(Supplier supplier : suppliers){
 //                        System.out.println(supplier.toString());
 //                    }
@@ -47,7 +47,7 @@ public class SupplierSearchPage extends Page {
                         rows.add(row);
                     }
                     
-                    String[] headers = {"ID", "Name", "Address"};
+                    String[] headers = {"ID", "Tên NCC", "Địa chỉ"};
                     
                     TableUI theTable = new TableUI(headers, rows);
                     theTable.display();
@@ -61,7 +61,7 @@ public class SupplierSearchPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tim kiem Nha cung cap";
+        return "Tìm kiếm Nhà cung cấp";
     }
     
 }

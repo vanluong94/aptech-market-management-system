@@ -25,28 +25,28 @@ public class CategoryEditPage extends Page {
             Category theCat;
 
             do {
-                int id = AppScanner.scanIntWithMessage("Nhap ID cho Danh Muc can sua: ");
+                int id = AppScanner.scanIntWithMessage("Nhập ID cho danh mục cần sửa: ");
 
                 CategoryService categoryService = new CategoryServiceImpl();
                 theCat = categoryService.findById(id);
 
                 if (theCat != null) {
 
-                    HeaderUI.display("Thong tin Danh Muc");
+                    HeaderUI.display("Thông tin Danh mục");
                     System.out.println(theCat.toString());
 
-                    HeaderUI.display("Nhap thong tin moi cho Danh Muc");
-                    String newName = AppScanner.scanStringWithMessage("Ten moi cho Danh Muc: ");
+                    HeaderUI.display("Nhập thông tin mới cho Danh mục");
+                    String newName = AppScanner.scanStringWithMessage("Tên mới cho Danh mục: ");
                     theCat.setCategoryName(newName);
 
                     System.out.println(""); //margin line
                     if (categoryService.update(theCat)) {
-                        System.out.println("Cap nhat thanh cong ten Danh Muc!");
+                        System.out.println("Cập nhật thành công tên Danh mục!");
                     } else {
-                        System.out.println("Da xay ra loi, khong the cap nhat ten Danh Muc.");
+                        System.out.println("Đã xảy ra lỗi, không thể cập nhật Danh mục.");
                     }
                 } else {
-                    System.out.println("ID Danh Muc khong ton tai.");
+                    System.out.println("ID Danh mục không tồn tại");
                 }
 
             } while (theCat == null);
@@ -59,7 +59,7 @@ public class CategoryEditPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Sua Danh muc";
+        return "Sửa Danh mục";
     }
 
 }

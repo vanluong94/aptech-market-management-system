@@ -15,12 +15,12 @@ public class ProductBestSalePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sach San Pham ban chay";
+        return "Danh sách Sản phẩm bán chạy";
     }
     
     @Override
     public String getBreadcrumbPathName(){
-        return "San pham ban chay";
+        return "Sản phẩm bán chạy";
     }
     
 }

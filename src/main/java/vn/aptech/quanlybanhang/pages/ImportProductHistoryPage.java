@@ -65,7 +65,7 @@ public class ImportProductHistoryPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Lich su Nhap hang";
+        return "Lịch sử Nhập hang";
     }
     
 }
