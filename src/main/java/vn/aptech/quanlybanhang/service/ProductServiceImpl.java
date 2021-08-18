@@ -108,4 +108,9 @@ public class ProductServiceImpl implements ProductService {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public PaginatedResults<Product> selectOutOfStock(int page) throws SQLException {
+        return productDAO.selectOutOfStock(page);
+    }
+
 }

@@ -3,6 +3,13 @@
  */
 package vn.aptech.quanlybanhang.entities;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import vn.aptech.quanlybanhang.common.StringCommon;
+import vn.aptech.quanlybanhang.service.AuthServiceImpl;
+import vn.aptech.quanlybanhang.ui.TableUI;
+
 /**
  *
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
@@ -156,7 +163,11 @@ public class Product extends BaseEntity {
     public double getPrice() {
         return price;
     }
-
+    
+    public String getPriceString() {
+        return StringCommon.convertDoubleToVND(price);
+    }
+    
     /**
      *
      * @param price
@@ -184,6 +195,45 @@ public class Product extends BaseEntity {
     @Override
     public String toString() {
         return "Product { " + "ID : " + id + " || Brand ID : " + getBrand() + " || Category ID : " + getCategory() + " || Employee ID : " + getEmployee() + " || Product Name : " + name + " || Product Price : " + price + " || Product Stock : " + quantityInStock + " } ";
+    }
+
+    public static TableUI toTable(List<Product> products) {
+
+        // transfer data to table row
+        List<Object[]> rows = new ArrayList<>();
+        
+
+        for (Product product : products) {
+
+            List<Object> row = new ArrayList<>(Arrays.asList(
+                    product.getId(),
+                    product.getName(),
+                    product.getPriceString(),
+                    product.getQuantityInStock(),
+                    product.getCategory().getCategoryName() != null ? product.getCategory().getCategoryName() : "",
+                    product.getBrand().getBrandName() != null ? product.getBrand().getBrandName() : ""
+            ));
+
+            if (!AuthServiceImpl.getCurrentEmployee().isCashier()) {
+                row.add(product.getSupplier().getName() != null ? product.getSupplier().getName() : "");
+                row.add(product.getEmployee().getName() != null ? product.getEmployee().getName() : "");
+            }
+
+            rows.add(row.toArray());
+
+        }
+        
+        List<String> headers = new ArrayList<>(Arrays.asList(
+                "ID", "Tên SP", "Giá", "SL", "Danh mục", "Nhãn hàng"
+        ));
+        
+        if(!AuthServiceImpl.getCurrentEmployee().isCashier()) {
+            headers.add("Nhà cung cấp");
+            headers.add("Người thêm");
+        }
+
+        return new TableUI(headers.toArray(new String[0]), rows);
+
     }
 
 }

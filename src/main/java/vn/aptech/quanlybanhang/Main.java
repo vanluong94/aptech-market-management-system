@@ -5,6 +5,7 @@
  */
 package vn.aptech.quanlybanhang;
 
+import java.util.Locale;
 import vn.aptech.quanlybanhang.menu.Breadcrumb;
 import vn.aptech.quanlybanhang.pages.AuthPage;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
@@ -20,6 +21,7 @@ public class Main {
      */
     public static void main(String[] args) {
         try {
+            init();
             start();
         } finally {
             DBConnection.maybeCloseConnection();
@@ -30,5 +32,9 @@ public class Main {
         Breadcrumb.reset();
         AuthPage authPage = new AuthPage();
         authPage.start();
+    }
+    
+    public static void init() {
+        Locale.setDefault(new Locale("vi", "VN"));
     }
 }

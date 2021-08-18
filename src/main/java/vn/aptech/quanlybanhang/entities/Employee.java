@@ -120,7 +120,18 @@ public class Employee {
         System.out.println("Chuc vu : " + department);
         System.out.println("ID : " + employeeId);
         System.out.println("UserName : " + userName);
-        System.out.println("Password : " + password);
         System.out.println("--------------------------------");
+    }
+    
+    public boolean isAdmin() {
+        return this.getDepartment().equals(Department.ROLE_ADMIN);
+    }
+    
+    public boolean isInventory() {
+        return this.getDepartment().equals(Department.ROLE_EMPLOYEE_INVENTORY);
+    }
+    
+    public boolean isCashier() {
+        return this.getDepartment().equals(Department.ROLE_EMPLOYEE_CASHER);
     }
 }
