@@ -4,12 +4,14 @@
 package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.dao.ProductDAO;
 import vn.aptech.quanlybanhang.dao.ProductDAOImpl;
+import vn.aptech.quanlybanhang.entities.Discount;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.exception.InputInvalidException;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;

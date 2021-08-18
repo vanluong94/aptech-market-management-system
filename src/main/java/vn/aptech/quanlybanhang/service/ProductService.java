@@ -5,6 +5,7 @@ package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import vn.aptech.quanlybanhang.entities.Discount;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 

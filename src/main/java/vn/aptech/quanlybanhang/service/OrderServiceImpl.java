@@ -1,0 +1,51 @@
+/*
+ * Do an Java tai HaNoi Aptech
+ */
+package vn.aptech.quanlybanhang.service;
+
+import java.sql.SQLException;
+import java.util.List;
+import vn.aptech.quanlybanhang.dao.OrderDAO;
+import vn.aptech.quanlybanhang.dao.OrderDAOImpl;
+import vn.aptech.quanlybanhang.entities.Order;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
+
+public class OrderServiceImpl implements OrderService {
+
+    private final OrderDAO orderDAO;
+
+    public OrderServiceImpl() {
+        this.orderDAO = new OrderDAOImpl();
+    }
+
+    @Override
+    public boolean create(Order object) throws SQLException, Exception {
+        return orderDAO.create(object);
+    }
+
+    @Override
+    public boolean update(Order object) throws SQLException, Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean deleteById(int id) throws SQLException, Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Order findById(int id) throws SQLException, Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Order> findAll() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PaginatedResults<Order> select(int page) throws SQLException, Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+}
