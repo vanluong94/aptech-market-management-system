@@ -67,7 +67,7 @@ public class BrandEditPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Sửa Nhan Hang";
+        return "Sửa Nhãn hàng";
     }
     
 }

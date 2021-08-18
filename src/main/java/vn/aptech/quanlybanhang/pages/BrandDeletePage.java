@@ -54,7 +54,7 @@ public class BrandDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xóa Nhan Hang";
+        return "Xóa Nhãn hàng";
     }
     
 }

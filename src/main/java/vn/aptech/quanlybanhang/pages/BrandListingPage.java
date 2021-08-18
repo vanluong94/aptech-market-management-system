@@ -78,7 +78,7 @@ public class BrandListingPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh Sach Nhan Hang";
+        return "Danh Sach Nhãn hàng";
     }
 
 }
