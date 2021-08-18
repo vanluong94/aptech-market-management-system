@@ -10,8 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.entities.ImportProduct;
 import vn.aptech.quanlybanhang.entities.Product;
+import vn.aptech.quanlybanhang.service.CategoryService;
+import vn.aptech.quanlybanhang.service.CategoryServiceImpl;
 import vn.aptech.quanlybanhang.service.ImportProductService;
 import vn.aptech.quanlybanhang.service.ImportProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
@@ -69,7 +72,7 @@ public class ProductDAOImpl implements ProductDAO {
             pstmt.setDouble(5, object.getPrice());
             pstmt.setInt(6, object.getQuantityInStock());
             rowsAffected = pstmt.executeUpdate();
-            
+
             if (rowsAffected > 0) {
                 ResultSet rs = pstmt.getGeneratedKeys();
                 if (rs.next()) {
@@ -113,8 +116,10 @@ public class ProductDAOImpl implements ProductDAO {
                 + ", `updated_date` = ?"
                 + "WHERE product_id = ?;";
 
-        try (PreparedStatement st = DBConnection.getConnection().prepareStatement(updateSQL)) {
-
+        try {
+            // Không đóng connnection ở đây vì liên quan đến Transaction ở class OrderDAO.create
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement st = conn.prepareStatement(updateSQL);
             st.setInt(1, product.getBrand().getBrandId());
             st.setInt(2, product.getCategory().getCategoryId());
             st.setInt(3, product.getEmployee().getEmployeeId());
@@ -125,6 +130,8 @@ public class ProductDAOImpl implements ProductDAO {
             st.setInt(8, product.getId());
 
             rowEffected = st.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
         }
 
         return rowEffected > -1;
@@ -153,22 +160,30 @@ public class ProductDAOImpl implements ProductDAO {
     @Override
     public Product findById(int id) throws SQLException {
         Product product = null;
-        try (Connection conn = DBConnection.getConnection()) {
+        try {
+            // Không đóng connnection ở đây vì liên quan đến Transaction ở class OrderDAO.create
+            Connection conn = DBConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE);
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 product = new Product();
                 product.setId(rs.getInt("product_id"));
-//                product.getBrand().setBrandId(rs.getInt("brand_id"));
-//                product.getCategory().setCategoryId(rs.getInt("category_id"));
-//                product.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                product.getBrand().setBrandId(rs.getInt("brand_id"));
+                product.getCategory().setCategoryId(rs.getInt("category_id"));
+                product.getEmployee().setEmployeeId(rs.getInt("employee_id"));
                 product.setName(rs.getString("product_name"));
                 product.setPrice(rs.getDouble("product_price"));
                 product.setQuantityInStock(rs.getInt("product_stock"));
+
+                CategoryService categoryService = new CategoryServiceImpl();
+                Category productCat = categoryService.findById(rs.getInt("category_id"));
+                product.setCategory(productCat);
             }
         } catch (SQLException e) {
             throw e;
+        } catch (Exception ex) {
+            Logger.getLogger(ProductDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return product;
     }
@@ -310,7 +325,7 @@ public class ProductDAOImpl implements ProductDAO {
         }
         return product;
     }
-    
+
     @Override
     public PaginatedResults<Product> select(int page) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

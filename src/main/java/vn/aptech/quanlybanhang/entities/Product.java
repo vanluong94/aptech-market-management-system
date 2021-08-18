@@ -14,6 +14,7 @@ import vn.aptech.quanlybanhang.ui.TableUI;
  *
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  * @author Vu Duy Long <vuduylong1999@gmail.com>
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class Product extends BaseEntity {
 
@@ -25,140 +26,105 @@ public class Product extends BaseEntity {
     private String name;
     private double price;
     private int quantityInStock;
-    
+    private List<ProductDiscount> productDiscounts;
+    private List<OrderItem> orderItems;
+
     public Product() {
         // Init object
         this.brand = new Brand();
         this.supplier = new Supplier();
         this.employee = new Employee();
         this.category = new Category();
+        this.productDiscounts = new ArrayList<>();
+        this.orderItems = new ArrayList<>();
     }
 
     /**
-     *
-     * @param brand
-     * @param category
-     * @param employee
-     * @param name
-     * @param price
-     * @param quantityInStock
+     * @return the id
      */
-    public Product(Brand brand, Category category, Employee employee, String name, double price, int quantityInStock) {
-        this.brand = brand;
-        this.category = category;
-        this.employee = employee;
-        this.name = name;
-        this.price = price;
-        this.quantityInStock = quantityInStock;
-    }
-
-    /**
-     *
-     * @param id
-     * @param brand
-     * @param category
-     * @param employee
-     * @param name
-     * @param price
-     * @param quantityInStock
-     */
-    public Product(int id, Brand brand, Category category, Employee employee, String name, double price, int quantityInStock) {
-        this.id = id;
-        this.brand = brand;
-        this.category = category;
-        this.employee = employee;
-        this.name = name;
-        this.price = price;
-        this.quantityInStock = quantityInStock;
-    }
-
     public int getId() {
         return id;
     }
 
     /**
-     *
-     * @param id
+     * @param id the id to set
      */
     public void setId(int id) {
         this.id = id;
     }
 
     /**
-     *
-     * @return
+     * @return the brand
      */
     public Brand getBrand() {
         return brand;
     }
 
     /**
-     *
-     * @param brand
+     * @param brand the brand to set
      */
     public void setBrand(Brand brand) {
         this.brand = brand;
     }
 
     /**
-     *
-     * @return
+     * @return the category
      */
     public Category getCategory() {
         return category;
     }
 
     /**
-     *
-     * @param category
+     * @param category the category to set
      */
     public void setCategory(Category category) {
         this.category = category;
     }
 
     /**
-     *
-     * @return
+     * @return the employee
      */
     public Employee getEmployee() {
         return employee;
     }
 
     /**
-     *
-     * @param employee
+     * @param employee the employee to set
      */
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
-    
+
+    /**
+     * @return the supplier
+     */
     public Supplier getSupplier() {
         return supplier;
     }
 
+    /**
+     * @param supplier the supplier to set
+     */
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
     }
 
     /**
-     *
-     * @return
+     * @return the name
      */
     public String getName() {
         return name;
     }
 
     /**
-     *
-     * @param name
+     * @param name the name to set
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     *
-     * @return
+     * @return the price
      */
     public double getPrice() {
         return price;
@@ -169,32 +135,52 @@ public class Product extends BaseEntity {
     }
     
     /**
-     *
-     * @param price
+     * @param price the price to set
      */
     public void setPrice(double price) {
         this.price = price;
     }
 
     /**
-     *
-     * @return
+     * @return the quantityInStock
      */
     public int getQuantityInStock() {
         return quantityInStock;
     }
 
     /**
-     *
-     * @param quantityInStock
+     * @param quantityInStock the quantityInStock to set
      */
     public void setQuantityInStock(int quantityInStock) {
         this.quantityInStock = quantityInStock;
     }
 
-    @Override
-    public String toString() {
-        return "Product { " + "ID : " + id + " || Brand ID : " + getBrand() + " || Category ID : " + getCategory() + " || Employee ID : " + getEmployee() + " || Product Name : " + name + " || Product Price : " + price + " || Product Stock : " + quantityInStock + " } ";
+    /**
+     * @return the productDiscounts
+     */
+    public List<ProductDiscount> getProductDiscounts() {
+        return productDiscounts;
+    }
+
+    /**
+     * @param productDiscounts the productDiscounts to set
+     */
+    public void setProductDiscounts(List<ProductDiscount> productDiscounts) {
+        this.productDiscounts = productDiscounts;
+    }
+
+    /**
+     * @return the orderItems
+     */
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    /**
+     * @param orderItems the orderItems to set
+     */
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     public static TableUI toTable(List<Product> products) {

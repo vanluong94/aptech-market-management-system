@@ -30,9 +30,9 @@ public class PageUpdateProfile extends Page {
             System.out.println("ID: " + emp.getEmployeeId());
             System.out.println("Tài khoản: " + emp.getUserName());
             System.out.println("Chức vụ: " + emp.getDepartment());
-            String name = AppScanner.scanStringWithMessage("H�? tên: ", false);
+            String name = AppScanner.scanStringWithMessage("Họ tên: ", false);
             AppScanner.getScanner().nextLine();
-            String address = AppScanner.scanStringWithMessage("�?ịa chỉ: ", false);
+            String address = AppScanner.scanStringWithMessage("Địa chỉ: ", false);
             String phone = AppScanner.scanStringWithMessage("Số điện thoại: ", false);
             emp.setName(name);
             emp.setAddress(address);
@@ -40,7 +40,7 @@ public class PageUpdateProfile extends Page {
             if (empService.update(emp)) {
                 System.out.println("Cập nhật thành công");
             } else {
-                System.out.println("�?ã xảy ra lỗi");
+                System.out.println("Đã xảy ra lỗi");
             }
         } catch (Exception ex) {
             Logger.getLogger(PageUpdateProfile.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,7 +49,7 @@ public class PageUpdateProfile extends Page {
 
     @Override
     public String getTitle() {
-        return "Cap nhat thong tin";
+        return "Cập nhật thông tin";
     }
     
 }
