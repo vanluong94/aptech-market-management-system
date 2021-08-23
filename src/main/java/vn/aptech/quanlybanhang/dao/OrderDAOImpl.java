@@ -9,12 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
-import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
@@ -24,6 +24,7 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  *
  * @author Vu Duy Long <vuduylong1999@gmail.com>
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class OrderDAOImpl implements OrderDAO {
 
@@ -31,6 +32,20 @@ public class OrderDAOImpl implements OrderDAO {
     private final static String SQL_INSERT_ORDER_ITEMS = "INSERT INTO order_items(order_id, product_id, product_name, product_quantity, "
             + "product_price) VALUE (?, ?, ?, ?, ?)";
     private final static String SQL_UPDATE_QTY_PRODUCT = "UPDATE products SET product_stock = product_stock - ? WHERE product_id = ?";
+    private final static String SQL_GET_ONE = "SELECT "
+            + "  orders.*, "
+            + "  employees.employee_name, "
+            + "  employees.employee_id, "
+            + "  customers.customer_name, "
+            + "  customers.customer_id "
+            + " FROM "
+            + "  orders "
+            + "  JOIN employees ON employees.employee_id = orders.employee_id "
+            + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
+            + " WHERE "
+            + "  orders.order_id = ? ";
+    
+    private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
 
     private final ProductService productService;
 
@@ -103,7 +118,28 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public Order findById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try ( Connection conn = DBConnection.getConnection()) {
+            PreparedStatement st = conn.prepareStatement(SQL_GET_ONE);
+            st.setInt(1, id);
+            
+            ResultSet rs = st.executeQuery();
+            
+            if(rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("order_id"));
+                order.setOrderDate(rs.getTimestamp("order_date")); 
+                order.setAmount(rs.getDouble("amount"));
+                
+                order.getEmployee().setName(rs.getString("employee_name"));
+                order.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                
+                order.getCustomer().setName(rs.getString("customer_name"));
+                order.getCustomer().setId(rs.getInt("customer_id"));
+                
+                return order;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -114,6 +150,34 @@ public class OrderDAOImpl implements OrderDAO {
     @Override
     public PaginatedResults<Order> select(int page) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<OrderItem> getOrderItems(Order order) {
+        List<OrderItem> items = new ArrayList<>();
+        
+        try(Connection conn = DBConnection.getConnection()){
+            PreparedStatement st = conn.prepareStatement(SQL_GET_PRODUCTS);
+            st.setInt(1, order.getId());
+            ResultSet rs = st.executeQuery();
+            
+            while(rs.next()) {
+                OrderItem item = new OrderItem(
+                        order, 
+                        rs.getInt("order_item_id"),
+                        rs.getString("product_name"),
+                        rs.getInt("product_quantity"),
+                        rs.getDouble("product_price"),
+                        rs.getDouble("discount_price")
+                );
+                
+                items.add(item);
+            }
+        } catch (SQLException ex) {            
+            Logger.getLogger(OrderDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return items;
     }
 
 }

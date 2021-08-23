@@ -3,14 +3,17 @@
  */
 package vn.aptech.quanlybanhang.entities;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import vn.aptech.quanlybanhang.common.StringCommon;
 
 /**
  *
  * @author Vu Duy Long <vuduylong1999@gmail.com>
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class Order extends BaseEntity {
 
@@ -111,5 +114,14 @@ public class Order extends BaseEntity {
      */
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+    
+    public String getAmountString() {
+        return StringCommon.convertDoubleToVND(this.amount);
+    }
+    
+    public String getDatetimeString() {
+        DateFormat dateFormat = DateFormat.getDateTimeInstance();
+        return dateFormat.format(this.orderDate);
     }
 }
