@@ -75,29 +75,11 @@ public abstract class MenuUI extends MenuItem {
     }
 
     protected void displayHeader(String title) {
-
-        int spaceLength = this.getLineLength() - 2 - title.length();
-        int paddingLeft, paddingRight;
-
-        if (spaceLength % 2 == 1) {
-            paddingLeft = spaceLength / 2;
-            paddingRight = paddingLeft + 1;
-        } else {
-            paddingLeft = paddingRight = spaceLength / 2;
-        }
-
-        String paddingLeftFormat = "%1$" + paddingLeft + "s";
-        String paddingRightFormat = "%1$" + paddingRight + "s";
-
-        String lineFormat = "|" + paddingLeftFormat + title + paddingRightFormat + "|";
-
-        System.out.println(String.format(lineFormat, " "));
+        HelperUI.displayBorderLineCenter(title, this.getLineLength());
     }
 
     protected void displayBorder() {
-        int dotCount = this.getLineLength() - 2;
-        String borderFormat = "+%" + dotCount + "s+";
-        System.out.println(String.format(borderFormat, " ").replace(" ", "-"));
+        HelperUI.displayBorder(this.getLineLength());
     }
 
     private int getLineLength() {

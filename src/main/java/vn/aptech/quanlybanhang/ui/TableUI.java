@@ -14,24 +14,35 @@ import java.util.List;
  */
 public class TableUI {
 
-    private final int colMaxLength = 80;
-
+    private int colMaxLength = 80;
     private int lineLength = 0;
+
     private String[] headers;
-    private List<Integer> columns = new ArrayList<Integer>();
-    private List<Object[]> rows = new ArrayList<Object[]>();
+    private List<Integer> columnsLength;
+    private List<String> columnsAlign;
+    private List<Object[]> rows;
 
     public TableUI(String[] headers, List<Object[]> rows) {
 
+        this.columnsLength = new ArrayList<>();
+        this.columnsAlign = new ArrayList<>();
+        this.rows = new ArrayList<>();
+    
         this.setHeaders(headers);
         this.setRows(rows);
-
+        this.init();
+        
+    }
+    
+    private void init() {
         // find max line length for column
         for (int i = 0; i < this.getHeaders().length; i++) {
             // set column width to be 0 for temporary
-            this.getColumns().add(i, 0);
-
+            this.columnsLength.add(i, 0);
             this.maybeSetColMaxLength(this.getHeader(i).length(), i);
+            
+            // add default align left for this column
+            this.columnsAlign.add(i, "left");
         }
 
         for (Object[] row : this.getRows()) {
@@ -40,14 +51,8 @@ public class TableUI {
                 this.maybeSetColMaxLength(row[i].toString().length(), i);
             }
         }
-
-        // compute the line length for table
+        
         this.computeLineLength();
-
-    }
-
-    public TableUI(String[] headers) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void display() {
@@ -69,18 +74,17 @@ public class TableUI {
     }
 
     public void displayRow(Object[] row) {
-
         String output = "";
 
         for (int i = 0; i < row.length; i++) {
             int thisLength = this.getColLength(i) - 2;
             String thisContent = row[i].toString();
-            
-            if(thisContent.length() > thisLength){
+
+            if (thisContent.length() > thisLength) {
                 thisContent = thisContent.substring(0, thisLength - 4) + "...";
             }
 
-            if (thisContent.endsWith("₫")) {
+            if (thisContent.endsWith("₫") || this.getColAlign(i).equalsIgnoreCase("right")) {
                 output += String.format("|%" + (thisLength) + "s ", thisContent); // align right with price
             } else {
                 output += String.format("| %-" + (thisLength) + "s", thisContent);
@@ -95,13 +99,11 @@ public class TableUI {
     }
 
     public void displayBorder() {
-        int dotCount = this.getLineLength() - 2;
-        String borderFormat = "+%" + dotCount + "s+";
-        System.out.println(String.format(borderFormat, " ").replace(" ", "-"));
+        HelperUI.displayBorder(this.getLineLength());
     }
 
-    public void computeLineLength() {
-        for (int colLength : this.getColumns()) {
+    private void computeLineLength() {
+        for (int colLength : this.columnsLength) {
             this.lineLength += colLength;
         }
         this.lineLength++; // plus 1 char for the column border closure
@@ -112,14 +114,18 @@ public class TableUI {
         thisLength += 4; // plus 4 chars to add spaces and border
 
         if (thisLength > this.getColLength(i) && thisLength <= this.getColMaxLength()) {
-            this.getColumns().set(i, thisLength);
-        } else if ( thisLength > this.getColMaxLength() ) { // in case it's longer than limit, then we must use the maximum value accepted
-            this.getColumns().set(i, this.getColMaxLength());
+            this.columnsLength.set(i, thisLength);
+        } else if (thisLength > this.getColMaxLength()) { // in case it's longer than limit, then we must use the maximum value accepted
+            this.columnsLength.set(i, this.getColMaxLength());
         }
     }
 
     public int getColLength(int i) {
-        return this.getColumns().get(i);
+        return this.columnsLength.get(i);
+    }
+    
+    public String getColAlign(int i){
+        return this.columnsAlign.get(i);
     }
 
     /**
@@ -135,8 +141,16 @@ public class TableUI {
         return lineLength;
     }
 
+    public void setLineLength(int length) {
+        this.lineLength = length;
+    }
+
     public int getColMaxLength() {
         return colMaxLength;
+    }
+
+    public void setColMaxLength(int length) {
+        this.colMaxLength = length;
     }
 
     public final String[] getHeaders() {
@@ -147,8 +161,16 @@ public class TableUI {
         this.headers = headers;
     }
 
-    public List<Integer> getColumns() {
-        return columns;
+    public List<Integer> getColumnsLength() {
+        return columnsLength;
+    }
+    
+    public void setColumnsAlign(List<String> columns) {
+        this.columnsAlign = columns;
+    }
+
+    public void setColumnsLength(List<Integer> columns) {
+        this.columnsLength = columns;
     }
 
     public List<Object[]> getRows() {
