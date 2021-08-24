@@ -3,10 +3,13 @@
  */
 package vn.aptech.quanlybanhang.entities;
 
+import vn.aptech.quanlybanhang.common.StringCommon;
+
 /**
  *
  * @author Vu Duy Long <vuduylong1999@gmail.com>
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class OrderItem extends BaseEntity {
 
@@ -18,6 +21,19 @@ public class OrderItem extends BaseEntity {
     private int quantity;
     private double productPrice;
     private double discountPrice;
+    
+    public OrderItem() {
+        
+    }
+    
+    public OrderItem(Order order, int id, String productName, int quantity, double productPrice, double discountPrice) {
+        this.id = id;
+        this.order = order;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.productPrice = productPrice;
+        this.discountPrice = discountPrice;
+    }
 
     /**
      * @return the id
@@ -129,6 +145,22 @@ public class OrderItem extends BaseEntity {
      */
     public void setDiscountPrice(double discountPrice) {
         this.discountPrice = discountPrice;
+    }
+    
+    public double getFinalPrice() {
+        return this.discountPrice > 0 ? this.discountPrice : this.productPrice;
+    }
+    
+    public String getProductPriceString() {
+        return StringCommon.convertDoubleToVND(this.productPrice);
+    }
+    
+    public String getDiscountPriceString() {
+        return StringCommon.convertDoubleToVND(this.discountPrice);
+    }
+    
+    public String getTotalPriceString() {
+        return StringCommon.convertDoubleToVND(this.getFinalPrice() * this.getQuantity());
     }
 
 }
