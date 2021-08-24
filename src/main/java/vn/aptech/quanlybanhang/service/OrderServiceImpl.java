@@ -8,6 +8,7 @@ import java.util.List;
 import vn.aptech.quanlybanhang.dao.OrderDAO;
 import vn.aptech.quanlybanhang.dao.OrderDAOImpl;
 import vn.aptech.quanlybanhang.entities.Order;
+import vn.aptech.quanlybanhang.entities.OrderItem;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 public class OrderServiceImpl implements OrderService {
@@ -35,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findById(int id) throws SQLException, Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.orderDAO.findById(id);
     }
 
     @Override
@@ -46,6 +47,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public PaginatedResults<Order> select(int page) throws SQLException, Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<OrderItem> getOrderItems(Order order) {
+        return this.orderDAO.getOrderItems(order);
     }
 
 }
