@@ -5,8 +5,11 @@ package vn.aptech.quanlybanhang.entities;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import vn.aptech.quanlybanhang.service.AuthServiceImpl;
+import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.common.StringCommon;
 
 /**
@@ -115,6 +118,33 @@ public class Order extends BaseEntity {
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
+    @Override
+    public String toString() {
+        return "[ID] " + getId() + "\n"
+                + "[date] " + orderDate + "\n";
+    }
+    
+//    public static TableUI toTable(List<Order> orders){
+//        List<Object[]> rows = new ArrayList<>();
+//        for (Order order : orders) {
+//            List<Object> row = new ArrayList<>(Arrays.asList(
+//                    order.getId(),
+//                    order.getOrderDate(),
+//                    order.getAmount()
+//            ));
+//            if (!AuthServiceImpl.getCurrentEmployee().isCashier()) {
+//                row.add(order.getEmployee().getName() != null ? order.getEmployee().getName() : "");
+//            }
+//            rows.add(row.toArray());
+//        }
+//        List<String> headers = new ArrayList<>(Arrays.asList(
+//                "ID","Ngày tạo","Tổng giá"
+//        ));
+//        if (!AuthServiceImpl.getCurrentEmployee().isCashier()) {
+//            headers.add("Người tạo");
+//        }
+//        return new TableUI(headers.toArray(new String[0]),rows);
+//    }
     
     public String getAmountString() {
         return StringCommon.convertDoubleToVND(this.amount);

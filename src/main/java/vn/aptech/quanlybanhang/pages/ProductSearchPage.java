@@ -30,7 +30,7 @@ public class ProductSearchPage extends Page {
         String choice = null;
         do {
             try {
-                String search = AppScanner.scanStringWithMessage("Tìm kiếm sản phẩm cần sửa theo tên: ");
+                String search = AppScanner.scanStringWithMessage("Tìm kiếm sản phẩm cần tìm theo tên: ");
                 List<Product> products = productService.findByName(search);
                 if (products.isEmpty()) {
                     System.out.println(MessageCommon.getMessage(MessageContent.OBJECT_NOT_FOUND, search));
