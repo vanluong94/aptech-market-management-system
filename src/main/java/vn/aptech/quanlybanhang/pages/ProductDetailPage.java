@@ -12,7 +12,6 @@ import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 
-
 public class ProductDetailPage extends Page {
 
     @Override

@@ -5,9 +5,11 @@ package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.dao.OrderDAO;
 import vn.aptech.quanlybanhang.dao.OrderDAOImpl;
 import vn.aptech.quanlybanhang.entities.Order;
+import vn.aptech.quanlybanhang.exception.InputInvalidException;
 import vn.aptech.quanlybanhang.entities.OrderItem;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
@@ -50,8 +52,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order findByCashier(int id) throws SQLException, Exception {
+        if (id < 1) {
+            throw new InputInvalidException("ID không hợp lệ!");
+        }
+        return this.orderDAO.findByCashier(id);
+    }
+    @Override
     public List<OrderItem> getOrderItems(Order order) {
         return this.orderDAO.getOrderItems(order);
+    }
+
+    @Override
+    public List<Order> todayOrder() throws SQLException {
+        return this.orderDAO.todayOrder();
     }
 
 }
