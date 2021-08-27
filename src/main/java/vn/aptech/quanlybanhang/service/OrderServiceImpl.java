@@ -52,12 +52,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order findByCashier(int id) throws SQLException, Exception {
+    public Order findByCashierId(int id) throws SQLException, Exception {
         if (id < 1) {
             throw new InputInvalidException("ID không hợp lệ!");
         }
-        return this.orderDAO.findByCashier(id);
+        return this.orderDAO.findByCashierId(id);
     }
+
     @Override
     public List<OrderItem> getOrderItems(Order order) {
         return this.orderDAO.getOrderItems(order);

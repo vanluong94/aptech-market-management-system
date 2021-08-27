@@ -13,7 +13,10 @@ import vn.aptech.quanlybanhang.entities.OrderItem;
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  */
 public interface OrderService extends BaseService<Order> {
-    Order findByCashier(int id) throws SQLException, Exception;
+
+    Order findByCashierId(int id) throws SQLException, Exception;
+
     public List<Order> todayOrder() throws SQLException;
+
     List<OrderItem> getOrderItems(Order order);
 }

@@ -18,4 +18,5 @@ public final class Constant {
     public static String DATE_TIME_FORMAT = "HH:mm:ss dd/MM/yyyy";
     public static String DATE_FORMAT = "dd/MM/yyyy";
     public static String TIME_FORMAT = "HH:mm:ss";
+    public static String DATE_TIME_SIMPLE_FORMAT = "dd/MM/yyyy HH:mm:ss";
 }
