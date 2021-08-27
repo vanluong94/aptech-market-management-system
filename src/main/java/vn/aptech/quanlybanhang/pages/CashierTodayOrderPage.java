@@ -6,6 +6,8 @@
 package vn.aptech.quanlybanhang.pages;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -16,17 +18,16 @@ import vn.aptech.quanlybanhang.service.OrderServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 
-
 public class CashierTodayOrderPage extends Page {
 
     @Override
     public void displayContent() {
         OrderService orderService = new OrderServiceImpl();
         String choice = null;
-        do {            
+        do {
             try {
                 List<Order> orders = orderService.todayOrder();
-                
+
                 if (orders == null) {
                     System.out.println("Ngày hôm nay chưa có đơn hàng nào.");
                 } else {
@@ -34,15 +35,15 @@ public class CashierTodayOrderPage extends Page {
                     for (Order order : orders) {
                         Object[] row = {
                             order.getId(),
-                            order.getEmployee().getEmployeeId(),
-                            order.getCustomer().getId(),
-                            order.getOrderDate(),
-                            order.getAmount()
+                            order.getEmployee().getName(),
+                            order.getCustomer().getName(),
+                            order.getDatetimeString(),
+                            order.getAmountString()
                         };
                         rows.add(row);
                     }
-                    String[] headers = {"ID","Nhân viên","Khách","Ngày tạo hóa đơn","Tổng tiền hóa đơn"};
-                    TableUI tableUI = new TableUI(headers,rows);
+                    String[] headers = {"ID", "Nhân viên", "Khách", "Ngày tạo hóa đơn", "Tổng tiền hóa đơn"};
+                    TableUI tableUI = new TableUI(headers, rows);
                     tableUI.display();
                     choice = AppScanner.scanStringWithMessage("Bạn có muốn tìm hóa đơn khác không? [Y/N] : ");
                     if (!"y".equalsIgnoreCase(choice)) {
@@ -50,10 +51,10 @@ public class CashierTodayOrderPage extends Page {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println("Exception when ProductMenu.handleSearch: "+e.getMessage());
+                System.out.println("Exception when ProductMenu.handleSearch: " + e.getMessage());
             } catch (Exception ex) {
                 Logger.getLogger(CashierTodayOrderPage.class.getName()).log(Level.SEVERE, null, ex);
-            }   
+            }
         } while (true);
     }
 
@@ -61,5 +62,5 @@ public class CashierTodayOrderPage extends Page {
     public String getTitle() {
         return "Hóa đơn hôm nay";
     }
-    
+
 }

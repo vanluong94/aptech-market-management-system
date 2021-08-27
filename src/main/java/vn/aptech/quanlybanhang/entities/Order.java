@@ -3,7 +3,8 @@
  */
 package vn.aptech.quanlybanhang.entities;
 
-import java.text.DateFormat;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.List;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.common.StringCommon;
+import vn.aptech.quanlybanhang.constant.Constant;
 
 /**
  *
@@ -22,7 +24,7 @@ public class Order extends BaseEntity {
 
     private int id;
     private double amount;
-    private Date orderDate;
+    private Timestamp orderDate;
     private Customer customer;
     private Employee employee;
     private List<OrderItem> orderItems;
@@ -31,7 +33,7 @@ public class Order extends BaseEntity {
         this.customer = new Customer();
         this.employee = new Employee();
         this.orderItems = new ArrayList<>();
-        this.orderDate = new Date();
+        this.orderDate = new Timestamp(new java.util.Date().getTime());
     }
 
     /**
@@ -65,14 +67,14 @@ public class Order extends BaseEntity {
     /**
      * @return the orderDate
      */
-    public Date getOrderDate() {
+    public Timestamp getOrderDate() {
         return orderDate;
     }
 
     /**
      * @param orderDate the orderDate to set
      */
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(Timestamp orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -118,40 +120,19 @@ public class Order extends BaseEntity {
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
+
     @Override
     public String toString() {
         return "[ID] " + getId() + "\n"
                 + "[date] " + orderDate + "\n";
     }
-    
-//    public static TableUI toTable(List<Order> orders){
-//        List<Object[]> rows = new ArrayList<>();
-//        for (Order order : orders) {
-//            List<Object> row = new ArrayList<>(Arrays.asList(
-//                    order.getId(),
-//                    order.getOrderDate(),
-//                    order.getAmount()
-//            ));
-//            if (!AuthServiceImpl.getCurrentEmployee().isCashier()) {
-//                row.add(order.getEmployee().getName() != null ? order.getEmployee().getName() : "");
-//            }
-//            rows.add(row.toArray());
-//        }
-//        List<String> headers = new ArrayList<>(Arrays.asList(
-//                "ID","Ngày tạo","Tổng giá"
-//        ));
-//        if (!AuthServiceImpl.getCurrentEmployee().isCashier()) {
-//            headers.add("Người tạo");
-//        }
-//        return new TableUI(headers.toArray(new String[0]),rows);
-//    }
-    
+
     public String getAmountString() {
         return StringCommon.convertDoubleToVND(this.amount);
     }
-    
+
     public String getDatetimeString() {
-        DateFormat dateFormat = DateFormat.getDateTimeInstance();
-        return dateFormat.format(this.orderDate);
+        SimpleDateFormat SDFormat = new SimpleDateFormat(Constant.DATE_TIME_SIMPLE_FORMAT);
+        return SDFormat.format(this.orderDate);
     }
 }
