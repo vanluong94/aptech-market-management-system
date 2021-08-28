@@ -32,6 +32,16 @@ public class OrderDAOImpl implements OrderDAO {
     private final static String SQL_INSERT_ORDER_ITEMS = "INSERT INTO order_items(order_id, product_id, product_name, product_quantity, "
             + "product_price) VALUE (?, ?, ?, ?, ?)";
     private final static String SQL_UPDATE_QTY_PRODUCT = "UPDATE products SET product_stock = product_stock - ? WHERE product_id = ?";
+    private final static String SQL_SELECT_ALL = "SELECT "
+            + "  orders.*, "
+            + "  employees.employee_name, "
+            + "  employees.employee_id, "
+            + "  customers.customer_name, "
+            + "  customers.customer_id "
+            + " FROM "
+            + "  orders "
+            + "  JOIN employees ON employees.employee_id = orders.employee_id "
+            + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id ";
     private final static String SQL_GET_ONE = "SELECT "
             + "  orders.*, "
             + "  employees.employee_name, "
@@ -46,6 +56,8 @@ public class OrderDAOImpl implements OrderDAO {
             + "  orders.order_id = ? ";
     
     private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
+    
+    private final static int PER_PAGE = 10;
 
     private final ProductService productService;
 
@@ -149,7 +161,41 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public PaginatedResults<Order> select(int page) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PaginatedResults<Order> pagination = new PaginatedResults<>(page, PER_PAGE);
+        List<Order> orders = new ArrayList<>();
+
+        try ( Connection conn = DBConnection.getConnection()) {
+
+            // query items
+            Statement stSelect = conn.createStatement();
+            ResultSet rs = stSelect.executeQuery(SQL_SELECT_ALL);
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("order_id"));
+                order.setOrderDate(rs.getTimestamp("order_date")); 
+                order.setAmount(rs.getDouble("amount"));
+                
+                order.getEmployee().setName(rs.getString("employee_name"));
+                order.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                
+                order.getCustomer().setName(rs.getString("customer_name"));
+                order.getCustomer().setId(rs.getInt("customer_id"));
+                
+                orders.add(order);
+            }
+
+            pagination.setResults(orders);
+
+            // query count
+            String sqlCount = PaginatedResults.parseCountSQL(SQL_SELECT_ALL);
+            Statement st = DBConnection.getConnection().createStatement();
+            ResultSet countRs = st.executeQuery(sqlCount);
+            if (countRs.next()) {
+                pagination.setTotalItems(countRs.getInt(1));
+            }
+        }
+        return pagination;
     }
 
     @Override

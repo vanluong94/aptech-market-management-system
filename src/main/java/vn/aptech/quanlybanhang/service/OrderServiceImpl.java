@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public PaginatedResults<Order> select(int page) throws SQLException, Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.orderDAO.select(page);
     }
 
     @Override
