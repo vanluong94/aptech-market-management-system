@@ -17,6 +17,9 @@ import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 
+/**
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
+ */
 public class OrderListingPage extends Page {
 
     @Override
