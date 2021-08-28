@@ -23,19 +23,19 @@ public class CategoryListingPage extends Page {
     public String getTitle() {
         return "Danh sách Danh mục";
     }
-    
+
     @Override
     public void displayContent() {
         try {
             CategoryService categoryService = new CategoryServiceImpl();
             List<Category> categories = categoryService.findAll();
-            
+
             if (categories.isEmpty()) {
                 System.out.println("<Không tìm thấy Danh mục nào>");
             } else {
-                
+
                 List<Object[]> rows = new ArrayList<>();
-                
+
                 // transfer data to table row
                 for (Category cat : categories) {
                     Object[] row = {
@@ -56,5 +56,5 @@ public class CategoryListingPage extends Page {
             Logger.getLogger(CategoryListingPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }

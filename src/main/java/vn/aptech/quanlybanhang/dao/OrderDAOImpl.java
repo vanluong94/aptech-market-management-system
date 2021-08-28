@@ -9,12 +9,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
+import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
@@ -27,7 +29,7 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class OrderDAOImpl implements OrderDAO {
-
+    
     private final static String SQL_INSERT = "INSERT INTO orders(customer_id, employee_id, amount, order_date) VALUE (?, ?, ?, ?)";
     private final static String SQL_INSERT_ORDER_ITEMS = "INSERT INTO order_items(order_id, product_id, product_name, product_quantity, "
             + "product_price) VALUE (?, ?, ?, ?, ?)";
@@ -42,6 +44,21 @@ public class OrderDAOImpl implements OrderDAO {
             + "  orders "
             + "  JOIN employees ON employees.employee_id = orders.employee_id "
             + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id ";
+    private final static String SQL_ORDER_DETAIL_OF_CASHIER = "SELECT "
+            + "  orders.*, "
+            + "  employees.employee_name, "
+            + "  employees.employee_id, "
+            + "  customers.customer_name, "
+            + "  customers.customer_id "
+            + " FROM "
+            + "  orders "
+            + "  JOIN employees ON employees.employee_id = orders.employee_id "
+            + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
+            + " WHERE "
+            + "  orders.order_id = ? AND employees.employee_id = ?";
+    
+    static LocalDate myTime = LocalDate.now();
+    private final static String SQL_GET_BY_DATE = "SELECT orders.*,employees.employee_name, employees.employee_id,customers.customer_name,customers.customer_id FROM orders JOIN employees ON employees.employee_id = orders.employee_id LEFT JOIN customers ON customers.customer_id = orders.customer_id WHERE orders.order_date LIKE '" + myTime + "%' AND employees.employee_id = ?";
     private final static String SQL_GET_ONE = "SELECT "
             + "  orders.*, "
             + "  employees.employee_name, "
@@ -130,24 +147,25 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public Order findById(int id) throws SQLException {
-        try ( Connection conn = DBConnection.getConnection()) {
+
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement st = conn.prepareStatement(SQL_GET_ONE);
             st.setInt(1, id);
-            
+
             ResultSet rs = st.executeQuery();
-            
-            if(rs.next()) {
+
+            if (rs.next()) {
                 Order order = new Order();
                 order.setId(rs.getInt("order_id"));
-                order.setOrderDate(rs.getTimestamp("order_date")); 
+                order.setOrderDate(rs.getTimestamp("order_date"));
                 order.setAmount(rs.getDouble("amount"));
-                
+
                 order.getEmployee().setName(rs.getString("employee_name"));
                 order.getEmployee().setEmployeeId(rs.getInt("employee_id"));
-                
+
                 order.getCustomer().setName(rs.getString("customer_name"));
                 order.getCustomer().setId(rs.getInt("customer_id"));
-                
+
                 return order;
             }
         }
@@ -224,6 +242,54 @@ public class OrderDAOImpl implements OrderDAO {
         }
         
         return items;
+    }
+
+    @Override
+    public List<Order> todayOrder() throws SQLException {
+        List<Order> orders = new ArrayList<>();
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(SQL_GET_BY_DATE);
+            pstmt.setInt(1, AuthServiceImpl.getCurrentEmployee().getEmployeeId());
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("order_id"));
+                order.getCustomer().setName(rs.getString("customer_name"));
+                order.getEmployee().setName(rs.getString("employee_name"));
+                order.setOrderDate(rs.getTimestamp("order_date"));
+                order.setAmount(rs.getDouble("amount"));
+                orders.add(order);
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return orders;
+    }
+
+    @Override
+    public Order findByCashierId(int id) throws SQLException {
+
+        Order order = null;
+        try {
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(SQL_ORDER_DETAIL_OF_CASHIER);
+            pstmt.setInt(1, id);
+            pstmt.setInt(2, AuthServiceImpl.getCurrentEmployee().getEmployeeId());
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                order = new Order();
+                order.setId(rs.getInt("order_id"));
+                order.getCustomer().setName(rs.getString("customer_name"));
+                order.getEmployee().setName(rs.getString("employee_name"));
+                order.setOrderDate(rs.getTimestamp("order_date"));
+                order.setAmount(rs.getDouble("amount"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DBConnection.maybeCloseConnection();
+        }
+        return order;
     }
 
 }

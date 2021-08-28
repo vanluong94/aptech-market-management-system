@@ -3,11 +3,12 @@
  */
 package vn.aptech.quanlybanhang.entities;
 
-import java.text.DateFormat;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import vn.aptech.quanlybanhang.common.StringCommon;
+import vn.aptech.quanlybanhang.constant.Constant;
 
 /**
  *
@@ -19,7 +20,7 @@ public class Order extends BaseEntity {
 
     private int id;
     private double amount;
-    private Date orderDate;
+    private Timestamp orderDate;
     private Customer customer;
     private Employee employee;
     private List<OrderItem> orderItems;
@@ -28,7 +29,7 @@ public class Order extends BaseEntity {
         this.customer = new Customer();
         this.employee = new Employee();
         this.orderItems = new ArrayList<>();
-        this.orderDate = new Date();
+        this.orderDate = new Timestamp(new java.util.Date().getTime());
     }
 
     /**
@@ -62,14 +63,14 @@ public class Order extends BaseEntity {
     /**
      * @return the orderDate
      */
-    public Date getOrderDate() {
+    public Timestamp getOrderDate() {
         return orderDate;
     }
 
     /**
      * @param orderDate the orderDate to set
      */
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(Timestamp orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -115,13 +116,19 @@ public class Order extends BaseEntity {
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
-    
+
+    @Override
+    public String toString() {
+        return "[ID] " + getId() + "\n"
+                + "[date] " + orderDate + "\n";
+    }
+
     public String getAmountString() {
         return StringCommon.convertDoubleToVND(this.amount);
     }
-    
+
     public String getDatetimeString() {
-        DateFormat dateFormat = DateFormat.getDateTimeInstance();
-        return dateFormat.format(this.orderDate);
+        SimpleDateFormat SDFormat = new SimpleDateFormat(Constant.DATE_TIME_SIMPLE_FORMAT);
+        return SDFormat.format(this.orderDate);
     }
 }

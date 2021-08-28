@@ -13,7 +13,6 @@ import vn.aptech.quanlybanhang.entities.Supplier;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 
-
 public class ProductListingPage extends Page {
 
     @Override
@@ -37,5 +36,5 @@ public class ProductListingPage extends Page {
     public String getTitle() {
         return "Danh sách Sản phẩm";
     }
-    
+
 }
