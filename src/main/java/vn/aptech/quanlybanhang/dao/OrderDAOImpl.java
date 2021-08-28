@@ -43,7 +43,8 @@ public class OrderDAOImpl implements OrderDAO {
             + " FROM "
             + "  orders "
             + "  JOIN employees ON employees.employee_id = orders.employee_id "
-            + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id ";
+            + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
+            + " LIMIT ?, ?";
     private final static String SQL_ORDER_DETAIL_OF_CASHIER = "SELECT "
             + "  orders.*, "
             + "  employees.employee_name, "
@@ -185,8 +186,11 @@ public class OrderDAOImpl implements OrderDAO {
         try ( Connection conn = DBConnection.getConnection()) {
 
             // query items
-            Statement stSelect = conn.createStatement();
-            ResultSet rs = stSelect.executeQuery(SQL_SELECT_ALL);
+            PreparedStatement stSelect = conn.prepareStatement(SQL_SELECT_ALL);
+            stSelect.setInt(1, pagination.getOffset());
+            stSelect.setInt(2, pagination.getPerPage());
+
+            ResultSet rs = stSelect.executeQuery();
 
             while (rs.next()) {
                 Order order = new Order();
