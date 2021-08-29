@@ -10,11 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.entities.ImportProduct;
 import vn.aptech.quanlybanhang.entities.Product;
-import vn.aptech.quanlybanhang.service.CategoryService;
-import vn.aptech.quanlybanhang.service.CategoryServiceImpl;
 import vn.aptech.quanlybanhang.service.ImportProductService;
 import vn.aptech.quanlybanhang.service.ImportProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
@@ -30,7 +27,20 @@ public class ProductDAOImpl implements ProductDAO {
     private final static int PER_PAGE = 10;
 
     private final static String SQL_SELECT_ALL = "SELECT * FROM products";
-    private final static String SQL_GET_ONE = "SELECT * FROM products WHERE product_id = ?";
+    private final static String SQL_GET_ONE = ""
+            + " SELECT"
+            + "     products.*, "
+            + "     d_products.*,"
+            + "     categories.* "
+            + " FROM "
+            + "     products "
+            + "     LEFT JOIN discount_product as d_products ON ( "
+            + "         d_products.product_id = products.product_id "
+            + "         and ? BETWEEN d_products.start_date "
+            + "         AND d_products.end_date "
+            + "     )"
+            + "     LEFT JOIN categories ON categories.category_id = products.category_id "
+            + " WHERE products.product_id = ? ";
     private final static String SQL_GET_BY_CATEGORY_ID = "SELECT * FROM products WHERE category_id = ?";
     private final static String SQL_INSERT = "INSERT INTO `products` (`brand_id`, `category_id`, `employee_id`, `product_name`,"
             + " `product_price`, `product_stock`) VALUES (?, ?, ?, ?, ?, ?);";
@@ -164,21 +174,22 @@ public class ProductDAOImpl implements ProductDAO {
             // Không đóng connnection ở đây vì liên quan đến Transaction ở class OrderDAO.create
             Connection conn = DBConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE);
-            pstmt.setInt(1, id);
+            pstmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            pstmt.setInt(2, id);
+
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                product = new Product();
-                product.setId(rs.getInt("product_id"));
-                product.getBrand().setBrandId(rs.getInt("brand_id"));
-                product.getCategory().setCategoryId(rs.getInt("category_id"));
-                product.getEmployee().setEmployeeId(rs.getInt("employee_id"));
-                product.setName(rs.getString("product_name"));
-                product.setPrice(rs.getDouble("product_price"));
-                product.setQuantityInStock(rs.getInt("product_stock"));
-
-                CategoryService categoryService = new CategoryServiceImpl();
-                Category productCat = categoryService.findById(rs.getInt("category_id"));
-                product.setCategory(productCat);
+                product = this.mapRersultSetToObject(rs);
+                product.getCategory().setCategoryName(rs.getString("category_name"));
+                
+                if (rs.getInt("d_products.discount_product_id") > 0) {
+                    product.getDiscount().setId(rs.getInt("d_products.discount_product_id"));
+                    product.getDiscount().setDiscount(rs.getFloat("d_products.discount"));
+                    product.getDiscount().setDiscountId(rs.getInt("d_products.discount_id"));
+                    product.getDiscount().setProductId(rs.getInt("d_products.product_id"));
+                    product.getDiscount().setStartDate(rs.getDate("d_products.start_date"));
+                    product.getDiscount().setEndDate(rs.getDate("d_products.end_date"));
+                }
             }
         } catch (SQLException e) {
             throw e;

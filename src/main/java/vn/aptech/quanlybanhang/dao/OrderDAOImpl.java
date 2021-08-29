@@ -19,8 +19,6 @@ import vn.aptech.quanlybanhang.common.DateCommon;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
-import vn.aptech.quanlybanhang.service.ProductService;
-import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
@@ -34,7 +32,7 @@ public class OrderDAOImpl implements OrderDAO {
     
     private final static String SQL_INSERT = "INSERT INTO orders(customer_id, employee_id, amount, order_date) VALUE (?, ?, ?, ?)";
     private final static String SQL_INSERT_ORDER_ITEMS = "INSERT INTO order_items(order_id, product_id, product_name, product_quantity, "
-            + "product_price) VALUE (?, ?, ?, ?, ?)";
+            + "product_price, discount_product_id, discount_price) VALUE (?, ?, ?, ?, ?, ?, ?)";
     private final static String SQL_UPDATE_QTY_PRODUCT = "UPDATE products SET product_stock = product_stock - ? WHERE product_id = ?";
     private final static String SQL_SELECT_ALL = "SELECT "
             + "  orders.*, "
@@ -92,12 +90,6 @@ public class OrderDAOImpl implements OrderDAO {
     
     private final static int PER_PAGE = 10;
 
-    private final ProductService productService;
-
-    public OrderDAOImpl() {
-        this.productService = new ProductServiceImpl();
-    }
-
     @Override
     public boolean create(Order object) throws SQLException {
         int rowsAffected = -1;
@@ -122,7 +114,9 @@ public class OrderDAOImpl implements OrderDAO {
                         pstmt.setString(3, orderItem.getProductName());
                         pstmt.setInt(4, orderItem.getQuantity());
                         pstmt.setDouble(5, orderItem.getProductPrice());
-                        // Set nốt Discount và Discount Price
+                        pstmt.setInt(6, orderItem.getDiscount().getId());
+                        pstmt.setDouble(7, orderItem.getDiscountPrice());
+                        
                         rowsAffected = pstmt.executeUpdate();
                         // Trừ số lượng sản phẩm trong kho nữa
                         if (rowsAffected > 0) {
