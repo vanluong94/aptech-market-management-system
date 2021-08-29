@@ -53,6 +53,7 @@ public class DiscountServiceImpl implements DiscountService {
         return discountDAO.findAll();
     }
 
+    @Override
     public boolean update(Discount object) throws SQLException, Exception {
         return this.discountDAO.update(object);
     }
