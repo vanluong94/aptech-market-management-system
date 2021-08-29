@@ -6,10 +6,14 @@ package vn.aptech.quanlybanhang.dao;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.common.DateCommon;
+import vn.aptech.quanlybanhang.constant.Constant;
+import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.entities.ImportProduct;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.service.ImportProductService;
@@ -45,6 +49,29 @@ public class ProductDAOImpl implements ProductDAO {
     private final static String SQL_INSERT = "INSERT INTO `products` (`brand_id`, `category_id`, `employee_id`, `product_name`,"
             + " `product_price`, `product_stock`) VALUES (?, ?, ?, ?, ?, ?);";
     private final static String SQL_DELETE = "DELETE FROM products WHERE product_id = ?";
+    private final static String SQL_SELECT_POPULAR_ORDER = "SELECT products.*, categories.category_name, brands.brand_name,"
+            + " employees.employee_name,"
+            + " suppliers.supplier_name,"
+            + " SUM(order_items.product_quantity) AS unitsOnOrder"
+            + " FROM order_items"
+            + " INNER JOIN orders ON orders.order_id = order_items.order_id"
+            + " RIGHT JOIN products ON products.product_id = order_items.product_id"
+            + " INNER JOIN brands ON products.brand_id = brands.brand_id"
+            + " INNER JOIN categories ON products.category_id = categories.category_id"
+            + " INNER JOIN employees ON products.employee_id = employees.employee_id"
+            + " INNER JOIN suppliers ON products.supplier_id = suppliers.supplier_id"
+            + " WHERE orders.order_date BETWEEN ? AND ?"
+            + " GROUP BY products.product_id"
+            + " ORDER BY unitsOnOrder DESC"
+            + " LIMIT ?, ?";
+    private final static String SQL_SELECT_POPULAR_ORDER_COUNT = "SELECT COUNT(DISTINCT order_items.product_id) FROM order_items"
+            + " INNER JOIN orders ON orders.order_id = order_items.order_id"
+            + " RIGHT JOIN products ON products.product_id = order_items.product_id"
+            + " INNER JOIN brands ON products.brand_id = brands.brand_id"
+            + " INNER JOIN categories ON products.category_id = categories.category_id"
+            + " INNER JOIN employees ON products.employee_id = employees.employee_id"
+            + " INNER JOIN suppliers ON products.supplier_id = suppliers.supplier_id"
+            + " WHERE orders.order_date BETWEEN ? AND ?";
     private final static String SQL_SELECT_OUT_STOCK = "SELECT "
             + " products.*, categories.category_name, brands.brand_name, employees.employee_name, suppliers.supplier_name"
             + " FROM products"
@@ -54,7 +81,7 @@ public class ProductDAOImpl implements ProductDAO {
             + " LEFT JOIN suppliers ON products.supplier_id = suppliers.supplier_id"
             + " WHERE product_stock = 0"
             + " LIMIT ?,?";
-    
+
     private final ImportProductService importProductService;
 
     public ProductDAOImpl() {
@@ -280,15 +307,14 @@ public class ProductDAOImpl implements ProductDAO {
         return products;
     }
 
-
     @Override
     public PaginatedResults<Product> selectOutOfStock(int page) throws SQLException {
 
         PaginatedResults<Product> pagination = new PaginatedResults<>(page, PER_PAGE);
         List<Product> products = new ArrayList<>();
 
-        try ( Connection conn = DBConnection.getConnection()) {
-            
+        try (Connection conn = DBConnection.getConnection()) {
+
             // query items
             PreparedStatement stSelect = conn.prepareStatement(SQL_SELECT_OUT_STOCK);
             stSelect.setInt(1, pagination.getOffset());
@@ -340,6 +366,53 @@ public class ProductDAOImpl implements ProductDAO {
     @Override
     public PaginatedResults<Product> select(int page) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PaginatedResults<Product> findAllByOrderByUnitsOnOrderDesc(int page, String fromDate, String toDate) throws SQLException {
+        PaginatedResults<Product> pagination = new PaginatedResults<>(page, PER_PAGE);
+        List<Product> products = new ArrayList<>();
+        Statement st = null;
+        ResultSet rs = null;
+        ResultSet countRs = null;
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_POPULAR_ORDER);
+            pstmt.setDate(1, new java.sql.Date(DateCommon.convertStringToDateByPattern(fromDate, Constant.DATE_FORMAT).getTime()));
+            pstmt.setDate(2, new java.sql.Date(DateCommon.convertStringToDateByPattern(toDate, Constant.DATE_FORMAT).getTime()));
+            pstmt.setInt(3, pagination.getOffset());
+            pstmt.setInt(4, pagination.getPerPage());
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Product product = this.mapRersultSetToObject(rs);
+                product.setUnitsOnOrder(rs.getInt("unitsOnOrder"));
+                product.getBrand().setBrandName(rs.getString("brand_name"));
+                product.getSupplier().setName(rs.getString("supplier_name"));
+                product.getCategory().setCategoryName(rs.getString("category_name"));
+                product.getEmployee().setName(rs.getString("employee_name"));
+                products.add(product);
+            }
+
+            pagination.setResults(products);
+            pstmt = conn.prepareStatement(SQL_SELECT_POPULAR_ORDER_COUNT);
+            pstmt.setDate(1, new java.sql.Date(DateCommon.convertStringToDateByPattern(fromDate, Constant.DATE_FORMAT).getTime()));
+            pstmt.setDate(2, new java.sql.Date(DateCommon.convertStringToDateByPattern(toDate, Constant.DATE_FORMAT).getTime()));
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                pagination.setTotalItems(rs.getInt(1));
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (countRs != null) {
+                countRs.close();
+            }
+            if (st != null) {
+                st.close();
+            }
+        }
+
+        return pagination;
     }
 
 }

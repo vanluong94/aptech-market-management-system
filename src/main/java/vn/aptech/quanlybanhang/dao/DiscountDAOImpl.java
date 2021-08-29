@@ -27,7 +27,7 @@ public class DiscountDAOImpl implements DiscountDAO {
     private final static String SQL_UPDATE = "UPDATE discounts SET discount_name = ? WHERE discount_id = ?";
 
     @Override
-    public boolean create(Discount object) throws SQLException {
+    public boolean create(Discount discount) throws SQLException {
         int rowsAffected = -1;
         try (
                 Connection conn = DBConnection.getConnection();  

@@ -4,6 +4,7 @@
 package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -113,6 +114,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public PaginatedResults<Product> selectOutOfStock(int page) throws SQLException {
         return productDAO.selectOutOfStock(page);
+    }
+
+    @Override
+    public PaginatedResults<Product> findAllByOrderByUnitsOnOrderDesc(int page, String fromDate, String toDate) throws SQLException {
+        return productDAO.findAllByOrderByUnitsOnOrderDesc(page, fromDate, toDate);
     }
 
 }
