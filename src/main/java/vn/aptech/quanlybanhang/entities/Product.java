@@ -26,6 +26,7 @@ public class Product extends BaseEntity {
     private String name;
     private double price;
     private int quantityInStock;
+    private int unitsOnOrder;
     private List<ProductDiscount> productDiscounts;
     private List<OrderItem> orderItems;
 
@@ -155,6 +156,22 @@ public class Product extends BaseEntity {
         this.quantityInStock = quantityInStock;
     }
 
+    /**
+     *
+     * @return
+     */
+    public int getUnitsOnOrder() {
+        return unitsOnOrder;
+    }
+
+    /**
+     *
+     * @param unitsOnOrder
+     */
+    public void setUnitsOnOrder(int unitsOnOrder) {
+        this.unitsOnOrder = unitsOnOrder;
+    }
+    
     /**
      * @return the productDiscounts
      */
