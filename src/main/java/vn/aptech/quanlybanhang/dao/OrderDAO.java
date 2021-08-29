@@ -4,9 +4,11 @@
 package vn.aptech.quanlybanhang.dao;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
+import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
  *
@@ -19,4 +21,6 @@ public interface OrderDAO extends BaseDAO<Order> {
     List<Order> todayOrder() throws SQLException;
 
     List<OrderItem> getOrderItems(Order order);
+    
+    PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws SQLException;
 }

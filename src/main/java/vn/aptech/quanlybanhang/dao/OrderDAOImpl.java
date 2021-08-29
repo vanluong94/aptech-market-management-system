@@ -11,9 +11,11 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.common.DateCommon;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
@@ -74,6 +76,19 @@ public class OrderDAOImpl implements OrderDAO {
             + "  orders.order_id = ? ";
     
     private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
+    private final static String SQL_GET_BY_TIME_RANGE = "SELECT "
+            + "  orders.*, "
+            + "  employees.employee_name, "
+            + "  employees.employee_id, "
+            + "  customers.customer_name, "
+            + "  customers.customer_id "
+            + " FROM "
+            + "  orders "
+            + "  JOIN employees ON employees.employee_id = orders.employee_id "
+            + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
+            + " WHERE "
+            + "  date(order_date) BETWEEN ? AND ?  "
+            + " LIMIT ?, ?";
     
     private final static int PER_PAGE = 10;
 
@@ -294,6 +309,55 @@ public class OrderDAOImpl implements OrderDAO {
             DBConnection.maybeCloseConnection();
         }
         return order;
+    }
+
+    @Override
+    public PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws SQLException {
+        
+        PaginatedResults<Order> pagination = new PaginatedResults<>(page, PER_PAGE);
+        List<Order> orders = new ArrayList<>();
+
+        try ( Connection conn = DBConnection.getConnection()) {
+
+            // query items
+            PreparedStatement stSelect = conn.prepareStatement(SQL_GET_BY_TIME_RANGE);
+            stSelect.setDate(1, DateCommon.convertDateToSqlDate(fromDate));
+            stSelect.setDate(2, DateCommon.convertDateToSqlDate(toDate));
+            stSelect.setInt(3, pagination.getOffset());
+            stSelect.setInt(4, pagination.getPerPage());
+            
+            ResultSet rs = stSelect.executeQuery();
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("order_id"));
+                order.setOrderDate(rs.getTimestamp("order_date")); 
+                order.setAmount(rs.getDouble("amount"));
+                
+                order.getEmployee().setName(rs.getString("employee_name"));
+                order.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                
+                order.getCustomer().setName(rs.getString("customer_name"));
+                order.getCustomer().setId(rs.getInt("customer_id"));
+                
+                orders.add(order);
+            }
+
+            pagination.setResults(orders);
+
+            // query count
+            String sqlCount = PaginatedResults.parseCountSQL(SQL_GET_BY_TIME_RANGE);
+            
+            PreparedStatement stCount = DBConnection.getConnection().prepareStatement(sqlCount);
+            stCount.setDate(1, DateCommon.convertDateToSqlDate(fromDate));
+            stCount.setDate(2, DateCommon.convertDateToSqlDate(toDate));
+            
+            ResultSet countRs = stCount.executeQuery();
+            if (countRs.next()) {
+                pagination.setTotalItems(countRs.getInt(1));
+            }
+        }
+        return pagination;
+        
     }
 
 }
