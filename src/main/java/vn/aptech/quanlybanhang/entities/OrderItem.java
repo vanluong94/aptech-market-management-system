@@ -16,16 +16,16 @@ public class OrderItem extends BaseEntity {
     private int id;
     private Order order;
     private Product product;
-    private ProductDiscount productDiscount;
     private String productName;
     private int quantity;
     private double productPrice;
     private double discountPrice;
-    
+    private ProductDiscount discount;
+
     public OrderItem() {
-        
+        this.discount = new ProductDiscount();
     }
-    
+
     public OrderItem(Order order, int id, String productName, int quantity, double productPrice, double discountPrice) {
         this.id = id;
         this.order = order;
@@ -33,6 +33,8 @@ public class OrderItem extends BaseEntity {
         this.quantity = quantity;
         this.productPrice = productPrice;
         this.discountPrice = discountPrice;
+
+        this.discount = new ProductDiscount();
     }
 
     /**
@@ -120,20 +122,6 @@ public class OrderItem extends BaseEntity {
     }
 
     /**
-     * @return the productDiscount
-     */
-    public ProductDiscount getProductDiscount() {
-        return productDiscount;
-    }
-
-    /**
-     * @param productDiscount the productDiscount to set
-     */
-    public void setProductDiscount(ProductDiscount productDiscount) {
-        this.productDiscount = productDiscount;
-    }
-
-    /**
      * @return the discountPrice
      */
     public double getDiscountPrice() {
@@ -146,21 +134,37 @@ public class OrderItem extends BaseEntity {
     public void setDiscountPrice(double discountPrice) {
         this.discountPrice = discountPrice;
     }
-    
-    public double getFinalPrice() {
+
+    public ProductDiscount getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(ProductDiscount discount) {
+        this.discount = discount;
+    }
+
+    public double getProductFinalPrice() {
         return this.discountPrice > 0 ? this.discountPrice : this.productPrice;
     }
-    
+
+    public String getProductFinalPriceString() {
+        return StringCommon.convertDoubleToVND(this.getProductFinalPrice());
+    }
+
+    public double getTotal() {
+        return this.getProductFinalPrice() * this.getQuantity();
+    }
+
+    public String getTotalString() {
+        return StringCommon.convertDoubleToVND(this.getTotal());
+    }
+
     public String getProductPriceString() {
         return StringCommon.convertDoubleToVND(this.productPrice);
     }
-    
+
     public String getDiscountPriceString() {
         return StringCommon.convertDoubleToVND(this.discountPrice);
-    }
-    
-    public String getTotalPriceString() {
-        return StringCommon.convertDoubleToVND(this.getFinalPrice() * this.getQuantity());
     }
 
 }

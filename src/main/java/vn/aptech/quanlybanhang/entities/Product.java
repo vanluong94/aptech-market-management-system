@@ -25,8 +25,8 @@ public class Product extends BaseEntity {
     private Supplier supplier;
     private String name;
     private double price;
+    private ProductDiscount discount;
     private int quantityInStock;
-    private List<ProductDiscount> productDiscounts;
     private List<OrderItem> orderItems;
 
     public Product() {
@@ -35,8 +35,8 @@ public class Product extends BaseEntity {
         this.supplier = new Supplier();
         this.employee = new Employee();
         this.category = new Category();
-        this.productDiscounts = new ArrayList<>();
         this.orderItems = new ArrayList<>();
+        this.discount = new ProductDiscount();
     }
 
     /**
@@ -123,6 +123,14 @@ public class Product extends BaseEntity {
         this.name = name;
     }
 
+    public ProductDiscount getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(ProductDiscount discount) {
+        this.discount = discount;
+    }
+    
     /**
      * @return the price
      */
@@ -154,21 +162,15 @@ public class Product extends BaseEntity {
     public void setQuantityInStock(int quantityInStock) {
         this.quantityInStock = quantityInStock;
     }
-
-    /**
-     * @return the productDiscounts
-     */
-    public List<ProductDiscount> getProductDiscounts() {
-        return productDiscounts;
+    
+    public double getDiscountPrice() {
+        return this.getDiscount().getDiscountId() > 0 ? this.getPrice() * ( 100 - this.getDiscount().getDiscount()) / 100 : 0; 
     }
-
-    /**
-     * @param productDiscounts the productDiscounts to set
-     */
-    public void setProductDiscounts(List<ProductDiscount> productDiscounts) {
-        this.productDiscounts = productDiscounts;
+    
+    public String getDiscountPriceString() {
+        return StringCommon.convertDoubleToVND(this.getDiscountPrice());
     }
-
+    
     /**
      * @return the orderItems
      */

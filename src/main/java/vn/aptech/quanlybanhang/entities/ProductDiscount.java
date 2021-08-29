@@ -8,6 +8,8 @@ import java.util.Date;
 /**
  *
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
+ * 
  */
 public class ProductDiscount {
 
@@ -17,6 +19,18 @@ public class ProductDiscount {
     private float discount;
     private Date startDate;
     private Date endDate;
+
+    public ProductDiscount(){
+        
+    }
+    
+    public ProductDiscount(int discountId, int productId, float discount, Date startDate, Date endDate) {
+        this.discountId = discountId;
+        this.productId = productId;
+        this.discount = discount;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
     /**
      * @return the id

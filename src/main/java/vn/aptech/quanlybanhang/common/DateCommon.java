@@ -26,4 +26,8 @@ public class DateCommon {
         return new java.sql.Date(date.getTime());
     }
     
+    public static java.sql.Timestamp convertDateToSqlTimestamp(Date date) {
+        return new java.sql.Timestamp(date.getTime());
+    }
+    
 }
