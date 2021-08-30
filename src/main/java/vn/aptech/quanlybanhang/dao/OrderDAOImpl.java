@@ -34,6 +34,15 @@ public class OrderDAOImpl implements OrderDAO {
     private final static String SQL_INSERT_ORDER_ITEMS = "INSERT INTO order_items(order_id, product_id, product_name, product_quantity, "
             + "product_price) VALUE (?, ?, ?, ?, ?)";
     private final static String SQL_UPDATE_QTY_PRODUCT = "UPDATE products SET product_stock = product_stock - ? WHERE product_id = ?";
+    private final static String SQL_SELECT_ALL = "SELECT "
+            + "  orders.*, "
+            + "  employees.employee_name, "
+            + "  customers.customer_name, "
+            + " FROM "
+            + "  orders "
+            + "  JOIN employees ON employees.employee_id = orders.employee_id "
+            + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
+            + " LIMIT ?, ?";
     private final static String SQL_ORDER_DETAIL_OF_CASHIER = "SELECT "
             + "  orders.*, "
             + "  employees.employee_name, "
@@ -46,6 +55,7 @@ public class OrderDAOImpl implements OrderDAO {
             + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE "
             + "  orders.order_id = ? AND employees.employee_id = ?";
+    
     static LocalDate myTime = LocalDate.now();
     private final static String SQL_GET_BY_DATE = "SELECT orders.*,employees.employee_name, employees.employee_id,customers.customer_name,customers.customer_id FROM orders JOIN employees ON employees.employee_id = orders.employee_id LEFT JOIN customers ON customers.customer_id = orders.customer_id WHERE orders.order_date LIKE '" + myTime + "%' AND employees.employee_id = ?";
     private final static String SQL_GET_ONE = "SELECT "
@@ -60,8 +70,10 @@ public class OrderDAOImpl implements OrderDAO {
             + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE "
             + "  orders.order_id = ? ";
-
+    
     private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
+    
+    private final static int PER_PAGE = 10;
 
     private final ProductService productService;
 
@@ -134,6 +146,7 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public Order findById(int id) throws SQLException {
+
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement st = conn.prepareStatement(SQL_GET_ONE);
             st.setInt(1, id);
@@ -165,7 +178,72 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public PaginatedResults<Order> select(int page) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PaginatedResults<Order> pagination = new PaginatedResults<>(page, PER_PAGE);
+        List<Order> orders = new ArrayList<>();
+
+        try ( Connection conn = DBConnection.getConnection()) {
+
+            // query items
+            PreparedStatement stSelect = conn.prepareStatement(SQL_SELECT_ALL);
+            stSelect.setInt(1, pagination.getOffset());
+            stSelect.setInt(2, pagination.getPerPage());
+
+            ResultSet rs = stSelect.executeQuery();
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("order_id"));
+                order.setOrderDate(rs.getTimestamp("order_date")); 
+                order.setAmount(rs.getDouble("amount"));
+                
+                order.getEmployee().setName(rs.getString("employee_name"));
+                order.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                
+                order.getCustomer().setName(rs.getString("customer_name"));
+                order.getCustomer().setId(rs.getInt("customer_id"));
+                
+                orders.add(order);
+            }
+
+            pagination.setResults(orders);
+
+            // query count
+            String sqlCount = PaginatedResults.parseCountSQL(SQL_SELECT_ALL);
+            Statement st = DBConnection.getConnection().createStatement();
+            ResultSet countRs = st.executeQuery(sqlCount);
+            if (countRs.next()) {
+                pagination.setTotalItems(countRs.getInt(1));
+            }
+        }
+        return pagination;
+    }
+
+    @Override
+    public List<OrderItem> getOrderItems(Order order) {
+        List<OrderItem> items = new ArrayList<>();
+        
+        try(Connection conn = DBConnection.getConnection()){
+            PreparedStatement st = conn.prepareStatement(SQL_GET_PRODUCTS);
+            st.setInt(1, order.getId());
+            ResultSet rs = st.executeQuery();
+            
+            while(rs.next()) {
+                OrderItem item = new OrderItem(
+                        order, 
+                        rs.getInt("order_item_id"),
+                        rs.getString("product_name"),
+                        rs.getInt("product_quantity"),
+                        rs.getDouble("product_price"),
+                        rs.getDouble("discount_price")
+                );
+                
+                items.add(item);
+            }
+        } catch (SQLException ex) {            
+            Logger.getLogger(OrderDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return items;
     }
 
     @Override
@@ -214,33 +292,6 @@ public class OrderDAOImpl implements OrderDAO {
             DBConnection.maybeCloseConnection();
         }
         return order;
-    }
-
-    public List<OrderItem> getOrderItems(Order order) {
-        List<OrderItem> items = new ArrayList<>();
-
-        try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement st = conn.prepareStatement(SQL_GET_PRODUCTS);
-            st.setInt(1, order.getId());
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()) {
-                OrderItem item = new OrderItem(
-                        order,
-                        rs.getInt("order_item_id"),
-                        rs.getString("product_name"),
-                        rs.getInt("product_quantity"),
-                        rs.getDouble("product_price"),
-                        rs.getDouble("discount_price")
-                );
-
-                items.add(item);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(OrderDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return items;
     }
 
 }

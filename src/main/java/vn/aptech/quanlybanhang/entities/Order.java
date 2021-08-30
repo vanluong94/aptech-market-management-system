@@ -6,11 +6,7 @@ package vn.aptech.quanlybanhang.entities;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import vn.aptech.quanlybanhang.service.AuthServiceImpl;
-import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.constant.Constant;
 
