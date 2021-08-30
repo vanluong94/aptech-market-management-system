@@ -48,7 +48,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public PaginatedResults<Order> select(int page) throws SQLException, Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.orderDAO.select(page);
+    }
+
+    @Override
+    public List<OrderItem> getOrderItems(Order order) {
+        return this.orderDAO.getOrderItems(order);
     }
 
     @Override
@@ -57,11 +62,6 @@ public class OrderServiceImpl implements OrderService {
             throw new InputInvalidException("ID không hợp lệ!");
         }
         return this.orderDAO.findByCashierId(id);
-    }
-
-    @Override
-    public List<OrderItem> getOrderItems(Order order) {
-        return this.orderDAO.getOrderItems(order);
     }
 
     @Override

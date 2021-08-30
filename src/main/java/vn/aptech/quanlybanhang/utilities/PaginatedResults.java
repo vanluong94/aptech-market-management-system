@@ -147,7 +147,7 @@ public class PaginatedResults<T> {
     }
 
     public boolean isPageValid(int checkPage) {
-        return checkPage > 1 && checkPage < this.getTotalPages();
+        return checkPage >= 1 && checkPage <= this.getTotalPages();
     }
     
     public static String parseCountSQL(String selectSQL) {
