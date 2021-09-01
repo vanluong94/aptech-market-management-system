@@ -238,5 +238,6 @@ public class Product extends BaseEntity {
         return new TableUI(headers.toArray(new String[0]), rows);
 
     }
+    
 
 }

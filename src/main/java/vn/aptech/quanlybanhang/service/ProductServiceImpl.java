@@ -91,19 +91,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByCategoryId(int id) throws SQLException {
+    public PaginatedResults<Product> findByCategoryId(int page,int id) throws SQLException {
         ValidateCommon.validateNullObject(id, "id");
-        return productDAO.findByCategoryId(id);
+        return productDAO.findByCategoryId(page,id);
     }
 
     @Override
-    public List<Product> findByName(String name) throws SQLException {
+    public PaginatedResults<Product> findByName(int page,String name) throws SQLException {
         ValidateCommon.validateNullObject(name, "name");
 //        List<Product> products = productDAO.findByName(name);
 //        if (ArrayListCommon.isNullOrEmpty(products)) {
 //            throw new CommonException(Response.DATA_NOT_FOUND);
 //        }
-        return productDAO.findByName(name);
+        return productDAO.findByName(page,name);
     }
 
     @Override

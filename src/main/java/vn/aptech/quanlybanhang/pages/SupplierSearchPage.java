@@ -23,6 +23,8 @@ public class SupplierSearchPage extends Page {
     @Override
     public void displayContent() {
         SupplierService supplierService = new SupplierServiceImpl();
+        String choice = null;
+        do {            
             try {
                 String search = AppScanner.scanStringWithMessage("Tên Nhà cung cấp cần tìm : ");
                 
@@ -33,9 +35,6 @@ public class SupplierSearchPage extends Page {
                     
                 } else {
                     System.out.println("Các Nhà cung cấp được tìm thấy dựa theo tên : ");
-//                    for(Supplier supplier : suppliers){
-//                        System.out.println(supplier.toString());
-//                    }
                     List<Object[]> rows = new ArrayList<>();
                     for (Supplier supplier : suppliers) {
                         Object[] row = {
@@ -43,20 +42,22 @@ public class SupplierSearchPage extends Page {
                             supplier.getName(),
                             supplier.getAddress()
                         };
-                        
                         rows.add(row);
                     }
-                    
                     String[] headers = {"ID", "Tên NCC", "Địa chỉ"};
-                    
                     TableUI theTable = new TableUI(headers, rows);
                     theTable.display();
+                    choice = AppScanner.scanStringWithMessage("Bạn có muốn tìm Nhà cung cấp khác không? [Y/N] : ");
+                    if (!"y".equalsIgnoreCase(choice)) {
+                        break;
+                    }
                 }
             } catch (SQLException e) {
                 Logger.getLogger(SupplierSearchPage.class.getName()).log(Level.SEVERE, null, e);
             }catch (ClassNotFoundException e){
                 Logger.getLogger(SupplierSearchPage.class.getName()).log(Level.SEVERE, null, e);
             }
+        } while ("y".equalsIgnoreCase(choice));
     }
 
     @Override
