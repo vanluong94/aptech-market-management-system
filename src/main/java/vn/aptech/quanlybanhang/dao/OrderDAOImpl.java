@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.common.DateCommon;
+import vn.aptech.quanlybanhang.constant.Constant;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
@@ -29,7 +31,9 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class OrderDAOImpl implements OrderDAO {
-    
+
+    private final static int PER_PAGE = 10;
+
     private final static String SQL_INSERT = "INSERT INTO orders(customer_id, employee_id, amount, order_date) VALUE (?, ?, ?, ?)";
     private final static String SQL_INSERT_ORDER_ITEMS = "INSERT INTO order_items(order_id, product_id, product_name, product_quantity, "
             + "product_price) VALUE (?, ?, ?, ?, ?)";
@@ -46,9 +50,7 @@ public class OrderDAOImpl implements OrderDAO {
     private final static String SQL_ORDER_DETAIL_OF_CASHIER = "SELECT "
             + "  orders.*, "
             + "  employees.employee_name, "
-            + "  employees.employee_id, "
             + "  customers.customer_name, "
-            + "  customers.customer_id "
             + " FROM "
             + "  orders "
             + "  JOIN employees ON employees.employee_id = orders.employee_id "
@@ -57,20 +59,23 @@ public class OrderDAOImpl implements OrderDAO {
             + "  orders.order_id = ? AND employees.employee_id = ?";
     
     static LocalDate myTime = LocalDate.now();
-    private final static String SQL_GET_BY_DATE = "SELECT orders.*,employees.employee_name, employees.employee_id,customers.customer_name,customers.customer_id FROM orders JOIN employees ON employees.employee_id = orders.employee_id LEFT JOIN customers ON customers.customer_id = orders.customer_id WHERE orders.order_date LIKE '" + myTime + "%' AND employees.employee_id = ?";
+    private final static String SQL_GET_BY_DATE = "SELECT orders.*,employees.employee_name, employees.employee_id,customers.customer_name,customers.customer_id FROM orders JOIN employees ON employees.employee_id = orders.employee_id LEFT JOIN customers ON customers.customer_id = orders.customer_id WHERE orders.order_date LIKE '" + myTime + "%' AND employees.employee_id = ? LIMIT ?,?";
+    private final static String SQL_CASHIER_STATISTICS = "SELECT orders.*,employees.employee_name,customers.customer_name"
+            + " FROM orders"
+            + " JOIN employees ON employees.employee_id = orders.employee_id"
+            + " LEFT JOIN customers ON customers.customer_id = orders.customer_id "
+            + " WHERE orders.order_date BETWEEN ? AND ? AND employees.employee_id = ?"
+            + " LIMIT ?,?";
     private final static String SQL_GET_ONE = "SELECT "
-            + "  orders.*, "
-            + "  employees.employee_name, "
-            + "  employees.employee_id, "
-            + "  customers.customer_name, "
-            + "  customers.customer_id "
+            + " orders.*, "
+            + " employees.employee_name, "
+            + " customers.customer_name, "
             + " FROM "
-            + "  orders "
-            + "  JOIN employees ON employees.employee_id = orders.employee_id "
-            + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
-            + " WHERE "
-            + "  orders.order_id = ? ";
-    
+            + " orders "
+            + " JOIN employees ON employees.employee_id = orders.employee_id "
+            + " LEFT JOIN customers ON customers.customer_id = orders.customer_id "
+            + " WHERE orders.order_id = ?";
+
     private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
     
     private final static int PER_PAGE = 10;
@@ -247,12 +252,18 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public List<Order> todayOrder() throws SQLException {
+    public PaginatedResults<Order> todayOrder(int page) throws SQLException {
+        PaginatedResults<Order> pagination = new PaginatedResults<>(page, PER_PAGE);
         List<Order> orders = new ArrayList<>();
+        Statement st = null;
+        ResultSet rs = null;
+        ResultSet countRs = null;
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_BY_DATE);
             pstmt.setInt(1, AuthServiceImpl.getCurrentEmployee().getEmployeeId());
-            ResultSet rs = pstmt.executeQuery();
+            pstmt.setInt(2, pagination.getOffset());
+            pstmt.setInt(3, pagination.getPerPage());
+            rs = pstmt.executeQuery();
             while (rs.next()) {
                 Order order = new Order();
                 order.setId(rs.getInt("order_id"));
@@ -262,10 +273,19 @@ public class OrderDAOImpl implements OrderDAO {
                 order.setAmount(rs.getDouble("amount"));
                 orders.add(order);
             }
-        } catch (Exception e) {
-            throw e;
+            pagination.setResults(orders);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (countRs != null) {
+                countRs.close();
+            }
+            if (st != null) {
+                st.close();
+            }
         }
-        return orders;
+        return pagination;
     }
 
     @Override
@@ -292,6 +312,72 @@ public class OrderDAOImpl implements OrderDAO {
             DBConnection.maybeCloseConnection();
         }
         return order;
+    }
+
+    public List<OrderItem> getOrderItems(Order order) {
+        List<OrderItem> items = new ArrayList<>();
+
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement st = conn.prepareStatement(SQL_GET_PRODUCTS);
+            st.setInt(1, order.getId());
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                OrderItem item = new OrderItem(
+                        order,
+                        rs.getInt("order_item_id"),
+                        rs.getString("product_name"),
+                        rs.getInt("product_quantity"),
+                        rs.getDouble("product_price"),
+                        rs.getDouble("discount_price")
+                );
+
+                items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return items;
+    }
+
+    @Override
+    public PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException {
+        PaginatedResults<Order> pagination = new PaginatedResults<>(page, PER_PAGE);
+        List<Order> orders = new ArrayList<>();
+        Statement st = null;
+        ResultSet rs = null;
+        ResultSet countRs = null;
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(SQL_CASHIER_STATISTICS);
+            pstmt.setDate(1, new java.sql.Date(DateCommon.convertStringToDateByPattern(fromDate, Constant.DATE_FORMAT).getTime()));
+            pstmt.setDate(2, new java.sql.Date(DateCommon.convertStringToDateByPattern(toDate, Constant.DATE_FORMAT).getTime()));
+            pstmt.setInt(3, AuthServiceImpl.getCurrentEmployee().getEmployeeId());
+            pstmt.setInt(4, pagination.getOffset());
+            pstmt.setInt(5, pagination.getPerPage());
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("order_id"));
+                order.getCustomer().setName(rs.getString("customer_name"));
+                order.getEmployee().setName(rs.getString("employee_name"));
+                order.setOrderDate(rs.getTimestamp("order_date"));
+                order.setAmount(rs.getDouble("amount"));
+                orders.add(order);
+            }
+            pagination.setResults(orders);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (countRs != null) {
+                countRs.close();
+            }
+            if (st != null) {
+                st.close();
+            }
+        }
+        return pagination;
     }
 
 }

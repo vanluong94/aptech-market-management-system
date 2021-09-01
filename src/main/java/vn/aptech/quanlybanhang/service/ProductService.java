@@ -16,7 +16,7 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  */
 public interface ProductService extends BaseService<Product> {
 
-    public List<Product> findByCategoryId(int id) throws SQLException;
+    public PaginatedResults<Product> findByCategoryId(int page,int id) throws SQLException;
 
     /**
      *
@@ -24,8 +24,8 @@ public interface ProductService extends BaseService<Product> {
      * @return
      * @throws java.sql.SQLException
      */
-    public List<Product> findByName(String name) throws SQLException;
-
+    public PaginatedResults<Product> findByName(int page,String name) throws SQLException;
+    
     public PaginatedResults<Product> selectOutOfStock(int page) throws SQLException;
 
     PaginatedResults<Product> findAllByOrderByUnitsOnOrderDesc(int page, String fromDate, String toDate) throws SQLException;

@@ -19,7 +19,11 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 public class CategoryDAOImpl implements CategoryDAO {
 
     private final static String SQL_INSERT = "INSERT INTO categories (category_name) VALUES (?)";
-    private final static String SQL_GET_ONE = "SELECT * FROM categories WHERE category_id = ?";
+    private final static String SQL_GET_ONE = "SELECT categories.*, COUNT(product_id) as products_count"
+            + " FROM categories"
+            + " LEFT JOIN products ON categories.category_id = products.category_id"
+            + " WHERE categories.category_id = ?"
+            + " GROUP BY categories.category_id";
     private final static String SQL_DELETE = "DELETE FROM categories WHERE category_id = ?";
     private final static String SQL_UPDATE = "UPDATE categories SET category_name = ? WHERE category_id = ?";
     private final static String SQL_GET_ALL = "SELECT categories.*, COUNT(product_id) as products_count"
@@ -35,7 +39,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public boolean create(Category object) throws SQLException {
         int rowsAffected = -1;
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt;
             pstmt = conn.prepareCall(SQL_INSERT);
             pstmt.setString(1, object.getCategoryName());
@@ -49,7 +53,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public boolean deleteById(int id) throws SQLException {
         int rowsAffected = -1;
-        try ( PreparedStatement st = DBConnection.getConnection().prepareStatement(SQL_DELETE)) {
+        try (PreparedStatement st = DBConnection.getConnection().prepareStatement(SQL_DELETE)) {
             st.setInt(1, id);
             rowsAffected = st.executeUpdate();
         }
@@ -59,7 +63,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public Category findById(int id) throws SQLException {
         Category category = null;
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE);
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
@@ -67,6 +71,7 @@ public class CategoryDAOImpl implements CategoryDAO {
                 category = new Category();
                 category.setCategoryId(rs.getInt("category_id"));
                 category.setCategoryName(rs.getString("category_name"));
+                category.setProductsCount(rs.getInt("products_count"));
             }
         } catch (SQLException e) {
             throw e;
@@ -77,7 +82,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public List<Category> findAll() throws SQLException {
         List<Category> categories = new ArrayList<>();
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ALL);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -99,7 +104,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     public boolean update(Category category) throws SQLException {
         int rowsAffected = -1;
 
-        try ( PreparedStatement st = DBConnection.getConnection().prepareStatement(SQL_UPDATE)) {
+        try (PreparedStatement st = DBConnection.getConnection().prepareStatement(SQL_UPDATE)) {
             st.setString(1, category.getCategoryName());
             st.setInt(2, category.getCategoryId());
 
@@ -114,7 +119,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 
         List<Category> categories = new ArrayList<>();
 
-        try ( PreparedStatement st = DBConnection.getConnection().prepareStatement(SQL_SEARCH)) {
+        try (PreparedStatement st = DBConnection.getConnection().prepareStatement(SQL_SEARCH)) {
             st.setString(1, "%" + name + "%");
             ResultSet rs = st.executeQuery();
 
