@@ -5,11 +5,14 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Discount;
 import vn.aptech.quanlybanhang.service.DiscountService;
 import vn.aptech.quanlybanhang.service.DiscountServiceImpl;
+import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 
 /**
@@ -20,21 +23,33 @@ public class DiscountDetailPage extends Page {
 
     @Override
     public void displayContent() {
-        
-        try {
-            DiscountService discountService = new DiscountServiceImpl();
-            
-            System.out.println("Nhập ID chương trình giảm giá muốn kiem tra :");
-            int discountId = AppScanner.getScanner().nextInt();
-            Discount discount = discountService.findById(discountId);
-            if (discount == null) {
-                System.out.println("Không tìm thấy ID Chương trình giảm giá phù hợp!");
-            } else {
-                System.out.println(discount.toString());
+        DiscountService discountService = new DiscountServiceImpl();
+        String choice = null;
+        do {            
+            try {
+                int discountId = AppScanner.scanIntWithMessage("Nhập ID chương trình giảm giá muốn kiểm tra :");
+                Discount discount = discountService.findById(discountId);
+                if (discount == null) {
+                    System.out.println("Không tìm thấy ID Chương trình giảm giá phù hợp!");
+                } else {
+                    List<Object[]> rows = new ArrayList<Object[]>();
+                    Object[] row = {
+                        discount.getId(),
+                        discount.getName()
+                    };
+                    rows.add(row);
+                    String[] headers = {"ID","Tên Danh mục"};
+                    TableUI tableUI = new TableUI(headers,rows);
+                    tableUI.display();
+                    choice = AppScanner.scanStringWithMessage("Bạn có muốn tìm Danh mục khác không? [Y/N] : ");
+                    if (!"y".equalsIgnoreCase(choice)) {
+                        break;
+                    }
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(DiscountDetailPage.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (Exception ex) {
-            Logger.getLogger(DiscountDetailPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } while ("y".equalsIgnoreCase(choice));
     }
 
     @Override

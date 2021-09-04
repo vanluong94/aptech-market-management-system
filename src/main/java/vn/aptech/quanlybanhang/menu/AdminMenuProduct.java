@@ -8,6 +8,7 @@ package vn.aptech.quanlybanhang.menu;
 import java.util.LinkedHashMap;
 import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
 import vn.aptech.quanlybanhang.menu.items.GoBackMenuItem;
+import vn.aptech.quanlybanhang.pages.ProductCategoryPage;
 import vn.aptech.quanlybanhang.pages.ProductDetailPage;
 import vn.aptech.quanlybanhang.pages.ProductListingPage;
 import vn.aptech.quanlybanhang.pages.ProductSearchPage;
@@ -25,6 +26,7 @@ public class AdminMenuProduct extends Menu {
         menuItems.put(1, new ProductListingPage());
         menuItems.put(2, new ProductSearchPage());
         menuItems.put(3, new ProductDetailPage());
+        menuItems.put(4, new ProductCategoryPage());
 
         menuItems.put(0, new ExitMenuItem());
         menuItems.put(-1, new GoBackMenuItem());

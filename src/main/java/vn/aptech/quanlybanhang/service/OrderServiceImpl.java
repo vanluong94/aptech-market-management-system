@@ -65,8 +65,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> todayOrder() throws SQLException {
-        return this.orderDAO.todayOrder();
+    public List<OrderItem> getOrderItems(Order order) {
+        return this.orderDAO.getOrderItems(order);
     }
+
+
+    @Override
+    public PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException {
+        return orderDAO.CashierStatistics(page, fromDate, toDate);
+    }
+
+    @Override
+    public PaginatedResults<Order> todayOrder(int page) throws SQLException {
+        return this.orderDAO.todayOrder(page);
+    }
+
 
 }

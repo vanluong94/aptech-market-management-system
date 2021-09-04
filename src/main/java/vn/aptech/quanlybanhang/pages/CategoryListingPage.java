@@ -31,7 +31,7 @@ public class CategoryListingPage extends Page {
             List<Category> categories = categoryService.findAll();
 
             if (categories.isEmpty()) {
-                System.out.println("<Không tìm thấy Danh mục nào>");
+                System.out.println("Không tìm thấy Danh mục nào");
             } else {
 
                 List<Object[]> rows = new ArrayList<>();
@@ -43,12 +43,9 @@ public class CategoryListingPage extends Page {
                         cat.getCategoryName(),
                         cat.getProductsCount()
                     };
-
                     rows.add(row);
                 }
-
                 String[] headers = {"ID", "Tên Danh mục", "Số Sản phẩm"};
-
                 TableUI theTable = new TableUI(headers, rows);
                 theTable.display();
             }

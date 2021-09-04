@@ -58,10 +58,5 @@ public class Category {
         this.productsCount = productsCount;
     }
 
-    @Override
-    public String toString() {
-        return "[ID] " + categoryId + "\n"
-                + "[Tên] " + categoryName + "\n";
-    }
 
 }

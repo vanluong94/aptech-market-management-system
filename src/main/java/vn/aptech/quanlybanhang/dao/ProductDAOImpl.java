@@ -4,6 +4,7 @@
 package vn.aptech.quanlybanhang.dao;
 
 import java.sql.*;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -27,16 +28,40 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  *
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
+ * @author Vu Duy Long <vuduylong1999@gmail.com>
  */
 public class ProductDAOImpl implements ProductDAO {
 
     private final static int PER_PAGE = 10;
 
-    private final static String SQL_SELECT_ALL = "SELECT * FROM products";
-    private final static String SQL_GET_ONE = "SELECT * FROM products WHERE product_id = ?";
-    private final static String SQL_GET_BY_CATEGORY_ID = "SELECT * FROM products WHERE category_id = ?";
+    private final static String SQL_SELECT_ALL = "SELECT products.*,suppliers.supplier_id,suppliers.supplier_name,brands.brand_name,brands.brand_id,categories.category_id,categories.category_name,employees.employee_name, employees.employee_id"
+            + " FROM products"
+            + " JOIN brands ON brands.brand_id = products.brand_id"
+            + " JOIN categories ON categories.category_id = products.category_id"
+            + " JOIN employees ON employees.employee_id = products.employee_id"
+            + " JOIN suppliers ON suppliers.supplier_id = products.supplier_id";
+
+    private final static String SQL_GET_ONE
+            = "SELECT products.*,suppliers.supplier_id,suppliers.supplier_name,brands.brand_name,brands.brand_id,categories.category_id,categories.category_name,employees.employee_name, employees.employee_id"
+            + " FROM products"
+            + " JOIN brands ON brands.brand_id = products.brand_id"
+            + " JOIN categories ON categories.category_id = products.category_id"
+            + " JOIN employees ON employees.employee_id = products.employee_id"
+            + " JOIN suppliers ON suppliers.supplier_id = products.supplier_id"
+            + " WHERE product_id = ?";
+
+    private final static String SQL_GET_BY_CATEGORY_ID = "SELECT products.*,suppliers.supplier_id,suppliers.supplier_name,brands.brand_name,brands.brand_id,categories.category_id,categories.category_name,employees.employee_name,employees.employee_id"
+            + " FROM products"
+            + " JOIN brands ON brands.brand_id = products.brand_id"
+            + " JOIN categories ON categories.category_id = products.category_id"
+            + " JOIN employees ON employees.employee_id = products.employee_id"
+            + " JOIN suppliers ON suppliers.supplier_id = products.supplier_id"
+            + " WHERE products.category_id = ? "
+            + " LIMIT ?,?";
+
     private final static String SQL_INSERT = "INSERT INTO `products` (`brand_id`, `category_id`, `employee_id`, `product_name`,"
             + " `product_price`, `product_stock`) VALUES (?, ?, ?, ?, ?, ?);";
+
     private final static String SQL_DELETE = "DELETE FROM products WHERE product_id = ?";
     private final static String SQL_SELECT_POPULAR_ORDER = "SELECT products.*, categories.category_name, brands.brand_name,"
             + " employees.employee_name,"
@@ -70,7 +95,15 @@ public class ProductDAOImpl implements ProductDAO {
             + " LEFT JOIN suppliers ON products.supplier_id = suppliers.supplier_id"
             + " WHERE product_stock = 0"
             + " LIMIT ?,?";
-
+    private final static String SQL_GET_BY_NAME = "SELECT "
+            + " products.*, categories.category_name, brands.brand_name, employees.employee_name, suppliers.supplier_name"
+            + " FROM products"
+            + " LEFT JOIN brands ON products.brand_id = brands.brand_id"
+            + " LEFT JOIN categories ON products.category_id = categories.category_id"
+            + " LEFT JOIN employees ON products.employee_id = employees.employee_id"
+            + " LEFT JOIN suppliers ON products.supplier_id = suppliers.supplier_id"
+            + " WHERE product_name LIKE ? "
+            + " LIMIT ?,?";
     private final ImportProductService importProductService;
 
     public ProductDAOImpl() {
@@ -143,7 +176,6 @@ public class ProductDAOImpl implements ProductDAO {
                 + "WHERE product_id = ?;";
 
         try {
-            // Không đóng connnection ở đây vì liên quan đến Transaction ở class OrderDAO.create
             Connection conn = DBConnection.getConnection();
             PreparedStatement st = conn.prepareStatement(updateSQL);
             st.setInt(1, product.getBrand().getBrandId());
@@ -187,7 +219,6 @@ public class ProductDAOImpl implements ProductDAO {
     public Product findById(int id) throws SQLException {
         Product product = null;
         try {
-            // Không đóng connnection ở đây vì liên quan đến Transaction ở class OrderDAO.create
             Connection conn = DBConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE);
             pstmt.setInt(1, id);
@@ -195,9 +226,10 @@ public class ProductDAOImpl implements ProductDAO {
             if (rs.next()) {
                 product = new Product();
                 product.setId(rs.getInt("product_id"));
-                product.getBrand().setBrandId(rs.getInt("brand_id"));
-                product.getCategory().setCategoryId(rs.getInt("category_id"));
-                product.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                product.getBrand().setBrandName(rs.getString("brand_name"));
+                product.getCategory().setCategoryName(rs.getString("category_name"));
+                product.getSupplier().setName(rs.getString("supplier_name"));
+                product.getEmployee().setName(rs.getString("employee_name"));
                 product.setName(rs.getString("product_name"));
                 product.setPrice(rs.getDouble("product_price"));
                 product.setQuantityInStock(rs.getInt("product_stock"));
@@ -223,9 +255,10 @@ public class ProductDAOImpl implements ProductDAO {
             while (rs.next()) {
                 Product product = new Product();
                 product.setId(rs.getInt("product_id"));
-//                product.getBrand().setBrandId(rs.getInt("brand_id"));
-//                product.getCategory().setCategoryId(rs.getInt("category_id"));
-//                product.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                product.getBrand().setBrandName(rs.getString("brand_name"));
+                product.getCategory().setCategoryName(rs.getString("category_name"));
+                product.getSupplier().setName(rs.getString("supplier_name"));
+                product.getEmployee().setName(rs.getString("employee_name"));
                 product.setName(rs.getString("product_name"));
                 product.setPrice(rs.getDouble("product_price"));
                 product.setQuantityInStock(rs.getInt("product_stock"));
@@ -238,47 +271,25 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public List<Product> findByCategoryId(int id) throws SQLException {
+    public PaginatedResults<Product> findByCategoryId(int page, int id) throws SQLException {
+        PaginatedResults<Product> pagination = new PaginatedResults<>(page, PER_PAGE);
         List<Product> products = new ArrayList<Product>();
+        Statement st = null;
+        ResultSet rs = null;
+        ResultSet countRs = null;
+
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_BY_CATEGORY_ID);
             pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
+            pstmt.setInt(2, pagination.getOffset());
+            pstmt.setInt(3, pagination.getPerPage());
+            rs = pstmt.executeQuery();
             while (rs.next()) {
                 Product product = new Product();
-                product.setId(rs.getInt("product_id"));
-//                product.getBrand().setBrandId(rs.getInt("brand_id"));
-//                product.getCategory().setCategoryId(rs.getInt("category_id"));
-//                product.getEmployee().setEmployeeId(rs.getInt("employee_id"));
-                product.setName(rs.getString("product_name"));
-                product.setPrice(rs.getDouble("product_price"));
-                product.setQuantityInStock(rs.getInt("product_stock"));
-                products.add(product);
-            }
-        } catch (SQLException e) {
-            throw e;
-        }
-        return products;
-    }
-
-    /**
-     *
-     * @param name
-     * @return
-     * @throws SQLException
-     */
-    @Override
-    public List<Product> findByName(String name) throws SQLException {
-        List<Product> products = new ArrayList<Product>();
-        try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM products where product_name LIKE ?");
-            pstmt.setString(1, "%" + name + "%");
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Product product = new Product();
-//                product.getBrand().setBrandId(rs.getInt("brand_id"));
-//                product.getCategory().setCategoryId(rs.getInt("category_id"));
-//                product.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                product.getBrand().setBrandName(rs.getString("brand_name"));
+                product.getCategory().setCategoryName(rs.getString("category_name"));
+                product.getSupplier().setName(rs.getString("supplier_name"));
+                product.getEmployee().setName(rs.getString("employee_name"));
                 product.setId(rs.getInt("product_id"));
                 product.setName(rs.getString("product_name"));
                 product.setPrice(rs.getDouble("product_price"));
@@ -289,10 +300,64 @@ public class ProductDAOImpl implements ProductDAO {
                 product.setUpdatedAt(new java.util.Date(updatedAt.getTime()));
                 products.add(product);
             }
-        } catch (SQLException e) {
-            throw e;
+            pagination.setResults(products);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (countRs != null) {
+                countRs.close();
+            }
+            if (st != null) {
+                st.close();
+            }
         }
-        return products;
+        return pagination;
+    }
+
+    @Override
+    public PaginatedResults<Product> findByName(int page, String name) throws SQLException {
+        PaginatedResults<Product> pagination = new PaginatedResults<>(page, PER_PAGE);
+        List<Product> products = new ArrayList<Product>();
+        Statement st = null;
+        ResultSet rs = null;
+        ResultSet countRs = null;
+
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(SQL_GET_BY_NAME);
+            pstmt.setString(1, "%" + name + "%");
+            pstmt.setInt(2, pagination.getOffset());
+            pstmt.setInt(3, pagination.getPerPage());
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Product product = new Product();
+                product.getBrand().setBrandName(rs.getString("brand_name"));
+                product.getCategory().setCategoryName(rs.getString("category_name"));
+                product.getSupplier().setName(rs.getString("supplier_name"));
+                product.getEmployee().setName(rs.getString("employee_name"));
+                product.setId(rs.getInt("product_id"));
+                product.setName(rs.getString("product_name"));
+                product.setPrice(rs.getDouble("product_price"));
+                product.setQuantityInStock(rs.getInt("product_stock"));
+                Timestamp createdAt = rs.getTimestamp("created_date");
+                product.setCreatedAt(new java.util.Date(createdAt.getTime()));
+                Timestamp updatedAt = rs.getTimestamp("updated_date");
+                product.setUpdatedAt(new java.util.Date(updatedAt.getTime()));
+                products.add(product);
+            }
+            pagination.setResults(products);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (countRs != null) {
+                countRs.close();
+            }
+            if (st != null) {
+                st.close();
+            }
+        }
+        return pagination;
     }
 
     @Override
