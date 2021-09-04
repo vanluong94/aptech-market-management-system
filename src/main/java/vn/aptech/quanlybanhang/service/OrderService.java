@@ -4,6 +4,7 @@
 package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
@@ -22,4 +23,6 @@ public interface OrderService extends BaseService<Order> {
     List<OrderItem> getOrderItems(Order order);
 
     PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException;
+    
+    PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws SQLException;
 }

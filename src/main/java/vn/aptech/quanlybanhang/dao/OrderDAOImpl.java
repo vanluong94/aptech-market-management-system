@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,9 +78,20 @@ public class OrderDAOImpl implements OrderDAO {
             + " WHERE orders.order_id = ?";
 
     private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
+    private final static String SQL_GET_BY_TIME_RANGE = "SELECT "
+            + "  orders.*, "
+            + "  employees.employee_name, "
+            + "  employees.employee_id, "
+            + "  customers.customer_name, "
+            + "  customers.customer_id "
+            + " FROM "
+            + "  orders "
+            + "  JOIN employees ON employees.employee_id = orders.employee_id "
+            + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
+            + " WHERE "
+            + "  date(order_date) BETWEEN ? AND ?  "
+            + " LIMIT ?, ?";
     
-    private final static int PER_PAGE = 10;
-
     private final ProductService productService;
 
     public OrderDAOImpl() {
@@ -314,33 +326,6 @@ public class OrderDAOImpl implements OrderDAO {
         return order;
     }
 
-    public List<OrderItem> getOrderItems(Order order) {
-        List<OrderItem> items = new ArrayList<>();
-
-        try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement st = conn.prepareStatement(SQL_GET_PRODUCTS);
-            st.setInt(1, order.getId());
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()) {
-                OrderItem item = new OrderItem(
-                        order,
-                        rs.getInt("order_item_id"),
-                        rs.getString("product_name"),
-                        rs.getInt("product_quantity"),
-                        rs.getDouble("product_price"),
-                        rs.getDouble("discount_price")
-                );
-
-                items.add(item);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(OrderDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return items;
-    }
-
     @Override
     public PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException {
         PaginatedResults<Order> pagination = new PaginatedResults<>(page, PER_PAGE);
@@ -378,6 +363,55 @@ public class OrderDAOImpl implements OrderDAO {
             }
         }
         return pagination;
+    }
+    
+    @Override
+    public PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws SQLException {
+        
+        PaginatedResults<Order> pagination = new PaginatedResults<>(page, PER_PAGE);
+        List<Order> orders = new ArrayList<>();
+
+        try ( Connection conn = DBConnection.getConnection()) {
+
+            // query items
+            PreparedStatement stSelect = conn.prepareStatement(SQL_GET_BY_TIME_RANGE);
+            stSelect.setDate(1, DateCommon.convertUtilDateToSqlDate(fromDate));
+            stSelect.setDate(2, DateCommon.convertUtilDateToSqlDate(toDate));
+            stSelect.setInt(3, pagination.getOffset());
+            stSelect.setInt(4, pagination.getPerPage());
+            
+            ResultSet rs = stSelect.executeQuery();
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("order_id"));
+                order.setOrderDate(rs.getTimestamp("order_date")); 
+                order.setAmount(rs.getDouble("amount"));
+                
+                order.getEmployee().setName(rs.getString("employee_name"));
+                order.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                
+                order.getCustomer().setName(rs.getString("customer_name"));
+                order.getCustomer().setId(rs.getInt("customer_id"));
+                
+                orders.add(order);
+            }
+
+            pagination.setResults(orders);
+
+            // query count
+            String sqlCount = PaginatedResults.parseCountSQL(SQL_GET_BY_TIME_RANGE);
+            
+            PreparedStatement stCount = DBConnection.getConnection().prepareStatement(sqlCount);
+            stCount.setDate(1, DateCommon.convertUtilDateToSqlDate(fromDate));
+            stCount.setDate(2, DateCommon.convertUtilDateToSqlDate(toDate));
+            
+            ResultSet countRs = stCount.executeQuery();
+            if (countRs.next()) {
+                pagination.setTotalItems(countRs.getInt(1));
+            }
+        }
+        return pagination;
+        
     }
 
 }
