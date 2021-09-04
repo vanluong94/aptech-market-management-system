@@ -211,9 +211,8 @@ public class ProductDAOImpl implements ProductDAO {
                 
                 if (rs.getInt("d_products.discount_product_id") > 0) {
                     product.getDiscount().setId(rs.getInt("d_products.discount_product_id"));
-                    product.getDiscount().setDiscount(rs.getFloat("d_products.discount"));
+                    product.getDiscount().setDiscountPercentage(rs.getFloat("d_products.discount"));
                     product.getDiscount().setDiscountId(rs.getInt("d_products.discount_id"));
-                    product.getDiscount().setProductId(rs.getInt("d_products.product_id"));
                     product.getDiscount().setStartDate(rs.getDate("d_products.start_date"));
                     product.getDiscount().setEndDate(rs.getDate("d_products.end_date"));
                 }

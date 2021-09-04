@@ -66,5 +66,14 @@ public class Discount extends BaseEntity {
     public void setProductDiscounts(List<ProductDiscount> productDiscounts) {
         this.productDiscounts = productDiscounts;
     }
+    
+    public ProductDiscount findProductDiscount(int productId) {
+        for (ProductDiscount pDiscount : this.getProductDiscounts()) {
+            if(pDiscount.getProduct().getId() == productId) {
+                return pDiscount;
+            }
+        }
+        return null;
+    }
 
 }

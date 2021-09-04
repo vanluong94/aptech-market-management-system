@@ -3,6 +3,7 @@
  */
 package vn.aptech.quanlybanhang.common;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,6 +13,11 @@ import java.util.Date;
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  */
 public class DateCommon {
+    
+    public static String convertDateToString(Date date, String pattern) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        return dateFormat.format(date);
+    }
 
     public static Date convertStringToDateByPattern(String strTime, String pattern) {
         try {
@@ -26,8 +32,12 @@ public class DateCommon {
         return new java.sql.Date(date.getTime());
     }
     
-    public static java.sql.Timestamp convertDateToSqlTimestamp(Date date) {
+    public static Timestamp convertDateToTimestamp(Date date) {
         return new java.sql.Timestamp(date.getTime());
+    }
+    
+    public static Date convertTimestampToDate(Timestamp time) {
+        return new Date(time.getTime());
     }
     
 }

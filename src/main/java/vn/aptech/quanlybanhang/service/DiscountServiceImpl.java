@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.dao.DiscountDAO;
 import vn.aptech.quanlybanhang.dao.DiscountDAOImpl;
 import vn.aptech.quanlybanhang.entities.Discount;
+import vn.aptech.quanlybanhang.entities.ProductDiscount;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 public class DiscountServiceImpl implements DiscountService {
@@ -60,7 +61,27 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public PaginatedResults<Discount> select(int page) throws SQLException, Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.discountDAO.select(page);
+    }
+
+    @Override
+    public List<ProductDiscount> getDiscountProducts(Discount discount) {
+        return this.discountDAO.getDiscountProducts(discount);
+    }
+
+    @Override
+    public boolean deleteDiscountProduct(ProductDiscount dProduct) {
+        return this.discountDAO.deleteDiscountProduct(dProduct);
+    }
+
+    @Override
+    public boolean createDiscountProduct(ProductDiscount dProduct) {
+        return this.discountDAO.createDiscountProduct(dProduct);
+    }
+
+    @Override
+    public ProductDiscount findOverlapDiscountProduct(ProductDiscount dProduct) {
+        return this.discountDAO.findOverlapDiscountProduct(dProduct);
     }
 
 }

@@ -165,7 +165,7 @@ public class Product extends BaseEntity {
     }
     
     public double getDiscountPrice() {
-        return this.getDiscount().getDiscountId() > 0 ? this.getPrice() * ( 100 - this.getDiscount().getDiscount()) / 100 : 0; 
+        return this.getDiscount().getDiscountId() > 0 ? this.getPrice() * ( 100 - this.getDiscount().getDiscountPercentage()) / 100 : 0; 
     }
     
     /**

@@ -6,12 +6,11 @@
 package vn.aptech.quanlybanhang.pages;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vn.aptech.quanlybanhang.common.DateCommon;
 import vn.aptech.quanlybanhang.entities.Discount;
+import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.entities.ProductDiscount;
 import vn.aptech.quanlybanhang.service.DiscountService;
 import vn.aptech.quanlybanhang.service.DiscountServiceImpl;
@@ -19,6 +18,9 @@ import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 
+/**
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
+ */
 public class DiscountCreatePage extends Page {
 
     @Override
@@ -32,13 +34,21 @@ public class DiscountCreatePage extends Page {
             
             Discount discount = new Discount(discountName);
             
-            if(AppScanner.scanStringWithMessage("Bạn có muốn thêm sản phẩm cho chương trình giảm giá (y/n)? ").equalsIgnoreCase("y")) {
+            if(AppScanner.confirm("Bạn có muốn thêm sản phẩm cho chương trình giảm giá (y/n)? ")) {
                 
                 List<ProductDiscount> dProducts = new ArrayList<>();
                 
                 do{
-                    dProducts.add(this.addDiscountProduct());
-                }while(AppScanner.scanStringWithMessage("Bạn có muốn thêm sản phẩm khác (y/n)? ").equalsIgnoreCase("y"));
+                    ProductDiscount dProduct = this.scanNewDiscountProduct();
+                    ProductDiscount oDisProduct = discountService.findOverlapDiscountProduct(dProduct);
+                    
+                    if (oDisProduct != null) {
+                        System.out.println("Sản phẩm này đã có chương trình giảm giá khác vào khoảng thời gian này");
+                    } else {
+                        dProducts.add(dProduct);
+                    }
+                    
+                }while(AppScanner.confirm("Bạn có muốn thêm sản phẩm khác (y/n)? "));
                 
                 discount.setProductDiscounts(dProducts);
                 
@@ -61,62 +71,32 @@ public class DiscountCreatePage extends Page {
         return "Thêm Chương trình giảm giá";
     }
     
-    public ProductDiscount addDiscountProduct() {
+    private ProductDiscount scanNewDiscountProduct() {
         
         /**
          * input product_id
          */
-        int productId = 0;
+        Product product = null;
         ProductService productService = new ProductServiceImpl();
         try {
-            while(productId == 0){
+            while(product == null){
                 
-                productId = AppScanner.scanIntWithMessage("Nhập ID sản phẩm: ");
+                product = productService.findById(AppScanner.scanIntWithMessage("Nhập ID sản phẩm: "));
                 
-                if (productService.findById(productId) == null) {
+                if (product == null) {
                     System.out.println("Không tìm thấy Sản phẩm nào với ID trên, vui lòng thử lại.");
-                    productId = 0;
                 }
             }
         } catch (Exception ex) {
             Logger.getLogger(DiscountCreatePage.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-                
-        /**
-         * input discount time range
-         */
-        Date dateFrom = null, dateTo = null;
-        String dateFormatPattern = "dd/MM/yyyy HH:mm";
-        do {
-            String dateFromStr = AppScanner.scanStringWithMessage("Thời gian bắt đầu giảm giá [" + dateFormatPattern + "]: ");
-            dateFrom = DateCommon.convertStringToDateByPattern(dateFromStr, dateFormatPattern);
-
-            if (dateFrom == null) {
-                System.out.println("Ngày đã nhập không hợp lệ, vui lòng thử lại.");
-            }
-        } while (dateFrom == null);
-
-        do {
-            String dateToStr = AppScanner.scanStringWithMessage("Thời gian kết thúc giảm giá [" + dateFormatPattern + "]: ");
-            dateTo = DateCommon.convertStringToDateByPattern(dateToStr, dateFormatPattern);
-
-            if (dateTo == null) {
-                System.out.println("Ngày đã nhập không hợp lệ, vui lòng thử lại.");
-            }
-        } while (dateTo == null);
-        
-        
-        /** 
-         * input discount percentage
-         */
-        float discountPercent = AppScanner.scanFloatWithMessage("Nhập % giảm giá cho sản phẩm: ");
 
         ProductDiscount pDiscount = new ProductDiscount();
-        pDiscount.setDiscount(discountPercent);
-        pDiscount.setProductId(productId);
-        pDiscount.setStartDate(dateFrom);
-        pDiscount.setEndDate(dateTo);
+        pDiscount.setDiscountPercentage(pDiscount.scanDiscountPercentage());
+        pDiscount.setProduct(product);
+        pDiscount.setStartDate(pDiscount.scanStartDate());
+        pDiscount.setEndDate(pDiscount.scanEndDate());
 
         return pDiscount;
     }
