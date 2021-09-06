@@ -21,4 +21,6 @@ public interface ProductDAO extends BaseDAO<Product> {
     PaginatedResults<Product> selectOutOfStock(int page) throws SQLException;
 
     PaginatedResults<Product> findAllByOrderByUnitsOnOrderDesc(int page, String fromDate, String toDate) throws SQLException;
+    
+    double getStatisticAmount(java.sql.Date fromDate, java.sql.Date toDate) throws SQLException;
 }
