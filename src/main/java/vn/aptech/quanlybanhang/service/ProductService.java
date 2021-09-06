@@ -4,7 +4,7 @@
 package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
@@ -29,4 +29,6 @@ public interface ProductService extends BaseService<Product> {
     public PaginatedResults<Product> selectOutOfStock(int page) throws SQLException;
 
     PaginatedResults<Product> findAllByOrderByUnitsOnOrderDesc(int page, String fromDate, String toDate) throws SQLException;
+    
+    double getStatisticAmount(Date fromDate, Date toDate) throws SQLException;
 }
