@@ -4,6 +4,7 @@
 package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.dao.OrderDAO;
@@ -65,12 +66,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderItem> getOrderItems(Order order) {
-        return this.orderDAO.getOrderItems(order);
-    }
-
-
-    @Override
     public PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException {
         return orderDAO.CashierStatistics(page, fromDate, toDate);
     }
@@ -79,6 +74,10 @@ public class OrderServiceImpl implements OrderService {
     public PaginatedResults<Order> todayOrder(int page) throws SQLException {
         return this.orderDAO.todayOrder(page);
     }
-
+    
+    @Override
+    public PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page)  throws SQLException {
+        return this.orderDAO.findByDateRange(fromDate, toDate, page);
+    }
 
 }
