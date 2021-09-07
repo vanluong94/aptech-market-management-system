@@ -6,9 +6,11 @@ package vn.aptech.quanlybanhang.service;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.common.DateCommon;
 import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.dao.ProductDAO;
 import vn.aptech.quanlybanhang.dao.ProductDAOImpl;
@@ -20,6 +22,7 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 /**
  *
  * @author Vu Duy Long <vuduylong1999@gmail.com>
+ * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  */
 public class ProductServiceImpl implements ProductService {
 
@@ -43,11 +46,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean deleteById(int id) throws SQLException, Exception {
-        if (id<1) {
+        if (id < 1) {
             try {
-                throw new Exception ("ID không hợp lệ!");
+                throw new Exception("ID không hợp lệ!");
             } catch (Exception e) {
-                  Logger.getLogger(ProductServiceImpl.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger(ProductServiceImpl.class.getName()).log(Level.SEVERE, null, e);
             }
         }
         return this.productDAO.deleteById(id);
@@ -69,14 +72,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public void validateProductData(Product product) throws InputInvalidException {
-        
+
         ValidateCommon.validateNullObject(product.getBrand(), "brand");
         ValidateCommon.validateNullObject(product.getCategory(), "category");
         ValidateCommon.validateNullObject(product.getEmployee(), "employee");
         ValidateCommon.validateNullObject(product.getName(), "name");
         ValidateCommon.validateNullObject(product.getPrice(), "price");
         ValidateCommon.validateNullObject(product.getQuantityInStock(), "quantityInStock");
-        
+
         if (product.getName().trim().length() == 0) {
             throw new InputInvalidException("Tên Sản phẩm không được bỏ trống");
         }
@@ -119,6 +122,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public PaginatedResults<Product> findAllByOrderByUnitsOnOrderDesc(int page, String fromDate, String toDate) throws SQLException {
         return productDAO.findAllByOrderByUnitsOnOrderDesc(page, fromDate, toDate);
+    }
+
+    @Override
+    public double getStatisticAmount(Date fromDate, Date toDate) throws SQLException {
+        java.sql.Date fromDateSql = DateCommon.convertUtilDateToSqlDate(DateCommon.getBeginDay(fromDate));
+        java.sql.Date toDateSql = DateCommon.convertUtilDateToSqlDate(DateCommon.getEndDay(toDate));
+        return productDAO.getStatisticAmount(fromDateSql, toDateSql);
     }
 
 }

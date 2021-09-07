@@ -103,6 +103,9 @@ public class ProductDAOImpl implements ProductDAO {
             + " LEFT JOIN suppliers ON products.supplier_id = suppliers.supplier_id"
             + " WHERE product_stock = 0"
             + " LIMIT ?,?";
+    private final static String SQL_STATISTIC_AMOUNT = "SELECT SUM(amount) AS amount"
+            + " FROM orders WHERE order_date BETWEEN ? AND ?";
+
     private final static String SQL_GET_BY_NAME = "SELECT "
             + " products.*, categories.category_name, brands.brand_name, employees.employee_name, suppliers.supplier_name"
             + " FROM products"
@@ -476,6 +479,30 @@ public class ProductDAOImpl implements ProductDAO {
         }
 
         return pagination;
+    }
+
+    @Override
+    public double getStatisticAmount(java.sql.Date fromDate, java.sql.Date toDate) throws SQLException {
+        double amount = 0;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try (Connection conn = DBConnection.getConnection()) {
+            pstmt = conn.prepareStatement(SQL_STATISTIC_AMOUNT);
+            pstmt.setDate(1, fromDate);
+            pstmt.setDate(2, toDate);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                amount = rs.getInt(1);
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        }
+        return amount;
     }
 
 }

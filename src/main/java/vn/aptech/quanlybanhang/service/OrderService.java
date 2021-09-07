@@ -25,4 +25,5 @@ public interface OrderService extends BaseService<Order> {
     PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException;
     
     PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws SQLException;
+    
 }

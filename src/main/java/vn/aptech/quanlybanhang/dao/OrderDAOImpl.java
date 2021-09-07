@@ -58,7 +58,7 @@ public class OrderDAOImpl implements OrderDAO {
             + "  orders.order_id = ? AND employees.employee_id = ?";
     
     static LocalDate myTime = LocalDate.now();
-    private final static String SQL_GET_BY_DATE = "SELECT orders.*,employees.employee_name, employees.employee_id,customers.customer_name,customers.customer_id FROM orders JOIN employees ON employees.employee_id = orders.employee_id LEFT JOIN customers ON customers.customer_id = orders.customer_id WHERE orders.order_date LIKE '" + myTime + "%' AND employees.employee_id = ? LIMIT ?,?";
+    private final static String SQL_GET_TODAY_ORDERS = "SELECT orders.*,employees.employee_name, employees.employee_id,customers.customer_name,customers.customer_id FROM orders JOIN employees ON employees.employee_id = orders.employee_id LEFT JOIN customers ON customers.customer_id = orders.customer_id WHERE orders.order_date LIKE '" + myTime + "%' AND employees.employee_id = ? LIMIT ?,?";
     private final static String SQL_CASHIER_STATISTICS = "SELECT orders.*,employees.employee_name,customers.customer_name"
             + " FROM orders"
             + " JOIN employees ON employees.employee_id = orders.employee_id"
@@ -68,7 +68,7 @@ public class OrderDAOImpl implements OrderDAO {
     private final static String SQL_GET_ONE = "SELECT "
             + " orders.*, "
             + " employees.employee_name, "
-            + " customers.customer_name, "
+            + " customers.customer_name "
             + " FROM "
             + " orders "
             + " JOIN employees ON employees.employee_id = orders.employee_id "
@@ -256,7 +256,7 @@ public class OrderDAOImpl implements OrderDAO {
         
         return items;
     }
-
+    
     @Override
     public PaginatedResults<Order> todayOrder(int page) throws SQLException {
         PaginatedResults<Order> pagination = new PaginatedResults<>(page, PER_PAGE);
@@ -265,7 +265,7 @@ public class OrderDAOImpl implements OrderDAO {
         ResultSet rs = null;
         ResultSet countRs = null;
         try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement pstmt = conn.prepareStatement(SQL_GET_BY_DATE);
+            PreparedStatement pstmt = conn.prepareStatement(SQL_GET_TODAY_ORDERS);
             pstmt.setInt(1, AuthServiceImpl.getCurrentEmployee().getEmployeeId());
             pstmt.setInt(2, pagination.getOffset());
             pstmt.setInt(3, pagination.getPerPage());
