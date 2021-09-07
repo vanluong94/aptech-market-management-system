@@ -82,13 +82,13 @@ public class AppScanner {
             try {
                 System.out.print(message);
                 int input = getScanner().nextInt();
+                getScanner().nextLine(); // clear line
                 
                 if(!canBeEmpty && input == 0) {
                     System.out.println("Giá trị không được bỏ trống");
                 } else {
                     return input;
                 }
-                getScanner().nextLine(); // clear line
                 return input;
             } catch (java.util.InputMismatchException e) {
                 getScanner().nextLine(); // clear line in case input mismatch
@@ -128,5 +128,42 @@ public class AppScanner {
                 System.out.println("Giá trị không phù hợp.");
             }
         }
+    }
+    
+    public static float scanFloatWithMessage(String message) {
+        while (true) {
+            try {
+                System.out.print(message);
+                float input = getScanner().nextFloat();
+                getScanner().nextLine(); // clear line
+                return input;
+            } catch (java.util.InputMismatchException e) {
+                getScanner().nextLine(); // clear line in case input mismatch
+                System.out.println("Giá trị không phù hợp.");
+            }
+        }
+    }
+    
+    public static float scanFloatWithMessage(String message, boolean canBeEmpty) {
+        while (true) {
+            float input = 0;
+            try {
+                System.out.print(message);
+                input = getScanner().nextFloat();
+                getScanner().nextLine(); // clear line
+                
+                if(!canBeEmpty && input == 0) {
+                    System.out.println("Giá trị không được bỏ trống");
+                } else {
+                    return input;
+                }
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Giá trị không phù hợp.");
+            }
+        }
+    }
+    
+    public static boolean confirm(String message) {
+        return scanStringWithMessage(message).equalsIgnoreCase("y");
     }
 }

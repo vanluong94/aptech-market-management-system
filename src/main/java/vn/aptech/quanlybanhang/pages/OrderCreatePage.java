@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.entities.Customer;
-import vn.aptech.quanlybanhang.entities.Employee;
-import vn.aptech.quanlybanhang.entities.EmployeeOrder;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
 import vn.aptech.quanlybanhang.entities.Product;
@@ -76,17 +74,20 @@ public class OrderCreatePage extends Page {
                     orderItem.setQuantity(qty);
                     orderItem.setProductName(product.getName());
                     orderItem.setProductPrice(product.getPrice());
+                    orderItem.setDiscountPrice(product.getDiscountPrice());
+                    orderItem.setDiscount(product.getDiscount());
+                    
                     order.getOrderItems().add(orderItem);
                 }
                 // Set nốt discount va discount Price
                 AppScanner.getScanner().nextLine();
-                choice = AppScanner.scanStringWithMessage("Bạn có muốn thêm sản phẩm khác vào đơn hàng không? [y/N]: ", true);
+                choice = AppScanner.scanStringWithMessage("Bạn có muốn thêm sản phẩm khác vào đơn hàng không? [y/n]: ", true);
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }
             }
             for (OrderItem od : order.getOrderItems()) {
-                amount += (od.getQuantity() * od.getProductPrice()); // Tính toán thêm discount nữa để ra tổng số tiền cuối cùng
+                amount += od.getTotal(); 
             }
             order.setAmount(amount);
             order.setEmployee(AuthServiceImpl.getCurrentEmployee()); // Set nhân viên hiện tại đang đăng nhập
@@ -99,15 +100,16 @@ public class OrderCreatePage extends Page {
                 Object[] row = {
                     orderItem.getProduct().getId(),
                     orderItem.getProductName(),
-                    StringCommon.convertDoubleToVND(orderItem.getProductPrice()),
+                    orderItem.getProductPriceString(),
+                    orderItem.getProductFinalPriceString(),
                     orderItem.getQuantity(),
-                    StringCommon.convertDoubleToVND(orderItem.getProductPrice() * orderItem.getQuantity())
+                    orderItem.getTotalString()
                 };
 
                 rows.add(row);
             }
 
-            String[] headers = {"ID", "Sản phẩm", "Giá", "Số lượng", "Tạm tính"};
+            String[] headers = {"ID", "Sản phẩm", "Giá gốc", "Giá bán", "Số lượng", "Tạm tính"};
 
             TableUI theTable = new TableUI(headers, rows);
             theTable.display();

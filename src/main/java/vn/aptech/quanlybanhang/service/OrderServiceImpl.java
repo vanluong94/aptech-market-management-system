@@ -6,7 +6,6 @@ package vn.aptech.quanlybanhang.service;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.dao.OrderDAO;
 import vn.aptech.quanlybanhang.dao.OrderDAOImpl;
 import vn.aptech.quanlybanhang.entities.Order;

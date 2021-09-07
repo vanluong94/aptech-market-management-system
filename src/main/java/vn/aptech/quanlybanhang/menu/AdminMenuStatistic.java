@@ -34,7 +34,7 @@ public class AdminMenuStatistic extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Thong ke";
+        return "Thống kê";
     }
     
 }
