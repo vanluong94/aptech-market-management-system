@@ -14,10 +14,11 @@ import vn.aptech.quanlybanhang.menu.items.SignoutMenuItem;
  * @author Admin
  */
 public class AdminMenu extends Menu {
+
     @Override
     protected LinkedHashMap<Integer, MenuItem> registerMenuItems() {
         LinkedHashMap<Integer, MenuItem> menuItems = new LinkedHashMap<>();
-        
+
         menuItems.put(1, new AdminMenuEmployee());
         menuItems.put(2, new AdminMenuStatistic());
         menuItems.put(3, new AdminMenuProduct());
@@ -26,11 +27,11 @@ public class AdminMenu extends Menu {
         menuItems.put(6, new AdminMenuOrder());
         menuItems.put(7, new AdminMenuProfile());
         menuItems.put(8, new AdminMenuDiscount());
+        menuItems.put(9, new AdminMenuCustomer());
 
-        
-        menuItems.put(9, new SignoutMenuItem());
+        menuItems.put(-1, new SignoutMenuItem());
         menuItems.put(0, new ExitMenuItem());
-        
+
         return menuItems;
     }
 
@@ -38,9 +39,9 @@ public class AdminMenu extends Menu {
     protected final String registerMenuTitle() {
         return "Phần mềm quản lý Siêu Thị";
     }
-    
+
     @Override
-    public String getBreadcrumbPathName(){
+    public String getBreadcrumbPathName() {
         return "Menu";
     }
 }

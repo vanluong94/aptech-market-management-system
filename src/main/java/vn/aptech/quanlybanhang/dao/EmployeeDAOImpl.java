@@ -199,7 +199,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         List<Employee> employees = new ArrayList<>();
         if (username.trim().length() > 0) {
             String a = "%" + username + "%";
-            try ( Connection conn = DBConnection.getConnection()) {
+            try (Connection conn = DBConnection.getConnection()) {
                 PreparedStatement pstmt = conn.prepareStatement(SQL_FIND_BY_NAME);
                 pstmt.setString(1, a);
                 ResultSet rs = pstmt.executeQuery();

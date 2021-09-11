@@ -58,7 +58,7 @@ public class OrderDAOImpl implements OrderDAO {
             + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE "
             + "  orders.order_id = ? AND employees.employee_id = ?";
-    
+
     static LocalDate myTime = LocalDate.now();
     private final static String SQL_GET_TODAY_ORDERS = "SELECT orders.*,employees.employee_name, employees.employee_id,customers.customer_name,customers.customer_id FROM orders JOIN employees ON employees.employee_id = orders.employee_id LEFT JOIN customers ON customers.customer_id = orders.customer_id WHERE orders.order_date LIKE '" + myTime + "%' AND employees.employee_id = ? LIMIT ?,?";
     private final static String SQL_CASHIER_STATISTICS = "SELECT orders.*,employees.employee_name,customers.customer_name"
@@ -76,6 +76,15 @@ public class OrderDAOImpl implements OrderDAO {
             + " JOIN employees ON employees.employee_id = orders.employee_id "
             + " LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE orders.order_id = ?";
+    private final static String SQL_GET_ONE_BY_CUSTOMER_ID = "SELECT "
+            + " orders.*, "
+            + " employees.employee_name, "
+            + " customers.customer_name "
+            + " FROM "
+            + " orders "
+            + " JOIN employees ON employees.employee_id = orders.employee_id "
+            + " LEFT JOIN customers ON customers.customer_id = orders.customer_id "
+            + " WHERE orders.customer_id = ?";
 
     private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
     private final static String SQL_GET_BY_TIME_RANGE = "SELECT "
@@ -199,7 +208,7 @@ public class OrderDAOImpl implements OrderDAO {
         PaginatedResults<Order> pagination = new PaginatedResults<>(page, PER_PAGE);
         List<Order> orders = new ArrayList<>();
 
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
 
             // query items
             PreparedStatement stSelect = conn.prepareStatement(SQL_SELECT_ALL);
@@ -211,15 +220,15 @@ public class OrderDAOImpl implements OrderDAO {
             while (rs.next()) {
                 Order order = new Order();
                 order.setId(rs.getInt("order_id"));
-                order.setOrderDate(rs.getTimestamp("order_date")); 
+                order.setOrderDate(rs.getTimestamp("order_date"));
                 order.setAmount(rs.getDouble("amount"));
-                
+
                 order.getEmployee().setName(rs.getString("employee_name"));
                 order.getEmployee().setEmployeeId(rs.getInt("employee_id"));
-                
+
                 order.getCustomer().setName(rs.getString("customer_name"));
                 order.getCustomer().setId(rs.getInt("customer_id"));
-                
+
                 orders.add(order);
             }
 
@@ -239,28 +248,28 @@ public class OrderDAOImpl implements OrderDAO {
     @Override
     public List<OrderItem> getOrderItems(Order order) {
         List<OrderItem> items = new ArrayList<>();
-        
-        try(Connection conn = DBConnection.getConnection()){
+
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement st = conn.prepareStatement(SQL_GET_PRODUCTS);
             st.setInt(1, order.getId());
             ResultSet rs = st.executeQuery();
-            
-            while(rs.next()) {
+
+            while (rs.next()) {
                 OrderItem item = new OrderItem(
-                        order, 
+                        order,
                         rs.getInt("order_item_id"),
                         rs.getString("product_name"),
                         rs.getInt("product_quantity"),
                         rs.getDouble("product_price"),
                         rs.getDouble("discount_price")
                 );
-                
+
                 items.add(item);
             }
-        } catch (SQLException ex) {            
+        } catch (SQLException ex) {
             Logger.getLogger(OrderDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return items;
     }
     
@@ -415,6 +424,32 @@ public class OrderDAOImpl implements OrderDAO {
         }
         return pagination;
         
+    }
+
+    @Override
+    public Order findByCustomerId(int id) throws SQLException {
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement st = conn.prepareStatement(SQL_GET_ONE_BY_CUSTOMER_ID);
+            st.setInt(1, id);
+
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("order_id"));
+                order.setOrderDate(rs.getTimestamp("order_date"));
+                order.setAmount(rs.getDouble("amount"));
+
+                order.getEmployee().setName(rs.getString("employee_name"));
+                order.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+
+                order.getCustomer().setName(rs.getString("customer_name"));
+                order.getCustomer().setId(rs.getInt("customer_id"));
+
+                return order;
+            }
+        }
+        return null;
     }
 
 }

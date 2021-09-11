@@ -2,7 +2,6 @@
  * Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.pages;
-
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.menu.AdminMenu;
 import vn.aptech.quanlybanhang.menu.CashierMenu;
@@ -39,10 +38,9 @@ public class AuthPage extends Page {
         Employee employee = new Employee(username, Md5.encode(password));
 
         Employee emp = authService.login(employee);
-        
         if (emp != null) {
             check =1;
-            System.out.println("\nĐăng nhập thành công!");
+            System.out.println("\n�?ăng nhập thành công!");
 
             // Mo menu theo role tuong ung
             switch (emp.getDepartment().name()) {
@@ -59,7 +57,7 @@ public class AuthPage extends Page {
                     inventoryMenu.start();
                     break;
                 default:
-                    System.out.println("Tài khoản không có quyền truy cập hợp lệ!");
+                    System.out.println("Tài khoản không có quy�?n truy cập hợp lệ!");
                     System.exit(0);
                     break;
             }
@@ -73,7 +71,7 @@ public class AuthPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Đăng Nhập";
+        return "�?ăng Nhập";
     }
 
 }
