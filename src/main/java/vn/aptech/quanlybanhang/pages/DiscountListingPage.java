@@ -17,7 +17,7 @@ import vn.aptech.quanlybanhang.ui.TableUI;
 
 /**
  *
- * @author vanluong
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class DiscountListingPage extends Page {
 

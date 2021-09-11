@@ -26,7 +26,7 @@ public class DiscountDAOImpl implements DiscountDAO {
     private final static String SQL_GET_ONE = "SELECT * FROM discounts WHERE discount_id = ?";
     private final static String SQL_DELETE = "DELETE FROM discounts WHERE discount_id = ?";
     private final static String SQL_UPDATE = "UPDATE discounts SET discount_name = ? WHERE discount_id = ?";
-    private final static String SQL_GET_PRODUCTS = "SELECT discount_product.*, products.product_name "
+    private final static String SQL_GET_PRODUCTS = "SELECT discount_product.*, products.* "
             + " FROM discount_product "
             + " JOIN products ON products.product_id = discount_product.product_id "
             + " WHERE discount_id = ? ";
@@ -184,15 +184,19 @@ public class DiscountDAOImpl implements DiscountDAO {
                 Product product = new Product();
                 product.setId(rs.getInt("product_id"));
                 product.setName(rs.getString("product_name"));
+                product.setPrice(rs.getDouble("product_price"));
+                product.setQuantityInStock(rs.getInt("product_stock"));
                 
-                products.add(new ProductDiscount(
+                ProductDiscount pDiscount = new ProductDiscount(
                         rs.getInt("discount_product_id"),
                         rs.getInt("discount_id"),
                         product,
                         rs.getFloat("discount"),
-                        rs.getDate("start_date"),
-                        rs.getDate("end_date")
-                ));
+                        DateCommon.convertTimestampToDate(rs.getTimestamp("start_date")),
+                        DateCommon.convertTimestampToDate(rs.getTimestamp("end_date"))
+                );
+                products.add(pDiscount);
+                product.setDiscount(pDiscount);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DiscountDAOImpl.class.getName()).log(Level.SEVERE, null, ex);

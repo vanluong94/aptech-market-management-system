@@ -18,6 +18,10 @@ import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 
+/**
+ * 
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
+ */
 public class DiscountEditPage extends Page {
 
     private Discount editingDiscount;
