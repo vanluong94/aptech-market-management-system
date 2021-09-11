@@ -114,8 +114,8 @@ public class Employee {
     public void showOne() {
         System.out.println("====== Chi tiết nhân viên ======");
         System.out.println("Chi tiết Nhân viên " + name + " :");
-        System.out.println("Họ tên : " + name);
-        System.out.println("Địa chỉ: " + address);
+        System.out.println("H�? tên : " + name);
+        System.out.println("�?ịa chỉ: " + address);
         System.out.println("Số điện thoại: " + phone);
         System.out.println("Chức vụ : " + department);
         System.out.println("ID : " + employeeId);

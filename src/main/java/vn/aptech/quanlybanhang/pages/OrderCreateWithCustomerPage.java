@@ -1,18 +1,19 @@
 /*
- *  Do an Java tai HaNoi Aptech
+ * Do an Java tai Hanoi Aptech
  */
 package vn.aptech.quanlybanhang.pages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.entities.Customer;
-import vn.aptech.quanlybanhang.entities.Employee;
-import vn.aptech.quanlybanhang.entities.EmployeeOrder;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
+import vn.aptech.quanlybanhang.service.CustomerService;
+import vn.aptech.quanlybanhang.service.CustomerServiceImpl;
 import vn.aptech.quanlybanhang.service.OrderService;
 import vn.aptech.quanlybanhang.service.OrderServiceImpl;
 import vn.aptech.quanlybanhang.service.ProductService;
@@ -22,14 +23,14 @@ import vn.aptech.quanlybanhang.utilities.AppScanner;
 
 /**
  *
- * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ * @author Pham Vu Tan <C2101LM.PVTAN@APTECH.VN>
  */
-public class OrderCreatePage extends Page {
+public class OrderCreateWithCustomerPage extends Page {
 
     private final ProductService productService;
     private OrderService orderService;
 
-    public OrderCreatePage() {
+    public OrderCreateWithCustomerPage() {
         this.productService = new ProductServiceImpl();
         this.orderService = new OrderServiceImpl();
     }
@@ -37,6 +38,21 @@ public class OrderCreatePage extends Page {
     @Override
     public void displayContent() {
         try {
+            CustomerService customerService = new CustomerServiceImpl();
+            Customer customer = new Customer();
+            Scanner sc = new Scanner(System.in);
+            int check;
+            System.out.print("Nhap ID khach hang : ");
+            while (!sc.hasNextInt()) {
+                System.out.println("Day khong phai la so ! moi nhap lai");
+                sc.next();
+            }
+            check = sc.nextInt();
+            while (customerService.findById(check) == null) {
+                System.out.println("ID khong ton tai !");
+                System.out.print("Nhap ID khach hang : ");
+                check = sc.nextInt();
+            }
             String choice;
             Order order = new Order();
             double amount = 0;
@@ -90,11 +106,11 @@ public class OrderCreatePage extends Page {
             }
             order.setAmount(amount);
             order.setEmployee(AuthServiceImpl.getCurrentEmployee()); // Set nhân viên hiện tại đang đăng nhập
-            order.setCustomer(new Customer(2)); // Lấy tạm Khách hàng cũ có ID = 2, sau này sửa lại có thêm chức năng nhập Khách hàng nữa
+            order.setCustomer(new Customer(check));
 
             List<Object[]> rows = new ArrayList<>();
-
-            System.out.println("Các sản phẩm trong �?ơn hàng");
+            customer = customerService.findById(check);
+            System.out.println("\nGio hang cua khach hang " + customer.getName() + ": ");
             for (OrderItem orderItem : order.getOrderItems()) {
                 Object[] row = {
                     orderItem.getProduct().getId(),
@@ -128,7 +144,7 @@ public class OrderCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tao don hang cho khach hang khong co the";
+        return "Tao don hang cho khach hang co the";
     }
 
 }
