@@ -21,7 +21,10 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 public class DiscountDAOImpl implements DiscountDAO {
 
-    private final static String SQL_SELECT_ALL = "SELECT * FROM discounts";
+    private final static String SQL_SELECT_ALL = "SELECT discounts.*, COUNT(d_products.product_id) as products_count "
+            + " FROM discounts "
+            + " LEFT JOIN discount_product AS d_products ON d_products.discount_id = discounts.discount_id "
+            + " GROUP BY discounts.discount_id ";
     private final static String SQL_INSERT = "INSERT INTO discounts (discount_name) VALUE (?)";
     private final static String SQL_GET_ONE = "SELECT * FROM discounts WHERE discount_id = ?";
     private final static String SQL_DELETE = "DELETE FROM discounts WHERE discount_id = ?";
@@ -142,6 +145,7 @@ public class DiscountDAOImpl implements DiscountDAO {
                 Discount discount = new Discount();
                 discount.setId(rs.getInt("discount_id"));
                 discount.setName(rs.getString("discount_name"));
+                discount.setProductsCount(rs.getInt("products_count"));
                 discounts.add(discount);
             }
         } catch (SQLException e) {
