@@ -6,6 +6,7 @@
 package vn.aptech.quanlybanhang;
 
 import java.util.Locale;
+import java.util.ResourceBundle;
 import vn.aptech.quanlybanhang.menu.Breadcrumb;
 import vn.aptech.quanlybanhang.pages.AuthPage;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
@@ -21,7 +22,7 @@ public class Main {
      */
     public static void main(String[] args) {
         try {
-            init();
+            init(args);
             start();
         } finally {
 //            DBConnection.maybeCloseConnection();
@@ -35,7 +36,18 @@ public class Main {
         authPage.start();
     }
     
-    public static void init() {
-        Locale.setDefault(new Locale("vi", "VN"));
+    public static void init(String[] args) {
+        String language = null;
+        String country = null;
+        if (args.length == 2) {
+//            language = args[0];
+//            country = args[1];
+            language = "en";
+            country = "US";
+        } else {
+            language = "vi";
+            country = "VN";
+        }
+        Locale.setDefault(new Locale(language, country));
     }
 }
