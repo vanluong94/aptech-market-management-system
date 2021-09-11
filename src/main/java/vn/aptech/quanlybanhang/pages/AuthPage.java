@@ -2,6 +2,7 @@
  * Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.pages;
+
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.menu.AdminMenu;
 import vn.aptech.quanlybanhang.menu.CashierMenu;
@@ -10,6 +11,7 @@ import vn.aptech.quanlybanhang.service.AuthService;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 import vn.aptech.quanlybanhang.ui.HeaderUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.Md5;
 
 /**
@@ -27,51 +29,47 @@ public class AuthPage extends Page {
 
     @Override
     public void displayContent() {
-        int check = 0;
-        do {            
+        Employee emp = null;
+        do {
             AuthService authService = new AuthServiceImpl();
+            System.out.println(I18n.getMessage("page.auth.login.subTitle"));
+            String username = AppScanner.scanStringWithMessage(I18n.getMessage("page.auth.login.label.username"));
+            String password = AppScanner.scanStringWithMessage(I18n.getMessage("page.auth.login.label.password"));
+            Employee employee = new Employee(username, Md5.encode(password));
+            emp = authService.login(employee);
+            if (emp != null) {
+                System.out.println(I18n.getMessage("page.auth.login.success"));
 
-        String username = AppScanner.scanStringWithMessage("Nhập tài khoản: ");
-        String password = AppScanner.scanStringWithMessage("Nhập mật khẩu: ");
+                // Mo menu theo role tuong ung
+                switch (emp.getDepartment().name()) {
+                    case "ROLE_ADMIN":
+                        AdminMenu adminMenu = new AdminMenu();
+                        adminMenu.start();
+                        break;
+                    case "ROLE_EMPLOYEE_CASHER":
+                        CashierMenu cashierMenu = new CashierMenu();
+                        cashierMenu.start();
+                        break;
+                    case "ROLE_EMPLOYEE_INVENTORY":
+                        InventoryMenu inventoryMenu = new InventoryMenu();
+                        inventoryMenu.start();
+                        break;
+                    default:
+                        System.out.println(I18n.getMessage("page.auth.login.invalidDept", emp.getName()));
+                        System.exit(0);
+                        break;
+                }
 
-        // kiem tra không được để trống
-        Employee employee = new Employee(username, Md5.encode(password));
-
-        Employee emp = authService.login(employee);
-        if (emp != null) {
-            check =1;
-            System.out.println("\n�?ăng nhập thành công!");
-
-            // Mo menu theo role tuong ung
-            switch (emp.getDepartment().name()) {
-                case "ROLE_ADMIN":
-                    AdminMenu adminMenu = new AdminMenu();
-                    adminMenu.start();
-                    break;
-                case "ROLE_EMPLOYEE_CASHER":
-                    CashierMenu cashierMenu = new CashierMenu();
-                    cashierMenu.start();
-                    break;
-                case "ROLE_EMPLOYEE_INVENTORY":
-                    InventoryMenu inventoryMenu = new InventoryMenu();
-                    inventoryMenu.start();
-                    break;
-                default:
-                    System.out.println("Tài khoản không có quy�?n truy cập hợp lệ!");
-                    System.exit(0);
-                    break;
+            } else {
+                System.out.println(I18n.getMessage("page.auth.login.invalid"));
             }
 
-        } else {
-            System.out.println("Nhập sai tài khoản hoặc mật khẩu, vui lòng nhập lại!");
-        }
-
-        } while (check == 0);
+        } while (emp == null);
     }
 
     @Override
     public String getTitle() {
-        return "�?ăng Nhập";
+        return I18n.getMessage("page.auth.login.title");
     }
 
 }

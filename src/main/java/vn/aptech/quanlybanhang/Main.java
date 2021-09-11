@@ -6,9 +6,11 @@
 package vn.aptech.quanlybanhang;
 
 import java.util.Locale;
+import java.util.ResourceBundle;
 import vn.aptech.quanlybanhang.menu.Breadcrumb;
 import vn.aptech.quanlybanhang.pages.AuthPage;
-import vn.aptech.quanlybanhang.utilities.DBConnection;
+import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -24,18 +26,28 @@ public class Main {
             init();
             start();
         } finally {
-//            DBConnection.maybeCloseConnection();
-            System.out.println("Bye bye...");
+            System.out.println(I18n.getMessage("msg.bye"));
         }
     }
-    
-    public static void start(){
+
+    public static void start() {
         Breadcrumb.reset();
         AuthPage authPage = new AuthPage();
         authPage.start();
     }
-    
+
     public static void init() {
-        Locale.setDefault(new Locale("vi", "VN"));
+        String language;
+        String country;
+        String choice = AppScanner.scanStringWithMessage(I18n.getMessage("msg.choice.lang"), true);
+        if (choice.equalsIgnoreCase("en")) {
+            language = "en";
+            country = "US";
+        } else {
+            language = "vi";
+            country = "VN";
+        }
+        ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", new Locale(language, country));
+        I18n.setMessages(messages);
     }
 }
