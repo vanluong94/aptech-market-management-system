@@ -21,8 +21,10 @@ public interface OrderDAO extends BaseDAO<Order> {
     PaginatedResults<Order> todayOrder(int page) throws SQLException;
 
     List<OrderItem> getOrderItems(Order order);
-    
-    PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException;
-    PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws SQLException;
 
+    PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException;
+
+    Order findByCustomerId(int id) throws SQLException;
+    
+    PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws SQLException;
 }

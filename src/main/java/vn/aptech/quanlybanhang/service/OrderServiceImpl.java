@@ -23,6 +23,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean create(Order object) throws SQLException, Exception {
+        if (object == null) {
+            throw new Exception("Doi tuong khong duoc de trong");
+        }
         return orderDAO.create(object);
     }
 
@@ -73,10 +76,15 @@ public class OrderServiceImpl implements OrderService {
     public PaginatedResults<Order> todayOrder(int page) throws SQLException {
         return this.orderDAO.todayOrder(page);
     }
-    
+
     @Override
-    public PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page)  throws SQLException {
-        return this.orderDAO.findByDateRange(fromDate, toDate, page);
+    public Order findByCustomerId(int id) throws SQLException {
+        return this.orderDAO.findByCustomerId(id);
+    }
+
+    @Override
+    public PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws SQLException {
+         return this.orderDAO.findByDateRange(fromDate, toDate, page);
     }
 
 }
