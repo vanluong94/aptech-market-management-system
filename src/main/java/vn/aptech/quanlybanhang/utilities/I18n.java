@@ -13,9 +13,13 @@ import java.util.ResourceBundle;
  */
 public class I18n {
 
-    private static final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
+    private static ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
 
-    public static String translate(String key, Object... args) {
+    public static void setMessages(ResourceBundle messages) {
+        I18n.messages = messages;
+    }
+
+    public static String getMessage(String key, Object... args) {
         MessageFormat formatter = new MessageFormat("");
         formatter.applyPattern(messages.getString(key).replaceAll("'", "''"));
         return formatter.format(args);

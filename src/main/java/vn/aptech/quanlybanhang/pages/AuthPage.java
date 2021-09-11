@@ -29,20 +29,16 @@ public class AuthPage extends Page {
 
     @Override
     public void displayContent() {
-        int check = 0;
+        Employee emp = null;
         do {
             AuthService authService = new AuthServiceImpl();
-
-            String username = AppScanner.scanStringWithMessage(I18n.translate("label.username"));
-            String password = AppScanner.scanStringWithMessage(I18n.translate("label.password"));
-
-            // kiem tra không được để trống
+            System.out.println(I18n.getMessage("page.auth.login.subTitle"));
+            String username = AppScanner.scanStringWithMessage(I18n.getMessage("page.auth.login.label.username"));
+            String password = AppScanner.scanStringWithMessage(I18n.getMessage("page.auth.login.label.password"));
             Employee employee = new Employee(username, Md5.encode(password));
-
-            Employee emp = authService.login(employee);
+            emp = authService.login(employee);
             if (emp != null) {
-                check = 1;
-                System.out.println("\n�?ăng nhập thành công!");
+                System.out.println(I18n.getMessage("page.auth.login.success"));
 
                 // Mo menu theo role tuong ung
                 switch (emp.getDepartment().name()) {
@@ -59,21 +55,21 @@ public class AuthPage extends Page {
                         inventoryMenu.start();
                         break;
                     default:
-                        System.out.println("Tài khoản không có quy�?n truy cập hợp lệ!");
+                        System.out.println(I18n.getMessage("page.auth.login.invalidDept", emp.getName()));
                         System.exit(0);
                         break;
                 }
 
             } else {
-                System.out.println("Nhập sai tài khoản hoặc mật khẩu, vui lòng nhập lại!");
+                System.out.println(I18n.getMessage("page.auth.login.invalid"));
             }
 
-        } while (check == 0);
+        } while (emp == null);
     }
 
     @Override
     public String getTitle() {
-        return "�?ăng Nhập";
+        return I18n.getMessage("page.auth.login.title");
     }
 
 }
