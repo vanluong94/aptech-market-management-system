@@ -16,8 +16,6 @@ import vn.aptech.quanlybanhang.constant.Constant;
 import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.entities.ImportProduct;
 import vn.aptech.quanlybanhang.entities.Product;
-import vn.aptech.quanlybanhang.service.CategoryService;
-import vn.aptech.quanlybanhang.service.CategoryServiceImpl;
 import vn.aptech.quanlybanhang.service.ImportProductService;
 import vn.aptech.quanlybanhang.service.ImportProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
@@ -41,12 +39,23 @@ public class ProductDAOImpl implements ProductDAO {
             + " JOIN suppliers ON suppliers.supplier_id = products.supplier_id";
 
     private final static String SQL_GET_ONE
-            = "SELECT products.*,suppliers.supplier_id,suppliers.supplier_name,brands.brand_name,brands.brand_id,categories.category_id,categories.category_name,employees.employee_name, employees.employee_id"
+            = " SELECT "
+            + "     products.*,"
+            + "     suppliers.supplier_id, suppliers.supplier_name,"
+            + "     brands.brand_name,brands.brand_id,"
+            + "     categories.category_id,categories.category_name,"
+            + "     employees.employee_name, employees.employee_id"
             + " FROM products"
             + " JOIN brands ON brands.brand_id = products.brand_id"
             + " JOIN categories ON categories.category_id = products.category_id"
             + " JOIN employees ON employees.employee_id = products.employee_id"
             + " JOIN suppliers ON suppliers.supplier_id = products.supplier_id"
+            + " LEFT JOIN discount_product as d_products ON ( "
+            + "     d_products.product_id = products.product_id "
+            + "     AND ? BETWEEN d_products.start_date "
+            + "     AND d_products.end_date "
+            + " )"
+            + "     LEFT JOIN categories ON categories.category_id = products.category_id "
             + " WHERE product_id = ?";
 
     private final static String SQL_GET_BY_CATEGORY_ID = "SELECT products.*,suppliers.supplier_id,suppliers.supplier_name,brands.brand_name,brands.brand_id,categories.category_id,categories.category_name,employees.employee_name,employees.employee_id"
@@ -223,22 +232,24 @@ public class ProductDAOImpl implements ProductDAO {
         try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE);
-            pstmt.setInt(1, id);
+            pstmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            pstmt.setInt(2, id);
+
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                product = new Product();
-                product.setId(rs.getInt("product_id"));
-                product.getBrand().setBrandName(rs.getString("brand_name"));
+                product = this.mapRersultSetToObject(rs);
                 product.getCategory().setCategoryName(rs.getString("category_name"));
-                product.getSupplier().setName(rs.getString("supplier_name"));
                 product.getEmployee().setName(rs.getString("employee_name"));
-                product.setName(rs.getString("product_name"));
-                product.setPrice(rs.getDouble("product_price"));
-                product.setQuantityInStock(rs.getInt("product_stock"));
-
-                CategoryService categoryService = new CategoryServiceImpl();
-                Category productCat = categoryService.findById(rs.getInt("category_id"));
-                product.setCategory(productCat);
+                product.getSupplier().setName(rs.getString("supplier_name"));
+                product.getBrand().setBrandName(rs.getString("brand_name"));
+                
+                if (rs.getInt("d_products.discount_product_id") > 0) {
+                    product.getDiscount().setId(rs.getInt("d_products.discount_product_id"));
+                    product.getDiscount().setDiscountPercentage(rs.getFloat("d_products.discount"));
+                    product.getDiscount().setDiscountId(rs.getInt("d_products.discount_id"));
+                    product.getDiscount().setStartDate(rs.getDate("d_products.start_date"));
+                    product.getDiscount().setEndDate(rs.getDate("d_products.end_date"));
+                }
             }
         } catch (SQLException e) {
             throw e;
@@ -250,7 +261,7 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public List<Product> findAll() throws SQLException {
-        List<Product> products = new ArrayList<Product>();
+        List<Product> products = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = pstmt.executeQuery();
@@ -275,7 +286,7 @@ public class ProductDAOImpl implements ProductDAO {
     @Override
     public PaginatedResults<Product> findByCategoryId(int page, int id) throws SQLException {
         PaginatedResults<Product> pagination = new PaginatedResults<>(page, PER_PAGE);
-        List<Product> products = new ArrayList<Product>();
+        List<Product> products = new ArrayList<>();
         Statement st = null;
         ResultSet rs = null;
         ResultSet countRs = null;
@@ -320,7 +331,7 @@ public class ProductDAOImpl implements ProductDAO {
     @Override
     public PaginatedResults<Product> findByName(int page, String name) throws SQLException {
         PaginatedResults<Product> pagination = new PaginatedResults<>(page, PER_PAGE);
-        List<Product> products = new ArrayList<Product>();
+        List<Product> products = new ArrayList<>();
         Statement st = null;
         ResultSet rs = null;
         ResultSet countRs = null;

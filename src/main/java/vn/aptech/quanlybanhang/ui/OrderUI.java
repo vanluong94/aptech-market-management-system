@@ -15,9 +15,9 @@ import vn.aptech.quanlybanhang.entities.OrderItem;
  */
 public class OrderUI {
     
-    private final int lineLength = 60;
+    private final int lineLength = 75;
     
-    private Order order;
+    private final Order order;
     
     public OrderUI(Order order){
         this.order = order;
@@ -49,17 +49,18 @@ public class OrderUI {
     }
     
     public void displayProductsTable() {
-        String[] headers = {"Sản Phẩm", "SL", "Đơn Giá", "Thành Tiền"};
+        String[] headers = {"Sản Phẩm", "SL", "Giá gốc", "Giá bán","Thành Tiền"};
         List<Object[]> rows = new ArrayList<>();
-        List<Integer> colsLength = Arrays.asList(26, 5, 13, 15);
-        List<String> colsAlign = Arrays.asList("left", "right", "right", "right");
+        List<Integer> colsLength = Arrays.asList(26, 5, 13, 13, 17);
+        List<String> colsAlign = Arrays.asList("left", "right", "right", "right", "right");
         
         for(OrderItem item : order.getOrderItems()) {
             Object[] row = {
                 item.getProductName(),
                 item.getQuantity(),
                 item.getProductPriceString(),
-                item.getTotalPriceString()
+                item.getProductFinalPriceString(),
+                item.getTotalString()
             };
             rows.add(row);
         }
@@ -71,9 +72,9 @@ public class OrderUI {
         table.setColumnsAlign(colsAlign);
         table.display();
         
-        System.out.println(String.format("| %-41s | %12s |", " ", " "));
-        System.out.println(String.format("| %-41s | %12s |", "TỔNG TIỀN", this.order.getAmountString()));
-        System.out.println(String.format("| %-41s | %12s |", " ", " "));
+        System.out.println(String.format("| %-54s | %14s |", " ", " "));
+        System.out.println(String.format("| %-54s | %14s |", "TỔNG TIỀN", this.order.getAmountString()));
+        System.out.println(String.format("| %-54s | %14s |", " ", " "));
         this.displayBorder();
     }
     
