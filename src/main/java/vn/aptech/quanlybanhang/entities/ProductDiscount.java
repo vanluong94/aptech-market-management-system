@@ -4,19 +4,36 @@
 package vn.aptech.quanlybanhang.entities;
 
 import java.util.Date;
+import vn.aptech.quanlybanhang.common.DateCommon;
+import vn.aptech.quanlybanhang.utilities.AppScanner;
 
 /**
  *
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
+ * 
  */
 public class ProductDiscount {
 
     private int id;
     private int discountId;
-    private int productId;
-    private float discount;
+    private Product product;
+    private float discountPercentage;
     private Date startDate;
     private Date endDate;
+
+    public ProductDiscount(){
+        
+    }
+    
+    public ProductDiscount(int id, int discountId, Product product, float discount, Date startDate, Date endDate) {
+        this.id = id;
+        this.discountId = discountId;
+        this.product = product;
+        this.discountPercentage = discount;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
     /**
      * @return the id
@@ -46,32 +63,26 @@ public class ProductDiscount {
         this.discountId = discountId;
     }
 
-    /**
-     * @return the productId
-     */
-    public int getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     /**
-     * @param productId the productId to set
+     * @return the discountPercentage
      */
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public float getDiscountPercentage() {
+        return discountPercentage;
     }
 
     /**
-     * @return the discount
+     * @param discount the discountPercentage to set
      */
-    public float getDiscount() {
-        return discount;
-    }
-
-    /**
-     * @param discount the discount to set
-     */
-    public void setDiscount(float discount) {
-        this.discount = discount;
+    public void setDiscountPercentage(float discount) {
+        this.discountPercentage = discount;
     }
 
     /**
@@ -100,6 +111,52 @@ public class ProductDiscount {
      */
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+    
+    public Date scanStartDate() {
+        Date dateFrom = null;
+        String dateFormatPattern = "dd/MM/yyyy HH:mm";
+        do {
+            String dateFromStr = AppScanner.scanStringWithMessage("Thời gian bắt đầu giảm giá [" + dateFormatPattern + "]: ");
+            dateFrom = DateCommon.convertStringToDateByPattern(dateFromStr, dateFormatPattern);
+
+            if (dateFrom == null) {
+                System.out.println("Thời gian đã nhập không hợp lệ, vui lòng thử lại.");
+            }
+        } while (dateFrom == null);
+        
+        return dateFrom;
+    }
+    
+    public Date scanEndDate() {
+        Date dateTo = null;
+        String dateFormatPattern = "dd/MM/yyyy HH:mm";
+        
+        do {
+            String dateToStr = AppScanner.scanStringWithMessage("Thời gian kết thúc giảm giá [" + dateFormatPattern + "]: ");
+            dateTo = DateCommon.convertStringToDateByPattern(dateToStr, dateFormatPattern);
+
+            if (dateTo == null) {
+                System.out.println("Thời gian đã nhập không hợp lệ, vui lòng thử lại.");
+            } else if (this.startDate != null && dateTo.compareTo(this.startDate) <= 0) {
+                System.out.println("Thời gian kết thúc giảm giá không được sớm hơn thời gian bắt đầu giảm giá");
+                dateTo = null; // reset to repeat
+            }
+        } while (dateTo == null);
+        
+        return dateTo;
+    }
+
+    public float scanDiscountPercentage() {
+        float discountPercent = 0;
+        while (discountPercent < 1) {
+            discountPercent = AppScanner.scanFloatWithMessage("Nhập % giảm giá cho sản phẩm: ");
+            
+            if (discountPercent < 1) {
+                System.out.println("Giá trị % giảm giá cho sản phẩm phải >= 1");
+            }
+        }
+        return discountPercent;
     }
 
 }

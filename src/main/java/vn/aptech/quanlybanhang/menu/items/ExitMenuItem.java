@@ -20,7 +20,7 @@ public class ExitMenuItem extends MenuItem {
 
     @Override
     public String getTitle() {
-        return "Thoat";
+        return "Thoát";
     }
     
 }

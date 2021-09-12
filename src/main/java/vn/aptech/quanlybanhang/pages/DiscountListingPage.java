@@ -17,7 +17,8 @@ import vn.aptech.quanlybanhang.ui.TableUI;
 
 /**
  *
- * @author vanluong
+ * @author Vu Duy Long <vuduylong1999@gmail.com>
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class DiscountListingPage extends Page {
 
@@ -30,15 +31,16 @@ public class DiscountListingPage extends Page {
                 if (discounts.isEmpty()) {
                     System.out.println("Danh sách trống");
                 } else {
-                    List<Object[]> rows = new ArrayList<Object[]>();
+                    List<Object[]> rows = new ArrayList<>();
                     for (Discount discount : discounts) {
                         Object[] row = {
                             discount.getId(),
-                            discount.getName()
+                            discount.getName(),
+                            discount.getProductsCount()
                         };
                         rows.add(row);
                     }
-                    String[] headers = {"ID","Tên Danh mục"};
+                    String[] headers = {"ID","Tên Danh mục", "Số SP"};
                     TableUI tableUI = new TableUI(headers,rows);
                     tableUI.display();
                     break;

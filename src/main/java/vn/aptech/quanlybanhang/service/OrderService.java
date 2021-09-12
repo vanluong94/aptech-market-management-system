@@ -28,4 +28,5 @@ public interface OrderService extends BaseService<Order> {
 
     
     PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws SQLException;
+    
 }
