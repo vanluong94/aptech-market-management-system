@@ -40,10 +40,11 @@ public class ProductDAOImpl implements ProductDAO {
     private final static String SQL_GET_ONE
             = " SELECT "
             + "     products.*,"
-            + "     suppliers.supplier_id, suppliers.supplier_name,"
-            + "     brands.brand_name,brands.brand_id,"
-            + "     categories.category_id,categories.category_name,"
-            + "     employees.employee_name, employees.employee_id"
+            + "     d_products.discount_product_id,"
+            + "     suppliers.supplier_name,"
+            + "     brands.brand_name,"
+            + "     categories.category_name,"
+            + "     employees.employee_name"
             + " FROM products"
             + " JOIN brands ON brands.brand_id = products.brand_id"
             + " JOIN categories ON categories.category_id = products.category_id"
@@ -54,8 +55,7 @@ public class ProductDAOImpl implements ProductDAO {
             + "     AND ? BETWEEN d_products.start_date "
             + "     AND d_products.end_date "
             + " )"
-            + "     LEFT JOIN categories ON categories.category_id = products.category_id "
-            + " WHERE product_id = ?";
+            + " WHERE products.product_id = ?";
 
     private final static String SQL_GET_BY_CATEGORY_ID = "SELECT products.*,suppliers.supplier_id,suppliers.supplier_name,brands.brand_name,brands.brand_id,categories.category_id,categories.category_name,employees.employee_name,employees.employee_id"
             + " FROM products"

@@ -5,7 +5,6 @@ package vn.aptech.quanlybanhang.pages;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.entities.Customer;
 import vn.aptech.quanlybanhang.entities.Order;
@@ -24,34 +23,28 @@ import vn.aptech.quanlybanhang.utilities.AppScanner;
 /**
  *
  * @author Pham Vu Tan <C2101LM.PVTAN@APTECH.VN>
+ * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  */
 public class OrderCreateWithCustomerPage extends Page {
 
     private final ProductService productService;
-    private OrderService orderService;
+    private final OrderService orderService;
+    private final CustomerService customerService;
 
     public OrderCreateWithCustomerPage() {
         this.productService = new ProductServiceImpl();
         this.orderService = new OrderServiceImpl();
+        this.customerService = new CustomerServiceImpl();
     }
 
     @Override
     public void displayContent() {
         try {
-            CustomerService customerService = new CustomerServiceImpl();
-            Customer customer = new Customer();
-            Scanner sc = new Scanner(System.in);
-            int check;
-            System.out.print("Nhap ID khach hang : ");
-            while (!sc.hasNextInt()) {
-                System.out.println("Day khong phai la so ! moi nhap lai");
-                sc.next();
-            }
-            check = sc.nextInt();
-            while (customerService.findById(check) == null) {
+            int customerId = AppScanner.scanIntWithMessage("Nhap ID khach hang: ", false);
+            Customer customer = customerService.findById(customerId);
+            while (customer == null) {
                 System.out.println("ID khong ton tai !");
-                System.out.print("Nhap ID khach hang : ");
-                check = sc.nextInt();
+                customerId = AppScanner.scanIntWithMessage("Nhap ID khach hang: ", false);
             }
             String choice;
             Order order = new Order();
@@ -92,10 +85,12 @@ public class OrderCreateWithCustomerPage extends Page {
                     orderItem.setQuantity(qty);
                     orderItem.setProductName(product.getName());
                     orderItem.setProductPrice(product.getPrice());
+                    orderItem.setDiscountPrice(product.getDiscountPrice());
+                    orderItem.setDiscount(product.getDiscount());
+                    
                     order.getOrderItems().add(orderItem);
                 }
                 // Set nốt discount va discount Price
-                AppScanner.getScanner().nextLine();
                 choice = AppScanner.scanStringWithMessage("Bạn có muốn thêm sản phẩm khác vào đơn hàng không? [y/N]: ", true);
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
@@ -106,10 +101,9 @@ public class OrderCreateWithCustomerPage extends Page {
             }
             order.setAmount(amount);
             order.setEmployee(AuthServiceImpl.getCurrentEmployee()); // Set nhân viên hiện tại đang đăng nhập
-            order.setCustomer(new Customer(check));
+            order.setCustomer(customer);
 
             List<Object[]> rows = new ArrayList<>();
-            customer = customerService.findById(check);
             System.out.println("\nGio hang cua khach hang " + customer.getName() + ": ");
             for (OrderItem orderItem : order.getOrderItems()) {
                 Object[] row = {
@@ -133,6 +127,15 @@ public class OrderCreateWithCustomerPage extends Page {
             if ("y".equalsIgnoreCase(choice)) {
                 if (orderService.create(order)) {
                     System.out.println("Tạo đơn hàng thành công!");
+                    choice = AppScanner.scanStringWithMessage("Bạn có muốn xuất hóa đơn không? [y/N]: ", true);
+                    if ("y".equalsIgnoreCase(choice)) {
+                        String reportFile = orderService.requestReportXlsx(order);
+                        if (reportFile != null) {
+                            System.out.println("Hóa đơn được lưu tại đường dẫn: " + reportFile);
+                        } else {
+                            System.out.println("Đã xảy ra lỗi khi xuất hóa đơn");
+                        }
+                    }
                 } else {
                     System.out.println("�?ã xảy ra lỗi khi tạo đơn hàng");
                 }

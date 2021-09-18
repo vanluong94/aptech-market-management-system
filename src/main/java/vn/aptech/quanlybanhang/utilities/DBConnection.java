@@ -8,6 +8,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author anhnbt
@@ -29,12 +31,12 @@ public class DBConnection {
         try {
             if (conn == null || conn.isClosed()) {
                 String url = String.format("jdbc:mysql://%s:%s/%s", SERVER, PORT, DATABASE);
-                Class.forName(DRIVER);
                 System.out.println("\nConnecting...\n");
+                Class.forName(DRIVER);
                 conn = DriverManager.getConnection(url, USER, PASSWORD);
             }
-        } catch (SQLException | ClassNotFoundException ex) {
-            System.out.println("Exception when DBConnection.getConnection: " + ex.getMessage());
+        } catch (SQLException | ClassNotFoundException  ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         return conn;
 

@@ -3,9 +3,14 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.common.StringCommon;
+import vn.aptech.quanlybanhang.constant.Constant;
+import vn.aptech.quanlybanhang.dao.BrandDAOImpl;
 import vn.aptech.quanlybanhang.entities.Customer;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
@@ -18,6 +23,7 @@ import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 import vn.aptech.quanlybanhang.utilities.I18n;
+import vn.aptech.quanlybanhang.utilities.FileUtils;
 
 /**
  *
@@ -84,18 +90,18 @@ public class OrderCreatePage extends Page {
                     order.getOrderItems().add(orderItem);
                 }
                 // Set nốt discount va discount Price
-                AppScanner.getScanner().nextLine();
                 choice = AppScanner.scanStringWithMessage(I18n.getMessage("order.confirm.addAnotherProduct"), true);
+
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }
             }
             for (OrderItem od : order.getOrderItems()) {
-                amount += od.getTotal(); 
+                amount += od.getTotal(); // Tính tổng giá trị đơn hàng
             }
             order.setAmount(amount);
             order.setEmployee(AuthServiceImpl.getCurrentEmployee()); // Set nhân viên hiện tại đang đăng nhập
-            order.setCustomer(new Customer(2)); // Lấy tạm Khách hàng cũ có ID = 2, sau này sửa lại có thêm chức năng nhập Khách hàng nữa
+            order.setCustomer(new Customer(-1)); // Không có khách hàng nào
 
             List<Object[]> rows = new ArrayList<>();
 
@@ -131,12 +137,22 @@ public class OrderCreatePage extends Page {
             if ("y".equalsIgnoreCase(choice)) {
                 if (orderService.create(order)) {
                     I18n.printEntityMessage("order", "entity.msg.created");
+
+                    choice = AppScanner.scanStringWithMessage(I18n.getMessage("order.export.confirm"), true);
+                    if ("y".equalsIgnoreCase(choice)) {
+                        String reportFile = orderService.requestReportXlsx(order);
+                        if (reportFile != null) {
+                            I18n.print("order.export.path", reportFile);
+                        } else {
+                            I18n.print("order.export.error");
+                        }
+                    }
                 } else {
                     I18n.printEntityMessage("order", "entity.error.createFailed");
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Logger.getLogger(OrderCreatePage.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
