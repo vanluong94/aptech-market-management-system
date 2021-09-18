@@ -21,7 +21,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     private final static String SQL_SELECT_ALL = "select customers.*, employees.employee_name from customers inner join employees on customers.employee_id = employees.employee_id";
     private final static String SQL_INSERT = "INSERT INTO customers(customer_name, customer_phone, customer_add, employee_id) VALUE(?,?,?,?)";
-    private final static String SQL_GET_ONE = "select customers.*, employees.employee_name from customers inner join employees on customers.employee_id = employees.employee_id WHERE customer_id = ?";
+    private final static String SQL_GET_ONE = "SELECT customers.*, employees.employee_name FROM customers LEFT JOIN employees ON customers.employee_id = employees.employee_id WHERE customers.customer_id = ?";
     private final static String SQL_FIND_BY_PHONE = "select customers.*, employees.employee_name from customers inner join employees on customers.employee_id = employees.employee_id WHERE customer_phone = ?";
     private final static String SQL_DELETE = "DELETE FROM customers WHERE customer_id = ?";
     private final static String SQL_UPDATE = "UPDATE customers SET customer_name = ?, customer_phone = ?, customer_add = ? WHERE customer_id = ?";
@@ -82,9 +82,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public Customer findById(int id) throws SQLException {
         Customer customer = null;
-        Connection conn = null;
-        try {
-            conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ONE);
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
@@ -99,10 +97,6 @@ public class CustomerDAOImpl implements CustomerDAO {
             }
         } catch (SQLException e) {
             throw e;
-        } finally {
-            if (conn != null) {
-                conn.close();
-            }
         }
         return customer;
     }
