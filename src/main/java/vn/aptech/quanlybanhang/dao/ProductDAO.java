@@ -19,7 +19,7 @@ public interface ProductDAO extends BaseDAO<Product> {
     PaginatedResults<Product> findByCategoryId(int page,int id) throws SQLException;
     PaginatedResults<Product> findByName(int page,String name) throws SQLException;
     PaginatedResults<Product> selectOutOfStock(int page) throws SQLException;
-
+    
     PaginatedResults<Product> findAllByOrderByUnitsOnOrderDesc(int page, String fromDate, String toDate) throws SQLException;
     
     double getStatisticAmount(java.sql.Date fromDate, java.sql.Date toDate) throws SQLException;

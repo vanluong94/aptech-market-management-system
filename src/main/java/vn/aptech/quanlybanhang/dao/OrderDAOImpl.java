@@ -21,6 +21,8 @@ import vn.aptech.quanlybanhang.constant.Constant;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
+import vn.aptech.quanlybanhang.service.ProductService;
+import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
@@ -70,11 +72,31 @@ public class OrderDAOImpl implements OrderDAO {
             + " orders.*, "
             + " employees.employee_name, "
             + " customers.customer_name "
+            + " customers.customer_phone "
             + " FROM "
             + " orders "
             + " JOIN employees ON employees.employee_id = orders.employee_id "
             + " LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE orders.order_id = ?";
+    private final static String SQL_GET_BY_CUSTOMER_PHONE = "SELECT "
+            + " orders.*, "
+            + " employees.employee_name, "
+            + " customers.customer_name, "
+            + " customers.customer_phone "
+            + " FROM customers "
+            + " INNER JOIN orders ON customers.customer_id = orders.customer_id "
+            + " LEFT JOIN employees ON employees.employee_id = orders.employee_id "
+            + " WHERE customers.customer_phone LIKE ? "
+            + " LIMIT ?,?";
+
+    private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
+    
+
+    private final ProductService productService;
+
+    public OrderDAOImpl() {
+        this.productService = new ProductServiceImpl();
+    }
     private final static String SQL_GET_ONE_BY_CUSTOMER_ID = "SELECT "
             + " orders.*, "
             + " employees.employee_name, "
@@ -85,7 +107,7 @@ public class OrderDAOImpl implements OrderDAO {
             + " LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE orders.customer_id = ?";
 
-    private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
+    // private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
     private final static String SQL_GET_BY_TIME_RANGE = "SELECT "
             + "  orders.*, "
             + "  employees.employee_name, "
@@ -446,6 +468,45 @@ public class OrderDAOImpl implements OrderDAO {
             }
         }
         return null;
+    }
+
+    @Override
+    public PaginatedResults<Order> findByCustomerPhone(int page, String phone) throws SQLException {
+        PaginatedResults<Order> pagination = new PaginatedResults<>(page,PER_PAGE);
+        List<Order> orders = new ArrayList<Order>();
+        Statement st = null;
+        ResultSet rs = null;
+        ResultSet countRs = null;
+        
+        try(Connection conn = DBConnection.getConnection()){
+            PreparedStatement pstmt = conn.prepareStatement(SQL_GET_BY_CUSTOMER_PHONE);
+            pstmt.setString(1, "%" + phone + "%");
+            pstmt.setInt(2, pagination.getOffset());
+            pstmt.setInt(3, pagination.getPerPage());
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                Order order = new Order();
+                order.setId(rs.getInt("order_id"));
+                order.getCustomer().setName(rs.getString("customer_name"));
+                order.getCustomer().setPhone(rs.getString("customer_phone"));
+                order.getEmployee().setName(rs.getString("employee_name"));
+                order.setOrderDate(rs.getTimestamp("order_date"));
+                order.setAmount(rs.getDouble("amount"));
+                orders.add(order);
+            }
+            pagination.setResults(orders);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (countRs != null) {
+                countRs.close();
+            }
+            if (st != null) {
+                st.close();
+            }
+        }
+        return pagination;
     }
 
 }

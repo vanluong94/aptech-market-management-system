@@ -92,6 +92,7 @@ public class OrderServiceImpl implements OrderService {
         return this.orderDAO.findByCashierId(id);
     }
 
+
     @Override
     public PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException {
         return orderDAO.CashierStatistics(page, fromDate, toDate);
@@ -103,6 +104,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public PaginatedResults<Order> findByCustomerPhone(int page, String phone) throws SQLException {
+        return this.orderDAO.findByCustomerPhone(page, phone);
+    }
+
     public Order findByCustomerId(int id) throws SQLException {
         return this.orderDAO.findByCustomerId(id);
     }
