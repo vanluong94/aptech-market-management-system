@@ -18,4 +18,11 @@ public class StringCommon {
     public static String convertDoubleToVND(double input) {
         return NumberFormat.getCurrencyInstance().format(input);
     }
+
+    public static String safeNullObject(String str) {
+        if (isNullOrBlank(str)) {
+            return "-";
+        }
+        return str;
+    }
 }

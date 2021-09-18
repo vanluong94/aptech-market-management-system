@@ -23,6 +23,8 @@ public interface OrderDAO extends BaseDAO<Order> {
     List<OrderItem> getOrderItems(Order order);
 
     PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException;
+    
+    PaginatedResults<Order> findByCustomerPhone (int page,String phone) throws SQLException;
 
     Order findByCustomerId(int id) throws SQLException;
     
