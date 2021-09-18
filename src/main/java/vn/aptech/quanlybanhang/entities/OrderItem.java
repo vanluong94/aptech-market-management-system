@@ -21,6 +21,15 @@ public class OrderItem extends BaseEntity {
     private double productPrice;
     private double discountPrice;
     private ProductDiscount discount;
+    private double totalPrice;
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
     public OrderItem() {
         this.discount = new ProductDiscount();
@@ -152,7 +161,8 @@ public class OrderItem extends BaseEntity {
     }
 
     public double getTotal() {
-        return this.getProductFinalPrice() * this.getQuantity();
+        this.totalPrice = this.getProductFinalPrice() * this.getQuantity();
+        return totalPrice;
     }
 
     public String getTotalString() {
