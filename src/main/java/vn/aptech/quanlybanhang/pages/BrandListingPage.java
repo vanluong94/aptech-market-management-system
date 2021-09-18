@@ -14,6 +14,7 @@ import vn.aptech.quanlybanhang.entities.Brand;
 import vn.aptech.quanlybanhang.service.BrandService;
 import vn.aptech.quanlybanhang.service.BrandServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
@@ -34,7 +35,7 @@ public class BrandListingPage extends Page {
                 PaginatedResults<Brand> results = brandService.select(page);
                 
                 if(results.getResults().isEmpty()) {
-                    System.out.println("<Không tìm thấy Nhãn hàng nào>");
+                    I18n.printEntityMessage("brand", "entity.msg.emptyResults");
                     return;
                 }
                 
@@ -50,7 +51,7 @@ public class BrandListingPage extends Page {
                     rows.add(row);
                 }
 
-                String[] headers = {"ID", "Tên Nhãn hàng", "Địa chỉ"};
+                String[] headers = {"ID", I18n.getMessage("brand.name"), I18n.getMessage("brand.addr")};
 
                 TableUI theTable = new TableUI(headers, rows);
                 theTable.display(); //table
@@ -78,7 +79,7 @@ public class BrandListingPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh Sach Nhãn hàng";
+        return I18n.getEntityMessage("brand", "entity.title.all", true);
     }
 
 }

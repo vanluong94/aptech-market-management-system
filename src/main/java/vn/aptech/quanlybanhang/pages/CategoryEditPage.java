@@ -10,6 +10,7 @@ import vn.aptech.quanlybanhang.service.CategoryService;
 import vn.aptech.quanlybanhang.service.CategoryServiceImpl;
 import vn.aptech.quanlybanhang.ui.HeaderUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -25,28 +26,28 @@ public class CategoryEditPage extends Page {
             Category theCat;
 
             do {
-                int id = AppScanner.scanIntWithMessage("Nhập ID cho danh mục cần sửa: ");
+                int id = AppScanner.scanIntWithMessage(I18n.getEntityMessage("category", "entity.scan.id.edit"));
 
                 CategoryService categoryService = new CategoryServiceImpl();
                 theCat = categoryService.findById(id);
 
                 if (theCat != null) {
 
-                    HeaderUI.display("Thông tin Danh mục");
+                    HeaderUI.display(I18n.getEntityMessage("category", "category.information"));
                     System.out.println(theCat.toString());
 
-                    HeaderUI.display("Nhập thông tin mới cho Danh mục");
-                    String newName = AppScanner.scanStringWithMessage("Tên mới cho Danh mục: ");
+                    HeaderUI.display(I18n.getMessage("category.msg.update"));
+                    String newName = AppScanner.scanStringWithi18Message("category.scan.newName");
                     theCat.setCategoryName(newName);
 
                     System.out.println(""); //margin line
                     if (categoryService.update(theCat)) {
-                        System.out.println("Cập nhật thành công tên Danh mục!");
+                        I18n.printEntityMessage("category", "entity.msg.updated");
                     } else {
-                        System.out.println("Đã xảy ra lỗi, không thể cập nhật Danh mục.");
+                        I18n.printEntityMessage("category", "entity.error.updateFailed");
                     }
                 } else {
-                    System.out.println("ID Danh mục không tồn tại");
+                    I18n.printEntityMessage("category", "entity.error.idNotFound");
                 }
 
             } while (theCat == null);
@@ -59,7 +60,7 @@ public class CategoryEditPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Sửa Danh mục";
+        return I18n.getEntityMessage("category", "entity.title.edit");
     }
 
 }

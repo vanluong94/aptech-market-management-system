@@ -5,13 +5,13 @@ package vn.aptech.quanlybanhang.pages;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vn.aptech.quanlybanhang.entities.Customer;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.service.CustomerService;
 import vn.aptech.quanlybanhang.service.CustomerServiceImpl;
 import vn.aptech.quanlybanhang.service.OrderService;
 import vn.aptech.quanlybanhang.service.OrderServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -24,22 +24,23 @@ public class CustomerDeletePage extends Page {
         try {
             CustomerService customerService = new CustomerServiceImpl();
             OrderService orderService = new OrderServiceImpl();
-            Customer customer = new Customer();
-            int check = AppScanner.scanIntWithMessage("Nhap ID khach hang muon sua thong tin : ", false);
-            System.out.print("Nhap ID khach hang muon xoa: ");
+            
+            int check = AppScanner.scanIntWithMessage(I18n.getEntityMessage("customer", "entity.scan.id.delete"));
+            
             while (customerService.findById(check) == null) {
-                System.out.println("ID khong ton tai !");
-                check = AppScanner.scanIntWithMessage("Nhap ID khach hang muon sua thong tin : ", false);
+                I18n.printEntityMessage("customer", "entity.error.idNotFound");
+                check = AppScanner.scanIntWithMessage(I18n.getEntityMessage("customer", "entity.scan.id.delete"));
             }
+            
             Order order = orderService.findByCustomerId(check);
             if (order == null) {
                 if (customerService.deleteById(check)) {
-                    System.out.println("Xoa thanh cong !");
+                    I18n.printEntityMessage("customer", "entity.msg.deleted");
                 } else {
-                    System.out.println("Da xay ra loi !");
+                    I18n.printEntityMessage("customer", "entity.error.deleteFailed");
                 }
             } else {
-                System.out.println("Khong the xoa ! Khach hang da co hoa don!");
+                I18n.print("custom.error.cannotDelete");
             }
 
         } catch (Exception ex) {
@@ -49,7 +50,7 @@ public class CustomerDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xoa khach hang";
+        return I18n.getEntityMessage("customer", "entity.title.delete");
     }
 
 }

@@ -11,6 +11,7 @@ import vn.aptech.quanlybanhang.dao.OrderDAOImpl;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.exception.InputInvalidException;
 import vn.aptech.quanlybanhang.entities.OrderItem;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 public class OrderServiceImpl implements OrderService {
@@ -24,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean create(Order object) throws SQLException, Exception {
         if (object == null) {
-            throw new Exception("Doi tuong khong duoc de trong");
+            throw new Exception(I18n.getMessage("app.error.object.null"));
         }
         return orderDAO.create(object);
     }
@@ -62,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order findByCashierId(int id) throws SQLException, Exception {
         if (id < 1) {
-            throw new InputInvalidException("ID không hợp lệ!");
+            throw new InputInvalidException(I18n.getMessage("input.invalidID"));
         }
         return this.orderDAO.findByCashierId(id);
     }

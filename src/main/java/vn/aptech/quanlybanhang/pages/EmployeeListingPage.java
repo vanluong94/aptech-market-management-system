@@ -14,6 +14,7 @@ import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class EmployeeListingPage extends Page {
@@ -41,7 +42,14 @@ public class EmployeeListingPage extends Page {
                 rows.add(row);
             }
             
-            String[] headers = {"ID", "Name", "Address", "Phone", "Department", "Username"};
+            String[] headers = {
+                "ID", 
+                I18n.getMessage("employee.name"), 
+                I18n.getMessage("employee.addr"),
+                I18n.getMessage("employee.phone"),
+                I18n.getMessage("employee.dept"),
+                I18n.getMessage("employee.username")
+            };
             
             TableUI theTable = new TableUI(headers, rows);
             theTable.display();
@@ -52,7 +60,7 @@ public class EmployeeListingPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sách Nhân viên";
+        return I18n.getEntityMessage("employee", "entity.title.all", true);
     }
     
 }

@@ -10,6 +10,7 @@ import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
 import vn.aptech.quanlybanhang.menu.items.GoBackMenuItem;
 import vn.aptech.quanlybanhang.pages.ProductDetailPage;
 import vn.aptech.quanlybanhang.pages.ProductSearchPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class CashierMenuProduct extends Menu {
@@ -29,7 +30,7 @@ public class CashierMenuProduct extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Tra cứu Sản phẩm";
+        return I18n.getEntityMessage("product", "entity.title.manage", true);
     }
     
 }

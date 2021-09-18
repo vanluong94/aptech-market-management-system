@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.dao.EmployeeDAO;
 import vn.aptech.quanlybanhang.dao.EmployeeDAOImpl;
 import vn.aptech.quanlybanhang.entities.Employee;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
@@ -29,8 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public boolean create(Employee object) throws SQLException, Exception {
         if (object == null) {
-            throw new Exception("Doi tuong không được để trống");
-
+            throw new Exception(I18n.getMessage("app.error.object.null"));
         }
         return employeeDAO.create(object);
     }
@@ -43,11 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public boolean deleteById(int id) throws SQLException, Exception {
         if (id < 1) {
-            try {
-                throw new Exception("ID không hợp lệ!");
-            } catch (Exception ex) {
-                Logger.getLogger(SupplierServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            throw new Exception(I18n.getMessage("input.invalidID"));
         }
         return employeeDAO.deleteById(id);
     }
@@ -55,7 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee findById(int id) throws SQLException, Exception {
         if (id < 1) {
-            throw new Exception("ID không hợp lệ!");
+            throw new Exception(I18n.getMessage("input.invalidID"));
         }
         return employeeDAO.findById(id);
     }
@@ -66,18 +62,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public boolean updateById(Employee object, int id) throws SQLException {
+    public boolean updateById(Employee object, int id) throws SQLException, Exception {
         if (object == null) {
-            try {
-                throw new Exception("Doi tuong không được để trống");
-            } catch (Exception ex) {
-                Logger.getLogger(EmployeeServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            throw new Exception(I18n.getMessage("app.error.object.null"));
         }
         if (id < 1) {
             try {
-                throw new Exception("ID không hợp lệ!");
+                throw new Exception(I18n.getMessage("input.invalidID"));
             } catch (Exception ex) {
                 Logger.getLogger(EmployeeServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -86,13 +77,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee findByUsernameAndPassword(String username, String password) throws SQLException {
+    public Employee findByUsernameAndPassword(String username, String password) throws SQLException, Exception {
         if (username == null || password == null) {
-            try {
-                throw new Exception("Username va Password không được để trống");
-            } catch (Exception ex) {
-                Logger.getLogger(EmployeeServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            throw new Exception("Username va Password không được để trống");
 
         }
 
@@ -100,14 +87,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> findByNameEmployee(String username) throws SQLException {
+    public List<Employee> findByNameEmployee(String username) throws SQLException, Exception {
         if (username == null) {
-            try {
-                throw new Exception("Username không được để trống");
-            } catch (Exception ex) {
-                Logger.getLogger(EmployeeServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            throw new Exception("Username không được để trống");
         }
 
         return employeeDAO.findByNameEmployee(username);

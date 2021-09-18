@@ -5,7 +5,6 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -15,6 +14,7 @@ import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 public class ProductDetailPage extends Page {
 
@@ -24,12 +24,12 @@ public class ProductDetailPage extends Page {
         String choice = null;
         do {          
             try {
-                int productId = AppScanner.scanIntWithMessage("Nhập ID Sản phẩm bạn muốn xem : ");
+                int productId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("product", "entity.scan.id.detail"));
                 Product product = productService.findById(productId);
                 if (product == null) {
-                    System.out.println("Không tìm thấy ID Sản phẩm phù hợp!");
+                    I18n.printEntityMessage("product", "entity.error.idNotFound");
                 } else {
-                    List<Object[]> rows = new ArrayList<Object[]>();
+                    List<Object[]> rows = new ArrayList<>();
                     Object[] row = {
                         product.getId(),
                         product.getBrand().getBrandName(),
@@ -38,14 +38,28 @@ public class ProductDetailPage extends Page {
                         product.getEmployee().getName(),
                         product.getName(),
                         product.getPriceString(),
-                        product.getQuantityInStock()
+                        product.getQuantityInStock(),
+                        product.getCreatedAt(),
+                        product.getUpdatedAt()
                     };
                     rows.add(row);
-                    String[] headers = {"ID","Nhãn hàng","Loại sản phẩm","Nhà cung cấp","Nhân viên","Tên Sản phẩm","Giá","Số lượng trong kho"};
+                    
+                    String[] headers = {
+                        "ID",
+                        I18n.getMessage("brand.label.singular"),
+                        I18n.getMessage("category.label.singular"),
+                        I18n.getMessage("supplier.label.singular"),
+                        I18n.getMessage("employee.label.singular"),
+                        I18n.getMessage("product.label.singular"),
+                        I18n.getMessage("product.price"),
+                        I18n.getMessage("product.qty"),
+                        I18n.getMessage("entity.createdAt"),
+                        I18n.getMessage("entity.updatedAt")
+                    };
                     TableUI tableUI = new TableUI(headers,rows);
                     tableUI.display();
             
-                    choice = AppScanner.scanStringWithMessage("Bạn có muốn tra cứu sản phẩm khác không? [Y/N] : ");
+                    choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("product", "entity.confirm.findAnother"));
                     if (!"y".equalsIgnoreCase(choice)) {
                         break;
                     }
@@ -58,7 +72,7 @@ public class ProductDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tim Sản phẩm trong kho theo ID Sản phẩm";
+        return I18n.getEntityMessage("product", "entity.title.detail");
     }
     
 }

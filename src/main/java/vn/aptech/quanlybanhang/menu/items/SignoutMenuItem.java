@@ -9,6 +9,7 @@ import vn.aptech.quanlybanhang.Main;
 import vn.aptech.quanlybanhang.menu.MenuItem;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 import vn.aptech.quanlybanhang.ui.HelperUI;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -18,7 +19,7 @@ public class SignoutMenuItem extends MenuItem {
 
     @Override
     public String getTitle() {
-        return "Đăng xuất";
+        return I18n.getMessage("app.signout");
     }
 
     @Override
@@ -26,7 +27,7 @@ public class SignoutMenuItem extends MenuItem {
         AuthServiceImpl.logout();
         
         HelperUI.displayMargin();
-        System.out.println("Đăng xuất thành công!");
+        I18n.getMessage("app.msg.signedOut");
         
         Main.start();
     }

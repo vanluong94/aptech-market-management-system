@@ -10,6 +10,7 @@ import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -28,19 +29,19 @@ public class PageUpdateProfile extends Page {
         try {
             Employee emp = AuthServiceImpl.getCurrentEmployee();
             System.out.println("ID: " + emp.getEmployeeId());
-            System.out.println("Tài khoản: " + emp.getUserName());
-            System.out.println("Chức vụ: " + emp.getDepartment());
-            String name = AppScanner.scanStringWithMessage("Họ tên: ", false);
-            AppScanner.getScanner().nextLine();
-            String address = AppScanner.scanStringWithMessage("Địa chỉ: ", false);
-            String phone = AppScanner.scanStringWithMessage("Số điện thoại: ", false);
+            System.out.println(I18n.getMessage("employee.username") + ": " + emp.getUserName());
+            System.out.println(I18n.getMessage("employee.dept") + ": " + emp.getDepartment());
+            
+            String name = AppScanner.scanStringWithMessage(I18n.getMessage("employee.name"));
+            String address = AppScanner.scanStringWithMessage(I18n.getMessage("employee.addr"));
+            String phone = AppScanner.scanStringWithMessage(I18n.getMessage("employee.phone"));
             emp.setName(name);
             emp.setAddress(address);
             emp.setPhone(phone);
             if (empService.update(emp)) {
-                System.out.println("Cập nhật thành công");
+                I18n.printEntityMessage("employee", "entity.msg.updated");
             } else {
-                System.out.println("Đã xảy ra lỗi");
+                I18n.printEntityMessage("employee", "entity.error.updateFailed");
             }
         } catch (Exception ex) {
             Logger.getLogger(PageUpdateProfile.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,7 +50,7 @@ public class PageUpdateProfile extends Page {
 
     @Override
     public String getTitle() {
-        return "Cập nhật thông tin";
+        return I18n.getMessage("title.updateProfile");
     }
     
 }

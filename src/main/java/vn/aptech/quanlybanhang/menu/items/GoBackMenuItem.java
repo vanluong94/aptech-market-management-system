@@ -7,6 +7,7 @@ package vn.aptech.quanlybanhang.menu.items;
 
 import vn.aptech.quanlybanhang.menu.Breadcrumb;
 import vn.aptech.quanlybanhang.menu.MenuItem;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -16,7 +17,7 @@ public class GoBackMenuItem extends MenuItem{
 
     @Override
     public String getTitle() {
-        return "Quay lai";
+        return I18n.getMessage("app.goback");
     }
     
     @Override

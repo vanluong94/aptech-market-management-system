@@ -17,6 +17,7 @@ import vn.aptech.quanlybanhang.service.DiscountServiceImpl;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  * 
@@ -37,21 +38,21 @@ public class DiscountEditPage extends Page {
             
             do {
                 
-                int id = AppScanner.scanIntWithMessage("Nhập ID Chương trình khuyến mãi cần sửa : ", false);
+                int id = AppScanner.scanIntWithMessage(I18n.getEntityMessage("discount", "entity.scan.id.edit"));
                 editingDiscount = service.findById(id);
 
                 System.out.println("\n");
                 
                 if (editingDiscount == null) {
-                    System.out.println("ID không hợp lệ!");
+                    I18n.getEntityMessage("discount", "entity.error.idNotFound");
                 } else {
-                    System.out.println("Chương trình khuyến mại tìm thấy: " + editingDiscount.getName());
+                    System.out.println(I18n.getMessage("discount.msg.foundOne") + editingDiscount.getName());
                     editingDiscount.setProductDiscounts(service.getDiscountProducts(editingDiscount));
                     
                     this.displaySubmenu();
                 }
                 
-            }while(editingDiscount == null || AppScanner.confirm("\nBạn có muốn sửa chương trình khuyến mãi khác (y/n)? "));
+            }while(editingDiscount == null || AppScanner.confirm("\n" + I18n.getEntityMessage("discount", "entity.confirm.editAnOther")));
             
         } catch (Exception e) {
             Logger.getLogger(DiscountEditPage.class.getName()).log(Level.SEVERE, null, e);
@@ -61,22 +62,22 @@ public class DiscountEditPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Sửa Chương trình giảm giá";
+        return I18n.getEntityMessage("discount", "entity.title.edit");
     }
     
     private void displaySubmenu() throws Exception {
         
         do{
             System.out.println("\n");
-            System.out.println("1. Sửa tên chương trình giảm giá");
-            System.out.println("2. Xóa Sản phẩm khỏi chương trình khuyến mãi");
-            System.out.println("3. Thêm Sản phẩm vào chương trình khuyến mãi");
-            System.out.println("4. Sửa Sản phẩm trong chương trình khuyến mãi");
+            I18n.print("discount.submenu.editName");
+            I18n.print("discount.submenu.deleteProduct");
+            I18n.print("discount.submenu.addProduct");
+            I18n.print("discount.submenu.editProduct");
             System.out.println("\n");
             
             int choice;
             do{
-                choice = AppScanner.scanIntWithMessage("Nhập lựa chọn: ");
+                choice = AppScanner.scanIntWithi18Message("msg.choice.enter");
             }while(choice < 1 && choice > 4);
 
             System.out.println("\n");
@@ -93,32 +94,33 @@ public class DiscountEditPage extends Page {
                 case 4:
                     this.handleEditProduct();
                     break;
+                default: 
+                    System.out.println(I18n.getMessage("msg.choice.invalid"));
+                    break;
             }
 
-        }while(AppScanner.confirm("\nTiếp tục sửa chương trình khuyến mãi này (y/n)? "));
+        }while(AppScanner.confirm("\n" + I18n.getMessage("discount.confirm.keepEditing")));
         
     }
     
     private void handleEditDiscountName() throws Exception {
-        String newName = AppScanner.scanStringWithMessage("Nhập tên mới cho chương trình giảm giá: ");
+        String newName = AppScanner.scanStringWithMessage(I18n.getMessage("discount.scan.name.new"));
         this.editingDiscount.setName(newName);
         
         if (this.service.update(editingDiscount)) {
-            System.out.println("Cập nhật tên chương trình giảm giá thành công!");
+            I18n.printEntityMessage("discount", "entity.msg.updated");
         } else {
-            System.out.println("Đã có lỗi xảy ra, không thể cập nhật tên cho chương trình giảm giá");
+            I18n.printEntityMessage("discount", "entity.error.updateFailed");
         }
     }
     
     private void handleDeleteProduct() {
         ProductDiscount dProduct = this.scanExistedDiscountProduct();
         if (service.deleteDiscountProduct(dProduct)) {
-            System.out.println("Xóa thành công sản phẩm khuyến mãi");
-            System.out.println(this.editingDiscount.getProductDiscounts().size());
+            I18n.print("discount.msg.productDeleted");
             this.editingDiscount.getProductDiscounts().remove(dProduct);
-            System.out.println(this.editingDiscount.getProductDiscounts().size());
         } else {
-            System.out.println("Đã có lỗi xảy ra, không thể xóa sản phẩm");
+            I18n.print("discount.error.product.deleteFailed");
         }
     }
     
@@ -127,32 +129,33 @@ public class DiscountEditPage extends Page {
         ProductDiscount oDisProduct = service.findOverlapDiscountProduct(dProduct);
 
         if (oDisProduct != null) {
-            System.out.printf(
-                    "Sản phẩm \"%s\" đã có chương trình giảm giá khác vào từ %s tới %s\n", 
+            I18n.print(
+                    "discount.msg.productOverlap",
                     oDisProduct.getProduct().getName(),
                     DateCommon.convertDateToString(oDisProduct.getStartDate(), Constant.DATE_TIME_SIMPLE_FORMAT),
                     DateCommon.convertDateToString(oDisProduct.getEndDate(), Constant.DATE_TIME_SIMPLE_FORMAT)
             );
+            System.out.println("\n");
         } else if (service.createDiscountProduct(dProduct)) {
-            System.out.println("Thêm sản phẩm giảm giá thành công!");
+            I18n.print("discount.msg.productAdded");
             editingDiscount.getProductDiscounts().add(dProduct);
         } else {
-            System.out.println("Đã có lỗi xảy ra khi thêm sản phẩm, hãy thử lại sau");
+            I18n.print("discount.error.product.addFailed");
         }
     }
     
     private void handleEditProduct() {
         ProductDiscount dProduct = this.scanExistedDiscountProduct();
         
-        if(AppScanner.confirm("Bạn có muốn sửa % giảm giá của sản phẩm (y/n)? " )) {
+        if(AppScanner.confirm(I18n.getMessage("discount.confirm.product.editDiscount"))) {
             dProduct.setDiscountPercentage(dProduct.scanDiscountPercentage());
         }
         
-        if(AppScanner.confirm("Bạn có muốn sửa ngày bắt đầu giảm giá của sản phẩm (y/n)? " )) {
+        if(AppScanner.confirm(I18n.getMessage("discount.confirm.product.editStartDatetime"))) {
             dProduct.setStartDate(dProduct.scanStartDate());
         }
         
-        if(AppScanner.confirm("Bạn có muốn sửa ngày kết thúc giảm giá của sản phẩm (y/n)? " )) {
+        if(AppScanner.confirm(I18n.getMessage("discount.confirm.product.editEndDatetime"))) {
             dProduct.setEndDate(dProduct.scanEndDate());
         }
     }
@@ -165,16 +168,16 @@ public class DiscountEditPage extends Page {
         try {
             while(product == null){
                 
-                int productId = AppScanner.scanIntWithMessage("Nhập ID sản phẩm: ");
+                int productId = AppScanner.scanIntWithi18Message("discount.scan.productId");
                 
                 if (this.editingDiscount.findProductDiscount(productId) != null) {
-                    System.out.println("Sản phẩm này đã tồn tại trong chương trình khuyến mãi này. Hãy chọn sản phẩm khác");
+                    I18n.print("discount.error.product.existed");
                 } else {
                     
                     product = productService.findById(productId);
                     
                     if (product == null) {
-                        System.out.println("Không tìm thấy Sản phẩm nào với ID trên, vui lòng thử lại.");
+                        I18n.printEntityMessage("product", "entity.error.idNotFound");
                     }
                     
                 }
@@ -197,10 +200,10 @@ public class DiscountEditPage extends Page {
     private ProductDiscount scanExistedDiscountProduct() {
         ProductDiscount pDiscount = null;
         while (pDiscount == null) {
-            pDiscount = this.editingDiscount.findProductDiscount(AppScanner.scanIntWithMessage("Hãy nhập ID sản phẩm: ", false));
+            pDiscount = this.editingDiscount.findProductDiscount(AppScanner.scanIntWithi18Message("discount.scan.productId"));
 
             if (pDiscount == null) {
-                System.out.println("ID Sản phẩm không tồn tại trong chương trình khuyến mãi này");
+                I18n.print("discount.error.product.notExisted");
             }
         }
         

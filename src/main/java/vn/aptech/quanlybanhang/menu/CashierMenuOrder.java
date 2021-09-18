@@ -10,6 +10,7 @@ import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
 import vn.aptech.quanlybanhang.menu.items.GoBackMenuItem;
 import vn.aptech.quanlybanhang.pages.CashierOrderDetailPage;
 import vn.aptech.quanlybanhang.pages.CashierTodayOrderPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class CashierMenuOrder extends Menu {
@@ -29,7 +30,7 @@ public class CashierMenuOrder extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Tra cứu Hóa đơn";
+        return I18n.getEntityMessage("order", "entity.title.manage", true);
     }
     
 }

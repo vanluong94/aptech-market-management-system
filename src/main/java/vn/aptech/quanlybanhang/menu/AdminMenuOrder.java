@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.pages.OrderDetailPage;
 import vn.aptech.quanlybanhang.pages.OrderListingPage;
 import vn.aptech.quanlybanhang.pages.OrderSearchByCustomerPage;
 import vn.aptech.quanlybanhang.pages.OrderSearchByDatePage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -36,7 +37,7 @@ public class AdminMenuOrder extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quản lý Hóa đơn";
+        return I18n.getEntityMessage("order", "entity.title.manage", true);
     }
     
 }

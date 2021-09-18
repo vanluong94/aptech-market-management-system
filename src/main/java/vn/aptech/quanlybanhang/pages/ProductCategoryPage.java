@@ -15,6 +15,7 @@ import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 public class ProductCategoryPage extends Page {
@@ -33,12 +34,14 @@ public class ProductCategoryPage extends Page {
         try {
             int page = 1;
             do {
-                int categoryId = AppScanner.scanIntWithMessage("Nhập ID Danh mục Sản phẩm bạn muốn xem : ");
+                int categoryId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("category", "entity.scan.id.detail"));
                 PaginatedResults<Product> products = productService.findByCategoryId(page, categoryId);
+                
                 if (products.getResults().isEmpty()) {
-                    System.out.println("<Không có Sản phẩm nào>");
+                    I18n.printEntityMessage("product", "entity.msg.emptyResults");
                     return;
                 }
+                
                 List<Object[]> rows = new ArrayList<Object[]>();
                 for (Product product : products.getResults()) {
                     Object[] row = {
@@ -55,7 +58,19 @@ public class ProductCategoryPage extends Page {
                     };
                     rows.add(row);
                 }
-                String[] headers = {"ID", "Nhãn hàng", "Loại sản phẩm", "Nhà cung cấp", "Nhân viên", "Tên Sản phẩm", "Giá", "Số lượng trong kho", "Ngày khởi tạo", "Ngày cập nhật"};
+                String[] headers = {
+                    "ID", 
+                    I18n.getMessage("brand.label.singular"),
+                    I18n.getMessage("category.label.singular"),
+                    I18n.getMessage("supplier.label.singular"),
+                    I18n.getMessage("employee.label.singular"),
+                    I18n.getMessage("product.label.singular"),
+                    I18n.getMessage("product.price"),
+                    I18n.getMessage("product.qty"),
+                    I18n.getMessage("entity.createdAt"),
+                    I18n.getMessage("entity.updatedAt")
+                };
+                
                 TableUI tableUI = new TableUI(headers, rows);
                 tableUI.display();
 
@@ -68,7 +83,7 @@ public class ProductCategoryPage extends Page {
                     page = 0;
                 }
 
-                choice = AppScanner.scanStringWithMessage("Bạn có muốn tìm loại sản phẩm khác không? [Y/N] : ");
+                choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("category", "entity.confirm.findAnOther"));
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }
@@ -84,12 +99,7 @@ public class ProductCategoryPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xem danh sach Sản phẩm theo Danh mục";
-    }
-
-    @Override
-    public String getBreadcrumbPathName() {
-        return "Danh sách SP theo Danh mục";
+        return I18n.getMessage("title.productsByCategory");
     }
 
 }

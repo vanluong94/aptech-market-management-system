@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
 import vn.aptech.quanlybanhang.menu.items.SignoutMenuItem;
 import vn.aptech.quanlybanhang.pages.ChangePasswordPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -37,7 +38,7 @@ public class InventoryMenu extends Menu {
 
     @Override
     protected final String registerMenuTitle() {
-        return "Phần mềm Quản lý Siêu Thị";
+        return I18n.getMessage("app.heading");
     }
     
     @Override

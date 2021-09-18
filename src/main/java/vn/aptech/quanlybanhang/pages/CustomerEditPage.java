@@ -9,6 +9,7 @@ import vn.aptech.quanlybanhang.entities.Customer;
 import vn.aptech.quanlybanhang.service.CustomerService;
 import vn.aptech.quanlybanhang.service.CustomerServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -19,20 +20,23 @@ public class CustomerEditPage extends Page {
     @Override
     public void displayContent() {
         try {
+            
             CustomerService customerService = new CustomerServiceImpl();
-            int check = AppScanner.scanIntWithMessage("Nhap ID khach hang muon sua thong tin : ", false);
+            
+            int check = AppScanner.scanIntWithMessage(I18n.getMessage("customer", "entity.scan.id.edit"));
             while (customerService.findById(check) == null) {
-                System.out.println("ID khong ton tai !");
-                check = AppScanner.scanIntWithMessage("Nhap ID khach hang muon sua thong tin : ", false);
+                I18n.printEntityMessage("customer", "entity.error.idNotFound");
+                check = AppScanner.scanIntWithMessage(I18n.getMessage("customer", "entity.scan.id.edit"));
             }
-            String name = AppScanner.scanStringWithMessage("Sua ten khach hang thanh : ", false);
-            String phone = AppScanner.scanStringWithMessage("Sua so dien thoai khach hang thanh: ", false);
-            String add = AppScanner.scanStringWithMessage("Sua dia chi khach hang thanh : ", false);
+            
+            String name = AppScanner.scanStringWithMessage(I18n.getEntityMessage("customer", "entity.scan.newName"));
+            String phone = AppScanner.scanStringWithMessage(I18n.getEntityMessage("customer", "entity.scan.newPhone"));
+            String add = AppScanner.scanStringWithMessage(I18n.getEntityMessage("customer", "entity.scan.newAddr"));
             Customer customer = new Customer(check, name, phone, add);
             if (customerService.update(customer)) {
-                System.out.println("Sua thanh cong !");
+                I18n.printEntityMessage("customer", "entity.msg.updated");
             } else {
-                System.out.println("Da xay ra loi");
+                I18n.printEntityMessage("customer", "entity.error.updateFailed");
             }
 
         } catch (Exception ex) {
@@ -42,6 +46,6 @@ public class CustomerEditPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Sua khach hang";
+        return I18n.getEntityMessage("customer", "entity.title.edit");
     }
 }

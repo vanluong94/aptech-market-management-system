@@ -11,6 +11,7 @@ import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class EmployeeDetailPage extends Page {
@@ -19,10 +20,10 @@ public class EmployeeDetailPage extends Page {
     public void displayContent() {
         try {
             EmployeeService employeeService = new EmployeeServiceImpl();
-            int employeeId = AppScanner.scanIntWithMessage("Nhập ID Nhân viên : ");
+            int employeeId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("employee", "entity.scan.id.detail"));
             Employee employee = employeeService.findById(employeeId);
             if (employee == null) {
-                System.out.println("Không tìm thấy ID Nhân viên");
+                I18n.getEntityMessage("employee", "entity.error.idNotFound");
             } else {
                 employee.showOne();
             }
@@ -33,7 +34,7 @@ public class EmployeeDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xem chi tiết Nhân viên";
+        return I18n.getEntityMessage("employee", "entity.title.detail");
     }
     
 }

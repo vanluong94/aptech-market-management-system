@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.common.DateCommon;
 import vn.aptech.quanlybanhang.constant.Constant;
-import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.entities.ImportProduct;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.service.ImportProductService;

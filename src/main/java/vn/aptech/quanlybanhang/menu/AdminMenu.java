@@ -8,6 +8,7 @@ package vn.aptech.quanlybanhang.menu;
 import java.util.LinkedHashMap;
 import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
 import vn.aptech.quanlybanhang.menu.items.SignoutMenuItem;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -20,14 +21,14 @@ public class AdminMenu extends Menu {
         LinkedHashMap<Integer, MenuItem> menuItems = new LinkedHashMap<>();
 
         menuItems.put(1, new AdminMenuEmployee());
-        menuItems.put(2, new AdminMenuStatistic());
-        menuItems.put(3, new AdminMenuProduct());
-        menuItems.put(4, new AdminMenuSupplier());
-        menuItems.put(5, new AdminMenuCategory());
-        menuItems.put(6, new AdminMenuOrder());
-        menuItems.put(7, new AdminMenuProfile());
-        menuItems.put(8, new AdminMenuDiscount());
-        menuItems.put(9, new AdminMenuCustomer());
+        menuItems.put(2, new AdminMenuProduct());
+        menuItems.put(3, new AdminMenuSupplier());
+        menuItems.put(4, new AdminMenuCategory());
+        menuItems.put(5, new AdminMenuOrder());
+        menuItems.put(6, new AdminMenuDiscount());
+        menuItems.put(7, new AdminMenuCustomer());
+        menuItems.put(8, new AdminMenuStatistic());
+        menuItems.put(9, new AdminMenuProfile());
 
         menuItems.put(-1, new SignoutMenuItem());
         menuItems.put(0, new ExitMenuItem());
@@ -37,7 +38,7 @@ public class AdminMenu extends Menu {
 
     @Override
     protected final String registerMenuTitle() {
-        return "Phần mềm quản lý Siêu Thị";
+        return I18n.getMessage("app.heading");
     }
 
     @Override

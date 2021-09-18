@@ -3,6 +3,8 @@
  */
 package vn.aptech.quanlybanhang.entities;
 
+import vn.aptech.quanlybanhang.utilities.I18n;
+
 /**
  * @author Pham Vu Tan <C2101LM.PVTAN@APTECH.VN>
  * @author Vu Duy Long <vuduylong1999@gmail.com>
@@ -108,16 +110,13 @@ public class Customer {
     }
 
     public void showOne() {
-        System.out.println("====== Chi tiet khach hang ======");
-        System.out.println("Chi tiet khach hang '" + name + "' :");
-        System.out.println("Ho ten : " + name);
-        System.out.println("Dia chi: " + address);
-        System.out.println("So dien thoai: " + phone);
-        System.out.println("ID khach hang : " + id);
-        System.out.println("ID nhan vien tao khach hang : " + employee.getEmployeeId());
-        System.out.println("Discount : " + discount);
-        System.out.println("Sale point : " + salePoint);
-        System.out.println("--------------------------------");
+        System.out.println("====== " + I18n.getEntityMessage("customer", "entity.title.detail") + " ======");
+        System.out.println(I18n.getMessage("customer.name") + ": " + name);
+        System.out.println(I18n.getMessage("customer.addr") + ": " + address);
+        System.out.println(I18n.getMessage("customer.phone") + ": " + phone);
+        System.out.println(I18n.getMessage("customer.id") + ": " + id);
+        System.out.println(I18n.getMessage("customer.emp") + ": " + employee.getEmployeeId());
+        System.out.println("=================================");
     }
 
     public Employee getEmployee() {

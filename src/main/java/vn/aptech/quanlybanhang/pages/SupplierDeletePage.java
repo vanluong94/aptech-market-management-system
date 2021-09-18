@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.service.SupplierService;
 import vn.aptech.quanlybanhang.service.SupplierServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class SupplierDeletePage extends Page {
@@ -19,12 +20,11 @@ public class SupplierDeletePage extends Page {
         try {
             SupplierService supplierService = new SupplierServiceImpl();
             
-            System.out.println("Nhập ID Nhà cung cấp muốn xóa : ");
-            int supplierId = AppScanner.getScanner().nextInt();
+            int supplierId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("supplier", "entity.scan.id.delete"));
             if (supplierService.deleteById(supplierId)) {
-                System.out.println("Xóa thành công Nhà cung cấp!");
+                I18n.printEntityMessage("supplier", "entity.msg.deleted");
             } else {
-                System.out.println("Đã xảy ra lỗi!");
+                I18n.printEntityMessage("supplier", "entity.error.deleteFailed");
             }
         } catch (Exception ex) {
             Logger.getLogger(SupplierDeletePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -33,7 +33,7 @@ public class SupplierDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xóa Nha Cung Cap";
+        return I18n.getEntityMessage("supplier", "entity.title.delete");
     }
     
 }

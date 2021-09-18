@@ -35,16 +35,16 @@ public class AppScanner {
     public static String scanStringWithMessage(String message, boolean canBeEmpty){
         while (true) {
             try {
-                System.out.print(message);
+                System.out.print(formatScanMessage(message));
                 String str = getScanner().nextLine().trim();
                 
                 if(!canBeEmpty && str.length() == 0){
-                    System.out.println("Giá trị không được bỏ trống");
+                    I18n.print("input.required");
                 }else{
                     return str;
                 }
             } catch (java.util.InputMismatchException e) {
-                System.out.println("Giá trị không phù hợp.");
+                I18n.print("input.invalidType");
             }
         }
     }
@@ -64,106 +64,92 @@ public class AppScanner {
      * @return 
      */
     public static int scanIntWithMessage(String message){
-        while (true) {
-            try {
-                System.out.print(message);
-                int input = getScanner().nextInt();
-                getScanner().nextLine(); // clear line
-                return input;
-            } catch (java.util.InputMismatchException e) {
-                getScanner().nextLine(); // clear line in case input mismatch
-                System.out.println("Giá trị không phù hợp.");
-            }
-        }
+        return scanIntWithMessage(message, false);
     }
 
     public static int scanIntWithMessage(String message, boolean canBeEmpty){
         while (true) {
             try {
-                System.out.print(message);
+                System.out.print(formatScanMessage(message));
                 int input = getScanner().nextInt();
                 getScanner().nextLine(); // clear line
                 
                 if(!canBeEmpty && input == 0) {
-                    System.out.println("Giá trị không được bỏ trống");
+                    I18n.print("input.required");
                 } else {
                     return input;
                 }
                 return input;
             } catch (java.util.InputMismatchException e) {
                 getScanner().nextLine(); // clear line in case input mismatch
-                System.out.println("Giá trị không phù hợp.");
+                I18n.print("input.invalidType");
             }
         }
     }
 
     public static double scanDoubleWithMessage(String message) {
-        while (true) {
-            try {
-                System.out.print(message);
-                double input = getScanner().nextDouble();
-                getScanner().nextLine(); // clear line
-                return input;
-            } catch (java.util.InputMismatchException e) {
-                getScanner().nextLine(); // clear line in case input mismatch
-                System.out.println("Giá trị không phù hợp.");
-            }
-        }
+        return scanDoubleWithMessage(message, false);
     }
     
     public static double scanDoubleWithMessage(String message, boolean canBeEmpty) {
         while (true) {
             double input = 0;
             try {
-                System.out.print(message);
+                System.out.print(formatScanMessage(message));
                 input = getScanner().nextDouble();
                 getScanner().nextLine(); // clear line
                 
                 if(!canBeEmpty && input == 0) {
-                    System.out.println("Giá trị không được bỏ trống");
+                    I18n.print("input.required");
                 } else {
                     return input;
                 }
             } catch (java.util.InputMismatchException e) {
-                System.out.println("Giá trị không phù hợp.");
+                I18n.print("input.invalidType");
             }
         }
     }
     
     public static float scanFloatWithMessage(String message) {
-        while (true) {
-            try {
-                System.out.print(message);
-                float input = getScanner().nextFloat();
-                getScanner().nextLine(); // clear line
-                return input;
-            } catch (java.util.InputMismatchException e) {
-                getScanner().nextLine(); // clear line in case input mismatch
-                System.out.println("Giá trị không phù hợp.");
-            }
-        }
+        return scanFloatWithMessage(message, false);
     }
     
     public static float scanFloatWithMessage(String message, boolean canBeEmpty) {
         while (true) {
             float input = 0;
             try {
-                System.out.print(message);
+                System.out.print(formatScanMessage(message));
                 input = getScanner().nextFloat();
                 getScanner().nextLine(); // clear line
                 
                 if(!canBeEmpty && input == 0) {
-                    System.out.println("Giá trị không được bỏ trống");
+                    I18n.print("input.required");
                 } else {
                     return input;
                 }
             } catch (java.util.InputMismatchException e) {
-                System.out.println("Giá trị không phù hợp.");
+                I18n.print("input.invalidType");
             }
         }
     }
     
     public static boolean confirm(String message) {
         return scanStringWithMessage(message).equalsIgnoreCase("y");
+    }
+    
+    public static String scanStringWithi18Message(String messageKey, Object... args){
+        return scanStringWithMessage(I18n.getMessage(messageKey, args));
+    }
+    
+    public static int scanIntWithi18Message(String messageKey,Object... args){
+        return scanIntWithMessage(I18n.getMessage(messageKey, args));
+    }
+    
+    public static float scanFloatWithi18Message(String messageKey,Object... args){
+        return scanFloatWithMessage(I18n.getMessage(messageKey, args));
+    }
+    
+    public static String formatScanMessage(String message) {
+        return message.trim().replaceFirst(":$", "") + ": ";
     }
 }

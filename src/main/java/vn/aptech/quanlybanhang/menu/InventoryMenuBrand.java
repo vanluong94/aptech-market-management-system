@@ -13,6 +13,7 @@ import vn.aptech.quanlybanhang.pages.BrandDeletePage;
 import vn.aptech.quanlybanhang.pages.BrandEditPage;
 import vn.aptech.quanlybanhang.pages.BrandListingPage;
 import vn.aptech.quanlybanhang.pages.BrandSearchPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class InventoryMenuBrand extends Menu {
@@ -35,7 +36,7 @@ public class InventoryMenuBrand extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quản lý Nhãn hàng";
+        return I18n.getEntityMessage("brand", "entity.title.manage", true);
     }
     
 }

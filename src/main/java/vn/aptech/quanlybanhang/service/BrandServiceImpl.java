@@ -10,6 +10,7 @@ import java.util.List;
 import vn.aptech.quanlybanhang.dao.BrandDAOImpl;
 import vn.aptech.quanlybanhang.entities.Brand;
 import vn.aptech.quanlybanhang.exception.InputInvalidException;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 
@@ -24,7 +25,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public boolean deleteById(int id) throws SQLException, Exception {
         if(id < 1){
-            throw new InputInvalidException("ID không hợp lệ");
+            throw new InputInvalidException(I18n.getMessage("input.invalidID"));
         }
         return this.brandDAO.deleteById(id);
     }
@@ -32,7 +33,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Brand findById(int id) throws SQLException, Exception {
         if(id < 1){
-            throw new InputInvalidException("ID không hợp lệ");
+            throw new InputInvalidException(I18n.getMessage("input.invalidID"));
         }
         return this.brandDAO.findById(id);
     }
@@ -60,7 +61,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public PaginatedResults<Brand> select(int page) throws SQLException, IllegalArgumentException {
         if(page < 1){
-            throw new IllegalArgumentException("page is invalid");
+            throw new IllegalArgumentException(I18n.getMessage("input.invalidPage"));
         }
         return this.brandDAO.select(page);
     }

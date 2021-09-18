@@ -16,6 +16,7 @@ import vn.aptech.quanlybanhang.service.SupplierService;
 import vn.aptech.quanlybanhang.service.SupplierServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class SupplierSearchPage extends Page {
@@ -26,15 +27,14 @@ public class SupplierSearchPage extends Page {
         String choice = null;
         do {            
             try {
-                String search = AppScanner.scanStringWithMessage("Tên Nhà cung cấp cần tìm : ");
+                String search = AppScanner.scanStringWithi18Message("supplier.scan.searchName");
                 
                 List<Supplier> suppliers = supplierService.searchByName(search);
                 
                 if (suppliers.isEmpty()) {
-                    System.out.println("Không tìm thấy Nhà cung cấp nao cung tên");
-                    
+                    I18n.printEntityMessage("supplier", "entity.msg.emptyResults");
                 } else {
-                    System.out.println("Các Nhà cung cấp được tìm thấy dựa theo tên : ");
+                    I18n.print("entity.msg.foundBaseOn", I18n.getMessage("supplier.label.singular"), search);
                     List<Object[]> rows = new ArrayList<>();
                     for (Supplier supplier : suppliers) {
                         Object[] row = {
@@ -44,10 +44,10 @@ public class SupplierSearchPage extends Page {
                         };
                         rows.add(row);
                     }
-                    String[] headers = {"ID", "Tên NCC", "Địa chỉ"};
+                    String[] headers = {"ID", I18n.getMessage("supplier.name"), I18n.getMessage("supplier.addr")};
                     TableUI theTable = new TableUI(headers, rows);
                     theTable.display();
-                    choice = AppScanner.scanStringWithMessage("Bạn có muốn tìm Nhà cung cấp khác không? [Y/N] : ");
+                    choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("supplier", "entity.confirm.searchAnother"));
                     if (!"y".equalsIgnoreCase(choice)) {
                         break;
                     }
@@ -62,7 +62,7 @@ public class SupplierSearchPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tìm kiếm Nhà cung cấp";
+        return I18n.getEntityMessage("supplier", "entity.title.search", true);
     }
     
 }

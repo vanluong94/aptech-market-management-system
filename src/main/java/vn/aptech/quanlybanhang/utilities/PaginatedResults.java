@@ -69,22 +69,23 @@ public class PaginatedResults<T> {
     }
 
     public void displayPagination() {
-        System.out.println(String.format("Trang: %d/%d\n", this.getCurrentPage(), this.getTotalPages()));
+        System.out.println(I18n.getMessage("pagination.page", this.getCurrentPage(), this.getTotalPages()));
+        System.out.println("\n");
     }
 
     public void displayPaginationMenu() {
 
         if (this.needsPagination()) {
             if (this.hasNextPage()) {
-                System.out.println("1. Trang sau");
+                System.out.println("1. " + I18n.getMessage("pagination.next"));
             }
 
             if (this.hasPrevPage()) {
-                System.out.println("2. Trang truoc");
+                System.out.println("2. " + I18n.getMessage("pagination.prev"));
             }
 
-            System.out.println("3. Chọn trang");
-            System.out.println("-1. Quay lai");
+            System.out.println("3. " + I18n.getMessage("pagination.goPage"));
+            System.out.println("-1. " + I18n.getMessage("app.goback"));
         }
 
     }
@@ -96,27 +97,27 @@ public class PaginatedResults<T> {
         if (this.needsPagination()) {
             do {
 
-                int choice = AppScanner.scanIntWithMessage("Vui lòng nhập lựa chọn: ");
+                int choice = AppScanner.scanIntWithi18Message("msg.choice.enter");
 
                 switch (choice) {
                     case GO_NEXT:
                         if (this.hasNextPage()) {
                             targetPage = this.getCurrentPage() + 1;
                         } else {
-                            System.out.println("Không có trang sau");
+                            I18n.print("pagination.error.noNextPage");
                         }
                         break;
                     case GO_PREV:
                         if (this.hasPrevPage()) {
                             targetPage = this.getCurrentPage() - 1;
                         } else {
-                            System.out.println("Không có trang trước");
+                            I18n.print("pagination.error.noPrevPage");
                         }
                         break;
                     case GO_PAGE:
-                        targetPage = AppScanner.scanIntWithMessage("Đi tới trang: ");
+                        targetPage = AppScanner.scanIntWithMessage(I18n.getMessage("pagination.scan.goPage"));
                         if (!this.isPageValid(targetPage)) {
-                            System.out.println("Không tồn tại trang này");
+                            I18n.print("pagination.error.pageNotFound", targetPage);
                             targetPage = 0;
                         }
                         break;
@@ -124,6 +125,7 @@ public class PaginatedResults<T> {
                         targetPage = -1;
                         break;
                     default:
+                        System.out.println(I18n.getMessage("msg.choice.invalid"));
                         targetPage = 0;
                         break;
                 }

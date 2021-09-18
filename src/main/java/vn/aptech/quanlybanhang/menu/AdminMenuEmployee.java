@@ -13,6 +13,7 @@ import vn.aptech.quanlybanhang.pages.EmployeeDeletePage;
 import vn.aptech.quanlybanhang.pages.EmployeeEditPage;
 import vn.aptech.quanlybanhang.pages.EmployeeListingPage;
 import vn.aptech.quanlybanhang.pages.EmployeeSearchPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -38,7 +39,7 @@ public class AdminMenuEmployee extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quản lý Nhân viên";
+        return I18n.getEntityMessage("employee", "entity.title.manage", true);
     }
 
 }

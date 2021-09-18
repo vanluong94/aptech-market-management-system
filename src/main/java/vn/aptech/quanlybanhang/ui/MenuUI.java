@@ -9,6 +9,7 @@ import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.menu.Breadcrumb;
 import vn.aptech.quanlybanhang.menu.MenuItem;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -56,7 +57,7 @@ public abstract class MenuUI extends MenuItem {
         
         Employee emp = AuthServiceImpl.getCurrentEmployee();
         if(emp != null){
-            displayHeader(String.format("Xin chao, %s <%s>", emp.getName(), emp.getUserName()));
+            displayHeader(I18n.getMessage("app.hello", emp.getName(), emp.getUserName()));
         }
         
         displayBorder();

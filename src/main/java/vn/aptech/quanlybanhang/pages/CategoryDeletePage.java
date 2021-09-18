@@ -10,6 +10,7 @@ import vn.aptech.quanlybanhang.service.CategoryService;
 import vn.aptech.quanlybanhang.service.CategoryServiceImpl;
 import vn.aptech.quanlybanhang.ui.HeaderUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  * @author vanluong
@@ -23,24 +24,25 @@ public class CategoryDeletePage extends Page {
             Category theCat;
 
             do {
-                int id = AppScanner.scanIntWithMessage("\nNhập ID cho danh mục cần xóa: ");
+                System.out.println("\n");
+                int id = AppScanner.scanIntWithMessage(I18n.getEntityMessage("category", "entity.scan.id.delete"));
 
                 CategoryService categoryService = new CategoryServiceImpl();
                 theCat = categoryService.findById(id);
 
                 if (theCat != null) {
 
-                    HeaderUI.display("Thông tin Danh mục");
+                    HeaderUI.display(I18n.getEntityMessage("category", "entity.title.detail"));
                     System.out.println(theCat.toString());
 
-                    String confirm = AppScanner.scanStringWithMessage("Bạn có chắc muốn xóa Danh mục này? (Y/N): ");
+                    String confirm = AppScanner.scanStringWithMessage(I18n.getEntityMessage("category", "entity.confirm.delete"));
 
                     if (confirm.toLowerCase().equals("y")) {
                         System.out.println(""); //margin line
                         if (categoryService.deleteById(theCat.getCategoryId())) {
-                            System.out.println("Xóa thành công tên Danh mục!");
+                            I18n.printEntityMessage("category", "entity.msg.deleted");
                         } else {
-                            System.out.println("Đã xảy ra lỗi, không thể xóa Danh mục.");
+                            I18n.printEntityMessage("category", "entity.error.deleteFailed");
                         }
                     } else {
                         theCat = null; // let user select category again
@@ -58,7 +60,7 @@ public class CategoryDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xóa Danh mục";
+        return I18n.getEntityMessage("category", "entity.title.delete");
     }
 
 }

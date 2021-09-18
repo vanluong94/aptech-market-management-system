@@ -9,6 +9,7 @@ import java.util.List;
 import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -229,12 +230,17 @@ public class Product extends BaseEntity {
         }
         
         List<String> headers = new ArrayList<>(Arrays.asList(
-                "ID", "Tên SP", "Giá", "SL", "Danh mục", "Nhãn hàng"
+                "ID", 
+                I18n.getMessage("product.label.singular"), 
+                I18n.getMessage("product.price"),
+                I18n.getMessage("product.qty"),
+                I18n.getMessage("category.label.singular"),
+                I18n.getMessage("brand.label.singular")
         ));
         
         if(!AuthServiceImpl.getCurrentEmployee().isCashier()) {
-            headers.add("Nhà cung cấp");
-            headers.add("Người thêm");
+            headers.add(I18n.getMessage("supplier.label.singular"));
+            headers.add(I18n.getMessage("employee.label.singular"));
         }
 
         return new TableUI(headers.toArray(new String[0]), rows);

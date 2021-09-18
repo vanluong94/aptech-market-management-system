@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.exception.InputInvalidException;
 import vn.aptech.quanlybanhang.service.SupplierService;
 import vn.aptech.quanlybanhang.service.SupplierServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 public class SupplierEditPage extends Page {
 
@@ -25,7 +26,7 @@ public class SupplierEditPage extends Page {
                 int id = AppScanner.scanIntWithMessage("Nhập ID cho Nhà cung cấp muốn sửa Thông tin : ");
                 Supplier supplier = supplierService.findById(id);
                 if (supplier == null) {
-                    System.out.println("ID không hợp lệ!");
+                    I18n.getEntityMessage("supplier", "entity.error.idNotFound");
                     retry = true;
                 } else {
                     System.out.println("\n\nNhập Thông tin mới cho Nhà cung cấp, bỏ trống nếu giữ nguyên.");
@@ -53,7 +54,7 @@ public class SupplierEditPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Sửa Nhà cung cấp";
+        return I18n.getEntityMessage("supplier", "entry.title.edit");
     }
 
 }

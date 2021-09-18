@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
@@ -32,7 +33,7 @@ public class ProductOutOfStockPage extends Page {
                 PaginatedResults<Product> results = productService.selectOutOfStock(page);
                 
                 if(results.getResults().isEmpty()) {
-                    System.out.println("<Không có Sản phẩm nào hết hàng>");
+                    I18n.print("product", "entity.msg.emptyResults");
                     return;
                 }
                 
@@ -62,11 +63,7 @@ public class ProductOutOfStockPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sách Sản phẩm hết hàng";
+        return I18n.getMessage("title.productsOutOfStock");
     }
     
-    @Override
-    public String getBreadcrumbPathName(){
-        return "Sản phẩm hết hàng";
-    }
 }

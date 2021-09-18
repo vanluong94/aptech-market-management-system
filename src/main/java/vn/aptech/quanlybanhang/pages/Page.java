@@ -9,6 +9,7 @@ import vn.aptech.quanlybanhang.menu.Breadcrumb;
 import vn.aptech.quanlybanhang.menu.MenuItem;
 import vn.aptech.quanlybanhang.ui.HeaderUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -21,7 +22,7 @@ public abstract class Page extends MenuItem{
     @Override
     public void start(){
         super.start();
-        AppScanner.scanStringWithMessage("Nhan phim [enter] de quay tro lai:...  ", true);
+        AppScanner.scanStringWithMessage(I18n.getMessage("app.enterToReturn"), true);
         Breadcrumb.goBack();
     }
     

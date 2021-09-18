@@ -13,6 +13,7 @@ import java.util.Set;
 import vn.aptech.quanlybanhang.exception.MenuException;
 import vn.aptech.quanlybanhang.ui.MenuUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 public abstract class Menu extends MenuUI {
     
@@ -25,7 +26,7 @@ public abstract class Menu extends MenuUI {
         if( isChoiceValid(choice) ){
             this.getMenuItems().get(choice).start();
         } else {
-            throw new MenuException("Lựa chọn không khả dụng!");
+            throw new MenuException(I18n.getMessage("msg.choice.invalid"));
         }
     }
 
@@ -41,7 +42,7 @@ public abstract class Menu extends MenuUI {
             retry = false;
             
             try {
-                this.handle(AppScanner.scanIntWithMessage("Vui lòng nhập lựa chọn: "));
+                this.handle(AppScanner.scanIntWithi18Message("msg.choice.enter"));
             } catch (MenuException ex) {
                 System.out.println(ex.getMessage());
                 retry = true;

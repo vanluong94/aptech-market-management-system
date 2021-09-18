@@ -14,6 +14,7 @@ import vn.aptech.quanlybanhang.entities.Discount;
 import vn.aptech.quanlybanhang.service.DiscountService;
 import vn.aptech.quanlybanhang.service.DiscountServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -29,7 +30,7 @@ public class DiscountListingPage extends Page {
             try {
                 List<Discount> discounts = discountService.findAll();
                 if (discounts.isEmpty()) {
-                    System.out.println("Danh sách trống");
+                    I18n.getEntityMessage("discount", "entity.msg.emptyResults");
                 } else {
                     List<Object[]> rows = new ArrayList<>();
                     for (Discount discount : discounts) {
@@ -40,7 +41,7 @@ public class DiscountListingPage extends Page {
                         };
                         rows.add(row);
                     }
-                    String[] headers = {"ID","Tên Danh mục", "Số SP"};
+                    String[] headers = {"ID", I18n.getMessage("discount.name"), I18n.getMessage("discount.productsCount")};
                     TableUI tableUI = new TableUI(headers,rows);
                     tableUI.display();
                     break;
@@ -56,7 +57,7 @@ public class DiscountListingPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sách Chương trình giảm giá";
+        return I18n.getEntityMessage("discount", "entity.title.all", true);
     }
 
 }

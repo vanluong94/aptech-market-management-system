@@ -8,7 +8,6 @@ package vn.aptech.quanlybanhang.service;
 import java.sql.SQLException;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.Employee;
-import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
  *
@@ -16,10 +15,10 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  */
 public interface EmployeeService extends BaseService<Employee> {
 
-    boolean updateById(Employee object, int id) throws SQLException;
+    boolean updateById(Employee object, int id) throws SQLException, Exception;;
 
-    Employee findByUsernameAndPassword(String username, String password) throws SQLException;
-    List<Employee> findByNameEmployee(String username)throws SQLException;
+    Employee findByUsernameAndPassword(String username, String password) throws SQLException, Exception;
+    List<Employee> findByNameEmployee(String username)throws SQLException, Exception;
     
     
 //    boolean create(T object) throws SQLException, Exception;

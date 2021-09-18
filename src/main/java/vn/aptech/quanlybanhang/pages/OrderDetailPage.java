@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.service.OrderService;
 import vn.aptech.quanlybanhang.service.OrderServiceImpl;
 import vn.aptech.quanlybanhang.ui.OrderUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  * 
@@ -28,12 +29,12 @@ public class OrderDetailPage extends Page {
             OrderService service = new OrderServiceImpl();
 
             do{
-                orderId = AppScanner.scanIntWithMessage("Nhập mã hóa đơn cần tra cứu: ");
+                orderId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("order", "entity.scan.id.detail"));
 
                 order = service.findById(orderId);
 
                 if (order == null) {
-                    System.out.println("Không tìm thấy hóa đơn nào với ID:" + orderId);
+                    I18n.printEntityMessage("order", "entity.error.idNotFound");
                 }else{
                     order.setOrderItems(service.getOrderItems(order));
 
@@ -41,7 +42,7 @@ public class OrderDetailPage extends Page {
                     orderUI.display();
                 }
                 
-                if (!AppScanner.scanStringWithMessage("\nTra cứu với ID khác (Y/N)? ").equalsIgnoreCase("y")) {
+                if (!AppScanner.confirm("\n" + I18n.getEntityMessage("order", "entity.confirm.findAnOther"))) {
                     return;
                 }
 
@@ -56,7 +57,7 @@ public class OrderDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Chi tiết Hóa đơn";
+        return I18n.getEntityMessage("order", "entity.title.detail");
     }
 
 }

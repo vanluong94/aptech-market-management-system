@@ -11,12 +11,13 @@ import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.service.CategoryService;
 import vn.aptech.quanlybanhang.service.CategoryServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 public class CategoryCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Thêm Danh mục";
+        return I18n.getEntityMessage("category", "entity.title.create");
     }
 
     @Override
@@ -24,22 +25,19 @@ public class CategoryCreatePage extends Page {
 
         CategoryService categoryService = new CategoryServiceImpl();
 
-        System.out.println("Nhập tên danh mục: ");
-        String categoryName = AppScanner.getScanner().nextLine();
-        if (categoryName.length() > 0) {
-            try {
-                Category category = new Category(categoryName);
-                if (categoryService.create(category)) {
-                    System.out.println("Thêm danh mục mới thành công!");
-                } else {
-                    System.out.println("Đã xảy ra lỗi!");
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(CategoryCreatePage.class.getName()).log(Level.SEVERE, null, ex);
+        String categoryName = AppScanner.scanStringWithMessage(I18n.getEntityMessage("category", "category.scan.name"));
+
+        try {
+            Category category = new Category(categoryName);
+            if (categoryService.create(category)) {
+                I18n.printEntityMessage("category", "entity.msg.created");
+            } else {
+                I18n.printEntityMessage("category", "entity.error.createFailed");
             }
-        } else {
-            System.out.println("Tên danh mục không được bỏ trống!");
+        } catch (Exception ex) {
+            Logger.getLogger(CategoryCreatePage.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
 }

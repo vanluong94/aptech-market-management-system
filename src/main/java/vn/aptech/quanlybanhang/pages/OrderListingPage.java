@@ -14,6 +14,7 @@ import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.service.OrderService;
 import vn.aptech.quanlybanhang.service.OrderServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 
@@ -33,7 +34,7 @@ public class OrderListingPage extends Page {
                 PaginatedResults<Order> results = orderService.select(page);
                 
                 if(results.getResults().isEmpty()) {
-                    System.out.println("<Không tìm thấy Đơn hàng nào>");
+                    I18n.getEntityMessage("order", "entity.msg.emptyResults");
                     return;
                 }
                 
@@ -51,7 +52,13 @@ public class OrderListingPage extends Page {
                     rows.add(row);
                 }
 
-                String[] headers = {"ID", "Nhân viên", "Khách", "Ngày tạo hóa đơn", "Tổng tiền hóa đơn"};
+                String[] headers = {
+                    "ID",
+                    I18n.getMessage("order.emp"),
+                    I18n.getMessage("order.customer"),
+                    I18n.getMessage("entity.createdAt"),
+                    I18n.getMessage("order.total")
+                };
 
                 TableUI theTable = new TableUI(headers, rows);
                 theTable.display(); //table
@@ -78,7 +85,7 @@ public class OrderListingPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sách Hóa đơn";
+        return I18n.getEntityMessage("order", "entity.title.all", true);
     }
     
 }

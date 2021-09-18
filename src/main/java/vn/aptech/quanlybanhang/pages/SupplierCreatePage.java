@@ -11,6 +11,7 @@ import vn.aptech.quanlybanhang.entities.Supplier;
 import vn.aptech.quanlybanhang.service.SupplierService;
 import vn.aptech.quanlybanhang.service.SupplierServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class SupplierCreatePage extends Page {
@@ -19,18 +20,16 @@ public class SupplierCreatePage extends Page {
     public void displayContent() {
         SupplierService supplierService = new SupplierServiceImpl();   
         
-        System.out.println("Nhập tên Nhà cung cấp :");
-        String supplierName = AppScanner.getScanner().nextLine();
-        System.out.println("Nhập Địa chỉ Nhà cung cấp :");
-        String supplierAddress = AppScanner.getScanner().nextLine();
+        String supplierName = AppScanner.scanStringWithi18Message("supplier.scan.name");
+        String supplierAddress = AppScanner.scanStringWithi18Message("supplier.scan.addr");
 
         if (supplierName.length() > 0 && supplierAddress.length() > 0) {
             try {
                 Supplier supplier = new Supplier(supplierName, supplierAddress);
                 if (supplierService.create(supplier)) {
-                    System.out.println("Thêm Nhà cung cấp thành công!");
+                    I18n.printEntityMessage("supplier", "entity.msg.created");
                 } else {
-                    System.out.println("Đã xảy ra lỗi!");
+                    I18n.printEntityMessage("supplier", "entity.msg.createFailed");
                 }
             } catch (Exception ex) {
                 Logger.getLogger(SupplierCreatePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -40,7 +39,7 @@ public class SupplierCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Thêm Nha Cung Cap";
+        return I18n.getEntityMessage("supplier", "entity.title.create");
     }
     
 }

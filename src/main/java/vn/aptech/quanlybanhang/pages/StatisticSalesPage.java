@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -33,23 +34,27 @@ public class StatisticSalesPage extends Page {
             Date endMonth = DateCommon.getEndMonth(today);
             Date lastMonth = DateCommon.addMonth(today, -1);
             double todayAmount = productService.getStatisticAmount(today, today);
-            System.out.println("Doanh số Hôm nay: " + StringCommon.convertDoubleToVND(todayAmount));
+            System.out.println(I18n.getMessage("order.statistic.revenue.today") + ": " + StringCommon.convertDoubleToVND(todayAmount));
             double yesterday = productService.getStatisticAmount(DateCommon.addDay(today, -1), DateCommon.addDay(today, -1));
-            System.out.println("Doanh số Hôm qua: " + StringCommon.convertDoubleToVND(yesterday));
+            System.out.println(I18n.getMessage("order.statistic.revenue.yesterday") + ": " + StringCommon.convertDoubleToVND(yesterday));
             double last7days = productService.getStatisticAmount(DateCommon.addDay(today, -7), today);
-            System.out.println("Doanh số 7 ngày gần đây: " + StringCommon.convertDoubleToVND(last7days));
+            System.out.println(I18n.getMessage("order.statistic.revenue.last7Days") + ": " + StringCommon.convertDoubleToVND(last7days));
             double last30days = productService.getStatisticAmount(DateCommon.addDay(today, -30), today);
-            System.out.println("Doanh số 30 ngày gần đây: " + StringCommon.convertDoubleToVND(last30days));
+            System.out.println(I18n.getMessage("order.statistic.revenue.last30Days") + ": " + StringCommon.convertDoubleToVND(last30days));
             double thisMonth = productService.getStatisticAmount(beginMonth, endMonth);
-            System.out.println("Doanh số Tháng này: " + StringCommon.convertDoubleToVND(thisMonth));
+            System.out.println(I18n.getMessage("order.statistic.revenue.thisMonth") + ": " + StringCommon.convertDoubleToVND(thisMonth));
             double lastMonthAmount = productService.getStatisticAmount(DateCommon.getBeginMonth(lastMonth), DateCommon.getEndMonth(lastMonth));
-            System.out.println("Doanh số Tháng trước: " + StringCommon.convertDoubleToVND(lastMonthAmount));
-            String choice = AppScanner.scanStringWithMessage("Bạn có muốn xem báo cáo tùy chỉnh không? [y/N]: ");
+            System.out.println(I18n.getMessage("order.statistic.revenue.lastMonth") + ": " + StringCommon.convertDoubleToVND(lastMonthAmount));
+            String choice = AppScanner.scanStringWithMessage(I18n.getMessage("order.confirm.reportRevenueByTimerange"));
             if (choice.equalsIgnoreCase("y")) {
-                String fromDate = AppScanner.scanStringWithMessage("Nhập thời gian từ ngày muốn xem [dd/MM/yyyy]: ", true);
-                String toDate = AppScanner.scanStringWithMessage("Đến ngày [dd/MM/yyyy]: ", true);
-                double customAmount = productService.getStatisticAmount(DateCommon.convertStringToDateByPattern(fromDate, "dd/MM/yyyy"), DateCommon.convertStringToDateByPattern(toDate, "dd/MM/yyyy"));
-                System.out.println("Doanh số từ ngày " + fromDate + " đến ngày " + toDate + ": " + StringCommon.convertDoubleToVND(customAmount));
+                String format = "dd/MM/yyyy";
+                String fromDate = AppScanner.scanStringWithMessage(I18n.getMessage("order.scan.date.from", format), true);
+                String toDate = AppScanner.scanStringWithMessage(I18n.getMessage("order.scan.date.to", format), true);
+                double customAmount = productService.getStatisticAmount(DateCommon.convertStringToDateByPattern(fromDate, format), DateCommon.convertStringToDateByPattern(toDate, format));
+                System.out.println(
+                        I18n.getMessage("order.statistic.revenue.timeRange", fromDate, toDate)
+                        + ": " + StringCommon.convertDoubleToVND(customAmount)
+                );
             }
         } catch (SQLException ex) {
             Logger.getLogger(StatisticSalesPage.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,7 +65,7 @@ public class StatisticSalesPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Doanh số";
+        return I18n.getMessage("order.title.revenue");
     }
 
 }

@@ -14,6 +14,7 @@ import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.service.OrderService;
 import vn.aptech.quanlybanhang.service.OrderServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
@@ -35,10 +36,10 @@ public class CashierTodayOrderPage extends Page {
             do {
                 PaginatedResults<Order> results = orderService.todayOrder(page);
                 if (results.getResults().isEmpty()) {
-                    System.out.println("Ngày hôm nay chưa có đơn hàng nào.");
+                    I18n.getEntityMessage("order", "entity.msg.emptyResults");
                     return;
                 }
-                List<Object[]> rows = new ArrayList<Object[]>();
+                List<Object[]> rows = new ArrayList<>();
 
                 for (Order order : results.getResults()) {
                     Object[] row = {
@@ -50,7 +51,13 @@ public class CashierTodayOrderPage extends Page {
                     };
                     rows.add(row);
                 }
-                String[] headers = {"ID", "Nhân viên", "Khách", "Ngày tạo hóa đơn", "Tổng tiền hóa đơn"};
+                String[] headers = {
+                    "ID",
+                    I18n.getMessage("order.emp"),
+                    I18n.getMessage("order.customer"),
+                    I18n.getMessage("entity.createdAt"),
+                    I18n.getMessage("order.total")
+                };
                 TableUI tableUI = new TableUI(headers, rows);
                 tableUI.display();
 
@@ -73,7 +80,7 @@ public class CashierTodayOrderPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Hóa đơn hôm nay";
+        return I18n.getMessage("title.cashierTodayOrders");
     }
 
 }

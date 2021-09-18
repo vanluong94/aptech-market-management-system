@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.service.CustomerService;
 import vn.aptech.quanlybanhang.service.CustomerServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -23,16 +24,15 @@ public class CustomerSearchByPhonePage extends Page {
     public void displayContent() {
         try {
             CustomerService customerService = new CustomerServiceImpl();
-            Customer customer = new Customer();
-            String check = AppScanner.scanStringWithMessage("Nhap so dien thoai khach hang : ", false);
+            String check = AppScanner.scanStringWithMessage(I18n.getMessage("customer.scan.searchPhone"));
             while (customerService.findByPhone(check) == null) {
-                System.out.println("SDT khong ton tai !");
-                check = AppScanner.scanStringWithMessage("Nhap so dien thoai khach hang : ", false);
+                I18n.printEntityMessage("customer", "entity.msg.emptyResults");
+                check = AppScanner.scanStringWithMessage(I18n.getMessage("customer.scan.searchPhone"));
             }
             List<Customer> customers = new ArrayList<>();
             customers.add(customerService.findByPhone(check));
             if (customers.isEmpty()) {
-                System.out.println("Trong !");
+                I18n.printEntityMessage("customer", "entity.msg.emptyResults");
             } else {
                 List<Object[]> rows = new ArrayList<>();
                 for (Customer c : customers) {
@@ -41,14 +41,18 @@ public class CustomerSearchByPhonePage extends Page {
                         c.getName(),
                         c.getAddress(),
                         c.getPhone(),
-                        c.getEmployee().getEmployeeId(),
-                        c.getEmployee().getName(),
-                        c.getDiscount(),
-                        c.getSalePoint()
+                        String.format("%s (ID:%d)", c.getEmployee().getName(), c.getEmployee().getEmployeeId())
                     };
                     rows.add(row);
                 }
-                String[] headers = {"ID", "Name", "Address", "Phone", "Employee ID", "Employee Name", "Discount", "Sale Point"};
+                
+                String[] headers = {
+                    "ID", 
+                    I18n.getMessage("customer.name"), 
+                    I18n.getMessage("customer.addr"), 
+                    I18n.getMessage("customer.phone"),
+                    I18n.getMessage("customer.emp")
+                };
                 TableUI theTable = new TableUI(headers, rows);
                 theTable.display();
             }
@@ -60,7 +64,7 @@ public class CustomerSearchByPhonePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tim khach hang bang SDT";
+        return I18n.getMessage("customer.title.searchByPhone");
     }
 
 }

@@ -13,6 +13,7 @@ import vn.aptech.quanlybanhang.service.CategoryService;
 import vn.aptech.quanlybanhang.service.CategoryServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -23,7 +24,7 @@ public class CategorySearchPage extends Page {
     @Override
     public void displayContent() {
 
-        String keyword = AppScanner.scanStringWithMessage("Nhập từ khóa cho tên Danh mục cần tìm: ");
+        String keyword = AppScanner.scanStringWithMessage(I18n.getEntityMessage("category", "entity.scan.searchKeyword"));
 
         CategoryService categoryService = new CategoryServiceImpl();
 
@@ -34,7 +35,7 @@ public class CategorySearchPage extends Page {
             System.out.println("\n\n");
 
             if (categories.isEmpty()) {
-                System.out.println("<Không tìm thấy Danh mục nào>");
+                I18n.printEntityMessage("category", "entity.msg.emptyResults");
             } else {
                 // transfer data to table row
                 for (Category cat : categories) {
@@ -47,7 +48,7 @@ public class CategorySearchPage extends Page {
                     rows.add(row);
                 }
 
-                String[] headers = {"ID", "Tên Danh mục", "Số Sản Phẩm"};
+                String[] headers = {"ID", I18n.getMessage("category.name"), I18n.getMessage("category.productsCount")};
 
                 TableUI theTable = new TableUI(headers, rows);
                 theTable.display();
@@ -59,7 +60,7 @@ public class CategorySearchPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tìm kiếm Danh mục";
+        return I18n.getEntityMessage("category", "entity.title.search", true);
     }
 
 }

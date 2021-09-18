@@ -14,6 +14,7 @@ import vn.aptech.quanlybanhang.pages.SupplierDetailPage;
 import vn.aptech.quanlybanhang.pages.SupplierEditPage;
 import vn.aptech.quanlybanhang.pages.SupplierListingPage;
 import vn.aptech.quanlybanhang.pages.SupplierSearchPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -40,7 +41,7 @@ public class AdminMenuSupplier extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quản lý Nhà cung cấp";
+        return I18n.getEntityMessage("supplier", "entity.title.manage", true);
     }
     
 }

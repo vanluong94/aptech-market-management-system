@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Product;
-import vn.aptech.quanlybanhang.entities.Supplier;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
-import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 public class ProductListingPage extends Page {
 
@@ -26,23 +25,38 @@ public class ProductListingPage extends Page {
             try {
                 List<Product> products = productService.findAll();
                 if (products.isEmpty()) {
-                    System.out.println("Danh sách trống");
+                    I18n.print("product", "entity.msg.emptyResults");
                 } else {
-                    List<Object[]> rows = new ArrayList<Object[]>();
+                    List<Object[]> rows = new ArrayList<>();
                     for (Product product : products) {
                         Object[] row = {
-                        product.getId(),
-                        product.getBrand().getBrandName(),
-                        product.getCategory().getCategoryName(),
-                        product.getSupplier().getName(),
-                        product.getEmployee().getName(),
-                        product.getName(),
-                        product.getPriceString(),
-                        product.getQuantityInStock()
-                    };
-                    rows.add(row);
+                            product.getId(),
+                            product.getBrand().getBrandName(),
+                            product.getCategory().getCategoryName(),
+                            product.getSupplier().getName(),
+                            product.getEmployee().getName(),
+                            product.getName(),
+                            product.getPriceString(),
+                            product.getQuantityInStock(),
+                            product.getCreatedAt(),
+                            product.getUpdatedAt()
+                        };
+                    
+                        rows.add(row);
                     }
-                    String[] headers = {"ID","Nhãn hàng","Loại sản phẩm","Nhà cung cấp","Nhân viên","Tên Sản phẩm","Giá","Số lượng trong kho"};
+                    
+                    String[] headers = {
+                        "ID",
+                        I18n.getMessage("brand.label.singular"),
+                        I18n.getMessage("category.label.singular"),
+                        I18n.getMessage("supplier.label.singular"),
+                        I18n.getMessage("employee.label.singular"),
+                        I18n.getMessage("product.label.singular"),
+                        I18n.getMessage("product.price"),
+                        I18n.getMessage("product.qty"),
+                        I18n.getMessage("entity.createdAt"),
+                        I18n.getMessage("entity.updatedAt")
+                    };
                     TableUI tableUI = new TableUI(headers, rows);
                     tableUI.display();
                     break;
@@ -57,7 +71,7 @@ public class ProductListingPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sách Sản phẩm";
+        return I18n.getEntityMessage("product", "entity.title.all", true);
     }
 
 }

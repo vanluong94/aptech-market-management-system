@@ -8,13 +8,11 @@ package vn.aptech.quanlybanhang.pages;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import vn.aptech.quanlybanhang.common.MessageCommon;
-import vn.aptech.quanlybanhang.common.MessageContent;
 import vn.aptech.quanlybanhang.dao.EmployeeDAOImpl;
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 public class EmployeeSearchPage extends Page {
 
@@ -24,14 +22,11 @@ public class EmployeeSearchPage extends Page {
         EmployeeDAOImpl employeeDAOImpl = new EmployeeDAOImpl();
         do {
             try {
-                System.out.println("Nhập vào tên Nhân viên cần tìm kiếm: ");
-                Scanner sc = new Scanner(System.in);
-                String tk = sc.nextLine();
-                List<Employee> employees = employeeDAOImpl.findByNameEmployee(tk);
+                String keyword = AppScanner.scanStringWithi18Message("employee.scan.searchName");
+                List<Employee> employees = employeeDAOImpl.findByNameEmployee(keyword);
                 if (employees.isEmpty()) {
-                    System.out.println(MessageCommon.getMessage(MessageContent.OBJECT_NOT_FOUND, tk));
+                    I18n.getEntityMessage("employee", "entity.msg.emptyResults");
                 } else {
-                    System.out.println("Kết quả tìm kiếm với từ '" + tk + "':");
                     List<Object[]> rows = new ArrayList<Object[]>();
                     for (Employee ep : employees) {
                         Object[] row = {
@@ -44,11 +39,18 @@ public class EmployeeSearchPage extends Page {
                         };
                         rows.add(row);
                     }
-                    String[] headers = {"ID", "Tên", "Địa chỉ", "SDT", "Chức vụ", "Tài khoản"};
+                    String[] headers = {
+                        "ID",
+                        I18n.getMessage("employee.name"),
+                        I18n.getMessage("employee.addr"),
+                        I18n.getMessage("employee.phone"),
+                        I18n.getMessage("employee.dept"),
+                        I18n.getMessage("employee.username")
+                    };
                     TableUI tableUI = new TableUI(headers, rows);
                     tableUI.display();
                 }
-                String choice = AppScanner.scanStringWithMessage("Bạn có muốn tìm sản phẩm khác không? [y/N]: ");
+                String choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("employee", "entity.confirm.searchAnother"));
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }
@@ -60,7 +62,7 @@ public class EmployeeSearchPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tìm kiếm Nhân viên";
+        return I18n.getEntityMessage("employee", "entity.title.search", true);
     }
 
 }

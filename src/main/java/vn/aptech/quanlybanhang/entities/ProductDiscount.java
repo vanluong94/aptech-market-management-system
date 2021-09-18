@@ -6,6 +6,7 @@ package vn.aptech.quanlybanhang.entities;
 import java.util.Date;
 import vn.aptech.quanlybanhang.common.DateCommon;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -117,11 +118,11 @@ public class ProductDiscount {
         Date dateFrom = null;
         String dateFormatPattern = "dd/MM/yyyy HH:mm";
         do {
-            String dateFromStr = AppScanner.scanStringWithMessage("Thời gian bắt đầu giảm giá [" + dateFormatPattern + "]: ");
+            String dateFromStr = AppScanner.scanStringWithi18Message("discount.scan.datetime.start", dateFormatPattern);
             dateFrom = DateCommon.convertStringToDateByPattern(dateFromStr, dateFormatPattern);
 
             if (dateFrom == null) {
-                System.out.println("Thời gian đã nhập không hợp lệ, vui lòng thử lại.");
+                I18n.print("discount.error.invalidDatetime");
             }
         } while (dateFrom == null);
         
@@ -133,13 +134,13 @@ public class ProductDiscount {
         String dateFormatPattern = "dd/MM/yyyy HH:mm";
         
         do {
-            String dateToStr = AppScanner.scanStringWithMessage("Thời gian kết thúc giảm giá [" + dateFormatPattern + "]: ");
+            String dateToStr = AppScanner.scanStringWithi18Message("discount.scan.datetime.end", dateFormatPattern);
             dateTo = DateCommon.convertStringToDateByPattern(dateToStr, dateFormatPattern);
 
             if (dateTo == null) {
-                System.out.println("Thời gian đã nhập không hợp lệ, vui lòng thử lại.");
+                I18n.print("discount.error.invalidDatetime");
             } else if (this.startDate != null && dateTo.compareTo(this.startDate) <= 0) {
-                System.out.println("Thời gian kết thúc giảm giá không được sớm hơn thời gian bắt đầu giảm giá");
+                I18n.print("discount.error.invalidTimeRange");
                 dateTo = null; // reset to repeat
             }
         } while (dateTo == null);
@@ -150,10 +151,10 @@ public class ProductDiscount {
     public float scanDiscountPercentage() {
         float discountPercent = 0;
         while (discountPercent < 1) {
-            discountPercent = AppScanner.scanFloatWithMessage("Nhập % giảm giá cho sản phẩm: ");
+            discountPercent = AppScanner.scanFloatWithi18Message("discount.scan.discountPercentage");
             
             if (discountPercent < 1) {
-                System.out.println("Giá trị % giảm giá cho sản phẩm phải >= 1");
+                I18n.print("discount.error.invalidPercentage");
             }
         }
         return discountPercent;

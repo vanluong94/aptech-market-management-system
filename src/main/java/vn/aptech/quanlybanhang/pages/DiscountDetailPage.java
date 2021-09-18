@@ -17,6 +17,7 @@ import vn.aptech.quanlybanhang.service.DiscountService;
 import vn.aptech.quanlybanhang.service.DiscountServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -35,13 +36,13 @@ public class DiscountDetailPage extends Page {
         try {
             while (true) {
                 System.out.println("\n");
-                int discountId = AppScanner.scanIntWithMessage("Nhập ID chương trình giảm giá muốn kiểm tra: ");
+                int discountId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("discount", "entity.scan.id.detail"));
                 Discount discount = discountService.findById(discountId);
                 if (discount == null) {
-                    System.out.println("Không tìm thấy ID Chương trình giảm giá phù hợp!");
+                    I18n.printEntityMessage("discount", "entity.error.idNotFound");
                 } else {
                     this.displayDiscountDetail(discount);
-                    if (!AppScanner.confirm("Bạn có muốn tìm chương trình giảm giá khác? [Y/N]: ")) {
+                    if (!AppScanner.confirm(I18n.getEntityMessage("discount", "entity.confirm.searchAnOther"))) {
                         break;
                     }
                 }
@@ -53,7 +54,7 @@ public class DiscountDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xem chi tiết Chương trình giảm giá";
+        return I18n.getEntityMessage("discount", "entity.title.detail");
     }
 
     private void displayDiscountDetail(Discount discount) {
@@ -61,10 +62,11 @@ public class DiscountDetailPage extends Page {
         System.out.printf("\n\n[ID: %d] %s\n", discount.getId(), discount.getName());
 
         List<ProductDiscount> dProducts = this.discountService.getDiscountProducts(discount);
+        
+        I18n.print("discount.msg.productList");
         if (dProducts.size() < 1) {
-            System.out.println("[Products] Không tìm thấy sản phẩm nào");
+            I18n.print("discount.msg.productNotFound");
         } else {
-            System.out.println("[Products]");
             List<Object[]> rows = new ArrayList<>();
 
             for (ProductDiscount dProduct : dProducts) {
@@ -80,7 +82,15 @@ public class DiscountDetailPage extends Page {
                 rows.add(row);
                 System.out.println(dProduct.getStartDate());
             }
-            String[] headers = {"ID", "Tên Sản Phẩm", "Giá gốc", "Giá bán", "Giảm", "Ngày bắt đầu", "Ngày kết thúc"};
+            String[] headers = {
+                "ID", 
+                I18n.getMessage("product.label.singular"), 
+                I18n.getMessage("product.price"), 
+                I18n.getMessage("product.price.sale"), 
+                I18n.getMessage("product.discount.percentage"), 
+                I18n.getMessage("discount.datetime.start"), 
+                I18n.getMessage("discount.datetime.end")
+            };
             TableUI tableUI = new TableUI(headers, rows);
             tableUI.display();
         }

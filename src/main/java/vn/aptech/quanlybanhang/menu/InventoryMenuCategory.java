@@ -14,6 +14,7 @@ import vn.aptech.quanlybanhang.pages.CategoryDetailPage;
 import vn.aptech.quanlybanhang.pages.CategoryEditPage;
 import vn.aptech.quanlybanhang.pages.CategoryListingPage;
 import vn.aptech.quanlybanhang.pages.CategorySearchPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class InventoryMenuCategory extends Menu {
@@ -37,7 +38,7 @@ public class InventoryMenuCategory extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quản lý Danh mục";
+        return I18n.getEntityMessage("category", "entity.title.manage", true);
     }
     
 }

@@ -10,6 +10,7 @@ import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.Md5;
 
 /**
@@ -28,23 +29,23 @@ public class ChangePasswordPage extends Page {
     public void displayContent() {
         try {
             do {
-                String password = AppScanner.scanStringWithMessage("Mật khẩu hiện tại*: ", false);
+                String password = AppScanner.scanStringWithMessage(I18n.getMessage("page.changePass.scan.currentPass"));
                 Employee employee = AuthServiceImpl.getCurrentEmployee();
                 if (!employee.getPassword().equals(Md5.encode(password))) {
-                    System.out.println("Mật khẩu hiện tại không đúng");
+                    I18n.print("page.changePass.error.wrongPass");
                 } else {
-                    String newPassword = AppScanner.scanStringWithMessage("Mật khẩu mới*: ", false);
-                    String confirmPassword = AppScanner.scanStringWithMessage("Nhập lại mật khẩu mới: ", false);
+                    String newPassword = AppScanner.scanStringWithMessage(I18n.getMessage("page.changePass.scan.newPass"));
+                    String confirmPassword = AppScanner.scanStringWithMessage(I18n.getMessage("page.changePass.scan.repeatPass"));
 
                     if (!newPassword.equals(confirmPassword)) {
-                        System.out.println("Mật khẩu xác nhận không đúng");
+                        I18n.print("page.changePass.error.mismatchPass");
                     } else {
                         employee.setPassword(Md5.encode(newPassword));
                         if (employeeService.update(employee)) {
-                            System.out.println("Đổi mật khẩu thành công");
+                            I18n.print("page.changePass.msg.success");
                             break;
                         } else {
-                            System.out.println("Đã xảy ra lỗi");
+                            I18n.print("page.changePass.msg.failed");
                         }
                     }
                 }
@@ -56,7 +57,7 @@ public class ChangePasswordPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Doi mat khau";
+        return I18n.getMessage("page.changePass.title");
     }
 
 }

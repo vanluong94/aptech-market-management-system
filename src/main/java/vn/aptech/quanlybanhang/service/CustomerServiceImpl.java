@@ -5,11 +5,10 @@ package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.dao.CustomerDAO;
 import vn.aptech.quanlybanhang.dao.CustomerDAOImpl;
 import vn.aptech.quanlybanhang.entities.Customer;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
@@ -27,7 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public boolean create(Customer object) throws SQLException, Exception {
         if (object == null) {
-            throw new Exception("Doi tuong không được để trống");
+            throw new Exception(I18n.getMessage("app.error.object.null"));
 
         }
         return customerDAO.create(object);
@@ -41,7 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public boolean deleteById(int id) throws SQLException, Exception {
         if (id < 1) {
-            throw new Exception("ID không hợp lệ!");
+            throw new Exception(I18n.getMessage("input.invalidID"));
         }
         return customerDAO.deleteById(id);
     }
@@ -49,7 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer findById(int id) throws SQLException, Exception {
         if (id < 1) {
-            throw new Exception("ID không hợp lệ!");
+            throw new Exception(I18n.getMessage("input.invalidID"));
         }
         return customerDAO.findById(id);
     }

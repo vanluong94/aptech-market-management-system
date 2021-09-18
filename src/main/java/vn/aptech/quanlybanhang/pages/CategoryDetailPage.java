@@ -14,6 +14,7 @@ import vn.aptech.quanlybanhang.service.CategoryService;
 import vn.aptech.quanlybanhang.service.CategoryServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  * @author vanluong
@@ -26,22 +27,22 @@ public class CategoryDetailPage extends Page {
         String choice = null;
         do {
             try {
-                int categoryId = AppScanner.scanIntWithMessage("Nhập ID danh mục muốn xem : ");
+                int categoryId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("category", "entity.scan.id.detail"));
                 Category category = categoryService.findById(categoryId);
                 if (category == null) {
-                    System.out.println("Không tìm thấy ID Danh mục phù hợp");
+                    I18n.printEntityMessage("category", "entity.msg.emptyResults");
                 } else {
-                    List<Object[]> rows = new ArrayList<Object[]>();
+                    List<Object[]> rows = new ArrayList<>();
                     Object[] row = {
                         category.getCategoryId(),
                         category.getCategoryName(),
                         category.getProductsCount()
                     };
                     rows.add(row);
-                    String[] headers = {"ID", "Tên Danh mục", "Số Sản phẩm"};
+                    String[] headers = {"ID", I18n.getMessage("category.name"), I18n.getMessage("category.productsCount")};
                     TableUI theTable = new TableUI(headers, rows);
                     theTable.display();
-                    choice = AppScanner.scanStringWithMessage("Bạn có muốn tìm Danh mục khác không ? [Y/N] : ");
+                    choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("category", "entity.confirm.findAnOther"));
                     if (!"y".equalsIgnoreCase(choice)) {
                         break;
                     }
@@ -54,6 +55,6 @@ public class CategoryDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Chi tiết Danh mục";
+        return I18n.getEntityMessage("category", "entity.title.detail");
     }
 }

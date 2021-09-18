@@ -57,7 +57,7 @@ public class OrderCreateWithCustomerPage extends Page {
             Order order = new Order();
             double amount = 0;
             while (true) {
-                int productId = AppScanner.scanIntWithMessage("Nhập mã sản phẩm: ", false);
+                int productId = AppScanner.scanIntWithMessage("Nhập mã sản phẩm: ");
                 OrderItem orderItem = new OrderItem();
                 Product product = productService.findById(productId);
                 if (product == null) {
@@ -66,7 +66,7 @@ public class OrderCreateWithCustomerPage extends Page {
                 }
                 System.out.println("Tìm thấy sản phẩm '" + product.getName() + "'");
                 orderItem.setProduct(product);
-                int qty = AppScanner.scanIntWithMessage("Nhập số lượng: ", false);
+                int qty = AppScanner.scanIntWithMessage("Nhập số lượng: ");
                 if (product.getQuantityInStock() < 1) {
                     System.out.println("Sản phẩm đã hết hàng!");
                     continue;
@@ -102,7 +102,7 @@ public class OrderCreateWithCustomerPage extends Page {
                 }
             }
             for (OrderItem od : order.getOrderItems()) {
-                amount += (od.getQuantity() * od.getProductPrice()); // Tính toán thêm discount nữa để ra tổng số ti�?n cuối cùng
+                amount += (od.getQuantity() * od.getProductPrice()); // Tính toán thêm discount nữa để ra tổng số ti�?n cuối cùng
             }
             order.setAmount(amount);
             order.setEmployee(AuthServiceImpl.getCurrentEmployee()); // Set nhân viên hiện tại đang đăng nhập
@@ -127,14 +127,14 @@ public class OrderCreateWithCustomerPage extends Page {
 
             TableUI theTable = new TableUI(headers, rows);
             theTable.display();
-            System.out.println("Tổng ti�?n của hóa đơn: " + StringCommon.convertDoubleToVND(order.getAmount()));
+            System.out.println("Tổng ti�?n của hóa đơn: " + StringCommon.convertDoubleToVND(order.getAmount()));
 
             choice = AppScanner.scanStringWithMessage("Bạn có muốn lưu lại đơn hàng không? [y/N]: ", true);
             if ("y".equalsIgnoreCase(choice)) {
                 if (orderService.create(order)) {
                     System.out.println("Tạo đơn hàng thành công!");
                 } else {
-                    System.out.println("�?ã xảy ra lỗi khi tạo đơn hàng");
+                    System.out.println("�?ã xảy ra lỗi khi tạo đơn hàng");
                 }
             }
         } catch (Exception e) {

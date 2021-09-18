@@ -22,6 +22,8 @@ public class AuthDAOImpl implements AuthDAO {
             emp = empService.findByUsernameAndPassword(username, password);
         } catch (SQLException ex) {
             Logger.getLogger(AuthDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(AuthDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return emp;

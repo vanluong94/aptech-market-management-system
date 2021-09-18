@@ -30,9 +30,8 @@ public class DBConnection {
             if (conn == null || conn.isClosed()) {
                 String url = String.format("jdbc:mysql://%s:%s/%s", SERVER, PORT, DATABASE);
                 Class.forName(DRIVER);
-//                System.out.println("Connecting to MySQL...");
+                System.out.println("\nConnecting...\n");
                 conn = DriverManager.getConnection(url, USER, PASSWORD);
-//                System.out.println("Connected to database.");
             }
         } catch (SQLException | ClassNotFoundException ex) {
             System.out.println("Exception when DBConnection.getConnection: " + ex.getMessage());

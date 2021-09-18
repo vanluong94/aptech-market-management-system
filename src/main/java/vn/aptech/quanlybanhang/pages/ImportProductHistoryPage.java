@@ -15,6 +15,7 @@ import vn.aptech.quanlybanhang.entities.ImportProduct;
 import vn.aptech.quanlybanhang.service.ImportProductService;
 import vn.aptech.quanlybanhang.service.ImportProductServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -31,10 +32,12 @@ public class ImportProductHistoryPage extends Page {
     @Override
     public void displayContent() {
         try {
-            System.out.println("Các sản phẩm đã nhập gần đây");
+            
+            I18n.getMessage("product.import.msg.recently");
+            
             List<ImportProduct> importProducts = importProductService.findAll();
             if (importProducts.isEmpty()) {
-                System.out.println("Chưa có sản phẩm nào");
+                I18n.printEntityMessage("product", "entity.msg.emptyResults");
             } else {
                 DateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
                 List<Object[]> rows = new ArrayList<>();
@@ -52,7 +55,13 @@ public class ImportProductHistoryPage extends Page {
                     rows.add(row);
                 }
 
-                String[] headers = {"ID", "Giá", "Số lượng", "Nhà cung cấp", "Ngày nhập"};
+                String[] headers = {
+                    "ID", 
+                    I18n.getMessage("product.price"), 
+                    I18n.getMessage("product.qty"), 
+                    I18n.getMessage("supplier.label.singular"), 
+                    I18n.getMessage("product.import.datetime")
+                };
 
                 TableUI theTable = new TableUI(headers, rows);
                 theTable.display();
@@ -65,7 +74,7 @@ public class ImportProductHistoryPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Lịch sử Nhập hang";
+        return I18n.getMessage("product.import.title.history");
     }
     
 }

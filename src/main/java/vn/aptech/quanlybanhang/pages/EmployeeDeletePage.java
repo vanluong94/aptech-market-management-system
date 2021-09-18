@@ -5,11 +5,12 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
+import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class EmployeeDeletePage extends Page {
@@ -19,13 +20,11 @@ public class EmployeeDeletePage extends Page {
         try {
             EmployeeService employeeService = new EmployeeServiceImpl();
             
-            Scanner sc = new Scanner(System.in);
-            System.out.print("Nhập ID Nhân viên muốn xóa : ");
-            int employeeId = sc.nextInt();
+            int employeeId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("employee", "entity.scan.id.delete"));
             if (employeeService.deleteById(employeeId)) {
-                System.out.println("Xóa Nhân viên thành công!");
+                I18n.printEntityMessage("employee", "entity.msg.deleted");
             } else {
-                System.out.println("Đã xảy ra lỗi!");
+                I18n.printEntityMessage("employee", "entity.error.deleteFailed");
             }
         } catch (Exception ex) {
             Logger.getLogger(EmployeeDeletePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +33,7 @@ public class EmployeeDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xóa Nhân viên";
+        return I18n.getEntityMessage("employee", "entity.title.delete");
     }
     
 }

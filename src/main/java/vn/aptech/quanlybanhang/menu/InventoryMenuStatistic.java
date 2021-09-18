@@ -11,6 +11,7 @@ import vn.aptech.quanlybanhang.menu.items.GoBackMenuItem;
 import vn.aptech.quanlybanhang.pages.ProductBestSalePage;
 import vn.aptech.quanlybanhang.pages.ProductOutOfStockPage;
 import vn.aptech.quanlybanhang.pages.StatisticSalesPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class InventoryMenuStatistic extends Menu {
@@ -31,7 +32,7 @@ public class InventoryMenuStatistic extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Thống kê";
+        return I18n.getMessage("title.statistic");
     }
     
 }

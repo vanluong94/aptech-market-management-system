@@ -10,6 +10,7 @@ import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
 import vn.aptech.quanlybanhang.menu.items.GoBackMenuItem;
 import vn.aptech.quanlybanhang.pages.ImportProductHistoryPage;
 import vn.aptech.quanlybanhang.pages.ImportProductPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class InventoryMenuImport extends Menu {
@@ -29,7 +30,7 @@ public class InventoryMenuImport extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quản lý Nhập kho";
+        return I18n.getMessage("title.warehouse");
     }
     
 }

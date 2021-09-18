@@ -13,6 +13,7 @@ import vn.aptech.quanlybanhang.service.OrderService;
 import vn.aptech.quanlybanhang.service.OrderServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
@@ -32,12 +33,13 @@ public class CashierStatisticPage extends Page {
         try {
             int page = 1;
             do {
-                String fromDate = AppScanner.scanStringWithMessage("Nhập thời gian từ ngày muốn xem [dd/MM/yyyy]: ", true);
-                String toDate = AppScanner.scanStringWithMessage("Đến ngày [dd/MM/yyyy]: ", true);
+                String dateFormat = "dd/MM/yyyy";
+                String fromDate = AppScanner.scanStringWithMessage(I18n.getMessage("order.scan.datetime.start", dateFormat), true);
+                String toDate = AppScanner.scanStringWithMessage(I18n.getMessage("order.scan.datetime.end", dateFormat), true);
 
                 PaginatedResults<Order> results = orderService.CashierStatistics(page, fromDate, toDate);
                 if (results.getResults().isEmpty()) {
-                    System.out.println("<Không có Đơn hàng nào>");
+                    I18n.printEntityMessage("order", "entity.msg.emptyResults");
                     return;
                 }
 
@@ -53,7 +55,13 @@ public class CashierStatisticPage extends Page {
                     };
                     rows.add(row);
                 }
-                String[] headers = {"ID", "Nhân viên", "Khách", "Ngày tạo hóa đơn", "Tổng tiền hóa đơn"};
+                String[] headers = {
+                    "ID",
+                    I18n.getMessage("order.emp"),
+                    I18n.getMessage("order.customer"),
+                    I18n.getMessage("entity.createdAt"),
+                    I18n.getMessage("order.total")
+                };
                 TableUI tableUI = new TableUI(headers, rows);
                 tableUI.display();
 
@@ -76,7 +84,7 @@ public class CashierStatisticPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Thống kê";
+        return I18n.getMessage("title.statistic");
     }
 
 }

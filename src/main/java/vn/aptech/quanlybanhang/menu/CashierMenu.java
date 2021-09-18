@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.pages.CashierStatisticPage;
 import vn.aptech.quanlybanhang.pages.ChangePasswordPage;
 import vn.aptech.quanlybanhang.pages.OrderCreatePage;
 import vn.aptech.quanlybanhang.pages.OrderCreateWithCustomerPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -28,9 +29,9 @@ public class CashierMenu extends Menu {
         menuItems.put(3, new CashierMenuOrder());
         menuItems.put(4, new CashierMenuProduct());
         menuItems.put(5, new CashierMenuCategory());
-        menuItems.put(6, new CashierStatisticPage());
-        menuItems.put(7, new CashierMenuCustomer());
-        menuItems.put(8, new ChangePasswordPage());
+        menuItems.put(6, new CashierMenuCustomer());
+        menuItems.put(7, new ChangePasswordPage());
+        menuItems.put(8, new CashierStatisticPage());
 
         menuItems.put(-1, new SignoutMenuItem());
         menuItems.put(0, new ExitMenuItem());
@@ -40,7 +41,7 @@ public class CashierMenu extends Menu {
 
     @Override
     protected final String registerMenuTitle() {
-        return "Phần m�?m Quản lý Siêu Thị";
+        return I18n.getMessage("app.heading");
     }
 
     @Override

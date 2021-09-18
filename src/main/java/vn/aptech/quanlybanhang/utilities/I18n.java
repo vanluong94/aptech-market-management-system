@@ -24,4 +24,24 @@ public class I18n {
         formatter.applyPattern(messages.getString(key).replaceAll("'", "''"));
         return formatter.format(args);
     }
+    
+    public static void print(String key, Object... args) {
+        System.out.println(getMessage(key, args));
+    }
+    
+    public static String getEntityMessage(String entity, String msgKey) {
+        return getEntityMessage(entity, msgKey, false);
+    }
+    
+    public static void printEntityMessage(String entity, String msgKey) {
+        printEntityMessage(entity, msgKey, false);
+    }
+    
+    public static String getEntityMessage(String entity, String msgKey, boolean usePlural) {
+        return getMessage(msgKey, getMessage(entity + ".label." + (usePlural ? "plural" : "singular")));
+    }
+    
+    public static void printEntityMessage(String entity, String msgKey, boolean usePlural) {
+        System.out.println(getEntityMessage(entity, msgKey, usePlural));
+    }
 }

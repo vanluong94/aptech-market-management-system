@@ -5,12 +5,12 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
-import vn.aptech.quanlybanhang.service.SupplierServiceImpl;
+import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 public class ProductDeletePage extends Page {
 
@@ -18,9 +18,7 @@ public class ProductDeletePage extends Page {
     public void displayContent() {
         try {
             ProductService productService = new ProductServiceImpl();
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Nhập ID Sản phẩm muốn xóa : ");
-            int productId = sc.nextInt();
+            int productId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("product", "entity.scan.id.delete"));
             if (productService.deleteById(productId)) {
                 System.out.println("Xóa Sản phẩm thành công!");
             }else{
@@ -34,7 +32,7 @@ public class ProductDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xóa Sản phẩm";
+        return I18n.getEntityMessage("product", "entity.title.delete");
     }
 
 }

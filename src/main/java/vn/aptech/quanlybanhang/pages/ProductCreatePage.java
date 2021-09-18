@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -30,14 +31,14 @@ public class ProductCreatePage extends Page {
     public void displayContent() {
         try {
             Brand brand = new Brand();
-            brand.setBrandId(AppScanner.scanIntWithMessage("Nhập Brand ID: "));
+            brand.setBrandId(AppScanner.scanIntWithi18Message("product.scan.brand"));
 
             Category category = new Category();
-            category.setCategoryId(AppScanner.scanIntWithMessage("Nhập Category ID: "));
+            category.setCategoryId(AppScanner.scanIntWithi18Message("product.scan.category"));
 
-            String name = AppScanner.scanStringWithMessage("Nhập tên Sản phẩm: ");
-            double price = AppScanner.scanDoubleWithMessage("Giá tiền: ");
-            int qty = AppScanner.scanIntWithMessage("Số lượng :");
+            String name = AppScanner.scanStringWithi18Message("product.scan.name");
+            double price = AppScanner.scanDoubleWithMessage(I18n.getMessage("product.scan.price"));
+            int qty = AppScanner.scanIntWithi18Message("product.scan.qty");
 
             Product product = new Product();
             product.setBrand(brand);
@@ -47,9 +48,9 @@ public class ProductCreatePage extends Page {
             product.setPrice(price);
             product.setQuantityInStock(qty);
             if (productService.create(product)) {
-                System.out.println("Thêm Sản phẩm mới thành công!");
+                I18n.printEntityMessage("product", "entity.msg.created");
             } else {
-                System.out.println("Đã xảy ra lỗi");
+                I18n.printEntityMessage("product", "entity.msg.createFailed");
             }
         } catch (Exception ex) {
             Logger.getLogger(ProductCreatePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -58,7 +59,7 @@ public class ProductCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tạo Sản phẩm";
+        return I18n.getEntityMessage("product", "entity.title.create");
     }
 
 }

@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.exception.InputInvalidException;
 import vn.aptech.quanlybanhang.service.BrandService;
 import vn.aptech.quanlybanhang.service.BrandServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -31,16 +32,18 @@ public class BrandEditPage extends Page {
             retry = false;
             
             try{
-                int id = AppScanner.scanIntWithMessage("Nhập ID nhãn hàng cần sửa: ");
+                int id = AppScanner.scanIntWithMessage(I18n.getEntityMessage("brand", "entity.scan.id.edit"));
                 Brand brand = brandService.findById(id);
 
                 if(brand == null){
-                    System.out.println("ID không tồn tại");
+                    I18n.getEntityMessage("brand", "entity.error.idNotFound");
                     retry = true;
                 }else{
-                    System.out.println("\n\nNhập thông tin mới cho nhãn hàng, bỏ trống nếu giữ nguyên.");
-                    String newName = AppScanner.scanStringWithMessage("[Tên Nhãn hàng]: ", true);
-                    String newAdd = AppScanner.scanStringWithMessage("[Địa chỉ Nhãn hàng]: ", true);
+                    System.out.println("\n");
+                    I18n.print("brand.msg.update");
+                    
+                    String newName = AppScanner.scanStringWithMessage(I18n.getMessage("brand.scan.name"), true);
+                    String newAdd = AppScanner.scanStringWithMessage(I18n.getMessage("brand.scan.address"), true);
 
                     if(newName.length() > 0){
                         brand.setBrandName(newName);
@@ -52,7 +55,7 @@ public class BrandEditPage extends Page {
 
                     brandService.update(brand);
 
-                    System.out.println("Cập nhật thông tin thành công!");
+                    I18n.printEntityMessage("brand", "entity.msg.updated");
                 }
             }catch(InputInvalidException e){
                 System.out.println(e.getMessage());
@@ -67,7 +70,7 @@ public class BrandEditPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Sửa Nhãn hàng";
+        return I18n.getEntityMessage("brand", "entity.title.edit");
     }
     
 }

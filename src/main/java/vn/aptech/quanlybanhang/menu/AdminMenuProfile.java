@@ -10,6 +10,7 @@ import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
 import vn.aptech.quanlybanhang.menu.items.GoBackMenuItem;
 import vn.aptech.quanlybanhang.pages.ChangePasswordPage;
 import vn.aptech.quanlybanhang.pages.PageUpdateProfile;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -32,7 +33,7 @@ public class AdminMenuProfile extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quản lý Profile";
+        return I18n.getMessage("title.manageProfile");
     }
     
 }

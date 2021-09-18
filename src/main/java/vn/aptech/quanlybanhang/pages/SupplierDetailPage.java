@@ -14,6 +14,7 @@ import vn.aptech.quanlybanhang.service.SupplierService;
 import vn.aptech.quanlybanhang.service.SupplierServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class SupplierDetailPage extends Page {
@@ -24,12 +25,12 @@ public class SupplierDetailPage extends Page {
         String choice = null;
         do {           
             try {
-                int supplierId = AppScanner.scanIntWithMessage("Nhập ID Nhà cung cấp muốn kiem tra : ");
+                int supplierId = AppScanner.scanIntWithMessage(I18n.getMessage("supplier", "entity.scan.id.detail"));
                 Supplier supplier = supplierService.findById(supplierId);
                 if (supplier == null) {
-                    System.out.println("Không tìm thấy ID Nhà cung cấp phù hợp");
+                    I18n.printEntityMessage("supplier", "entity.error.idNotFound");
                 } else {
-                    List<Object[]> rows = new ArrayList<Object[]>();
+                    List<Object[]> rows = new ArrayList<>();
                     Object[] row = {
                         supplier.getId(),
                         supplier.getName(),
@@ -37,10 +38,10 @@ public class SupplierDetailPage extends Page {
                     };
                     rows.add(row);
                     
-                    String[] headers = {"ID", "Tên NCC", "Địa chỉ"};
+                    String[] headers = {"ID", I18n.getMessage("supplier.name"), I18n.getMessage("supplier.addr")};
                     TableUI theTable = new TableUI(headers, rows);
                     theTable.display();
-                    choice = AppScanner.scanStringWithMessage("Bạn có muốn tìm Nhà cung cấp khác không? [Y/N] : ");
+                    choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("supplier", "entity.confirm.findAnother"));
                     if (!"y".equalsIgnoreCase(choice)) {
                         break;
                     }
@@ -53,7 +54,7 @@ public class SupplierDetailPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xem chi tiết Nha Cung Cap";
+        return I18n.getEntityMessage("supplier", "entity.title.detail");
     }
     
 }

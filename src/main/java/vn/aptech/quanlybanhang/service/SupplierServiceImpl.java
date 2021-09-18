@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.dao.SupplierDAO;
 import vn.aptech.quanlybanhang.dao.SupplierDAOImpl;
 import vn.aptech.quanlybanhang.entities.Supplier;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 public class SupplierServiceImpl implements SupplierService {
@@ -23,7 +24,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public boolean create(Supplier object) throws SQLException, Exception {
         if (object == null) {
-            throw new Exception("Danh mục không được để trống");
+            throw new Exception(I18n.getMessage("app.error.object.null"));
 
         }
         return supplierDAO.create(object);
@@ -33,7 +34,7 @@ public class SupplierServiceImpl implements SupplierService {
     public boolean deleteById(int id) throws SQLException {
         if (id < 1) {
             try {
-                throw new Exception("ID không hợp lệ!");
+                throw new Exception(I18n.getMessage("input.invalidID"));
             } catch (Exception ex) {
                 Logger.getLogger(SupplierServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -44,7 +45,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public Supplier findById(int id) throws SQLException, Exception {
         if (id < 1) {
-            throw new Exception("ID không hợp lệ!");
+            throw new Exception(I18n.getMessage("input.invalidID"));
         }
         return supplierDAO.findById(id);
     }

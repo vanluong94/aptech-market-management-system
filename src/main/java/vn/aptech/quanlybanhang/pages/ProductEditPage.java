@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.menu.ProductMenu;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class ProductEditPage extends Page {
@@ -30,7 +31,7 @@ public class ProductEditPage extends Page {
                 int id = AppScanner.scanIntWithMessage("Nhập ID sản phẩm cần sửa: ");
                 Product product = productService.findById(id);
                 if (product == null) {
-                    System.out.println("ID không tồn tại!");
+                    I18n.getEntityMessage("product", "entity.error.idNotFound");
                 } else {
                     System.out.println("Các trư�?ng đánh dấu * bắt buộc nhập. Nhấn <enter> để giữ lại thông tin cũ.");
                     String name = AppScanner.scanStringWithMessage("Tên sản phẩm: ");

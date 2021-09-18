@@ -13,6 +13,7 @@ import vn.aptech.quanlybanhang.pages.CustomerEditPage;
 import vn.aptech.quanlybanhang.pages.CustomerListingPage;
 import vn.aptech.quanlybanhang.pages.CustomerSearchByIDPage;
 import vn.aptech.quanlybanhang.pages.CustomerSearchByPhonePage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 /**
@@ -40,7 +41,7 @@ public class AdminMenuCustomer extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quan ly khach hang";
+        return I18n.getEntityMessage("customer", "entity.title.manage", true);
     }
 
 }

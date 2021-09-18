@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.pages.ProductCategoryPage;
 import vn.aptech.quanlybanhang.pages.ProductDetailPage;
 import vn.aptech.quanlybanhang.pages.ProductListingPage;
 import vn.aptech.quanlybanhang.pages.ProductSearchPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -36,7 +37,7 @@ public class AdminMenuProduct extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Tra cứu Sản phẩm";
+        return I18n.getEntityMessage("product", "entity.title.manage", true);
     }
     
 }

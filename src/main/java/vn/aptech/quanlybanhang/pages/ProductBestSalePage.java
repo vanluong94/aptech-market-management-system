@@ -8,14 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vn.aptech.quanlybanhang.common.DateCommon;
-import vn.aptech.quanlybanhang.constant.Constant;
-import vn.aptech.quanlybanhang.entities.ImportProduct;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
@@ -35,14 +33,19 @@ public class ProductBestSalePage extends Page {
         try {
             int page = 1;
             do {
-                String fromDate = AppScanner.scanStringWithMessage("Nhập thời gian từ ngày muốn xem [dd/MM/yyyy]: ", true);
-                String toDate = AppScanner.scanStringWithMessage("Đến ngày [dd/MM/yyyy]: ", true);
+                
+                String format = "dd/MM/yyyy";
+                String fromDate = AppScanner.scanStringWithMessage(I18n.getMessage("product.scan.date.from", format), true);
+                String toDate = AppScanner.scanStringWithMessage(I18n.getMessage("product.scan.date.to", format), true);
+                
                 PaginatedResults<Product> results = productService.findAllByOrderByUnitsOnOrderDesc(page, fromDate, toDate);
                 if (results.getResults().isEmpty()) {
-                    System.out.println("<Không có Sản phẩm nào>");
+                    I18n.printEntityMessage("product", "entity.msg.emptyResults");
                     return;
                 }
-                System.out.println("Tìm thấy " + results.getTotalItems() + " sản phẩm");
+                
+                I18n.print("entity.msg.found", results.getTotalItems(), I18n.getMessage("product.label.singular"));
+
                 List<Object[]> rows = new ArrayList<>();
 
                 // transfer data to table row
@@ -55,12 +58,23 @@ public class ProductBestSalePage extends Page {
                         product.getUnitsOnOrder(),
                         product.getCategory().getCategoryName(),
                         product.getBrand().getBrandName(),
-                        product.getSupplier().getName(),};
+                        product.getSupplier().getName()
+                    };
 
                     rows.add(row);
                 }
 
-                String[] headers = {"ID", "Tên SP", "Giá", "SL", "SL đã bán", "Danh mục", "Nhãn hàng", "Nhà cung cấp"};
+                String[] headers = {
+                    "ID", 
+                    I18n.getMessage("product.label.singular"),
+                    I18n.getMessage("product.price"),
+                    I18n.getMessage("product.qty"),
+                    I18n.getMessage("product.soldQty"),
+                    I18n.getMessage("category.label.singular"),
+                    I18n.getMessage("category.label.singular"),
+                    I18n.getMessage("brand.label.singular"),
+                    I18n.getMessage("supplier.label.singular")
+                };
 
                 TableUI theTable = new TableUI(headers, rows);
                 theTable.display();
@@ -88,12 +102,6 @@ public class ProductBestSalePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sách Sản phẩm bán chạy";
+        return I18n.getMessage("title.bestSaleProducts");
     }
-
-    @Override
-    public String getBreadcrumbPathName() {
-        return "Sản phẩm bán chạy";
-    }
-
 }

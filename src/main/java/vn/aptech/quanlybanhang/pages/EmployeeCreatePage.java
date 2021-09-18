@@ -3,13 +3,14 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Department;
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
+import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.Md5;
 
 /**
@@ -24,72 +25,45 @@ public class EmployeeCreatePage extends Page {
         try {
             EmployeeService employeeService = new EmployeeServiceImpl();
             
-            Scanner sc = new Scanner(System.in);
-            System.out.print("Nhập tên Nhân viên : ");
-            String employeeName = sc.nextLine();
-            while (employeeName.length() == 0) {
-                System.out.println("Tên không được để trống !");
-                System.out.print("Nhập tên Nhân viên : ");
-                employeeName = sc.nextLine();
-            }
-            System.out.print("Nhập Địa chỉ Nhân viên : ");
-            String employeeAddress = sc.nextLine();
-            while (employeeAddress.length() == 0) {
-                System.out.println("Địa chỉ không được để trống !");
-                System.out.print("Nhập Địa chỉ Nhân viên : ");
-                employeeAddress = sc.nextLine();
-            }
-            System.out.print("Nhập số điện thoại : ");
-            String employeePhone = sc.nextLine();
-            while (employeePhone.length() == 0) {
-                System.out.println("Số điện thoại không được để trống !");
-                System.out.print("Nhập số điện thoại : ");
-                employeePhone = sc.nextLine();
-            }
-            System.out.printf("Nhập chức vụ (chỉ nhập 1=%s, 2=%s hoac 3=%s): \n", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY);
-            int employeeDepartment = sc.nextInt();
-            while (employeeDepartment == 0) {
-                System.out.println("Chức vụ không được để trống !");
-                System.out.print("Nhập chức vụ: ");
-                employeeDepartment = sc.nextInt();
-            }
-            while (employeeDepartment != Department.ROLE_ADMIN.getValue() 
-                    && employeeDepartment != Department.ROLE_EMPLOYEE_CASHER.getValue() 
-                    && employeeDepartment != Department.ROLE_EMPLOYEE_INVENTORY.getValue()) {
-                System.out.printf("Chi nhập 1=%s, 2=%s hoac 3=%s !\n", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY);
-                System.out.print("Nhập chức vụ : ");
-                employeeDepartment = sc.nextInt();
-            }
-            sc.nextLine();
-            System.out.print("Tạo Username: ");
-            String employeeUsername = sc.nextLine();
-            while (employeeUsername.length() == 0) {
-                System.out.println("Username không được để trống !");
-                System.out.print("Tạo Usename: ");
-                employeeUsername = sc.nextLine();
-            }
-            while (employeeUsername.length() < 6) {
-                System.out.println("Username từ 6 ký tự trở lên !");
-                System.out.print("Tạo Usename: ");
-                employeeUsername = sc.nextLine();
-            }
-            System.out.print("Tạo Password : ");
-            String employeePassword = sc.nextLine();
-            while (employeePassword.length() == 0) {
-                System.out.println("Password không được để trống !");
-                System.out.print("Tạo Password: ");
-                employeePassword = sc.nextLine();
-            }
-            while (employeePassword.length() < 6) {
-                System.out.println("Password phải từ 6 ký tự trở lên !");
-                System.out.print("Tạo Password: ");
-                employeePassword = sc.nextLine();
-            }
+            String employeeName = AppScanner.scanStringWithi18Message("employee.scan.name");
+            String employeeAddress = AppScanner.scanStringWithi18Message("employee.scan.addr");
+            String employeePhone = AppScanner.scanStringWithi18Message("employee.scan.phone");
+            
+            int employeeDepartment = 0;
+            do {
+                employeeDepartment = AppScanner.scanIntWithMessage(
+                        I18n.getMessage("employee.scan.dept")
+                        + String.format("(1=%s; 2=%s; 3=%s", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY)
+                );
+                
+                if (employeeDepartment < 1 || employeeDepartment > 3) {
+                    I18n.print("employee.error.invalidDept");
+                }
+            }while(employeeDepartment < 1 || employeeDepartment > 3);
+            
+            String employeeUsername;
+            do {
+                employeeUsername = AppScanner.scanStringWithi18Message("employee.scan.username");
+                
+                if (employeeUsername.length() < 6) {
+                    I18n.print("employee.error.invalidUsernameLength");
+                }
+            }while(employeeUsername.length() < 6);
+            
+            String employeePassword;
+            do{ 
+                employeePassword = AppScanner.scanStringWithi18Message("employee.scan.password");
+                
+                if (employeeUsername.length() < 6) {
+                    I18n.print("employee.error.invalidPassLength");
+                }
+            }while(employeeUsername.length() < 6);
+            
             Employee employee = new Employee(employeeName, employeeAddress, employeePhone, Department.fromInt(employeeDepartment), employeeUsername, Md5.encode(employeePassword));
             if (employeeService.create(employee)) {
-                System.out.println("Thêm Nhân viên thành công!");
+                I18n.printEntityMessage("employee", "entity.msg.created");
             } else {
-                System.out.println("Đã xảy ra lỗi!");
+                I18n.printEntityMessage("employee", "entity.error.createFailed");
             }
         } catch (Exception ex) {
             Logger.getLogger(EmployeeCreatePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,7 +72,7 @@ public class EmployeeCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Thêm Nhân viên";
+        return I18n.getEntityMessage("employee", "entity.title.create");
     }
     
 }

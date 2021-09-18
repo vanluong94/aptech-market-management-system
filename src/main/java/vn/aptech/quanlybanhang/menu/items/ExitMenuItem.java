@@ -6,6 +6,7 @@
 package vn.aptech.quanlybanhang.menu.items;
 
 import vn.aptech.quanlybanhang.menu.MenuItem;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -20,7 +21,7 @@ public class ExitMenuItem extends MenuItem {
 
     @Override
     public String getTitle() {
-        return "Thoát";
+        return I18n.getMessage("app.exit");
     }
     
 }

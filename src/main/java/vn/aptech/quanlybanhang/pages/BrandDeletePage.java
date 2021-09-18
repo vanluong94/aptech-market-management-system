@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.exception.InputInvalidException;
 import vn.aptech.quanlybanhang.service.BrandService;
 import vn.aptech.quanlybanhang.service.BrandServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -30,16 +31,16 @@ public class BrandDeletePage extends Page {
             retry = false;
             
             try{
-                int id = AppScanner.scanIntWithMessage("Nhập ID nhãn hàng muốn xóa: ");
+                int id = AppScanner.scanIntWithMessage(I18n.getEntityMessage("brand", "entity.scan.id.delete"));
                 Brand brand = brandService.findById(id);
 
                 if (brand == null) {
-                    System.out.println("ID không tồn tại");
+                    I18n.getEntityMessage("brand", "entity.error.idNotFound");
                     retry = true;
                 } else if( brandService.deleteById(brand.getBrandId()) ){
-                    System.out.println("Xóa thành công!");
+                    I18n.printEntityMessage("brand", "entity.msg.deleted");
                 } else {
-                    System.out.println("Đã xảy ra lỗi");
+                    I18n.printEntityMessage("brand", "entity.error.deleteFailed");
                 }
             }catch(InputInvalidException e){
                 System.out.println(e.getMessage());
@@ -54,7 +55,7 @@ public class BrandDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xóa Nhãn hàng";
+        return I18n.getEntityMessage("brand", "entity.title.delete");
     }
     
 }

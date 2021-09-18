@@ -70,7 +70,7 @@ public class ImportProductPage extends Page {
                 theTable.display();
             }
 
-            int brandId = AppScanner.scanIntWithMessage("Nhập mã thương hiệu: ", false);
+            int brandId = AppScanner.scanIntWithMessage("Nhập mã thương hiệu: ");
             Brand brand = brandService.findById(brandId);
             if (brand == null) {
                 System.out.println("Không tồn tại mã thương hiệu này");
@@ -100,7 +100,7 @@ public class ImportProductPage extends Page {
                 theTable.display();
             }
             
-            int categoryId = AppScanner.scanIntWithMessage("Nhập mã danh mục: ", false);
+            int categoryId = AppScanner.scanIntWithMessage("Nhập mã danh mục: ");
             Category category = categoryService.findById(categoryId);
             if (category == null) {
                 System.out.println("Không tồn tại mã danh mục này");
@@ -130,7 +130,7 @@ public class ImportProductPage extends Page {
                 theTable.display();
             }
 
-            int supplierId = AppScanner.scanIntWithMessage("Nhập mã nhà cung cấp: ", false);
+            int supplierId = AppScanner.scanIntWithMessage("Nhập mã nhà cung cấp: ");
             Supplier supplier = supplierService.findById(supplierId);
             if (supplier == null) {
                 System.out.println("Không tồn tại mã nhà cung cấp này");

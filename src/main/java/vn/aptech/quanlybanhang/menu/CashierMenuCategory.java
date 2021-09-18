@@ -11,6 +11,7 @@ import vn.aptech.quanlybanhang.menu.items.GoBackMenuItem;
 import vn.aptech.quanlybanhang.pages.CategoryDetailPage;
 import vn.aptech.quanlybanhang.pages.CategoryListingPage;
 import vn.aptech.quanlybanhang.pages.CategorySearchPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class CashierMenuCategory extends Menu {
@@ -31,7 +32,7 @@ public class CashierMenuCategory extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Tra cứu Danh mục";
+        return I18n.getEntityMessage("category", "entity.title.manage", true);
     }
     
 }

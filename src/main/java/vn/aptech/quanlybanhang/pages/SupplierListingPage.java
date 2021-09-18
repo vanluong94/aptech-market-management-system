@@ -14,7 +14,7 @@ import vn.aptech.quanlybanhang.entities.Supplier;
 import vn.aptech.quanlybanhang.service.SupplierService;
 import vn.aptech.quanlybanhang.service.SupplierServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
-import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class SupplierListingPage extends Page {
@@ -27,10 +27,8 @@ public class SupplierListingPage extends Page {
                 List<Supplier> suppliers = supplierService.findAll();
                 
                 if (suppliers.isEmpty()) {
-                    System.out.println("Không tìm thấy Nhà cung cấp nào trong dữ liệu.");
-                    
+                    I18n.printEntityMessage("supplier", "entity.msg.emptyResults");
                 } else {
-                    System.out.println("Các Nhà cung cấp được tìm thấy dựa theo tên : ");
                     List<Object[]> rows = new ArrayList<>();
                     for (Supplier supplier : suppliers) {
                         Object[] row = {
@@ -40,7 +38,7 @@ public class SupplierListingPage extends Page {
                         };
                         rows.add(row);
                     }
-                    String[] headers = {"ID", "Tên NCC", "Địa chỉ"};
+                    String[] headers = {"ID", I18n.getMessage("supplier.name"), I18n.getMessage("supplier.addr")};
                     TableUI theTable = new TableUI(headers, rows);
                     theTable.display();
                     break;
@@ -55,7 +53,7 @@ public class SupplierListingPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh Sach Nha Cung Cap";
+        return I18n.getEntityMessage("supplier", "entity.title.all", true);
     }
     
 }

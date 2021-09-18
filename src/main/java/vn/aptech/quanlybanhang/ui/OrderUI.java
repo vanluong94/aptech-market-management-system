@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -37,19 +38,26 @@ public class OrderUI {
     public void displayHeader() {
         this.displayMargin();
         this.displayCenter("SUPERMAKERT");
-        this.displayCenter("Addr: 19 Nguyễn Trãi, Thanh Xuân, Hà Nội");
-        this.displayCenter("SDT: 0912345678");
+        this.displayCenter(I18n.getMessage("order.receipt.addr", "19 Nguyễn Trãi, Thanh Xuân, Hà Nội"));
+        this.displayCenter(I18n.getMessage("order.receipt.phone", "0912345678"));
         this.displayMargin();
     }
     
     public void displayTitle() {
         this.displayMargin();
-        this.displayCenter("HÓA ĐƠN THANH TOÁN");
+        this.displayCenter(I18n.getMessage("order.receipt.title"));
         this.displayMargin();
     }
     
     public void displayProductsTable() {
-        String[] headers = {"Sản Phẩm", "SL", "Giá gốc", "Giá bán","Thành Tiền"};
+        String[] headers = {
+            I18n.getMessage("product.label.singular"), 
+            I18n.getMessage("product.qty"),
+            I18n.getMessage("product.price"),
+            I18n.getMessage("product.price.sale"),
+            I18n.getMessage("order.subtotal"),
+        };
+        
         List<Object[]> rows = new ArrayList<>();
         List<Integer> colsLength = Arrays.asList(26, 5, 13, 13, 17);
         List<String> colsAlign = Arrays.asList("left", "right", "right", "right", "right");
@@ -73,16 +81,16 @@ public class OrderUI {
         table.display();
         
         System.out.println(String.format("| %-54s | %14s |", " ", " "));
-        System.out.println(String.format("| %-54s | %14s |", "TỔNG TIỀN", this.order.getAmountString()));
+        System.out.println(String.format("| %-54s | %14s |", I18n.getMessage("order.receipt.total"), this.order.getAmountString()));
         System.out.println(String.format("| %-54s | %14s |", " ", " "));
         this.displayBorder();
     }
     
     public void displayOrderDetail() {
-        this.displayLine(String.format("%-11s: %s", "Mã hóa đơn", order.getId()));
-        this.displayLine(String.format("%-11s: %s", "Thời gian", order.getDatetimeString()));
-        this.displayLine(String.format("%-11s: %s (Mã KH: %d)", "Khách hàng", order.getCustomer().getName(), order.getCustomer().getId()));
-        this.displayLine(String.format("%-11s: %s (Mã Thu Ngân: %d)", "Thu ngân", order.getEmployee().getName(), order.getEmployee().getEmployeeId()));
+        this.displayLine(String.format("%-11s: %s", I18n.getMessage("order.receipt.id"), order.getId()));
+        this.displayLine(String.format("%-11s: %s", I18n.getMessage("order.receipt.timestamp"), order.getDatetimeString()));
+        this.displayLine(String.format("%-11s: %s (Mã KH: %d)", I18n.getMessage("customer.label.singular"), order.getCustomer().getName(), order.getCustomer().getId()));
+        this.displayLine(String.format("%-11s: %s (Mã Thu Ngân: %d)", I18n.getMessage("order.receipt.cashier"), order.getEmployee().getName(), order.getEmployee().getEmployeeId()));
     }
     
     public void displayBorder() {

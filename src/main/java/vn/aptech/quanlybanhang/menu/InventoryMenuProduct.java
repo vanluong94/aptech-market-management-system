@@ -11,6 +11,7 @@ import vn.aptech.quanlybanhang.pages.ProductEditPage;
 import vn.aptech.quanlybanhang.pages.ProductListingPage;
 import vn.aptech.quanlybanhang.pages.ProductOutOfStockPage;
 import vn.aptech.quanlybanhang.pages.ProductSearchPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class InventoryMenuProduct extends Menu {
@@ -37,7 +38,7 @@ public class InventoryMenuProduct extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quản lý Sản phẩm";
+        return I18n.getEntityMessage("product", "entity.title.manage", true);
     }
     
 }

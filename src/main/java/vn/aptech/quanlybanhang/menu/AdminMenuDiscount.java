@@ -13,6 +13,7 @@ import vn.aptech.quanlybanhang.pages.DiscountDeletePage;
 import vn.aptech.quanlybanhang.pages.DiscountDetailPage;
 import vn.aptech.quanlybanhang.pages.DiscountEditPage;
 import vn.aptech.quanlybanhang.pages.DiscountListingPage;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class AdminMenuDiscount extends Menu {
@@ -35,7 +36,7 @@ public class AdminMenuDiscount extends Menu {
 
     @Override
     protected String registerMenuTitle() {
-        return "Quản lý Chương trình giảm giá";
+        return I18n.getEntityMessage("discount", "entity.title.manage", true);
     }
     
 }

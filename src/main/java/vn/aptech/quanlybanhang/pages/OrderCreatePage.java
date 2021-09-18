@@ -17,6 +17,7 @@ import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -39,24 +40,27 @@ public class OrderCreatePage extends Page {
             Order order = new Order();
             double amount = 0;
             while (true) {
-                int productId = AppScanner.scanIntWithMessage("Nhập mã sản phẩm: ", false);
+                int productId = AppScanner.scanIntWithi18Message("order.scan.product.id");
                 OrderItem orderItem = new OrderItem();
                 Product product = productService.findById(productId);
                 if (product == null) {
-                    System.out.println("Không tìm thấy sản phẩm trong kho. Vui lòng nhập lại!");
+                    I18n.print("order.error.product.notFound");
                     continue;
                 }
-                System.out.println("Tìm thấy sản phẩm '" + product.getName() + "'");
+                
+                I18n.print("order.msg.product.foundOne", product.getName());
                 orderItem.setProduct(product);
-                int qty = AppScanner.scanIntWithMessage("Nhập số lượng: ", false);
+                
+                int qty = AppScanner.scanIntWithi18Message("order.scan.product.qty");
                 if (product.getQuantityInStock() < 1) {
-                    System.out.println("Sản phẩm đã hết hàng!");
+                    I18n.print("order.error.product.outOfStock");
                     continue;
                 }
                 if (product.getQuantityInStock() < qty) {
-                    System.out.println("Vượt quá số lượng tồn kho. Chỉ có thể mua tối đa là '" + orderItem.getProduct().getQuantityInStock() + "'");
+                    I18n.print("order.error.product.insufStock", orderItem.getProduct().getQuantityInStock());
                     qty = product.getQuantityInStock(); // Lấy số lượng tồn kho
                 }
+                
                 // Kiểm tra xem SP đã tồn tại trong Order hay chưa
                 boolean alreadyExist = false;
                 for (OrderItem od : order.getOrderItems()) {
@@ -81,7 +85,7 @@ public class OrderCreatePage extends Page {
                 }
                 // Set nốt discount va discount Price
                 AppScanner.getScanner().nextLine();
-                choice = AppScanner.scanStringWithMessage("Bạn có muốn thêm sản phẩm khác vào đơn hàng không? [y/n]: ", true);
+                choice = AppScanner.scanStringWithMessage(I18n.getMessage("order.confirm.addAnotherProduct"), true);
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }
@@ -95,7 +99,7 @@ public class OrderCreatePage extends Page {
 
             List<Object[]> rows = new ArrayList<>();
 
-            System.out.println("Các sản phẩm trong �?ơn hàng");
+            I18n.print("order.msg.detail");
             for (OrderItem orderItem : order.getOrderItems()) {
                 Object[] row = {
                     orderItem.getProduct().getId(),
@@ -109,18 +113,26 @@ public class OrderCreatePage extends Page {
                 rows.add(row);
             }
 
-            String[] headers = {"ID", "Sản phẩm", "Giá gốc", "Giá bán", "Số lượng", "Tạm tính"};
+            String[] headers = {
+                "ID", 
+                I18n.getMessage("product.label.singular"), 
+                I18n.getMessage("product.price"),
+                I18n.getMessage("product.price.sale"),
+                I18n.getMessage("product.qty"),
+                I18n.getMessage("order.subtotal")
+            };
 
             TableUI theTable = new TableUI(headers, rows);
             theTable.display();
-            System.out.println("Tổng ti�?n của hóa đơn: " + StringCommon.convertDoubleToVND(order.getAmount()));
+            
+            System.out.println(I18n.getMessage("order.total") + ": " + StringCommon.convertDoubleToVND(order.getAmount()));
 
-            choice = AppScanner.scanStringWithMessage("Bạn có muốn lưu lại đơn hàng không? [y/N]: ", true);
+            choice = AppScanner.scanStringWithMessage(I18n.getMessage("order.confirm.saveOrder"), true);
             if ("y".equalsIgnoreCase(choice)) {
                 if (orderService.create(order)) {
-                    System.out.println("Tạo đơn hàng thành công!");
+                    I18n.printEntityMessage("order", "entity.msg.created");
                 } else {
-                    System.out.println("�?ã xảy ra lỗi khi tạo đơn hàng");
+                    I18n.printEntityMessage("order", "entity.error.createFailed");
                 }
             }
         } catch (Exception e) {
@@ -130,7 +142,7 @@ public class OrderCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tao don hang cho khach hang khong co the";
+        return I18n.getEntityMessage("order", "entity.title.create");
     }
 
 }

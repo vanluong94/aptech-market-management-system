@@ -4,8 +4,6 @@
 package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -14,9 +12,9 @@ import vn.aptech.quanlybanhang.common.DateCommon;
 import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.dao.ProductDAO;
 import vn.aptech.quanlybanhang.dao.ProductDAOImpl;
-import vn.aptech.quanlybanhang.entities.Discount;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.exception.InputInvalidException;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 /**
@@ -48,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
     public boolean deleteById(int id) throws SQLException, Exception {
         if (id < 1) {
             try {
-                throw new Exception("ID không hợp lệ!");
+                throw new Exception(I18n.getMessage("input.invalidID"));
             } catch (Exception e) {
                 Logger.getLogger(ProductServiceImpl.class.getName()).log(Level.SEVERE, null, e);
             }
@@ -81,15 +79,15 @@ public class ProductServiceImpl implements ProductService {
         ValidateCommon.validateNullObject(product.getQuantityInStock(), "quantityInStock");
 
         if (product.getName().trim().length() == 0) {
-            throw new InputInvalidException("Tên Sản phẩm không được bỏ trống");
+            throw new InputInvalidException(I18n.getMessage("prodcut.error.emptyName"));
         }
 
         if (product.getQuantityInStock() == 0) {
-            throw new InputInvalidException("Hãy nhập số lượng tồn kho cho Sản phẩm");
+            throw new InputInvalidException(I18n.getMessage("prodcut.error.invalidQty"));
         }
 
-        if (product.getPrice() <= 0) {
-            throw new InputInvalidException("Hãy nhập giá hợp lệ cho Sản phẩm");
+        if (product.getPrice() <= 100) {
+            throw new InputInvalidException(I18n.getMessage("prodcut.error.invalidPrice"));
         }
     }
 

@@ -1,5 +1,7 @@
 package vn.aptech.quanlybanhang.entities;
 
+import vn.aptech.quanlybanhang.utilities.I18n;
+
 /**
  *
  * @author VuxxLong
@@ -112,14 +114,13 @@ public class Employee {
     }
 
     public void showOne() {
-        System.out.println("====== Chi tiết nhân viên ======");
-        System.out.println("Chi tiết Nhân viên " + name + " :");
-        System.out.println("H�? tên : " + name);
-        System.out.println("�?ịa chỉ: " + address);
-        System.out.println("Số điện thoại: " + phone);
-        System.out.println("Chức vụ : " + department);
-        System.out.println("ID : " + employeeId);
-        System.out.println("UserName : " + userName);
+        System.out.println("====== " + I18n.getEntityMessage("employee", "entity.title.detail") + " ======");
+        System.out.println(I18n.getMessage("employee.name") + ": " + name);
+        System.out.println(I18n.getMessage("employee.addr") + ": " + address);
+        System.out.println(I18n.getMessage("employee.phone") + ": " + phone);
+        System.out.println(I18n.getMessage("employee.dept") + ": " + department);
+        System.out.println(I18n.getMessage("employee.id") + ": " + employeeId);
+        System.out.println(I18n.getMessage("employee.username") + ": " + userName);
         System.out.println("=================================");
     }
     

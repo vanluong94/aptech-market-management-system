@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.service.DiscountService;
 import vn.aptech.quanlybanhang.service.DiscountServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 
 public class DiscountDeletePage extends Page {
@@ -20,12 +21,11 @@ public class DiscountDeletePage extends Page {
         try {
             DiscountService discountService = new DiscountServiceImpl();
             
-            System.out.println("Nhập ID chương trình giảm giá muốn xóa :");
-            int discountId = AppScanner.getScanner().nextInt();
+            int discountId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("discount", "entity.scan.id.delete"));
             if (discountService.deleteById(discountId)) {
-                System.out.println("Xóa thành công Chương trình giảm giá ");
+                I18n.printEntityMessage("discount", "entity.msg.deleted");
             } else {
-                System.out.println("Đã xảy ra lỗi!");
+                I18n.printEntityMessage("discount", "entity.error.deleteFailed");
             }
         } catch (Exception ex) {
             Logger.getLogger(DiscountDeletePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class DiscountDeletePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Xóa Chương trình giảm giá";
+        return I18n.getEntityMessage("discount", "entity.title.delete");
     }
     
 }

@@ -5,7 +5,6 @@ package vn.aptech.quanlybanhang.pages;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Customer;
@@ -13,6 +12,7 @@ import vn.aptech.quanlybanhang.service.CustomerService;
 import vn.aptech.quanlybanhang.service.CustomerServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -24,11 +24,11 @@ public class CustomerSearchByIDPage extends Page {
     public void displayContent() {
         try {
             CustomerService customerService = new CustomerServiceImpl();
-            Customer customer = new Customer();
-            int check = AppScanner.scanIntWithMessage("Nhap ID khach hang muon tim kiem : ", false);
+            
+            int check = AppScanner.scanIntWithMessage(I18n.getEntityMessage("customer", "entity.scan.id.detail"));
             while (customerService.findById(check) == null) {
-                System.out.println("ID khong ton tai !");
-                check = AppScanner.scanIntWithMessage("Nhap ID khach hang muon tim kiem: ", false);
+                I18n.printEntityMessage("customer", "entity.error.idNotFound");
+                AppScanner.scanIntWithMessage(I18n.getEntityMessage("customer", "entity.scan.id.detail"));
             }
             List<Customer> customers = new ArrayList<>();
             customers.add(customerService.findById(check));

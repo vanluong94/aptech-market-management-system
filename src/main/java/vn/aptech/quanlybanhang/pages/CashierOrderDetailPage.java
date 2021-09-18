@@ -15,6 +15,7 @@ import vn.aptech.quanlybanhang.service.OrderService;
 import vn.aptech.quanlybanhang.service.OrderServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 public class CashierOrderDetailPage extends Page {
 
@@ -24,12 +25,12 @@ public class CashierOrderDetailPage extends Page {
         String choice = null;
         do {
             try {
-                int orderId = AppScanner.scanIntWithMessage("Nhập ID hóa đơn muốn kiểm tra : ");
+                int orderId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("order", "entity.scan.id.detail"));
                 Order order = orderService.findByCashierId(orderId);
                 if (order == null) {
-                    System.out.println("ID hóa đơn không phù hợp");
+                    I18n.getEntityMessage("order", "entity.error.idNotFound");
                 } else {
-                    List<Object[]> rows = new ArrayList<Object[]>();
+                    List<Object[]> rows = new ArrayList<>();
                     Object[] row = {
                         order.getId(),
                         order.getEmployee().getName(),
@@ -38,11 +39,18 @@ public class CashierOrderDetailPage extends Page {
                         order.getAmountString()
                     };
                     rows.add(row);
-                    String[] headers = {"ID", "Nhân viên", "Khách", "Ngày tạo hóa đơn", "Tổng tiền hóa đơn"};
+                    String[] headers = {
+                        "ID", 
+                        I18n.getMessage("order.emp"), 
+                        I18n.getMessage("order.customer"), 
+                        I18n.getMessage("entity.createdAt"),
+                        I18n.getMessage("order.total")
+                    };
                     TableUI tableUI = new TableUI(headers, rows);
                     tableUI.display();
                 }
-                choice = AppScanner.scanStringWithMessage("Bạn có muốn tìm hóa đơn khác không? [Y/N] : ");
+
+                choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("order", "entity.confirm.searchAnOther"));
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }
@@ -53,13 +61,10 @@ public class CashierOrderDetailPage extends Page {
             }
         } while ("y".equalsIgnoreCase(choice));
     }
-    @Override
-    public String getTitle() {
-        return "Tìm Hóa đơn theo ID";
-    }
 
     @Override
-    public String getBreadcrumbPathName() {
-        return "Tìm kiếm ";
+    public String getTitle() {
+        return I18n.getEntityMessage("order", "entity.title.findById");
     }
+
 }

@@ -15,6 +15,7 @@ import vn.aptech.quanlybanhang.service.BrandService;
 import vn.aptech.quanlybanhang.service.BrandServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -31,15 +32,12 @@ public class BrandSearchPage extends Page {
         do{
             try {
                 System.out.println("\n\n");
-                String search = AppScanner.scanStringWithMessage("Tìm nhãn hàng cần sửa theo tên: ");
+                String search = AppScanner.scanStringWithi18Message("brand.scan.searchByName");
                 System.out.println("\n\n");
                 
                 List<Brand> brands = brandService.searchByName(search);
                 
-                
                 if (!brands.isEmpty()) {
-                    
-                    System.out.println( String.format( "Các nhãn hàng được tìm thấy dựa theo tên \"%s\"", search ) );
                     
                     List<Object[]> rows = new ArrayList<>();
                     
@@ -54,13 +52,13 @@ public class BrandSearchPage extends Page {
                         rows.add(row);
                     }
                     
-                    String[] headers = {"ID", "Tên Nhãn hàng", "Địa chỉ"};
+                    String[] headers = {"ID", I18n.getMessage("brand.name"), I18n.getMessage("brand.addr")};
                     
                     TableUI theTable = new TableUI(headers, rows);
                     theTable.display();
                     
                 } else {
-                    System.out.println("Không tìm thấy nhãn hàng nào.");
+                    I18n.printEntityMessage("brand", "entity.msg.emptyResults");
                     retry = true;
                 }
             } catch (SQLException | ClassNotFoundException ex) {
@@ -71,7 +69,7 @@ public class BrandSearchPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tìm Nhãn hàng";
+        return I18n.getEntityMessage("brand", "entity.title.search", true);
     }
     
 }

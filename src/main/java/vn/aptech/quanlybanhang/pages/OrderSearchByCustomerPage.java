@@ -5,6 +5,8 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
+import vn.aptech.quanlybanhang.utilities.I18n;
+
 
 public class OrderSearchByCustomerPage extends Page {
 
@@ -15,12 +17,12 @@ public class OrderSearchByCustomerPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tìm kiếm Đơn hàng theo Khách hàng";
+        return I18n.getMessage("order.title.searchByCustomer");
     }
     
     @Override
     public String getBreadcrumbPathName(){
-        return "Tìm kiếm Đơn hàng";
+        return I18n.getEntityMessage("order", "entity.title.search", true);
     }
     
 }

@@ -12,6 +12,7 @@ import vn.aptech.quanlybanhang.entities.Customer;
 import vn.aptech.quanlybanhang.service.CustomerService;
 import vn.aptech.quanlybanhang.service.CustomerServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -25,7 +26,7 @@ public class CustomerListingPage extends Page {
             CustomerService customerService = new CustomerServiceImpl();
             List<Customer> customers = customerService.findAll();
             if (customers.isEmpty()) {
-                System.out.println("Trong !");
+                I18n.printEntityMessage("customer", "entity.msg.emptyResults");
             } else {
                 List<Object[]> rows = new ArrayList<>();
                 for (Customer c : customers) {
@@ -34,14 +35,18 @@ public class CustomerListingPage extends Page {
                         c.getName(),
                         c.getAddress(),
                         c.getPhone(),
-                        c.getEmployee().getEmployeeId(),
-                        c.getEmployee().getName(),
-                        c.getDiscount(),
-                        c.getSalePoint()
+                        String.format("%s (ID:%d)", c.getEmployee().getName(), c.getEmployee().getEmployeeId())
                     };
                     rows.add(row);
                 }
-                String[] headers = {"ID", "Name", "Address", "Phone", "Employee ID", "Employee Name", "Discount", "Sale Point"};
+                
+                String[] headers = {
+                    "ID", 
+                    I18n.getMessage("customer.name"), 
+                    I18n.getMessage("customer.addr"), 
+                    I18n.getMessage("customer.phone"),
+                    I18n.getMessage("customer.emp")
+                };
                 TableUI theTable = new TableUI(headers, rows);
                 theTable.display();
             }
@@ -53,7 +58,7 @@ public class CustomerListingPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Danh sach khach hang";
+        return I18n.getEntityMessage("customer", "entity.title.all", true);
     }
 
 }

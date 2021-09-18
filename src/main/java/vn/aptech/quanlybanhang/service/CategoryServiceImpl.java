@@ -11,6 +11,7 @@ import java.util.Objects;
 import vn.aptech.quanlybanhang.dao.CategoryDAO;
 import vn.aptech.quanlybanhang.dao.CategoryDAOImpl;
 import vn.aptech.quanlybanhang.entities.Category;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
 
@@ -32,13 +33,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public boolean create(Category object) throws SQLException, Exception {
         if (Objects.requireNonNull(object.getCategoryName()) == null) {
-            throw new IllegalArgumentException("Danh mục không được trống.");
+            throw new IllegalArgumentException(I18n.getMessage("category.error.emptyName"));
         }
         return categoryDAO.create(object);
     }
 
     @Override
-    public boolean deleteById(int id) throws SQLException {
+    public boolean deleteById(int id) throws SQLException, Exception {
+        if (id < 1) {
+            throw new Exception(I18n.getMessage("input.invalidID"));
+        }
         return categoryDAO.deleteById(id);
     }
 
@@ -52,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findById(int id) throws SQLException, Exception {
         if (id < 1) {
-            throw new Exception("ID không được để trống!");
+            throw new Exception(I18n.getMessage("input.invalidID"));
         }
         return categoryDAO.findById(id);
     }
