@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -107,7 +108,11 @@ public class OrderDAOImpl implements OrderDAO {
             conn = DBConnection.getConnection();
             conn.setAutoCommit(false);
             PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setInt(1, object.getCustomer().getId());
+            if (object.getCustomer().getId() == -1) {
+                pstmt.setNull(1, Types.INTEGER);
+            } else {
+                pstmt.setInt(1, object.getCustomer().getId());
+            }
             pstmt.setInt(2, object.getEmployee().getEmployeeId());
             pstmt.setDouble(3, object.getAmount());
             pstmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));

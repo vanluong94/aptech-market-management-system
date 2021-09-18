@@ -16,6 +16,14 @@ repositories {
 
 dependencies {
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.23'
+    // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
+    implementation group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.12.2'
+    // https://mvnrepository.com/artifact/com.lowagie/itext
+    implementation group: 'com.lowagie', name: 'itext', version: '2.1.7'
+    // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports-fonts
+    implementation group: 'net.sf.jasperreports', name: 'jasperreports-fonts', version: '6.17.0'
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
     testImplementation     'junit:junit:4.13'
 }
 
