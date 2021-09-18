@@ -3,9 +3,14 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.common.StringCommon;
+import vn.aptech.quanlybanhang.constant.Constant;
+import vn.aptech.quanlybanhang.dao.BrandDAOImpl;
 import vn.aptech.quanlybanhang.entities.Customer;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
@@ -17,6 +22,7 @@ import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.FileUtils;
 
 /**
  *
@@ -80,18 +86,17 @@ public class OrderCreatePage extends Page {
                     order.getOrderItems().add(orderItem);
                 }
                 // Set nốt discount va discount Price
-                AppScanner.getScanner().nextLine();
-                choice = AppScanner.scanStringWithMessage("Bạn có muốn thêm sản phẩm khác vào đơn hàng không? [y/n]: ", true);
+                choice = AppScanner.scanStringWithMessage("Bạn có muốn thêm sản phẩm khác vào đơn hàng không? [y/N]: ", true);
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }
             }
             for (OrderItem od : order.getOrderItems()) {
-                amount += od.getTotal(); 
+                amount += od.getTotal(); // Tính tổng giá trị đơn hàng
             }
             order.setAmount(amount);
             order.setEmployee(AuthServiceImpl.getCurrentEmployee()); // Set nhân viên hiện tại đang đăng nhập
-            order.setCustomer(new Customer(2)); // Lấy tạm Khách hàng cũ có ID = 2, sau này sửa lại có thêm chức năng nhập Khách hàng nữa
+            order.setCustomer(new Customer(-1)); // Không có khách hàng nào
 
             List<Object[]> rows = new ArrayList<>();
 
@@ -119,12 +124,21 @@ public class OrderCreatePage extends Page {
             if ("y".equalsIgnoreCase(choice)) {
                 if (orderService.create(order)) {
                     System.out.println("Tạo đơn hàng thành công!");
+                    choice = AppScanner.scanStringWithMessage("Bạn có muốn xuất hóa đơn không? [y/N]: ", true);
+                    if ("y".equalsIgnoreCase(choice)) {
+                        String reportFile = orderService.requestReportXlsx(order);
+                        if (reportFile != null) {
+                            System.out.println("Hóa đơn được lưu tại đường dẫn: " + reportFile);
+                        } else {
+                            System.out.println("Đã xảy ra lỗi khi xuất hóa đơn");
+                        }
+                    }
                 } else {
                     System.out.println("�?ã xảy ra lỗi khi tạo đơn hàng");
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Logger.getLogger(OrderCreatePage.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
