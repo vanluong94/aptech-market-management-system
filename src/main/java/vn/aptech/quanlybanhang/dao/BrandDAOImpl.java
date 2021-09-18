@@ -26,8 +26,11 @@ public class BrandDAOImpl implements BrandDAO {
     @Override
     public List<Brand> findAll() throws SQLException {
         List<Brand> brands = new ArrayList<>();
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (
+            Connection conn = DBConnection.getConnection();  
             Statement st = conn.createStatement();
+        ) {
+            
             ResultSet rs = st.executeQuery(SQL_SELECT_ALL);
             while (rs.next()) {
                 brands.add(this.transferRSToBrand(rs));
@@ -44,24 +47,27 @@ public class BrandDAOImpl implements BrandDAO {
         
         List<Brand> brands = new ArrayList<>();
         
-        try ( Connection conn = DBConnection.getConnection()) {
+        try ( 
+                Connection conn = DBConnection.getConnection();
+                Statement stTotal = conn.createStatement();
+        ) {
             
-            Statement stTotal = conn.createStatement();
             ResultSet rsTotal = stTotal.executeQuery(SQL_COUNT_ALL);
             if (rsTotal.next()) {
                 pagination.setTotalItems(rsTotal.getInt("total"));
             }
 
-            PreparedStatement stSelect = conn.prepareStatement(SQL_SELECT_ALL_PAGINATION);
-            stSelect.setInt(1, pagination.getOffset());
-            stSelect.setInt(2, pagination.getPerPage());
-            ResultSet rsSelect = stSelect.executeQuery();
-            
-            while(rsSelect.next()){
-                brands.add(this.transferRSToBrand(rsSelect));
+            try(PreparedStatement stSelect = conn.prepareStatement(SQL_SELECT_ALL_PAGINATION)){
+                stSelect.setInt(1, pagination.getOffset());
+                stSelect.setInt(2, pagination.getPerPage());
+                ResultSet rsSelect = stSelect.executeQuery();
+                
+                while(rsSelect.next()){
+                    brands.add(this.transferRSToBrand(rsSelect));
+                }
+
+                pagination.setResults(brands);
             }
-            
-            pagination.setResults(brands);
             
         } catch (SQLException e) {
             throw e;
@@ -73,8 +79,11 @@ public class BrandDAOImpl implements BrandDAO {
     @Override
     public boolean deleteById(int id) throws SQLException {
         int rowsAffected = -1;
-        try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement st = conn.prepareStatement(SQL_DELETE);
+        try (
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement st = conn.prepareStatement(SQL_DELETE);
+        ) {
+            
             st.setInt(1, id);
             rowsAffected = st.executeUpdate();
         } catch (SQLException e) {
@@ -86,8 +95,10 @@ public class BrandDAOImpl implements BrandDAO {
     @Override
     public Brand findById(int id) throws SQLException {
         Brand brand = null;
-        try {
-            PreparedStatement st = DBConnection.getConnection().prepareStatement(SQL_SELECT_ONE);
+        try (
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement st = conn.prepareStatement(SQL_SELECT_ONE)
+        ){
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
 
@@ -96,8 +107,6 @@ public class BrandDAOImpl implements BrandDAO {
             }
         } catch (SQLException ex) {
             Logger.getLogger(BrandDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            DBConnection.maybeCloseConnection();
         }
 
         return null;
@@ -106,17 +115,16 @@ public class BrandDAOImpl implements BrandDAO {
 
     @Override
     public boolean create(Brand brand) throws SQLException {
-        try {
-            String sql = "INSERT INTO brands (brand_name, brand_add) VALUES (?,?)";
-            PreparedStatement st = DBConnection.getConnection().prepareStatement(sql);
+        
+        String sql = "INSERT INTO brands (brand_name, brand_add) VALUES (?,?)";
+        
+        try (PreparedStatement st = DBConnection.getConnection().prepareStatement(sql)){
             st.setString(1, brand.getBrandName());
             st.setString(2, brand.getBrandAdd());
 
             return st.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(BrandDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            DBConnection.maybeCloseConnection();
         }
 
         return false;
@@ -124,10 +132,9 @@ public class BrandDAOImpl implements BrandDAO {
 
     @Override
     public boolean update(Brand brand) throws SQLException {
-        try {
-            String sql = "UPDATE brands SET brand_name = ?, brand_add = ? WHERE brand_id = ?";
-
-            PreparedStatement st = DBConnection.getConnection().prepareStatement(sql);
+        String sql = "UPDATE brands SET brand_name = ?, brand_add = ? WHERE brand_id = ?";
+        
+        try (PreparedStatement st = DBConnection.getConnection().prepareStatement(sql)){
             st.setString(1, brand.getBrandName());
             st.setString(2, brand.getBrandAdd());
             st.setInt(3, brand.getBrandId());
@@ -135,8 +142,6 @@ public class BrandDAOImpl implements BrandDAO {
             return st.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(BrandDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            DBConnection.maybeCloseConnection();
         }
 
         return false;

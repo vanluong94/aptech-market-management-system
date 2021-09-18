@@ -66,8 +66,8 @@ public class ProductDAOImpl implements ProductDAO {
             + " WHERE products.category_id = ? "
             + " LIMIT ?,?";
 
-    private final static String SQL_INSERT = "INSERT INTO `products` (`brand_id`, `category_id`, `employee_id`, `product_name`,"
-            + " `product_price`, `product_stock`) VALUES (?, ?, ?, ?, ?, ?);";
+    private final static String SQL_INSERT = "INSERT INTO `products` (`brand_id`, `category_id`, `employee_id`, `supplier_id`, `product_name`,"
+            + " `product_price`, `product_stock`) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
     private final static String SQL_DELETE = "DELETE FROM products WHERE product_id = ?";
     private final static String SQL_SELECT_POPULAR_ORDER = "SELECT products.*, categories.category_name, brands.brand_name,"
@@ -137,9 +137,10 @@ public class ProductDAOImpl implements ProductDAO {
             pstmt.setInt(1, object.getBrand().getBrandId());
             pstmt.setInt(2, object.getCategory().getCategoryId());
             pstmt.setInt(3, object.getEmployee().getEmployeeId());
-            pstmt.setString(4, object.getName());
-            pstmt.setDouble(5, object.getPrice());
-            pstmt.setInt(6, object.getQuantityInStock());
+            pstmt.setInt(4, object.getSupplier().getId());
+            pstmt.setString(5, object.getName());
+            pstmt.setDouble(6, object.getPrice());
+            pstmt.setInt(7, object.getQuantityInStock());
             rowsAffected = pstmt.executeUpdate();
 
             if (rowsAffected > 0) {

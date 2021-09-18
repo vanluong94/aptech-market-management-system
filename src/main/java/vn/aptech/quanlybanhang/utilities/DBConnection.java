@@ -31,7 +31,7 @@ public class DBConnection {
         try {
             if (conn == null || conn.isClosed()) {
                 String url = String.format("jdbc:mysql://%s:%s/%s", SERVER, PORT, DATABASE);
-                System.out.println("\nConnecting...\n");
+                System.out.println("Connecting...");
                 Class.forName(DRIVER);
                 conn = DriverManager.getConnection(url, USER, PASSWORD);
             }

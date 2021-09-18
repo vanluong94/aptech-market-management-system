@@ -79,15 +79,15 @@ public class ProductServiceImpl implements ProductService {
         ValidateCommon.validateNullObject(product.getQuantityInStock(), "quantityInStock");
 
         if (product.getName().trim().length() == 0) {
-            throw new InputInvalidException(I18n.getMessage("prodcut.error.emptyName"));
+            throw new InputInvalidException(I18n.getMessage("product.error.emptyName"));
         }
 
         if (product.getQuantityInStock() == 0) {
-            throw new InputInvalidException(I18n.getMessage("prodcut.error.invalidQty"));
+            throw new InputInvalidException(I18n.getMessage("product.error.invalidQty"));
         }
 
         if (product.getPrice() <= 100) {
-            throw new InputInvalidException(I18n.getMessage("prodcut.error.invalidPrice"));
+            throw new InputInvalidException(I18n.getMessage("product.error.invalidPrice"));
         }
     }
 
