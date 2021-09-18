@@ -28,15 +28,16 @@ public class ProductEditPage extends Page {
         String choice = null;
         do {
             try {
-                int id = AppScanner.scanIntWithMessage("Nhập ID sản phẩm cần sửa: ");
+                int id = AppScanner.scanIntWithMessage(I18n.getEntityMessage("product", "entity.scan.id.edit"));
                 Product product = productService.findById(id);
                 if (product == null) {
                     I18n.getEntityMessage("product", "entity.error.idNotFound");
                 } else {
-                    System.out.println("Các trư�?ng đánh dấu * bắt buộc nhập. Nhấn <enter> để giữ lại thông tin cũ.");
-                    String name = AppScanner.scanStringWithMessage("Tên sản phẩm: ");
-                    double price = AppScanner.scanDoubleWithMessage("Giá: ");
-                    int qty = AppScanner.scanIntWithMessage("Số lượng: ");
+                    I18n.print("product.msg.update");
+                    
+                    String name = AppScanner.scanStringWithMessage(I18n.getMessage("product.scan.name"));
+                    double price = AppScanner.scanDoubleWithMessage(I18n.getMessage("product.scan.price"));
+                    int qty = AppScanner.scanIntWithMessage(I18n.getMessage("product.scan.qty"));
                     if (name.length() > 0) {
                         product.setName(name);
                     }
@@ -47,12 +48,12 @@ public class ProductEditPage extends Page {
                         product.setQuantityInStock(qty);
                     }
                     if (productService.update(product)) {
-                        System.out.println("Cập nhật thông tin sản phẩm thành công!");
+                        I18n.printEntityMessage("product", "entity.msg.updated");
                     } else {
-                        System.out.println("Không cập nhật được. Vui lòng thử lại.");
+                        I18n.printEntityMessage("product", "entity.error.updateFailed");
                     }
                 }
-                choice = AppScanner.scanStringWithMessage("Bạn có muốn nhập lại không? [y/N]: ");
+                choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("product", "entity.confirm.editAnother"));
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }
@@ -64,7 +65,7 @@ public class ProductEditPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Sửa Sản phẩm";
+        return I18n.getEntityMessage("product", "entity.title.edit");
     }
     
 }
