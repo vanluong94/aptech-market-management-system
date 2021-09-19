@@ -33,7 +33,8 @@ public class ProductDAOImpl implements ProductDAO {
             + " JOIN brands ON brands.brand_id = products.brand_id"
             + " JOIN categories ON categories.category_id = products.category_id"
             + " JOIN employees ON employees.employee_id = products.employee_id"
-            + " JOIN suppliers ON suppliers.supplier_id = products.supplier_id";
+            + " JOIN suppliers ON suppliers.supplier_id = products.supplier_id"
+            + " LIMIT ?, ? ";
 
     private final static String SQL_GET_ONE
             = " SELECT "
@@ -423,7 +424,45 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public PaginatedResults<Product> select(int page) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        PaginatedResults<Product> pagination = new PaginatedResults<>(page, Constant.PER_PAGE);
+        List<Product> products = new ArrayList<>();
+
+        try (
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement st = conn.prepareStatement(SQL_SELECT_ALL);
+        ) {
+            
+            st.setInt(1, pagination.getOffset());
+            st.setInt(2, pagination.getPerPage());
+            
+            // query items
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Product product = this.mapRersultSetToObject(rs);
+
+                product.getBrand().setName(rs.getString("brand_name"));
+                product.getSupplier().setName(rs.getString("supplier_name"));
+                product.getCategory().setName(rs.getString("category_name"));
+                product.getEmployee().setName(rs.getString("employee_name"));
+
+                products.add(product);
+            }
+
+            pagination.setResults(products);
+
+            // query count
+            String sqlCount = PaginatedResults.parseCountSQL(SQL_SELECT_ALL);
+            try(Statement stCount = conn.createStatement()){
+                ResultSet countRs = stCount.executeQuery(sqlCount);
+                if (countRs.next()) {
+                    pagination.setTotalItems(countRs.getInt(1));
+                }
+            }
+        }
+
+        return pagination;
     }
 
     @Override
