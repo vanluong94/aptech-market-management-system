@@ -64,6 +64,4 @@ public class Supplier extends BaseEntity {
         this.address = address;
     }
 
-    
-
 }

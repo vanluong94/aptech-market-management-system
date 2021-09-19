@@ -17,8 +17,9 @@ public class Customer {
     private String phone;
     private String address;
     private int discount;
-    private Employee employee;
     private int salePoint;
+    private Employee employee;
+
     public Customer() {
         employee = new Employee();
     }
@@ -52,7 +53,6 @@ public class Customer {
     /**
      * @return the name
      */
-
     public String getName() {
         return name;
     }
@@ -101,7 +101,7 @@ public class Customer {
     }
 
     public int getSalePoint() {
-        
+
         return salePoint;
     }
 
@@ -115,7 +115,7 @@ public class Customer {
         System.out.println(I18n.getMessage("customer.addr") + ": " + address);
         System.out.println(I18n.getMessage("customer.phone") + ": " + phone);
         System.out.println(I18n.getMessage("customer.id") + ": " + id);
-        System.out.println(I18n.getMessage("customer.emp") + ": " + employee.getEmployeeId());
+        System.out.println(I18n.getMessage("customer.emp") + ": " + employee.getId());
         System.out.println("=================================");
     }
 

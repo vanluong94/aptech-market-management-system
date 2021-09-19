@@ -12,7 +12,7 @@ import vn.aptech.quanlybanhang.utilities.I18n;
  *
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
- * 
+ *
  */
 public class ProductDiscount {
 
@@ -23,10 +23,10 @@ public class ProductDiscount {
     private Date startDate;
     private Date endDate;
 
-    public ProductDiscount(){
-        
+    public ProductDiscount() {
+
     }
-    
+
     public ProductDiscount(int id, int discountId, Product product, float discount, Date startDate, Date endDate) {
         this.id = id;
         this.discountId = discountId;
@@ -113,7 +113,7 @@ public class ProductDiscount {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    
+
     public Date scanStartDate() {
         Date dateFrom = null;
         String dateFormatPattern = "dd/MM/yyyy HH:mm";
@@ -125,14 +125,14 @@ public class ProductDiscount {
                 I18n.print("discount.error.invalidDatetime");
             }
         } while (dateFrom == null);
-        
+
         return dateFrom;
     }
-    
+
     public Date scanEndDate() {
         Date dateTo = null;
         String dateFormatPattern = "dd/MM/yyyy HH:mm";
-        
+
         do {
             String dateToStr = AppScanner.scanStringWithi18Message("discount.scan.datetime.end", dateFormatPattern);
             dateTo = DateCommon.convertStringToDateByPattern(dateToStr, dateFormatPattern);
@@ -144,7 +144,7 @@ public class ProductDiscount {
                 dateTo = null; // reset to repeat
             }
         } while (dateTo == null);
-        
+
         return dateTo;
     }
 
@@ -152,7 +152,7 @@ public class ProductDiscount {
         float discountPercent = 0;
         while (discountPercent < 1) {
             discountPercent = AppScanner.scanFloatWithi18Message("discount.scan.discountPercentage");
-            
+
             if (discountPercent < 1) {
                 I18n.print("discount.error.invalidPercentage");
             }

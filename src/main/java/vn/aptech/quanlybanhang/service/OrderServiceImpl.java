@@ -3,14 +3,11 @@
  */
 package vn.aptech.quanlybanhang.service;
 
-import jasper.JasperPrintService;
+import vn.aptech.quanlybanhang.jasper.JasperPrintService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +32,10 @@ import vn.aptech.quanlybanhang.entities.OrderItem;
 import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
+/**
+ *
+ * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ */
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDAO orderDAO;
@@ -47,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean create(Order object) throws SQLException, Exception {
+    public boolean create(Order object) throws Exception {
         if (object == null) {
             throw new Exception(I18n.getMessage("app.error.object.null"));
         }
@@ -55,37 +56,37 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean update(Order object) throws SQLException, Exception {
+    public boolean update(Order object) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean deleteById(int id) throws SQLException, Exception {
+    public boolean deleteById(int id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Order findById(int id) throws SQLException, Exception {
+    public Order findById(int id) throws Exception {
         return this.orderDAO.findById(id);
     }
 
     @Override
-    public List<Order> findAll() throws SQLException {
+    public List<Order> findAll() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public PaginatedResults<Order> select(int page) throws SQLException, Exception {
+    public PaginatedResults<Order> select(int page) throws Exception {
         return this.orderDAO.select(page);
     }
 
     @Override
-    public List<OrderItem> getOrderItems(Order order) {
+    public List<OrderItem> getOrderItems(Order order) throws Exception {
         return this.orderDAO.getOrderItems(order);
     }
 
     @Override
-    public Order findByCashierId(int id) throws SQLException, Exception {
+    public Order findByCashierId(int id) throws Exception {
         if (id < 1) {
             throw new InputInvalidException(I18n.getMessage("input.invalidID"));
         }
@@ -93,22 +94,27 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException {
+    public PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws Exception {
         return orderDAO.CashierStatistics(page, fromDate, toDate);
     }
 
     @Override
-    public PaginatedResults<Order> todayOrder(int page) throws SQLException {
+    public PaginatedResults<Order> todayOrder(int page) throws Exception {
         return this.orderDAO.todayOrder(page);
     }
 
     @Override
-    public Order findByCustomerId(int id) throws SQLException {
+    public PaginatedResults<Order> findByCustomerPhone(int page, String phone) throws Exception {
+        return this.orderDAO.findByCustomerPhone(page, phone);
+    }
+
+    @Override
+    public Order findByCustomerId(int id) throws Exception {
         return this.orderDAO.findByCustomerId(id);
     }
 
     @Override
-    public PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws SQLException {
+    public PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws Exception {
         return this.orderDAO.findByDateRange(fromDate, toDate, page);
     }
 
@@ -128,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
             parameters.put("customerAddress", order.getCustomer().getAddress());
             parameters.put("customerPhone", order.getCustomer().getPhone());
             parameters.put("invoiceNumber", order.getId());
-            
+
             InputStream input = new FileInputStream(invoice);
             JasperDesign jasperDesign = JRXmlLoader.load(input);
             JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);

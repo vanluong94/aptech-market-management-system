@@ -46,8 +46,8 @@ public class ProductCategoryPage extends Page {
                 for (Product product : products.getResults()) {
                     Object[] row = {
                         product.getId(),
-                        product.getBrand().getBrandName(),
-                        product.getCategory().getCategoryName(),
+                        product.getBrand().getName(),
+                        product.getCategory().getName(),
                         product.getSupplier().getName(),
                         product.getEmployee().getName(),
                         product.getName(),

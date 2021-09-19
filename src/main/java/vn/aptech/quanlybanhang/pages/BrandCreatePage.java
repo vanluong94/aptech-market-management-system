@@ -26,8 +26,8 @@ public class BrandCreatePage extends Page {
             
             Brand brand = new Brand();
             
-            brand.setBrandName(AppScanner.scanStringWithi18Message("brand.scan.name"));
-            brand.setBrandAdd(AppScanner.scanStringWithi18Message("brand.scan.address"));
+            brand.setName(AppScanner.scanStringWithi18Message("brand.scan.name"));
+            brand.setAddress(AppScanner.scanStringWithi18Message("brand.scan.address"));
             
             brandService.create(brand);
             

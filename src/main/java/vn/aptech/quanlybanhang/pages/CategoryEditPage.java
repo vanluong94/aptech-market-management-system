@@ -38,7 +38,7 @@ public class CategoryEditPage extends Page {
 
                     HeaderUI.display(I18n.getMessage("category.msg.update"));
                     String newName = AppScanner.scanStringWithi18Message("category.scan.newName");
-                    theCat.setCategoryName(newName);
+                    theCat.setName(newName);
 
                     System.out.println(""); //margin line
                     if (categoryService.update(theCat)) {

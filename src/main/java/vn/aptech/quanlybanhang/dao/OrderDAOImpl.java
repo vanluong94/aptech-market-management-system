@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,8 +30,6 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class OrderDAOImpl implements OrderDAO {
-
-    private final static int PER_PAGE = 10;
 
     private final static String SQL_INSERT = "INSERT INTO orders(customer_id, employee_id, amount, order_date) VALUE (?, ?, ?, ?)";
     private final static String SQL_INSERT_ORDER_ITEMS = "INSERT INTO order_items(order_id, product_id, product_name, product_quantity, "
@@ -57,9 +54,7 @@ public class OrderDAOImpl implements OrderDAO {
             + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE "
             + "  orders.order_id = ? AND employees.employee_id = ?";
-
-    static LocalDate myTime = LocalDate.now();
-    private final static String SQL_GET_TODAY_ORDERS = "SELECT orders.*,employees.employee_name, employees.employee_id,customers.customer_name,customers.customer_id FROM orders JOIN employees ON employees.employee_id = orders.employee_id LEFT JOIN customers ON customers.customer_id = orders.customer_id WHERE orders.order_date LIKE '" + myTime + "%' AND employees.employee_id = ? LIMIT ?,?";
+    private final static String SQL_GET_TODAY_ORDERS = "SELECT orders.*,employees.employee_name, employees.employee_id,customers.customer_name,customers.customer_id FROM orders JOIN employees ON employees.employee_id = orders.employee_id LEFT JOIN customers ON customers.customer_id = orders.customer_id WHERE date(orders.order_date) = ? AND employees.employee_id = ? LIMIT ?,?";
     private final static String SQL_CASHIER_STATISTICS = "SELECT orders.*,employees.employee_name,customers.customer_name"
             + " FROM orders"
             + " JOIN employees ON employees.employee_id = orders.employee_id"
@@ -70,11 +65,24 @@ public class OrderDAOImpl implements OrderDAO {
             + " orders.*, "
             + " employees.employee_name, "
             + " customers.customer_name "
+            + " customers.customer_phone "
             + " FROM "
             + " orders "
             + " JOIN employees ON employees.employee_id = orders.employee_id "
             + " LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE orders.order_id = ?";
+    private final static String SQL_GET_BY_CUSTOMER_PHONE = "SELECT "
+            + " orders.*, "
+            + " employees.employee_name, "
+            + " customers.customer_name, "
+            + " customers.customer_phone "
+            + " FROM customers "
+            + " INNER JOIN orders ON customers.customer_id = orders.customer_id "
+            + " LEFT JOIN employees ON employees.employee_id = orders.employee_id "
+            + " WHERE customers.customer_phone LIKE ? "
+            + " LIMIT ?,?";
+
+    private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
     private final static String SQL_GET_ONE_BY_CUSTOMER_ID = "SELECT "
             + " orders.*, "
             + " employees.employee_name, "
@@ -85,7 +93,6 @@ public class OrderDAOImpl implements OrderDAO {
             + " LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE orders.customer_id = ?";
 
-    private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
     private final static String SQL_GET_BY_TIME_RANGE = "SELECT "
             + "  orders.*, "
             + "  employees.employee_name, "
@@ -101,7 +108,7 @@ public class OrderDAOImpl implements OrderDAO {
             + " LIMIT ?, ?";
 
     @Override
-    public boolean create(Order object) throws SQLException {
+    public boolean create(Order object) throws Exception {
         int rowsAffected = -1;
         Connection conn = null;
         try {
@@ -113,7 +120,7 @@ public class OrderDAOImpl implements OrderDAO {
             } else {
                 pstmt.setInt(1, object.getCustomer().getId());
             }
-            pstmt.setInt(2, object.getEmployee().getEmployeeId());
+            pstmt.setInt(2, object.getEmployee().getId());
             pstmt.setDouble(3, object.getAmount());
             pstmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
             rowsAffected = pstmt.executeUpdate();
@@ -130,7 +137,7 @@ public class OrderDAOImpl implements OrderDAO {
                         pstmt.setDouble(5, orderItem.getProductPrice());
                         pstmt.setInt(6, orderItem.getDiscount().getId());
                         pstmt.setDouble(7, orderItem.getDiscountPrice());
-                        
+
                         rowsAffected = pstmt.executeUpdate();
                         // Trừ số lượng sản phẩm trong kho nữa
                         if (rowsAffected > 0) {
@@ -160,17 +167,17 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public boolean update(Order object) throws SQLException {
+    public boolean update(Order object) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean deleteById(int id) throws SQLException {
+    public boolean deleteById(int id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Order findById(int id) throws SQLException {
+    public Order findById(int id) throws Exception {
 
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement st = conn.prepareStatement(SQL_GET_ONE);
@@ -185,7 +192,7 @@ public class OrderDAOImpl implements OrderDAO {
                 order.setAmount(rs.getDouble("amount"));
 
                 order.getEmployee().setName(rs.getString("employee_name"));
-                order.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                order.getEmployee().setId(rs.getInt("employee_id"));
 
                 order.getCustomer().setName(rs.getString("customer_name"));
                 order.getCustomer().setId(rs.getInt("customer_id"));
@@ -196,14 +203,19 @@ public class OrderDAOImpl implements OrderDAO {
         return null;
     }
 
+    /**
+     *
+     * @return
+     * @throws Exception
+     */
     @Override
-    public List findAll() throws SQLException {
+    public List<Order> findAll() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public PaginatedResults<Order> select(int page) throws SQLException {
-        PaginatedResults<Order> pagination = new PaginatedResults<>(page, PER_PAGE);
+    public PaginatedResults<Order> select(int page) throws Exception {
+        PaginatedResults<Order> pagination = new PaginatedResults<>(page, Constant.PER_PAGE);
         List<Order> orders = new ArrayList<>();
 
         try (Connection conn = DBConnection.getConnection()) {
@@ -222,7 +234,7 @@ public class OrderDAOImpl implements OrderDAO {
                 order.setAmount(rs.getDouble("amount"));
 
                 order.getEmployee().setName(rs.getString("employee_name"));
-                order.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                order.getEmployee().setId(rs.getInt("employee_id"));
 
                 order.getCustomer().setName(rs.getString("customer_name"));
                 order.getCustomer().setId(rs.getInt("customer_id"));
@@ -244,7 +256,7 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public List<OrderItem> getOrderItems(Order order) {
+    public List<OrderItem> getOrderItems(Order order) throws Exception {
         List<OrderItem> items = new ArrayList<>();
 
         try (Connection conn = DBConnection.getConnection()) {
@@ -270,19 +282,20 @@ public class OrderDAOImpl implements OrderDAO {
 
         return items;
     }
-    
+
     @Override
-    public PaginatedResults<Order> todayOrder(int page) throws SQLException {
-        PaginatedResults<Order> pagination = new PaginatedResults<>(page, PER_PAGE);
+    public PaginatedResults<Order> todayOrder(int page) throws Exception {
+        PaginatedResults<Order> pagination = new PaginatedResults<>(page, Constant.PER_PAGE);
         List<Order> orders = new ArrayList<>();
         Statement st = null;
         ResultSet rs = null;
         ResultSet countRs = null;
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_TODAY_ORDERS);
-            pstmt.setInt(1, AuthServiceImpl.getCurrentEmployee().getEmployeeId());
-            pstmt.setInt(2, pagination.getOffset());
-            pstmt.setInt(3, pagination.getPerPage());
+            pstmt.setDate(1, DateCommon.convertUtilDateToSqlDate(new Date()));
+            pstmt.setInt(2, AuthServiceImpl.getCurrentEmployee().getId());
+            pstmt.setInt(3, pagination.getOffset());
+            pstmt.setInt(4, pagination.getPerPage());
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 Order order = new Order();
@@ -316,7 +329,7 @@ public class OrderDAOImpl implements OrderDAO {
             Connection conn = DBConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(SQL_ORDER_DETAIL_OF_CASHIER);
             pstmt.setInt(1, id);
-            pstmt.setInt(2, AuthServiceImpl.getCurrentEmployee().getEmployeeId());
+            pstmt.setInt(2, AuthServiceImpl.getCurrentEmployee().getId());
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 order = new Order();
@@ -335,8 +348,8 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException {
-        PaginatedResults<Order> pagination = new PaginatedResults<>(page, PER_PAGE);
+    public PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws Exception {
+        PaginatedResults<Order> pagination = new PaginatedResults<>(page, Constant.PER_PAGE);
         List<Order> orders = new ArrayList<>();
         Statement st = null;
         ResultSet rs = null;
@@ -345,7 +358,7 @@ public class OrderDAOImpl implements OrderDAO {
             PreparedStatement pstmt = conn.prepareStatement(SQL_CASHIER_STATISTICS);
             pstmt.setDate(1, new java.sql.Date(DateCommon.convertStringToDateByPattern(fromDate, Constant.DATE_FORMAT).getTime()));
             pstmt.setDate(2, new java.sql.Date(DateCommon.convertStringToDateByPattern(toDate, Constant.DATE_FORMAT).getTime()));
-            pstmt.setInt(3, AuthServiceImpl.getCurrentEmployee().getEmployeeId());
+            pstmt.setInt(3, AuthServiceImpl.getCurrentEmployee().getId());
             pstmt.setInt(4, pagination.getOffset());
             pstmt.setInt(5, pagination.getPerPage());
             rs = pstmt.executeQuery();
@@ -372,14 +385,14 @@ public class OrderDAOImpl implements OrderDAO {
         }
         return pagination;
     }
-    
+
     @Override
-    public PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws SQLException {
-        
-        PaginatedResults<Order> pagination = new PaginatedResults<>(page, PER_PAGE);
+    public PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws Exception {
+
+        PaginatedResults<Order> pagination = new PaginatedResults<>(page, Constant.PER_PAGE);
         List<Order> orders = new ArrayList<>();
 
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
 
             // query items
             PreparedStatement stSelect = conn.prepareStatement(SQL_GET_BY_TIME_RANGE);
@@ -387,20 +400,20 @@ public class OrderDAOImpl implements OrderDAO {
             stSelect.setDate(2, DateCommon.convertUtilDateToSqlDate(toDate));
             stSelect.setInt(3, pagination.getOffset());
             stSelect.setInt(4, pagination.getPerPage());
-            
+
             ResultSet rs = stSelect.executeQuery();
             while (rs.next()) {
                 Order order = new Order();
                 order.setId(rs.getInt("order_id"));
-                order.setOrderDate(rs.getTimestamp("order_date")); 
+                order.setOrderDate(rs.getTimestamp("order_date"));
                 order.setAmount(rs.getDouble("amount"));
-                
+
                 order.getEmployee().setName(rs.getString("employee_name"));
-                order.getEmployee().setEmployeeId(rs.getInt("employee_id"));
-                
+                order.getEmployee().setId(rs.getInt("employee_id"));
+
                 order.getCustomer().setName(rs.getString("customer_name"));
                 order.getCustomer().setId(rs.getInt("customer_id"));
-                
+
                 orders.add(order);
             }
 
@@ -408,18 +421,18 @@ public class OrderDAOImpl implements OrderDAO {
 
             // query count
             String sqlCount = PaginatedResults.parseCountSQL(SQL_GET_BY_TIME_RANGE);
-            
+
             PreparedStatement stCount = DBConnection.getConnection().prepareStatement(sqlCount);
             stCount.setDate(1, DateCommon.convertUtilDateToSqlDate(fromDate));
             stCount.setDate(2, DateCommon.convertUtilDateToSqlDate(toDate));
-            
+
             ResultSet countRs = stCount.executeQuery();
             if (countRs.next()) {
                 pagination.setTotalItems(countRs.getInt(1));
             }
         }
         return pagination;
-        
+
     }
 
     @Override
@@ -437,7 +450,7 @@ public class OrderDAOImpl implements OrderDAO {
                 order.setAmount(rs.getDouble("amount"));
 
                 order.getEmployee().setName(rs.getString("employee_name"));
-                order.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                order.getEmployee().setId(rs.getInt("employee_id"));
 
                 order.getCustomer().setName(rs.getString("customer_name"));
                 order.getCustomer().setId(rs.getInt("customer_id"));
@@ -446,6 +459,45 @@ public class OrderDAOImpl implements OrderDAO {
             }
         }
         return null;
+    }
+
+    @Override
+    public PaginatedResults<Order> findByCustomerPhone(int page, String phone) throws Exception {
+        PaginatedResults<Order> pagination = new PaginatedResults<>(page, Constant.PER_PAGE);
+        List<Order> orders = new ArrayList<>();
+        Statement st = null;
+        ResultSet rs = null;
+        ResultSet countRs = null;
+
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(SQL_GET_BY_CUSTOMER_PHONE);
+            pstmt.setString(1, "%" + phone + "%");
+            pstmt.setInt(2, pagination.getOffset());
+            pstmt.setInt(3, pagination.getPerPage());
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("order_id"));
+                order.getCustomer().setName(rs.getString("customer_name"));
+                order.getCustomer().setPhone(rs.getString("customer_phone"));
+                order.getEmployee().setName(rs.getString("employee_name"));
+                order.setOrderDate(rs.getTimestamp("order_date"));
+                order.setAmount(rs.getDouble("amount"));
+                orders.add(order);
+            }
+            pagination.setResults(orders);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (countRs != null) {
+                countRs.close();
+            }
+            if (st != null) {
+                st.close();
+            }
+        }
+        return pagination;
     }
 
 }

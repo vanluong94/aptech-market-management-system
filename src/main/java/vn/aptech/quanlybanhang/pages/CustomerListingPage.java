@@ -20,10 +20,15 @@ import vn.aptech.quanlybanhang.utilities.I18n;
  */
 public class CustomerListingPage extends Page {
 
+    private final CustomerService customerService;
+
+    public CustomerListingPage() {
+        customerService = new CustomerServiceImpl();
+    }
+
     @Override
     public void displayContent() {
         try {
-            CustomerService customerService = new CustomerServiceImpl();
             List<Customer> customers = customerService.findAll();
             if (customers.isEmpty()) {
                 I18n.printEntityMessage("customer", "entity.msg.emptyResults");
@@ -35,15 +40,15 @@ public class CustomerListingPage extends Page {
                         c.getName(),
                         c.getAddress(),
                         c.getPhone(),
-                        String.format("%s (ID:%d)", c.getEmployee().getName(), c.getEmployee().getEmployeeId())
+                        String.format("%s (ID:%d)", c.getEmployee().getName(), c.getEmployee().getId())
                     };
                     rows.add(row);
                 }
-                
+
                 String[] headers = {
-                    "ID", 
-                    I18n.getMessage("customer.name"), 
-                    I18n.getMessage("customer.addr"), 
+                    "ID",
+                    I18n.getMessage("customer.name"),
+                    I18n.getMessage("customer.addr"),
                     I18n.getMessage("customer.phone"),
                     I18n.getMessage("customer.emp")
                 };
@@ -52,6 +57,8 @@ public class CustomerListingPage extends Page {
             }
 
         } catch (SQLException ex) {
+            Logger.getLogger(CustomerListingPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(CustomerListingPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

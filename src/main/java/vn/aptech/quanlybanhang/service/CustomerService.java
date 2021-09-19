@@ -3,8 +3,6 @@
  */
 package vn.aptech.quanlybanhang.service;
 
-import java.sql.SQLException;
-import java.util.List;
 import vn.aptech.quanlybanhang.entities.Customer;
 
 /**
@@ -13,5 +11,5 @@ import vn.aptech.quanlybanhang.entities.Customer;
  */
 public interface CustomerService extends BaseService<Customer> {
 
-    Customer findByPhone(String phone) throws SQLException;
+    Customer findByPhone(String phone) throws Exception;
 }

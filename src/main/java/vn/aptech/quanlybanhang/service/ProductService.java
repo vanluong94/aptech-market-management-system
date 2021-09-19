@@ -3,9 +3,7 @@
  */
 package vn.aptech.quanlybanhang.service;
 
-import java.sql.SQLException;
 import java.util.Date;
-import java.util.List;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
@@ -16,19 +14,20 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  */
 public interface ProductService extends BaseService<Product> {
 
-    public PaginatedResults<Product> findByCategoryId(int page,int id) throws SQLException;
+    public PaginatedResults<Product> findByCategoryId(int page, int id) throws Exception;
 
     /**
      *
+     * @param page
      * @param name
      * @return
-     * @throws java.sql.SQLException
+     * @throws java.lang.Exception
      */
-    public PaginatedResults<Product> findByName(int page,String name) throws SQLException;
-    
-    public PaginatedResults<Product> selectOutOfStock(int page) throws SQLException;
+    public PaginatedResults<Product> findByName(int page, String name) throws Exception;
 
-    PaginatedResults<Product> findAllByOrderByUnitsOnOrderDesc(int page, String fromDate, String toDate) throws SQLException;
-    
-    double getStatisticAmount(Date fromDate, Date toDate) throws SQLException;
+    public PaginatedResults<Product> selectOutOfStock(int page) throws Exception;
+
+    PaginatedResults<Product> findAllByOrderByUnitsOnOrderDesc(int page, String fromDate, String toDate) throws Exception;
+
+    double getStatisticAmount(Date fromDate, Date toDate) throws Exception;
 }

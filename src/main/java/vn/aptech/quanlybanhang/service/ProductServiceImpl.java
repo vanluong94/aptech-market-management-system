@@ -3,7 +3,6 @@
  */
 package vn.aptech.quanlybanhang.service;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -31,19 +30,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean create(Product product) throws SQLException, Exception {
+    public boolean create(Product product) throws Exception {
         this.validateProductData(product);
         return this.productDAO.create(product);
     }
 
     @Override
-    public boolean update(Product product) throws SQLException, Exception {
+    public boolean update(Product product) throws Exception {
         this.validateProductData(product);
         return this.productDAO.update(product);
     }
 
     @Override
-    public boolean deleteById(int id) throws SQLException, Exception {
+    public boolean deleteById(int id) throws Exception {
         if (id < 1) {
             try {
                 throw new Exception(I18n.getMessage("input.invalidID"));
@@ -55,22 +54,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findById(int id) throws SQLException, Exception {
+    public Product findById(int id) throws Exception {
         ValidateCommon.validateNullObject(id, "id");
-//        Product product = this.productDAO.findById(id);
-//        if (product == null) {
-//            throw new CommonException(Response.OBJECT_NOT_FOUND, MessageCommon.getMessage(MessageContent.OBJECT_NOT_FOUND, "id"));
-//        }
         return this.productDAO.findById(id);
     }
 
     @Override
-    public List<Product> findAll() throws SQLException {
+    public List<Product> findAll() throws Exception {
         return this.productDAO.findAll();
     }
 
     public void validateProductData(Product product) throws InputInvalidException {
-
         ValidateCommon.validateNullObject(product.getBrand(), "brand");
         ValidateCommon.validateNullObject(product.getCategory(), "category");
         ValidateCommon.validateNullObject(product.getEmployee(), "employee");
@@ -79,51 +73,51 @@ public class ProductServiceImpl implements ProductService {
         ValidateCommon.validateNullObject(product.getQuantityInStock(), "quantityInStock");
 
         if (product.getName().trim().length() == 0) {
-            throw new InputInvalidException(I18n.getMessage("prodcut.error.emptyName"));
+            throw new InputInvalidException(I18n.getMessage("product.error.emptyName"));
         }
 
         if (product.getQuantityInStock() == 0) {
-            throw new InputInvalidException(I18n.getMessage("prodcut.error.invalidQty"));
+            throw new InputInvalidException(I18n.getMessage("product.error.invalidQty"));
         }
 
         if (product.getPrice() <= 100) {
-            throw new InputInvalidException(I18n.getMessage("prodcut.error.invalidPrice"));
+            throw new InputInvalidException(I18n.getMessage("product.error.invalidPrice"));
         }
     }
 
     @Override
-    public PaginatedResults<Product> findByCategoryId(int page,int id) throws SQLException {
+    public PaginatedResults<Product> findByCategoryId(int page, int id) throws Exception {
         ValidateCommon.validateNullObject(id, "id");
-        return productDAO.findByCategoryId(page,id);
+        return productDAO.findByCategoryId(page, id);
     }
 
     @Override
-    public PaginatedResults<Product> findByName(int page,String name) throws SQLException {
+    public PaginatedResults<Product> findByName(int page, String name) throws Exception {
         ValidateCommon.validateNullObject(name, "name");
 //        List<Product> products = productDAO.findByName(name);
 //        if (ArrayListCommon.isNullOrEmpty(products)) {
 //            throw new CommonException(Response.DATA_NOT_FOUND);
 //        }
-        return productDAO.findByName(page,name);
+        return productDAO.findByName(page, name);
     }
 
     @Override
-    public PaginatedResults<Product> select(int page) throws SQLException, Exception {
+    public PaginatedResults<Product> select(int page) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public PaginatedResults<Product> selectOutOfStock(int page) throws SQLException {
+    public PaginatedResults<Product> selectOutOfStock(int page) throws Exception {
         return productDAO.selectOutOfStock(page);
     }
 
     @Override
-    public PaginatedResults<Product> findAllByOrderByUnitsOnOrderDesc(int page, String fromDate, String toDate) throws SQLException {
+    public PaginatedResults<Product> findAllByOrderByUnitsOnOrderDesc(int page, String fromDate, String toDate) throws Exception {
         return productDAO.findAllByOrderByUnitsOnOrderDesc(page, fromDate, toDate);
     }
 
     @Override
-    public double getStatisticAmount(Date fromDate, Date toDate) throws SQLException {
+    public double getStatisticAmount(Date fromDate, Date toDate) throws Exception {
         java.sql.Date fromDateSql = DateCommon.convertUtilDateToSqlDate(DateCommon.getBeginDay(fromDate));
         java.sql.Date toDateSql = DateCommon.convertUtilDateToSqlDate(DateCommon.getEndDay(toDate));
         return productDAO.getStatisticAmount(fromDateSql, toDateSql);

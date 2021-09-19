@@ -40,9 +40,9 @@ public class CategoryListingPage extends Page {
                 // transfer data to table row
                 for (Category cat : categories) {
                     Object[] row = {
-                        cat.getCategoryId(),
-                        cat.getCategoryName(),
-                        cat.getProductsCount()
+                        cat.getId(),
+                        cat.getName(),
+                        cat.getProductCount()
                     };
                     rows.add(row);
                 }
@@ -51,6 +51,8 @@ public class CategoryListingPage extends Page {
                 theTable.display();
             }
         } catch (SQLException ex) {
+            Logger.getLogger(CategoryListingPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(CategoryListingPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

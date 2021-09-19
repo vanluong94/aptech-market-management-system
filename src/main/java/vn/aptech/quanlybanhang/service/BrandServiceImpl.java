@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.service;
 
@@ -13,18 +11,21 @@ import vn.aptech.quanlybanhang.exception.InputInvalidException;
 import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
-
+/**
+ *
+ * @author vanluong
+ */
 public class BrandServiceImpl implements BrandService {
-    
+
     private final BrandDAOImpl brandDAO;
-    
-    public BrandServiceImpl(){
+
+    public BrandServiceImpl() {
         this.brandDAO = new BrandDAOImpl();
     }
 
     @Override
     public boolean deleteById(int id) throws SQLException, Exception {
-        if(id < 1){
+        if (id < 1) {
             throw new InputInvalidException(I18n.getMessage("input.invalidID"));
         }
         return this.brandDAO.deleteById(id);
@@ -32,7 +33,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Brand findById(int id) throws SQLException, Exception {
-        if(id < 1){
+        if (id < 1) {
             throw new InputInvalidException(I18n.getMessage("input.invalidID"));
         }
         return this.brandDAO.findById(id);
@@ -52,18 +53,18 @@ public class BrandServiceImpl implements BrandService {
     public boolean update(Brand object) throws SQLException {
         return this.brandDAO.update(object);
     }
-    
+
     @Override
-    public List<Brand> searchByName(String name) throws SQLException, ClassNotFoundException{
+    public List<Brand> searchByName(String name) throws SQLException, ClassNotFoundException {
         return this.brandDAO.searchByName(name);
     }
 
     @Override
     public PaginatedResults<Brand> select(int page) throws SQLException, IllegalArgumentException {
-        if(page < 1){
+        if (page < 1) {
             throw new IllegalArgumentException(I18n.getMessage("input.invalidPage"));
         }
         return this.brandDAO.select(page);
     }
-    
+
 }

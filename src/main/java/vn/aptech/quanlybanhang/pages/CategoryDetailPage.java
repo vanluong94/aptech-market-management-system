@@ -34,9 +34,9 @@ public class CategoryDetailPage extends Page {
                 } else {
                     List<Object[]> rows = new ArrayList<>();
                     Object[] row = {
-                        category.getCategoryId(),
-                        category.getCategoryName(),
-                        category.getProductsCount()
+                        category.getId(),
+                        category.getName(),
+                        category.getProductCount()
                     };
                     rows.add(row);
                     String[] headers = {"ID", I18n.getMessage("category.name"), I18n.getMessage("category.productsCount")};

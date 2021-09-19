@@ -46,11 +46,11 @@ public class BrandEditPage extends Page {
                     String newAdd = AppScanner.scanStringWithMessage(I18n.getMessage("brand.scan.address"), true);
 
                     if(newName.length() > 0){
-                        brand.setBrandName(newName);
+                        brand.setName(newName);
                     }
 
                     if(newAdd.length() > 0){
-                        brand.setBrandAdd(newAdd);
+                        brand.setAddress(newAdd);
                     }
 
                     brandService.update(brand);

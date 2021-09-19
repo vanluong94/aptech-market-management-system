@@ -28,8 +28,8 @@ public class PageUpdateProfile extends Page {
     public void displayContent() {
         try {
             Employee emp = AuthServiceImpl.getCurrentEmployee();
-            System.out.println("ID: " + emp.getEmployeeId());
-            System.out.println(I18n.getMessage("employee.username") + ": " + emp.getUserName());
+            System.out.println("ID: " + emp.getId());
+            System.out.println(I18n.getMessage("employee.username") + ": " + emp.getUsername());
             System.out.println(I18n.getMessage("employee.dept") + ": " + emp.getDepartment());
             
             String name = AppScanner.scanStringWithMessage(I18n.getMessage("employee.name"));

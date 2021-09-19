@@ -3,15 +3,15 @@
  */
 package vn.aptech.quanlybanhang.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.Category;
 
 /**
  *
- * @author anhnbt
+ * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  * @author vanluong
  */
 public interface CategoryDAO extends BaseDAO<Category> {
-    List<Category> searchByName(String name) throws SQLException;
+
+    List<Category> searchByName(String name) throws Exception;
 }
