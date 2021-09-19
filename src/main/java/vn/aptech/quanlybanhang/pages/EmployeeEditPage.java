@@ -20,57 +20,59 @@ import vn.aptech.quanlybanhang.utilities.Md5;
  */
 public class EmployeeEditPage extends Page {
 
+    private final EmployeeService employeeService;
+
+    public EmployeeEditPage() {
+        this.employeeService = new EmployeeServiceImpl();
+    }
+
     @Override
     public void displayContent() {
         try {
-            EmployeeService employeeService = new EmployeeServiceImpl();
-            Scanner sc = new Scanner(System.in);
-
             int employeeId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("employee", "entity.scan.id.edit"));
-            String employeeName = AppScanner.scanStringWithi18Message("employee.scan.name");
-            String employeeAddress = AppScanner.scanStringWithi18Message("employee.scan.addr");
-            String employeePhone = AppScanner.scanStringWithi18Message("employee.scan.phone");
+            Employee employee = employeeService.findById(employeeId);
+            if (employee == null) {
+                System.out.println(I18n.getMessage("entity.error.idNotFound"));
+                return;
+            }
+            String name = AppScanner.scanStringWithi18Message("employee.scan.name");
+            String address = AppScanner.scanStringWithi18Message("employee.scan.addr");
+            String phone = AppScanner.scanStringWithi18Message("employee.scan.phone");
 
-            int employeeDepartment = 0;
+            int department = 0;
             do {
-                employeeDepartment = AppScanner.scanIntWithMessage(
+                department = AppScanner.scanIntWithMessage(
                         I18n.getMessage("employee.scan.dept")
                         + String.format("(1=%s; 2=%s; 3=%s", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY)
                 );
 
-                if (employeeDepartment < 1 || employeeDepartment > 3) {
+                if (department < 1 || department > 3) {
                     I18n.print("employee.error.invalidDept");
                 }
-            } while (employeeDepartment < 1 || employeeDepartment > 3);
+            } while (department < 1 || department > 3);
 
-            String employeeUsername;
+            String password;
             do {
-                employeeUsername = AppScanner.scanStringWithi18Message("employee.scan.username");
+                password = AppScanner.scanStringWithi18Message("employee.scan.password");
 
-                if (employeeUsername.length() < 6) {
-                    I18n.print("employee.error.invalidUsernameLength");
-                }
-            } while (employeeUsername.length() < 6);
-
-            String employeePassword;
-            do {
-                employeePassword = AppScanner.scanStringWithi18Message("employee.scan.password");
-
-                if (employeeUsername.length() < 6) {
+                if (password.length() < 6) {
                     I18n.print("employee.error.invalidPassLength");
                 }
-            } while (employeeUsername.length() < 6);
+            } while (password.length() < 6);
 
-            Employee employee = new Employee(employeeName, employeeAddress, employeePhone, Department.fromInt(employeeDepartment), employeeUsername, Md5.encode(employeePassword));
-            
-            if (employeeService.updateById(employee, employeeId)) {
+            employee.setName(name);
+            employee.setAddress(address);
+            employee.setPhone(phone);
+            employee.setDepartment(Department.fromInt(department));
+            employee.setPassword(Md5.encode(password));
+
+            if (employeeService.update(employee)) {
                 I18n.printEntityMessage("employee", "entity.msg.updated");
             } else {
                 I18n.printEntityMessage("employee", "entity.error.updateFailed");
             }
-
         } catch (Exception ex) {
-            Logger.getLogger(EmployeeEditPage.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
     }
 

@@ -5,7 +5,6 @@
  */
 package vn.aptech.quanlybanhang.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.Employee;
 
@@ -20,4 +19,6 @@ public interface EmployeeDAO extends BaseDAO<Employee> {
     Employee findByUsernameAndPassword(String username, String password) throws Exception;
 
     List<Employee> findByNameEmployee(String username) throws Exception;
+    
+    boolean existsByUsername(String username) throws Exception;
 }

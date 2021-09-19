@@ -12,7 +12,7 @@ package vn.aptech.quanlybanhang.ui;
 public class HelperUI {
 
     public static void displayMargin() {
-        System.out.println("\n\n");
+        System.out.println();
     }
 
     public static void displayBorder(int length) {
