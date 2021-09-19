@@ -5,8 +5,6 @@ package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.dao.EmployeeDAO;
 import vn.aptech.quanlybanhang.dao.EmployeeDAOImpl;
 import vn.aptech.quanlybanhang.entities.Employee;
@@ -30,12 +28,18 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (object == null) {
             throw new Exception(I18n.getMessage("app.error.object.null"));
         }
+        if (existsByUsername(object.getUsername())) {
+            throw new Exception(I18n.getMessage("employee.error.username.exists", object.getUsername()));
+        }
         return employeeDAO.create(object);
     }
 
     @Override
-    public boolean update(Employee emp) throws Exception {
-        return employeeDAO.update(emp);
+    public boolean update(Employee object) throws Exception {
+        if (existsByUsername(object.getUsername())) {
+            throw new Exception(I18n.getMessage("employee.error.username.exists", object.getUsername()));
+        }
+        return employeeDAO.update(object);
     }
 
     @Override
@@ -65,11 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new Exception(I18n.getMessage("app.error.object.null"));
         }
         if (id < 1) {
-            try {
-                throw new Exception(I18n.getMessage("input.invalidID"));
-            } catch (Exception ex) {
-                Logger.getLogger(EmployeeServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            throw new Exception(I18n.getMessage("input.invalidID"));
         }
         return employeeDAO.updateById(object, id);
     }
@@ -78,9 +78,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee findByUsernameAndPassword(String username, String password) throws Exception {
         if (username == null || password == null) {
             throw new Exception("Username va Password không được để trống");
-
         }
-
         return employeeDAO.findByUsernameAndPassword(username, password);
     }
 
@@ -89,13 +87,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (username == null) {
             throw new Exception("Username không được để trống");
         }
-
         return employeeDAO.findByNameEmployee(username);
     }
 
     @Override
     public PaginatedResults<Employee> select(int page) throws SQLException, Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean existsByUsername(String username) throws Exception {
+        return employeeDAO.existsByUsername(username);
     }
 
 }
