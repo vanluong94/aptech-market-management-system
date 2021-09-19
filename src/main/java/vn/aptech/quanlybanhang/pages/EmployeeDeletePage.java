@@ -5,29 +5,32 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 import vn.aptech.quanlybanhang.utilities.I18n;
 
-
 public class EmployeeDeletePage extends Page {
+
+    private final EmployeeService employeeService;
+
+    public EmployeeDeletePage() {
+        this.employeeService = new EmployeeServiceImpl();
+    }
 
     @Override
     public void displayContent() {
         try {
-            EmployeeService employeeService = new EmployeeServiceImpl();
-            
             int employeeId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("employee", "entity.scan.id.delete"));
-            if (employeeService.deleteById(employeeId)) {
-                I18n.printEntityMessage("employee", "entity.msg.deleted");
-            } else {
-                I18n.printEntityMessage("employee", "entity.error.deleteFailed");
+            if (AppScanner.confirm(I18n.getMessage("entity.confirm.delete", I18n.getMessage("employee.label.singular")))) {
+                if (employeeService.deleteById(employeeId)) {
+                    I18n.printEntityMessage("employee", "entity.msg.deleted");
+                } else {
+                    I18n.printEntityMessage("employee", "entity.error.deleteFailed");
+                }
             }
         } catch (Exception ex) {
-            Logger.getLogger(EmployeeDeletePage.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -35,5 +38,5 @@ public class EmployeeDeletePage extends Page {
     public String getTitle() {
         return I18n.getEntityMessage("employee", "entity.title.delete");
     }
-    
+
 }
