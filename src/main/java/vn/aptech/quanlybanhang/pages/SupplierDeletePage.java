@@ -8,8 +8,6 @@ package vn.aptech.quanlybanhang.pages;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Supplier;
-import vn.aptech.quanlybanhang.service.SupplierService;
-import vn.aptech.quanlybanhang.service.SupplierServiceImpl;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.service.SupplierService;

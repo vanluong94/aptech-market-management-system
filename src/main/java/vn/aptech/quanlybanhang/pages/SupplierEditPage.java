@@ -23,15 +23,16 @@ public class SupplierEditPage extends Page {
         do {
             retry = false;
             try {
-                int id = AppScanner.scanIntWithMessage("Nhập ID cho Nhà cung cấp muốn sửa Thông tin : ");
+                int id = AppScanner.scanIntWithMessage(I18n.getEntityMessage("supplier", "entity.scan.id.edit"));
+                
                 Supplier supplier = supplierService.findById(id);
                 if (supplier == null) {
                     I18n.getEntityMessage("supplier", "entity.error.idNotFound");
                     retry = true;
                 } else {
-                    System.out.println("\n\nNhập Thông tin mới cho Nhà cung cấp, bỏ trống nếu giữ nguyên.");
-                    String newName = AppScanner.scanStringWithMessage("Nhập tên mới cho Nhà cung cấp : ");
-                    String newAdd = AppScanner.scanStringWithMessage("Nhập Địa chỉ mới cho Nhà cung cấp : ");
+                    I18n.print("supplier.msg.update");
+                    String newName = AppScanner.scanStringWithMessage(I18n.getMessage("supplier.scan.name.new"));
+                    String newAdd = AppScanner.scanStringWithMessage(I18n.getMessage("supplier.scan.addr.new"));
 
                     if (newName.length() > 0) {
                         supplier.setName(newName);
@@ -40,7 +41,7 @@ public class SupplierEditPage extends Page {
                         supplier.setAddress(newAdd);
                     }
                     supplierService.update(supplier);
-                    System.out.println("Cập nhật thành công!");
+                    I18n.printEntityMessage("supplier", "entity.msg.updated");
                 }
             } catch (InputInvalidException e) {
                 System.out.println(e.getMessage());
