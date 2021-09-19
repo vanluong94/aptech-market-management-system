@@ -54,7 +54,7 @@ public class SupplierEditPage extends Page {
 
     @Override
     public String getTitle() {
-        return I18n.getEntityMessage("supplier", "entry.title.edit");
+        return I18n.getEntityMessage("supplier", "entity.title.edit");
     }
 
 }

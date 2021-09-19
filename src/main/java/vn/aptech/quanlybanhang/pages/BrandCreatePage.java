@@ -40,7 +40,7 @@ public class BrandCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return I18n.getEntityMessage("brand", "entity.msg.created");
+        return I18n.getEntityMessage("brand", "entity.title.create");
     }
     
 }
