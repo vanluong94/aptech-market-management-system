@@ -13,8 +13,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.common.DateCommon;
 import vn.aptech.quanlybanhang.constant.Constant;
+import vn.aptech.quanlybanhang.entities.Brand;
+import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.entities.ImportProduct;
 import vn.aptech.quanlybanhang.entities.Product;
+import vn.aptech.quanlybanhang.entities.Supplier;
 import vn.aptech.quanlybanhang.service.ImportProductService;
 import vn.aptech.quanlybanhang.service.ImportProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
@@ -536,6 +539,51 @@ public class ProductDAOImpl implements ProductDAO {
             }
         }
         return amount;
+    }
+
+    @Override
+    public Product findFirstProductByBrand(Brand brand) throws Exception {
+        try(
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM products WHERE brand_id = ? LIMIT 0,1");
+        ){
+            st.setInt(1, brand.getId());
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return this.mapRersultSetToObject(rs);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Product findFirstProductBySupplier(Supplier sup) throws Exception {
+        try(
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM products WHERE supplier_id = ? LIMIT 0,1");
+        ){
+            st.setInt(1, sup.getId());
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return this.mapRersultSetToObject(rs);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Product findFirstProductByCategory(Category cat) throws Exception {
+        try(
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM products WHERE category_id = ? LIMIT 0,1");
+        ){
+            st.setInt(1, cat.getId());
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return this.mapRersultSetToObject(rs);
+            }
+        }
+        return null;
     }
 
 }

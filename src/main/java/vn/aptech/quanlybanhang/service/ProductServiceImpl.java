@@ -11,7 +11,10 @@ import vn.aptech.quanlybanhang.common.DateCommon;
 import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.dao.ProductDAO;
 import vn.aptech.quanlybanhang.dao.ProductDAOImpl;
+import vn.aptech.quanlybanhang.entities.Brand;
+import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.entities.Product;
+import vn.aptech.quanlybanhang.entities.Supplier;
 import vn.aptech.quanlybanhang.exception.InputInvalidException;
 import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
@@ -121,6 +124,21 @@ public class ProductServiceImpl implements ProductService {
         java.sql.Date fromDateSql = DateCommon.convertUtilDateToSqlDate(DateCommon.getBeginDay(fromDate));
         java.sql.Date toDateSql = DateCommon.convertUtilDateToSqlDate(DateCommon.getEndDay(toDate));
         return productDAO.getStatisticAmount(fromDateSql, toDateSql);
+    }
+
+    @Override
+    public Product findFirstProductByBrand(Brand brand) throws Exception {
+        return this.productDAO.findFirstProductByBrand(brand);
+    }
+
+    @Override
+    public Product findFirstProductBySupplier(Supplier sup) throws Exception {
+        return this.productDAO.findFirstProductBySupplier(sup);
+    }
+
+    @Override
+    public Product findFirstProductByCategory(Category cat) throws Exception {
+        return this.productDAO.findFirstProductByCategory(cat);
     }
 
 }
