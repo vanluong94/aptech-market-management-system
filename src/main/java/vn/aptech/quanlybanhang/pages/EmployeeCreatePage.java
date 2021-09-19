@@ -33,7 +33,7 @@ public class EmployeeCreatePage extends Page {
             do {
                 employeeDepartment = AppScanner.scanIntWithMessage(
                         I18n.getMessage("employee.scan.dept")
-                        + String.format("(1=%s; 2=%s; 3=%s", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY)
+                        + String.format("(1=%s; 2=%s; 3=%s)", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY)
                 );
                 
                 if (employeeDepartment < 1 || employeeDepartment > 3) {
