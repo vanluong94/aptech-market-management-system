@@ -50,7 +50,7 @@ public class CashierOrderDetailPage extends Page {
                     tableUI.display();
                 }
 
-                choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("order", "entity.confirm.searchAnOther"));
+                choice = AppScanner.scanStringWithMessage(I18n.getMessage("entity.confirm.searchAnOther"));
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }
