@@ -13,8 +13,12 @@ import vn.aptech.quanlybanhang.entities.ProductDiscount;
  * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public interface DiscountDAO extends BaseDAO<Discount> {
+
     List<ProductDiscount> getDiscountProducts(Discount discount);
+
     boolean deleteDiscountProduct(ProductDiscount dProduct);
+
     boolean createDiscountProduct(ProductDiscount dProduct);
+
     ProductDiscount findOverlapDiscountProduct(ProductDiscount dProduct);
 }

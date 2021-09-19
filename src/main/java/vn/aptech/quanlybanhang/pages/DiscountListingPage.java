@@ -37,7 +37,7 @@ public class DiscountListingPage extends Page {
                         Object[] row = {
                             discount.getId(),
                             discount.getName(),
-                            discount.getProductsCount()
+                            discount.getProductCount()
                         };
                         rows.add(row);
                     }

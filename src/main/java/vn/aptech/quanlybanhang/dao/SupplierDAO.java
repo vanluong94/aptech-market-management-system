@@ -3,7 +3,6 @@
  */
 package vn.aptech.quanlybanhang.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.Supplier;
 
@@ -13,7 +12,6 @@ import vn.aptech.quanlybanhang.entities.Supplier;
  */
 public interface SupplierDAO extends BaseDAO<Supplier> {
 
-    List<Supplier> searchByName(String Name) throws SQLException,ClassNotFoundException;
+    List<Supplier> searchByName(String Name) throws Exception;
 
-    
 }

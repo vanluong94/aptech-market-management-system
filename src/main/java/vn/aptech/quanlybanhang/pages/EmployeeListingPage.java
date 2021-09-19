@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Do an Java tai Hanoi Aptech
  */
 package vn.aptech.quanlybanhang.pages;
 
@@ -16,44 +14,47 @@ import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.I18n;
 
-
 public class EmployeeListingPage extends Page {
+
+    private final EmployeeService employeeService;
+
+    public EmployeeListingPage() {
+        this.employeeService = new EmployeeServiceImpl();
+    }
 
     @Override
     public void displayContent() {
-        
         try {
-            EmployeeService employeeService = new EmployeeServiceImpl();
-            
             List<Employee> employees = employeeService.findAll();
             List<Object[]> rows = new ArrayList<>();
-            
+
             // transfer data to table row
             for (Employee employee : employees) {
                 Object[] row = {
-                    employee.getEmployeeId(),
+                    employee.getId(),
                     employee.getName(),
                     employee.getAddress(),
                     employee.getPhone(),
                     employee.getDepartment(),
-                    employee.getUserName(),
-                };
-                
+                    employee.getUsername(),};
+
                 rows.add(row);
             }
-            
+
             String[] headers = {
-                "ID", 
-                I18n.getMessage("employee.name"), 
+                "ID",
+                I18n.getMessage("employee.name"),
                 I18n.getMessage("employee.addr"),
                 I18n.getMessage("employee.phone"),
                 I18n.getMessage("employee.dept"),
                 I18n.getMessage("employee.username")
             };
-            
+
             TableUI theTable = new TableUI(headers, rows);
             theTable.display();
         } catch (SQLException ex) {
+            Logger.getLogger(EmployeeListingPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(EmployeeListingPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -62,5 +63,5 @@ public class EmployeeListingPage extends Page {
     public String getTitle() {
         return I18n.getEntityMessage("employee", "entity.title.all", true);
     }
-    
+
 }

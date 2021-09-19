@@ -28,8 +28,6 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  */
 public class ProductDAOImpl implements ProductDAO {
 
-    private final static int PER_PAGE = 10;
-
     private final static String SQL_SELECT_ALL = "SELECT products.*,suppliers.supplier_id,suppliers.supplier_name,brands.brand_name,brands.brand_id,categories.category_id,categories.category_name,employees.employee_name, employees.employee_id"
             + " FROM products"
             + " JOIN brands ON brands.brand_id = products.brand_id"
@@ -124,19 +122,19 @@ public class ProductDAOImpl implements ProductDAO {
      *
      * @param object
      * @return
-     * @throws SQLException
+     * @throws java.lang.Exception
      */
     @Override
-    public boolean create(Product object) throws SQLException {
+    public boolean create(Product object) throws Exception {
         int rowsAffected = -1;
         Connection conn = null;
         try {
             conn = DBConnection.getConnection();
             conn.setAutoCommit(false);
             PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setInt(1, object.getBrand().getBrandId());
-            pstmt.setInt(2, object.getCategory().getCategoryId());
-            pstmt.setInt(3, object.getEmployee().getEmployeeId());
+            pstmt.setInt(1, object.getBrand().getId());
+            pstmt.setInt(2, object.getCategory().getId());
+            pstmt.setInt(3, object.getEmployee().getId());
             pstmt.setInt(4, object.getSupplier().getId());
             pstmt.setString(5, object.getName());
             pstmt.setDouble(6, object.getPrice());
@@ -173,8 +171,8 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public boolean update(Product product) throws SQLException {
-        int rowEffected = -1;
+    public boolean update(Product product) throws Exception {
+        int rowsAffected = -1;
 
         String updateSQL = "UPDATE `products` SET "
                 + "`brand_id` = ?"
@@ -184,50 +182,44 @@ public class ProductDAOImpl implements ProductDAO {
                 + ", `product_price` = ?"
                 + ", `product_stock` = ?"
                 + ", `updated_date` = ?"
-                + "WHERE product_id = ?;";
+                + " WHERE product_id = ?;";
 
         try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement st = conn.prepareStatement(updateSQL);
-            st.setInt(1, product.getBrand().getBrandId());
-            st.setInt(2, product.getCategory().getCategoryId());
-            st.setInt(3, product.getEmployee().getEmployeeId());
+            st.setInt(1, product.getBrand().getId());
+            st.setInt(2, product.getCategory().getId());
+            st.setInt(3, product.getEmployee().getId());
             st.setString(4, product.getName());
             st.setDouble(5, product.getPrice());
             st.setInt(6, product.getQuantityInStock());
             st.setString(7, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s")));
             st.setInt(8, product.getId());
 
-            rowEffected = st.executeUpdate();
+            rowsAffected = st.executeUpdate();
         } catch (SQLException e) {
             throw e;
         }
 
-        return rowEffected > -1;
+        return rowsAffected > -1;
     }
 
     @Override
-    public boolean deleteById(int id) throws SQLException {
-        int temp = -1;
-        Connection conn = null;
-        try {
-            conn = DBConnection.getConnection();
+    public boolean deleteById(int id) throws Exception {
+        int rowsAffected = -1;
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE);
             pstmt.setInt(1, id);
-            temp = pstmt.executeUpdate();
+            rowsAffected = pstmt.executeUpdate();
 
         } catch (SQLException e) {
             throw e;
-        } finally {
-            if (conn != null) {
-                conn.close();
-            }
         }
-        return temp > 0;
+        return rowsAffected > 0;
     }
 
     @Override
-    public Product findById(int id) throws SQLException {
+    public Product findById(int id) throws Exception {
         Product product = null;
         try {
             Connection conn = DBConnection.getConnection();
@@ -238,11 +230,11 @@ public class ProductDAOImpl implements ProductDAO {
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 product = this.mapRersultSetToObject(rs);
-                product.getCategory().setCategoryName(rs.getString("category_name"));
+                product.getCategory().setName(rs.getString("category_name"));
                 product.getEmployee().setName(rs.getString("employee_name"));
                 product.getSupplier().setName(rs.getString("supplier_name"));
-                product.getBrand().setBrandName(rs.getString("brand_name"));
-                
+                product.getBrand().setName(rs.getString("brand_name"));
+
                 if (rs.getInt("d_products.discount_product_id") > 0) {
                     product.getDiscount().setId(rs.getInt("d_products.discount_product_id"));
                     product.getDiscount().setDiscountPercentage(rs.getFloat("d_products.discount"));
@@ -268,8 +260,8 @@ public class ProductDAOImpl implements ProductDAO {
             while (rs.next()) {
                 Product product = new Product();
                 product.setId(rs.getInt("product_id"));
-                product.getBrand().setBrandName(rs.getString("brand_name"));
-                product.getCategory().setCategoryName(rs.getString("category_name"));
+                product.getBrand().setName(rs.getString("brand_name"));
+                product.getCategory().setName(rs.getString("category_name"));
                 product.getSupplier().setName(rs.getString("supplier_name"));
                 product.getEmployee().setName(rs.getString("employee_name"));
                 product.setName(rs.getString("product_name"));
@@ -284,8 +276,8 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public PaginatedResults<Product> findByCategoryId(int page, int id) throws SQLException {
-        PaginatedResults<Product> pagination = new PaginatedResults<>(page, PER_PAGE);
+    public PaginatedResults<Product> findByCategoryId(int page, int id) throws Exception {
+        PaginatedResults<Product> pagination = new PaginatedResults<>(page, Constant.PER_PAGE);
         List<Product> products = new ArrayList<>();
         Statement st = null;
         ResultSet rs = null;
@@ -299,8 +291,8 @@ public class ProductDAOImpl implements ProductDAO {
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 Product product = new Product();
-                product.getBrand().setBrandName(rs.getString("brand_name"));
-                product.getCategory().setCategoryName(rs.getString("category_name"));
+                product.getBrand().setName(rs.getString("brand_name"));
+                product.getCategory().setName(rs.getString("category_name"));
                 product.getSupplier().setName(rs.getString("supplier_name"));
                 product.getEmployee().setName(rs.getString("employee_name"));
                 product.setId(rs.getInt("product_id"));
@@ -329,8 +321,8 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public PaginatedResults<Product> findByName(int page, String name) throws SQLException {
-        PaginatedResults<Product> pagination = new PaginatedResults<>(page, PER_PAGE);
+    public PaginatedResults<Product> findByName(int page, String name) throws Exception {
+        PaginatedResults<Product> pagination = new PaginatedResults<>(page, Constant.PER_PAGE);
         List<Product> products = new ArrayList<>();
         Statement st = null;
         ResultSet rs = null;
@@ -344,8 +336,8 @@ public class ProductDAOImpl implements ProductDAO {
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 Product product = new Product();
-                product.getBrand().setBrandName(rs.getString("brand_name"));
-                product.getCategory().setCategoryName(rs.getString("category_name"));
+                product.getBrand().setName(rs.getString("brand_name"));
+                product.getCategory().setName(rs.getString("category_name"));
                 product.getSupplier().setName(rs.getString("supplier_name"));
                 product.getEmployee().setName(rs.getString("employee_name"));
                 product.setId(rs.getInt("product_id"));
@@ -374,9 +366,9 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public PaginatedResults<Product> selectOutOfStock(int page) throws SQLException {
+    public PaginatedResults<Product> selectOutOfStock(int page) throws Exception {
 
-        PaginatedResults<Product> pagination = new PaginatedResults<>(page, PER_PAGE);
+        PaginatedResults<Product> pagination = new PaginatedResults<>(page, Constant.PER_PAGE);
         List<Product> products = new ArrayList<>();
 
         try (Connection conn = DBConnection.getConnection()) {
@@ -390,9 +382,9 @@ public class ProductDAOImpl implements ProductDAO {
             while (rs.next()) {
                 Product product = this.mapRersultSetToObject(rs);
 
-                product.getBrand().setBrandName(rs.getString("brand_name"));
+                product.getBrand().setName(rs.getString("brand_name"));
                 product.getSupplier().setName(rs.getString("supplier_name"));
-                product.getCategory().setCategoryName(rs.getString("category_name"));
+                product.getCategory().setName(rs.getString("category_name"));
                 product.getEmployee().setName(rs.getString("employee_name"));
 
                 products.add(product);
@@ -412,14 +404,14 @@ public class ProductDAOImpl implements ProductDAO {
         return pagination;
     }
 
-    private Product mapRersultSetToObject(ResultSet rs) throws SQLException {
+    private Product mapRersultSetToObject(ResultSet rs) throws Exception {
         Product product = new Product();
         try {
             product.setId(rs.getInt("product_id"));
-            product.getBrand().setBrandId(rs.getInt("brand_id"));
+            product.getBrand().setId(rs.getInt("brand_id"));
             product.getSupplier().setId(rs.getInt("supplier_id"));
-            product.getCategory().setCategoryId(rs.getInt("category_id"));
-            product.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+            product.getCategory().setId(rs.getInt("category_id"));
+            product.getEmployee().setId(rs.getInt("employee_id"));
             product.setName(rs.getString("product_name"));
             product.setPrice(rs.getDouble("product_price"));
             product.setQuantityInStock(rs.getInt("product_stock"));
@@ -430,13 +422,13 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public PaginatedResults<Product> select(int page) throws SQLException {
+    public PaginatedResults<Product> select(int page) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public PaginatedResults<Product> findAllByOrderByUnitsOnOrderDesc(int page, String fromDate, String toDate) throws SQLException {
-        PaginatedResults<Product> pagination = new PaginatedResults<>(page, PER_PAGE);
+        PaginatedResults<Product> pagination = new PaginatedResults<>(page, Constant.PER_PAGE);
         List<Product> products = new ArrayList<>();
         Statement st = null;
         ResultSet rs = null;
@@ -451,9 +443,9 @@ public class ProductDAOImpl implements ProductDAO {
             while (rs.next()) {
                 Product product = this.mapRersultSetToObject(rs);
                 product.setUnitsOnOrder(rs.getInt("unitsOnOrder"));
-                product.getBrand().setBrandName(rs.getString("brand_name"));
+                product.getBrand().setName(rs.getString("brand_name"));
                 product.getSupplier().setName(rs.getString("supplier_name"));
-                product.getCategory().setCategoryName(rs.getString("category_name"));
+                product.getCategory().setName(rs.getString("category_name"));
                 product.getEmployee().setName(rs.getString("employee_name"));
                 products.add(product);
             }
@@ -466,6 +458,8 @@ public class ProductDAOImpl implements ProductDAO {
             if (rs.next()) {
                 pagination.setTotalItems(rs.getInt(1));
             }
+        } catch (Exception ex) {
+            Logger.getLogger(ProductDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (rs != null) {
                 rs.close();
@@ -482,7 +476,7 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public double getStatisticAmount(java.sql.Date fromDate, java.sql.Date toDate) throws SQLException {
+    public double getStatisticAmount(java.sql.Date fromDate, java.sql.Date toDate) throws Exception {
         double amount = 0;
         PreparedStatement pstmt = null;
         ResultSet rs = null;

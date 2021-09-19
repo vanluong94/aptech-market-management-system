@@ -39,7 +39,7 @@ public class CategoryDeletePage extends Page {
 
                     if (confirm.toLowerCase().equals("y")) {
                         System.out.println(""); //margin line
-                        if (categoryService.deleteById(theCat.getCategoryId())) {
+                        if (categoryService.deleteById(theCat.getId())) {
                             I18n.printEntityMessage("category", "entity.msg.deleted");
                         } else {
                             I18n.printEntityMessage("category", "entity.error.deleteFailed");

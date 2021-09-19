@@ -1,43 +1,50 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.entities;
 
 /**
  *
  * @author vanluong
+ * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  */
 public class Brand {
-    
-    private int brandId;
-    private String brandName;
-    private String brandAdd;
 
-    public int getBrandId() {
-        return brandId;
+    private int id;
+    private String name;
+    private String address;
+
+    public Brand() {
     }
 
-    public void setBrandId(int brandId) {
-        this.brandId = brandId;
+    public Brand(int id, String name, String address) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
     }
 
-    public String getBrandName() {
-        return brandName;
+    public int getId() {
+        return id;
     }
 
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getBrandAdd() {
-        return brandAdd;
+    public String getName() {
+        return name;
     }
 
-    public void setBrandAdd(String brandAdd) {
-        this.brandAdd = brandAdd;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
 }

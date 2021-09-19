@@ -14,12 +14,14 @@ public final class Constant {
         INACTIVE
     }
 
-    public static String DATE_TIMESTAMP_FORMAT = "HH:mm:ss.SSS dd/MM/yyyy";
-    public static String DATE_TIME_FORMAT = "HH:mm:ss dd/MM/yyyy";
-    public static String DATE_FORMAT = "dd/MM/yyyy";
-    public static String TIME_FORMAT = "HH:mm:ss";
-    public static String DATE_TIME_SIMPLE_FORMAT = "dd/MM/yyyy HH:mm:ss";
-    
-    public static String INVOICE_TEMPLATE_FILE = "invoice.jrxml";
-    public static String INVOICE_EXPORT_FILE = "invoice.xlsx";
+    public static final int PER_PAGE = 10;
+
+    public static final String DATE_TIMESTAMP_FORMAT = "HH:mm:ss.SSS dd/MM/yyyy";
+    public static final String DATE_TIME_FORMAT = "HH:mm:ss dd/MM/yyyy";
+    public static final String DATE_FORMAT = "dd/MM/yyyy";
+    public static final String TIME_FORMAT = "HH:mm:ss";
+    public static final String DATE_TIME_SIMPLE_FORMAT = "dd/MM/yyyy HH:mm:ss";
+
+    public static final String INVOICE_TEMPLATE_FILE = "invoice.jrxml";
+    public static final String INVOICE_EXPORT_FILE = "invoice.xlsx";
 }

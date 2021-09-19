@@ -10,6 +10,7 @@ import java.util.Date;
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  */
 public class BaseEntity {
+
     private Date createdAt;
     private Date updatedAt;
 
@@ -33,6 +34,5 @@ public class BaseEntity {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
-    
-    
+
 }

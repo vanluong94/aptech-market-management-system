@@ -16,7 +16,7 @@ public class Discount extends BaseEntity {
     private int id;
     private String name;
     private List<ProductDiscount> productDiscounts;
-    private int productsCount;
+    private int productCount;
 
     public Discount() {
         this.productDiscounts = new ArrayList<>();
@@ -68,17 +68,17 @@ public class Discount extends BaseEntity {
         this.productDiscounts = productDiscounts;
     }
 
-    public int getProductsCount() {
-        return productsCount;
+    public int getProductCount() {
+        return productCount;
     }
 
-    public void setProductsCount(int productsCount) {
-        this.productsCount = productsCount;
+    public void setProductCount(int productCount) {
+        this.productCount = productCount;
     }
-    
+
     public ProductDiscount findProductDiscount(int productId) {
         for (ProductDiscount pDiscount : this.getProductDiscounts()) {
-            if(pDiscount.getProduct().getId() == productId) {
+            if (pDiscount.getProduct().getId() == productId) {
                 return pDiscount;
             }
         }

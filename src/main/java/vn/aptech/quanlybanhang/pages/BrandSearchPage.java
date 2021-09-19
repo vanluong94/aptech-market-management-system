@@ -44,9 +44,9 @@ public class BrandSearchPage extends Page {
                     // transfer data to table row
                     for (Brand brand : brands) {
                         Object[] row = {
-                            brand.getBrandId(),
-                            brand.getBrandName(),
-                            brand.getBrandAdd()
+                            brand.getId(),
+                            brand.getName(),
+                            brand.getAddress()
                         };
                         
                         rows.add(row);

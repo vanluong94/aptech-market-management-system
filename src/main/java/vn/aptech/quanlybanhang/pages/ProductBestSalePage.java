@@ -56,8 +56,8 @@ public class ProductBestSalePage extends Page {
                         product.getPrice(),
                         product.getQuantityInStock(),
                         product.getUnitsOnOrder(),
-                        product.getCategory().getCategoryName(),
-                        product.getBrand().getBrandName(),
+                        product.getCategory().getName(),
+                        product.getBrand().getName(),
                         product.getSupplier().getName()
                     };
 

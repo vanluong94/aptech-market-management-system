@@ -10,6 +10,7 @@ import java.util.Date;
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  */
 public class ImportProduct {
+
     private int id;
     private Supplier supplier;
     private Product product;
@@ -23,7 +24,7 @@ public class ImportProduct {
         this.product = new Product();
         this.employee = new Employee();
     }
-    
+
     /**
      * @return the id
      */
@@ -121,5 +122,5 @@ public class ImportProduct {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
-    
+
 }

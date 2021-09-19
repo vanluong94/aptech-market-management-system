@@ -12,5 +12,5 @@ import vn.aptech.quanlybanhang.entities.Customer;
  */
 public interface CustomerDAO extends BaseDAO<Customer> {
 
-    Customer findByPhone(String phone) throws SQLException;
+    Customer findByPhone(String phone) throws Exception;
 }

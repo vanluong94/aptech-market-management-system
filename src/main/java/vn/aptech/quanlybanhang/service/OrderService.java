@@ -16,19 +16,19 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  */
 public interface OrderService extends BaseService<Order> {
 
-    Order findByCashierId(int id) throws SQLException, Exception;
+    Order findByCashierId(int id) throws Exception;
 
-    public PaginatedResults<Order> todayOrder(int page) throws SQLException;
+    public PaginatedResults<Order> todayOrder(int page) throws Exception;
 
-    List<OrderItem> getOrderItems(Order order);
+    List<OrderItem> getOrderItems(Order order) throws Exception;
 
-    PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException;
-    
-    PaginatedResults<Order> findByCustomerPhone (int page,String phone) throws SQLException;
+    PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws Exception;
 
-    Order findByCustomerId(int id) throws SQLException;
-    
-    PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws SQLException;
-    
+    PaginatedResults<Order> findByCustomerPhone(int page, String phone) throws Exception;
+
+    Order findByCustomerId(int id) throws Exception;
+
+    PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws Exception;
+
     String requestReportXlsx(Order order) throws Exception;
 }

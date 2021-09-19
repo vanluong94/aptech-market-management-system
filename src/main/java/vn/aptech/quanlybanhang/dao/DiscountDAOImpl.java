@@ -42,15 +42,14 @@ public class DiscountDAOImpl implements DiscountDAO {
             + "     OR "
             + "     (end_date BETWEEN ? AND ?)"
             + " ) LIMIT 0, 1";
-    
+
     @Override
     public boolean create(Discount discount) throws SQLException {
         int rowsAffected = -1;
         try (
-                Connection conn = DBConnection.getConnection();  
-                PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-        ) {
-            
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);) {
+
             conn.setAutoCommit(false);
 
             pstmt.setString(1, discount.getName());
@@ -63,13 +62,13 @@ public class DiscountDAOImpl implements DiscountDAO {
                     }
                 }
             }
-            
+
             /**
              * insert discount products
              */
             if (discount.getId() > 0) {
 
-                try ( PreparedStatement st = conn.prepareStatement(
+                try (PreparedStatement st = conn.prepareStatement(
                         "INSERT INTO discount_product "
                         + " (discount_id, product_id, discount, start_date, end_date) "
                         + " VALUES (?, ?, ?, ?, ?)"
@@ -101,7 +100,7 @@ public class DiscountDAOImpl implements DiscountDAO {
     @Override
     public boolean deleteById(int id) throws SQLException {
         int rs = -1;
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE);
             pstmt.setInt(1, id);
             rs = pstmt.executeUpdate();
@@ -138,14 +137,14 @@ public class DiscountDAOImpl implements DiscountDAO {
     @Override
     public List<Discount> findAll() throws SQLException {
         List<Discount> discounts = new ArrayList<>();
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Discount discount = new Discount();
                 discount.setId(rs.getInt("discount_id"));
                 discount.setName(rs.getString("discount_name"));
-                discount.setProductsCount(rs.getInt("products_count"));
+                discount.setProductCount(rs.getInt("products_count"));
                 discounts.add(discount);
             }
         } catch (SQLException e) {
@@ -157,7 +156,7 @@ public class DiscountDAOImpl implements DiscountDAO {
     @Override
     public boolean update(Discount discount) throws SQLException {
         int rs = -1;
-        try ( Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE);
             pstmt.setString(1, discount.getName());
             pstmt.setInt(2, discount.getId());
@@ -178,9 +177,8 @@ public class DiscountDAOImpl implements DiscountDAO {
     public List<ProductDiscount> getDiscountProducts(Discount discount) {
         List<ProductDiscount> products = new ArrayList<>();
         try (
-                Connection conn = DBConnection.getConnection();  
-                PreparedStatement pstmt = conn.prepareStatement(SQL_GET_PRODUCTS);
-        ) {
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(SQL_GET_PRODUCTS);) {
             pstmt.setInt(1, discount.getId());
             ResultSet rs = pstmt.executeQuery();
 
@@ -190,7 +188,7 @@ public class DiscountDAOImpl implements DiscountDAO {
                 product.setName(rs.getString("product_name"));
                 product.setPrice(rs.getDouble("product_price"));
                 product.setQuantityInStock(rs.getInt("product_stock"));
-                
+
                 ProductDiscount pDiscount = new ProductDiscount(
                         rs.getInt("discount_product_id"),
                         rs.getInt("discount_id"),
@@ -207,22 +205,21 @@ public class DiscountDAOImpl implements DiscountDAO {
         }
         return products;
     }
-    
+
     @Override
     public ProductDiscount findOverlapDiscountProduct(ProductDiscount dProduct) {
         try (
-                Connection conn = DBConnection.getConnection();  
-                PreparedStatement pstmt = conn.prepareStatement(SQL_VALIDATE_PRODUCT);
-        ){
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(SQL_VALIDATE_PRODUCT);) {
             pstmt.setInt(1, dProduct.getProduct().getId());
             pstmt.setTimestamp(2, DateCommon.convertDateToTimestamp(dProduct.getStartDate()));
             pstmt.setTimestamp(3, DateCommon.convertDateToTimestamp(dProduct.getEndDate()));
             pstmt.setTimestamp(4, DateCommon.convertDateToTimestamp(dProduct.getStartDate()));
             pstmt.setTimestamp(5, DateCommon.convertDateToTimestamp(dProduct.getEndDate()));
-            
+
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                
+
                 return new ProductDiscount(
                         rs.getInt("discount_product_id"),
                         rs.getInt("discount_id"),
@@ -241,15 +238,14 @@ public class DiscountDAOImpl implements DiscountDAO {
     @Override
     public boolean deleteDiscountProduct(ProductDiscount dProduct) {
         try (
-                Connection conn = DBConnection.getConnection();  
-                PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE_PRODUCT);
-        ) {
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE_PRODUCT);) {
             pstmt.setInt(1, dProduct.getId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DiscountDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return false;
     }
 
@@ -257,9 +253,8 @@ public class DiscountDAOImpl implements DiscountDAO {
     public boolean createDiscountProduct(ProductDiscount dProduct) {
 
         try (
-                Connection conn = DBConnection.getConnection();  
-                PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS);
-        ) {
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS);) {
             pstmt.setInt(1, dProduct.getDiscountId());
             pstmt.setInt(2, dProduct.getProduct().getId());
             pstmt.setFloat(3, dProduct.getDiscountPercentage());
@@ -267,18 +262,18 @@ public class DiscountDAOImpl implements DiscountDAO {
             pstmt.setTimestamp(5, DateCommon.convertDateToTimestamp(dProduct.getEndDate()));
             System.out.println(pstmt.toString());
             if (pstmt.executeUpdate() > 0) {
-                try ( ResultSet ids = pstmt.getGeneratedKeys()) {
+                try (ResultSet ids = pstmt.getGeneratedKeys()) {
                     if (ids.next()) {
                         dProduct.setId(ids.getInt(1));
                     }
                 }
-                
+
                 return true;
             }
         } catch (SQLException ex) {
             Logger.getLogger(DiscountDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return false;
     }
 

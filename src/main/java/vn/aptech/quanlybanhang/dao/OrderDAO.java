@@ -3,7 +3,6 @@
  */
 package vn.aptech.quanlybanhang.dao;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.Order;
@@ -16,17 +15,17 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  */
 public interface OrderDAO extends BaseDAO<Order> {
 
-    Order findByCashierId(int id) throws SQLException;
+    Order findByCashierId(int id) throws Exception;
 
-    PaginatedResults<Order> todayOrder(int page) throws SQLException;
+    PaginatedResults<Order> todayOrder(int page) throws Exception;
 
-    List<OrderItem> getOrderItems(Order order);
+    List<OrderItem> getOrderItems(Order order) throws Exception;
 
-    PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws SQLException;
-    
-    PaginatedResults<Order> findByCustomerPhone (int page,String phone) throws SQLException;
+    PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws Exception;
 
-    Order findByCustomerId(int id) throws SQLException;
-    
-    PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws SQLException;
+    PaginatedResults<Order> findByCustomerPhone(int page, String phone) throws Exception;
+
+    Order findByCustomerId(int id) throws Exception;
+
+    PaginatedResults<Order> findByDateRange(Date fromDate, Date toDate, int page) throws Exception;
 }

@@ -23,7 +23,7 @@ import vn.aptech.quanlybanhang.utilities.I18n;
  */
 public class ImportProductHistoryPage extends Page {
 
-    private ImportProductService importProductService;
+    private final ImportProductService importProductService;
 
     public ImportProductHistoryPage() {
         this.importProductService = new ImportProductServiceImpl();
@@ -67,6 +67,8 @@ public class ImportProductHistoryPage extends Page {
                 theTable.display();
             }
         } catch (SQLException ex) {
+            Logger.getLogger(ImportProductHistoryPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(ImportProductHistoryPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         

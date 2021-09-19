@@ -5,8 +5,6 @@ package vn.aptech.quanlybanhang.service;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.dao.DiscountDAO;
 import vn.aptech.quanlybanhang.dao.DiscountDAOImpl;
 import vn.aptech.quanlybanhang.entities.Discount;
@@ -31,19 +29,15 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public boolean deleteById(int id) throws SQLException {
+    public boolean deleteById(int id) throws Exception {
         if (id < 1) {
-            try {
-                throw new Exception(I18n.getMessage("input.invalidID"));
-            } catch (Exception ex) {
-                Logger.getLogger(DiscountServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            throw new Exception(I18n.getMessage("input.invalidID"));
         }
         return discountDAO.deleteById(id);
     }
 
     @Override
-    public Discount findById(int id) throws SQLException, Exception {
+    public Discount findById(int id) throws Exception {
         if (id < 1) {
             throw new Exception(I18n.getMessage("input.invalidID"));
         }
@@ -51,17 +45,17 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<Discount> findAll() throws SQLException {
+    public List<Discount> findAll() throws Exception {
         return discountDAO.findAll();
     }
 
     @Override
-    public boolean update(Discount object) throws SQLException, Exception {
+    public boolean update(Discount object) throws Exception {
         return this.discountDAO.update(object);
     }
 
     @Override
-    public PaginatedResults<Discount> select(int page) throws SQLException, Exception {
+    public PaginatedResults<Discount> select(int page) throws Exception {
         return this.discountDAO.select(page);
     }
 

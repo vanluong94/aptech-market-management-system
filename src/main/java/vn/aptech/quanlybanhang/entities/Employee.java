@@ -8,8 +8,8 @@ import vn.aptech.quanlybanhang.utilities.I18n;
  */
 public class Employee {
 
-    private int employeeId;
-    private String userName;
+    private int id;
+    private String username;
     private String password;
     private String address;
     private String name;
@@ -52,13 +52,13 @@ public class Employee {
     }
 
     public Employee(String userName, String password) {
-        this.userName = userName;
+        this.username = userName;
         this.password = password;
     }
 
     public Employee(int employeeId, String userName, String password) {
-        this.employeeId = employeeId;
-        this.userName = userName;
+        this.id = employeeId;
+        this.username = userName;
         this.password = password;
     }
 
@@ -67,36 +67,36 @@ public class Employee {
         this.address = address;
         this.phone = phone;
         this.department = department;
-        this.userName = username;
+        this.username = username;
         this.password = password;
     }
 
     /**
-     * @return the employeeId
+     * @return the id
      */
-    public int getEmployeeId() {
-        return employeeId;
+    public int getId() {
+        return id;
     }
 
     /**
-     * @param employeeId the employeeId to set
+     * @param id the id to set
      */
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
-     * @return the userName
+     * @return the username
      */
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     /**
-     * @param userName the userName to set
+     * @param username the username to set
      */
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     /**
@@ -119,19 +119,19 @@ public class Employee {
         System.out.println(I18n.getMessage("employee.addr") + ": " + address);
         System.out.println(I18n.getMessage("employee.phone") + ": " + phone);
         System.out.println(I18n.getMessage("employee.dept") + ": " + department);
-        System.out.println(I18n.getMessage("employee.id") + ": " + employeeId);
-        System.out.println(I18n.getMessage("employee.username") + ": " + userName);
+        System.out.println(I18n.getMessage("employee.id") + ": " + id);
+        System.out.println(I18n.getMessage("employee.username") + ": " + username);
         System.out.println("=================================");
     }
-    
+
     public boolean isAdmin() {
         return this.getDepartment().equals(Department.ROLE_ADMIN);
     }
-    
+
     public boolean isInventory() {
         return this.getDepartment().equals(Department.ROLE_EMPLOYEE_INVENTORY);
     }
-    
+
     public boolean isCashier() {
         return this.getDepartment().equals(Department.ROLE_EMPLOYEE_CASHER);
     }

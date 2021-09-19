@@ -57,8 +57,8 @@ public class ImportProductPage extends Page {
                 // transfer data to table row
                 for (Brand brand : brands) {
                     Object[] row = {
-                        brand.getBrandId(),
-                        brand.getBrandName()
+                        brand.getId(),
+                        brand.getName()
                     };
 
                     rows.add(row);
@@ -87,8 +87,8 @@ public class ImportProductPage extends Page {
                 // transfer data to table row
                 for (Category category : categories) {
                     Object[] row = {
-                        category.getCategoryId(),
-                        category.getCategoryName()
+                        category.getId(),
+                        category.getName()
                     };
 
                     rows.add(row);

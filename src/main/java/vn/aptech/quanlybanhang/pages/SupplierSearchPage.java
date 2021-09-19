@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vn.aptech.quanlybanhang.entities.Brand;
 import vn.aptech.quanlybanhang.entities.Supplier;
 import vn.aptech.quanlybanhang.service.SupplierService;
 import vn.aptech.quanlybanhang.service.SupplierServiceImpl;
@@ -18,19 +17,18 @@ import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 import vn.aptech.quanlybanhang.utilities.I18n;
 
-
 public class SupplierSearchPage extends Page {
 
     @Override
     public void displayContent() {
         SupplierService supplierService = new SupplierServiceImpl();
         String choice = null;
-        do {            
+        do {
             try {
                 String search = AppScanner.scanStringWithi18Message("supplier.scan.searchName");
-                
+
                 List<Supplier> suppliers = supplierService.searchByName(search);
-                
+
                 if (suppliers.isEmpty()) {
                     I18n.printEntityMessage("supplier", "entity.msg.emptyResults");
                 } else {
@@ -54,8 +52,10 @@ public class SupplierSearchPage extends Page {
                 }
             } catch (SQLException e) {
                 Logger.getLogger(SupplierSearchPage.class.getName()).log(Level.SEVERE, null, e);
-            }catch (ClassNotFoundException e){
+            } catch (ClassNotFoundException e) {
                 Logger.getLogger(SupplierSearchPage.class.getName()).log(Level.SEVERE, null, e);
+            } catch (Exception ex) {
+                Logger.getLogger(SupplierSearchPage.class.getName()).log(Level.SEVERE, null, ex);
             }
         } while ("y".equalsIgnoreCase(choice));
     }
@@ -64,5 +64,5 @@ public class SupplierSearchPage extends Page {
     public String getTitle() {
         return I18n.getEntityMessage("supplier", "entity.title.search", true);
     }
-    
+
 }

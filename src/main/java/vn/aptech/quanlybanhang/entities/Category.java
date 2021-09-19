@@ -5,58 +5,56 @@ package vn.aptech.quanlybanhang.entities;
 
 /**
  *
- * @author anhnbt
+ * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  * @author vanluong
  */
 public class Category {
 
-    private int categoryId;
-    private String categoryName;
-
-    private int productsCount;
+    private int id;
+    private String name;
+    private int productCount;
 
     public Category() {
     }
 
-    public Category(String categoryName) {
-        this.categoryName = categoryName;
+    public Category(String name) {
+        this.name = name;
     }
 
     /**
-     * @return the categoryId
+     * @return the id
      */
-    public int getCategoryId() {
-        return categoryId;
+    public int getId() {
+        return id;
     }
 
     /**
-     * @param categoryId the categoryId to set
+     * @param id the id to set
      */
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
-     * @return the categoryName
+     * @return the name
      */
-    public String getCategoryName() {
-        return categoryName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param categoryName the categoryName to set
+     * @param name the name to set
      */
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getProductsCount() {
-        return productsCount;
+    public int getProductCount() {
+        return productCount;
     }
 
-    public void setProductsCount(int productsCount) {
-        this.productsCount = productsCount;
+    public void setProductCount(int productCount) {
+        this.productCount = productCount;
     }
-
 
 }
