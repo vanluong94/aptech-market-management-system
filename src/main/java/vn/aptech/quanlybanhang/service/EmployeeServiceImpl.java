@@ -36,9 +36,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public boolean update(Employee object) throws Exception {
-        if (existsByUsername(object.getUsername())) {
-            throw new Exception(I18n.getMessage("employee.error.username.exists", object.getUsername()));
-        }
         return employeeDAO.update(object);
     }
 
