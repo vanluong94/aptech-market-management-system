@@ -22,7 +22,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public boolean create(Supplier object) throws SQLException, Exception {
+    public boolean create(Supplier object) throws Exception {
         if (object == null) {
             throw new Exception(I18n.getMessage("app.error.object.null"));
 
@@ -31,7 +31,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public boolean deleteById(int id) throws SQLException {
+    public boolean deleteById(int id) throws Exception {
         if (id < 1) {
             try {
                 throw new Exception(I18n.getMessage("input.invalidID"));
@@ -43,7 +43,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public Supplier findById(int id) throws SQLException, Exception {
+    public Supplier findById(int id) throws Exception {
         if (id < 1) {
             throw new Exception(I18n.getMessage("input.invalidID"));
         }
@@ -51,22 +51,22 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public List<Supplier> findAll() throws SQLException {
+    public List<Supplier> findAll() throws Exception {
         return supplierDAO.findAll();
     }
 
     @Override
-    public boolean update(Supplier id) throws SQLException {
+    public boolean update(Supplier id) throws Exception {
         return this.supplierDAO.update(id);
     }
 
     @Override
-    public List<Supplier> searchByName(String name) throws SQLException, ClassNotFoundException {
+    public List<Supplier> searchByName(String name) throws Exception {
         return this.supplierDAO.searchByName(name);
     }
 
     @Override
-    public PaginatedResults<Supplier> select(int page) throws SQLException, Exception {
+    public PaginatedResults<Supplier> select(int page) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

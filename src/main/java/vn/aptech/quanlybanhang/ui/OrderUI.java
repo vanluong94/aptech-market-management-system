@@ -90,7 +90,7 @@ public class OrderUI {
         this.displayLine(String.format("%-11s: %s", I18n.getMessage("order.receipt.id"), order.getId()));
         this.displayLine(String.format("%-11s: %s", I18n.getMessage("order.receipt.timestamp"), order.getDatetimeString()));
         this.displayLine(String.format("%-11s: %s (Mã KH: %d)", I18n.getMessage("customer.label.singular"), order.getCustomer().getName(), order.getCustomer().getId()));
-        this.displayLine(String.format("%-11s: %s (Mã Thu Ngân: %d)", I18n.getMessage("order.receipt.cashier"), order.getEmployee().getName(), order.getEmployee().getEmployeeId()));
+        this.displayLine(String.format("%-11s: %s (Mã Thu Ngân: %d)", I18n.getMessage("order.receipt.cashier"), order.getEmployee().getName(), order.getEmployee().getId()));
     }
     
     public void displayBorder() {

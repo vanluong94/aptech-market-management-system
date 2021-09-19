@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.service;
 
@@ -28,7 +26,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public boolean create(Employee object) throws SQLException, Exception {
+    public boolean create(Employee object) throws Exception {
         if (object == null) {
             throw new Exception(I18n.getMessage("app.error.object.null"));
         }
@@ -36,12 +34,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public boolean update(Employee emp) throws SQLException, Exception {
+    public boolean update(Employee emp) throws Exception {
         return employeeDAO.update(emp);
     }
 
     @Override
-    public boolean deleteById(int id) throws SQLException, Exception {
+    public boolean deleteById(int id) throws Exception {
         if (id < 1) {
             throw new Exception(I18n.getMessage("input.invalidID"));
         }
@@ -49,7 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee findById(int id) throws SQLException, Exception {
+    public Employee findById(int id) throws Exception {
         if (id < 1) {
             throw new Exception(I18n.getMessage("input.invalidID"));
         }
@@ -57,12 +55,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> findAll() throws SQLException {
+    public List<Employee> findAll() throws Exception {
         return this.employeeDAO.findAll();
     }
 
     @Override
-    public boolean updateById(Employee object, int id) throws SQLException, Exception {
+    public boolean updateById(Employee object, int id) throws Exception {
         if (object == null) {
             throw new Exception(I18n.getMessage("app.error.object.null"));
         }
@@ -77,7 +75,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee findByUsernameAndPassword(String username, String password) throws SQLException, Exception {
+    public Employee findByUsernameAndPassword(String username, String password) throws Exception {
         if (username == null || password == null) {
             throw new Exception("Username va Password không được để trống");
 
@@ -87,7 +85,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> findByNameEmployee(String username) throws SQLException, Exception {
+    public List<Employee> findByNameEmployee(String username) throws Exception {
         if (username == null) {
             throw new Exception("Username không được để trống");
         }

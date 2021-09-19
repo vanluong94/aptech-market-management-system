@@ -57,7 +57,7 @@ public abstract class MenuUI extends MenuItem {
         
         Employee emp = AuthServiceImpl.getCurrentEmployee();
         if(emp != null){
-            displayHeader(I18n.getMessage("app.hello", emp.getName(), emp.getUserName()));
+            displayHeader(I18n.getMessage("app.hello", emp.getName(), emp.getUsername()));
         }
         
         displayBorder();

@@ -216,8 +216,8 @@ public class Product extends BaseEntity {
                     product.getName(),
                     product.getPriceString(),
                     product.getQuantityInStock(),
-                    product.getCategory().getCategoryName() != null ? product.getCategory().getCategoryName() : "",
-                    product.getBrand().getBrandName() != null ? product.getBrand().getBrandName() : ""
+                    product.getCategory().getName() != null ? product.getCategory().getName() : "",
+                    product.getBrand().getName() != null ? product.getBrand().getName() : ""
             ));
 
             if (!AuthServiceImpl.getCurrentEmployee().isCashier()) {

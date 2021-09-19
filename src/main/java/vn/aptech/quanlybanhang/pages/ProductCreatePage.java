@@ -58,7 +58,7 @@ public class ProductCreatePage extends Page {
                 if (brand == null) {
                     I18n.printEntityMessage("brand", "entity.error.idNotFound");
                 } else {
-                    I18n.print("entity.msg.foundName", I18n.getMessage("brand.label.singular"), brand.getBrandName());
+                    I18n.print("entity.msg.foundName", I18n.getMessage("brand.label.singular"), brand.getName());
                     product.setBrand(brand);
                 }
             }
@@ -73,7 +73,7 @@ public class ProductCreatePage extends Page {
                 if (category == null) {
                     I18n.printEntityMessage("category", "entity.error.idNotFound");
                 } else {
-                    I18n.print("entity.msg.foundName", I18n.getMessage("category.label.singular"), category.getCategoryName());
+                    I18n.print("entity.msg.foundName", I18n.getMessage("category.label.singular"), category.getName());
                     product.setCategory(category);
                 }
             }

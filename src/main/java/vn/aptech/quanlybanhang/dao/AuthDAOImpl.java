@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Do an Java tai HaNoi Aptech
  */
 package vn.aptech.quanlybanhang.dao;
 
@@ -12,13 +10,22 @@ import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
 
+/**
+ *
+ * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
+ */
 public class AuthDAOImpl implements AuthDAO {
+
+    EmployeeService empService;
+
+    public AuthDAOImpl() {
+        this.empService = new EmployeeServiceImpl();
+    }
 
     @Override
     public Employee login(String username, String password) {
         Employee emp = null;
         try {
-            EmployeeService empService = new EmployeeServiceImpl();
             emp = empService.findByUsernameAndPassword(username, password);
         } catch (SQLException ex) {
             Logger.getLogger(AuthDAOImpl.class.getName()).log(Level.SEVERE, null, ex);

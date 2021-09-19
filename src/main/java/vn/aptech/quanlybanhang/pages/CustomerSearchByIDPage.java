@@ -42,7 +42,7 @@ public class CustomerSearchByIDPage extends Page {
                         c.getName(),
                         c.getAddress(),
                         c.getPhone(),
-                        c.getEmployee().getEmployeeId(),
+                        c.getEmployee().getId(),
                         c.getEmployee().getName(),
                         c.getDiscount(),
                         c.getSalePoint()

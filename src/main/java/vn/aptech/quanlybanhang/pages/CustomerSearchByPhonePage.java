@@ -41,7 +41,7 @@ public class CustomerSearchByPhonePage extends Page {
                         c.getName(),
                         c.getAddress(),
                         c.getPhone(),
-                        String.format("%s (ID:%d)", c.getEmployee().getName(), c.getEmployee().getEmployeeId())
+                        String.format("%s (ID:%d)", c.getEmployee().getName(), c.getEmployee().getId())
                     };
                     rows.add(row);
                 }

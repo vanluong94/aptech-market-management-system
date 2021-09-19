@@ -37,7 +37,7 @@ public class BrandDeletePage extends Page {
                 if (brand == null) {
                     I18n.getEntityMessage("brand", "entity.error.idNotFound");
                     retry = true;
-                } else if( brandService.deleteById(brand.getBrandId()) ){
+                } else if( brandService.deleteById(brand.getId()) ){
                     I18n.printEntityMessage("brand", "entity.msg.deleted");
                 } else {
                     I18n.printEntityMessage("brand", "entity.error.deleteFailed");

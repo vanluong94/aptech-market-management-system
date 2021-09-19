@@ -35,7 +35,7 @@ public class CustomerDAOImpl implements CustomerDAO {
             pstmt.setString(1, object.getName());
             pstmt.setString(2, object.getPhone());
             pstmt.setString(3, object.getAddress());
-            pstmt.setInt(4, object.getEmployee().getEmployeeId());
+            pstmt.setInt(4, object.getEmployee().getId());
             rowsAffected = pstmt.executeUpdate();
         } catch (SQLException ex) {
             throw ex;
@@ -62,19 +62,13 @@ public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public boolean deleteById(int id) throws SQLException {
         int rs = -1;
-        Connection conn = null;
-        try {
-            conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE);
             pstmt.setInt(1, id);
             rs = pstmt.executeUpdate();
 
         } catch (SQLException e) {
             throw e;
-        } finally {
-            if (conn != null) {
-                conn.close();
-            }
         }
         return rs > 0;
     }
@@ -92,7 +86,7 @@ public class CustomerDAOImpl implements CustomerDAO {
                 customer.setName(rs.getString("customer_name"));
                 customer.setPhone(rs.getString("customer_phone"));
                 customer.setAddress(rs.getString("customer_add"));
-                customer.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                customer.getEmployee().setId(rs.getInt("employee_id"));
                 customer.getEmployee().setName(rs.getString("employee_name"));
             }
         } catch (SQLException e) {
@@ -103,7 +97,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public List<Customer> findAll() throws SQLException {
-        List<Customer> customers = new ArrayList<Customer>();
+        List<Customer> customers = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_ALL);
             ResultSet rs = pstmt.executeQuery();
@@ -113,7 +107,7 @@ public class CustomerDAOImpl implements CustomerDAO {
                 customer.setName(rs.getString("customer_name"));
                 customer.setPhone(rs.getString("customer_phone"));
                 customer.setAddress(rs.getString("customer_add"));
-                customer.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                customer.getEmployee().setId(rs.getInt("employee_id"));
                 customer.getEmployee().setName(rs.getString("employee_name"));
                 customers.add(customer);
             }
@@ -124,15 +118,14 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public PaginatedResults<Customer> select(int page) throws SQLException {
+    public PaginatedResults<Customer> select(int page) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Customer findByPhone(String phone) throws SQLException {
+    @Override
+    public Customer findByPhone(String phone) throws Exception {
         Customer customer = null;
-        Connection conn = null;
-        try {
-            conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_FIND_BY_PHONE);
             pstmt.setString(1, phone);
             ResultSet rs = pstmt.executeQuery();
@@ -142,15 +135,11 @@ public class CustomerDAOImpl implements CustomerDAO {
                 customer.setName(rs.getString("customer_name"));
                 customer.setPhone(rs.getString("customer_phone"));
                 customer.setAddress(rs.getString("customer_add"));
-                customer.getEmployee().setEmployeeId(rs.getInt("employee_id"));
+                customer.getEmployee().setId(rs.getInt("employee_id"));
                 customer.getEmployee().setName(rs.getString("employee_name"));
             }
         } catch (SQLException e) {
             throw e;
-        } finally {
-            if (conn != null) {
-                conn.close();
-            }
         }
         return customer;
     }

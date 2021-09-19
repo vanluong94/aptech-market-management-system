@@ -10,5 +10,5 @@ import vn.aptech.quanlybanhang.entities.ImportProduct;
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  */
 public interface ImportProductService extends BaseService<ImportProduct> {
-    
+
 }

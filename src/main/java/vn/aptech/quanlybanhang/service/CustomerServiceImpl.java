@@ -3,7 +3,6 @@
  */
 package vn.aptech.quanlybanhang.service;
 
-import java.sql.SQLException;
 import java.util.List;
 import vn.aptech.quanlybanhang.dao.CustomerDAO;
 import vn.aptech.quanlybanhang.dao.CustomerDAOImpl;
@@ -24,7 +23,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean create(Customer object) throws SQLException, Exception {
+    public boolean create(Customer object) throws Exception {
         if (object == null) {
             throw new Exception(I18n.getMessage("app.error.object.null"));
 
@@ -33,12 +32,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean update(Customer object) throws SQLException, Exception {
+    public boolean update(Customer object) throws Exception {
         return customerDAO.update(object);
     }
 
     @Override
-    public boolean deleteById(int id) throws SQLException, Exception {
+    public boolean deleteById(int id) throws Exception {
         if (id < 1) {
             throw new Exception(I18n.getMessage("input.invalidID"));
         }
@@ -46,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findById(int id) throws SQLException, Exception {
+    public Customer findById(int id) throws Exception {
         if (id < 1) {
             throw new Exception(I18n.getMessage("input.invalidID"));
         }
@@ -54,17 +53,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> findAll() throws SQLException {
+    public List<Customer> findAll() throws Exception {
         return this.customerDAO.findAll();
     }
 
     @Override
-    public PaginatedResults<Customer> select(int page) throws SQLException, Exception {
+    public PaginatedResults<Customer> select(int page) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Customer findByPhone(String phone) throws SQLException {
+    public Customer findByPhone(String phone) throws Exception {
         return this.customerDAO.findByPhone(phone);
     }
 

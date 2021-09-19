@@ -43,9 +43,9 @@ public class BrandListingPage extends Page {
                 List<Object[]> rows = new ArrayList<>();
                 for (Brand brand : results.getResults()) {
                     Object[] row = {
-                        brand.getBrandId(),
-                        brand.getBrandName(),
-                        brand.getBrandAdd()
+                        brand.getId(),
+                        brand.getName(),
+                        brand.getAddress()
                     };
 
                     rows.add(row);

@@ -1,13 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Do an Java tai Hanoi Aptech
  */
 package vn.aptech.quanlybanhang.pages;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.dao.EmployeeDAOImpl;
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.ui.TableUI;
@@ -27,15 +27,15 @@ public class EmployeeSearchPage extends Page {
                 if (employees.isEmpty()) {
                     I18n.getEntityMessage("employee", "entity.msg.emptyResults");
                 } else {
-                    List<Object[]> rows = new ArrayList<Object[]>();
+                    List<Object[]> rows = new ArrayList<>();
                     for (Employee ep : employees) {
                         Object[] row = {
-                            ep.getEmployeeId(),
+                            ep.getId(),
                             ep.getName(),
                             ep.getAddress(),
                             ep.getPhone(),
                             ep.getDepartment(),
-                            ep.getUserName()
+                            ep.getUsername()
                         };
                         rows.add(row);
                     }
@@ -56,6 +56,8 @@ public class EmployeeSearchPage extends Page {
                 }
             } catch (SQLException e) {
                 System.out.println("Exception when Employee.handleSearch: " + e.getMessage());
+            } catch (Exception ex) {
+                Logger.getLogger(EmployeeSearchPage.class.getName()).log(Level.SEVERE, null, ex);
             }
         } while (check == 0);
     }

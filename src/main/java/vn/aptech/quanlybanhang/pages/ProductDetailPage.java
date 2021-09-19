@@ -30,8 +30,8 @@ public class ProductDetailPage extends Page {
                     List<Object[]> rows = new ArrayList<>();
                     Object[] row = {
                         product.getId(),
-                        product.getBrand().getBrandName(),
-                        product.getCategory().getCategoryName(),
+                        product.getBrand().getName(),
+                        product.getCategory().getName(),
                         product.getSupplier().getName(),
                         product.getEmployee().getName(),
                         product.getName(),

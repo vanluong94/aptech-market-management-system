@@ -1,7 +1,7 @@
 /*
  * Do an Java tai HaNoi Aptech
  */
-package jasper;
+package vn.aptech.quanlybanhang.jasper;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
