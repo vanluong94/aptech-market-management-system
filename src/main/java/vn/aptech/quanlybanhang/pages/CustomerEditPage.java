@@ -23,15 +23,15 @@ public class CustomerEditPage extends Page {
             
             CustomerService customerService = new CustomerServiceImpl();
             
-            int check = AppScanner.scanIntWithMessage(I18n.getMessage("customer", "entity.scan.id.edit"));
+            int check = AppScanner.scanIntWithMessage(I18n.getEntityMessage("customer", "entity.scan.id.edit"));
             while (customerService.findById(check) == null) {
                 I18n.printEntityMessage("customer", "entity.error.idNotFound");
-                check = AppScanner.scanIntWithMessage(I18n.getMessage("customer", "entity.scan.id.edit"));
+                check = AppScanner.scanIntWithMessage(I18n.getEntityMessage("customer", "entity.scan.id.edit"));
             }
             
-            String name = AppScanner.scanStringWithMessage(I18n.getEntityMessage("customer", "entity.scan.newName"));
-            String phone = AppScanner.scanStringWithMessage(I18n.getEntityMessage("customer", "entity.scan.newPhone"));
-            String add = AppScanner.scanStringWithMessage(I18n.getEntityMessage("customer", "entity.scan.newAddr"));
+            String name = AppScanner.scanStringWithMessage(I18n.getMessage("customer.scan.newName"));
+            String phone = AppScanner.scanStringWithMessage(I18n.getMessage("customer.scan.newPhone"));
+            String add = AppScanner.scanStringWithMessage(I18n.getMessage("customer.scan.newAddr"));
             Customer customer = new Customer(check, name, phone, add);
             if (customerService.update(customer)) {
                 I18n.printEntityMessage("customer", "entity.msg.updated");

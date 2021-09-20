@@ -61,7 +61,7 @@ public class CustomerSearchByIDPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Tim khach hang bang ID";
+        return I18n.getMessage("customer.title.searchByID");
     }
 
 }
