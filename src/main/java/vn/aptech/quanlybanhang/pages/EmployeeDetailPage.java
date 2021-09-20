@@ -23,7 +23,7 @@ public class EmployeeDetailPage extends Page {
             int employeeId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("employee", "entity.scan.id.detail"));
             Employee employee = employeeService.findById(employeeId);
             if (employee == null) {
-                I18n.getEntityMessage("employee", "entity.error.idNotFound");
+                I18n.printEntityMessage("employee", "entity.error.idNotFound");
             } else {
                 employee.showOne();
             }

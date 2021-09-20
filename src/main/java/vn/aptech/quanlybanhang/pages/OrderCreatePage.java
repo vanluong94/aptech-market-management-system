@@ -16,6 +16,8 @@ import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
+import vn.aptech.quanlybanhang.service.CustomerService;
+import vn.aptech.quanlybanhang.service.CustomerServiceImpl;
 import vn.aptech.quanlybanhang.service.OrderService;
 import vn.aptech.quanlybanhang.service.OrderServiceImpl;
 import vn.aptech.quanlybanhang.service.ProductService;
@@ -33,10 +35,12 @@ public class OrderCreatePage extends Page {
 
     private final ProductService productService;
     private OrderService orderService;
+    private final CustomerService customerService;
 
     public OrderCreatePage() {
         this.productService = new ProductServiceImpl();
         this.orderService = new OrderServiceImpl();
+        this.customerService = new CustomerServiceImpl();
     }
 
     @Override
@@ -101,7 +105,31 @@ public class OrderCreatePage extends Page {
             }
             order.setAmount(amount);
             order.setEmployee(AuthServiceImpl.getCurrentEmployee()); // Set nhân viên hiện tại đang đăng nhập
-            order.setCustomer(new Customer(-1)); // Không có khách hàng nào
+            
+            // ask for order customer
+            Customer customer = null;
+            if (AppScanner.confirm(I18n.getMessage("order.confirm.orderHasCustomer"))) {
+                
+                while (true) {
+                    int customerId = AppScanner.scanIntWithMessage(I18n.getMessage("order.scan.customer"));
+                    
+                    if ((customer = customerService.findById(customerId)) == null) {
+                        I18n.print("order.error.invalidCustomer");
+                    } else {
+                        break;
+                    }
+                }
+                
+                // print customer detail
+                I18n.print(
+                        "entity.msg.foundName", 
+                        I18n.getMessage("customer.label.singular"), 
+                        String.format("%s (%s: %s)", customer.getName(), I18n.getMessage("customer.phone"), customer.getPhone())
+                );
+                
+                order.setCustomer(customer);
+            }
+            
 
             List<Object[]> rows = new ArrayList<>();
 

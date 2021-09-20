@@ -44,7 +44,7 @@ public class DiscountEditPage extends Page {
                 System.out.println("\n");
                 
                 if (editingDiscount == null) {
-                    I18n.getEntityMessage("discount", "entity.error.idNotFound");
+                    I18n.printEntityMessage("discount", "entity.error.idNotFound");
                 } else {
                     System.out.println(I18n.getMessage("discount.msg.foundOne") + editingDiscount.getName());
                     editingDiscount.setProductDiscounts(service.getDiscountProducts(editingDiscount));
@@ -52,7 +52,7 @@ public class DiscountEditPage extends Page {
                     this.displaySubmenu();
                 }
                 
-            }while(editingDiscount == null || AppScanner.confirm("\n" + I18n.getEntityMessage("discount", "entity.confirm.editAnOther")));
+            }while(editingDiscount == null || AppScanner.confirm("\n" + I18n.getEntityMessage("discount", "entity.confirm.editAnother")));
             
         } catch (Exception e) {
             Logger.getLogger(DiscountEditPage.class.getName()).log(Level.SEVERE, null, e);
@@ -69,10 +69,10 @@ public class DiscountEditPage extends Page {
         
         do{
             System.out.println("\n");
-            I18n.print("discount.submenu.editName");
-            I18n.print("discount.submenu.deleteProduct");
-            I18n.print("discount.submenu.addProduct");
-            I18n.print("discount.submenu.editProduct");
+            System.out.println("1. " + I18n.getMessage("discount.submenu.editName"));
+            System.out.println("2. " + I18n.getMessage("discount.submenu.deleteProduct"));
+            System.out.println("3. " + I18n.getMessage("discount.submenu.addProduct"));
+            System.out.println("4. " + I18n.getMessage("discount.submenu.editProduct"));
             System.out.println("\n");
             
             int choice;

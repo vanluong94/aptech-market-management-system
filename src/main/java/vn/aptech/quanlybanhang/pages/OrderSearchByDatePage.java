@@ -74,7 +74,7 @@ public class OrderSearchByDatePage extends Page {
                     PaginatedResults<Order> results = orderService.findByDateRange(dateFrom, dateTo, page);
 
                     if (results.getResults().isEmpty()) {
-                        I18n.getEntityMessage("order", "entity.msg.emptyResults");
+                        I18n.printEntityMessage("order", "entity.msg.emptyResults");
                         return;
                     }
 

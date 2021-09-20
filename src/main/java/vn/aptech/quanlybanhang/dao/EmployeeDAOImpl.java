@@ -231,4 +231,28 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return false;
     }
 
+    @Override
+    public boolean empHasData(Employee emp) throws Exception {
+        try(
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(
+                        "SELECT DISTINCT employee_id FROM products WHERE employee_id = ? " +
+                        "UNION SELECT employee_id FROM orders WHERE employee_id = ? " +
+                        "UNION SELECT employee_id FROM customers WHERE employee_id = ? " +
+                        "UNION SELECT employee_id FROM import_products WHERE employee_id = ?"
+                );
+        ) {
+            pstmt.setInt(1, emp.getId());
+            pstmt.setInt(2, emp.getId());
+            pstmt.setInt(3, emp.getId());
+            pstmt.setInt(4, emp.getId());
+            
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

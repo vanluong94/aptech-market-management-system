@@ -27,8 +27,8 @@ public class SupplierServiceImpl implements SupplierService {
         if (object == null) {
             throw new Exception(I18n.getMessage("app.error.object.null"));
         }
-        if (ValidateCommon.isValidStringLength(object.getName(), 3, 50)) {
-            throw new CommonException(I18n.getMessage("entity.error.invalidNameLength", new Object[]{"3", "50"}));
+        if (ValidateCommon.isValidStringLength(object.getName(), 3, 100)) {
+            throw new CommonException(I18n.getMessage("entity.error.invalidNameLength", new Object[]{"3", "100"}));
         }
         if (ValidateCommon.isValidStringLength(object.getAddress(), 3, 255)) {
             throw new CommonException(I18n.getMessage("entity.error.invalidAddressLength", new Object[]{"3", "255"}));

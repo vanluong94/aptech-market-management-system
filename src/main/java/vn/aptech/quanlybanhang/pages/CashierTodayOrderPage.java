@@ -37,7 +37,7 @@ public class CashierTodayOrderPage extends Page {
             do {
                 PaginatedResults<Order> results = orderService.todayOrder(page);
                 if (results.getResults().isEmpty()) {
-                    I18n.getEntityMessage("order", "entity.msg.emptyResults");
+                    I18n.printEntityMessage("order", "entity.msg.emptyResults");
                     return;
                 }
                 List<Object[]> rows = new ArrayList<>();

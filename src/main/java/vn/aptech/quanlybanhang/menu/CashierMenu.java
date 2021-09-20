@@ -11,7 +11,6 @@ import vn.aptech.quanlybanhang.menu.items.SignoutMenuItem;
 import vn.aptech.quanlybanhang.pages.CashierStatisticPage;
 import vn.aptech.quanlybanhang.pages.ChangePasswordPage;
 import vn.aptech.quanlybanhang.pages.OrderCreatePage;
-import vn.aptech.quanlybanhang.pages.OrderCreateWithCustomerPage;
 import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
@@ -25,13 +24,12 @@ public class CashierMenu extends Menu {
         LinkedHashMap<Integer, MenuItem> menuItems = new LinkedHashMap<>();
 
         menuItems.put(1, new OrderCreatePage());
-        menuItems.put(2, new OrderCreateWithCustomerPage());
-        menuItems.put(3, new CashierMenuOrder());
-        menuItems.put(4, new CashierMenuProduct());
-        menuItems.put(5, new CashierMenuCategory());
-        menuItems.put(6, new CashierMenuCustomer());
-        menuItems.put(7, new ChangePasswordPage());
-        menuItems.put(8, new CashierStatisticPage());
+        menuItems.put(2, new CashierMenuOrder());
+        menuItems.put(3, new CashierMenuProduct());
+        menuItems.put(4, new CashierMenuCategory());
+        menuItems.put(5, new CashierMenuCustomer());
+        menuItems.put(6, new ChangePasswordPage());
+        menuItems.put(7, new CashierStatisticPage());
 
         menuItems.put(-1, new SignoutMenuItem());
         menuItems.put(0, new ExitMenuItem());

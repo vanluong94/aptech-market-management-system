@@ -32,7 +32,7 @@ public class CategoryDeletePage extends Page {
                 Category theCat = categoryService.findById(id);
 
                 if (theCat == null) {
-                    I18n.getEntityMessage("category", "entity.error.idNotFound");
+                    I18n.printEntityMessage("category", "entity.error.idNotFound");
                     continue;
                 }
 

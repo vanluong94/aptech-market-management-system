@@ -27,6 +27,8 @@ public interface ProductDAO extends BaseDAO<Product> {
 
     double getStatisticAmount(java.sql.Date fromDate, java.sql.Date toDate) throws Exception;
     
+    boolean productHasOrder(Product product) throws Exception;
+    
     Product findFirstProductByBrand(Brand brand) throws Exception;
     Product findFirstProductBySupplier(Supplier sup) throws Exception;
     Product findFirstProductByCategory(Category cat) throws Exception;

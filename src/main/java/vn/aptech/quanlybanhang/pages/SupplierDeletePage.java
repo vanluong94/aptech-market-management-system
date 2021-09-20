@@ -32,7 +32,7 @@ public class SupplierDeletePage extends Page {
                 Supplier theCat = supplierService.findById(id);
 
                 if (theCat == null) {
-                    I18n.getEntityMessage("supplier", "entity.error.idNotFound");
+                    I18n.printEntityMessage("supplier", "entity.error.idNotFound");
                     continue;
                 }
 

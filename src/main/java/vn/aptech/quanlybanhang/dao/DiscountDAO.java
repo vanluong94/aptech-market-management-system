@@ -21,4 +21,6 @@ public interface DiscountDAO extends BaseDAO<Discount> {
     boolean createDiscountProduct(ProductDiscount dProduct);
 
     ProductDiscount findOverlapDiscountProduct(ProductDiscount dProduct);
+    
+    boolean discountHasData(Discount discount);
 }

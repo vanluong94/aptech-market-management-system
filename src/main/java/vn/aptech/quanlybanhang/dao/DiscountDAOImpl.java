@@ -48,7 +48,8 @@ public class DiscountDAOImpl implements DiscountDAO {
         int rowsAffected = -1;
         try (
                 Connection conn = DBConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);) {
+                PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
+        ) {
 
             conn.setAutoCommit(false);
 
@@ -254,13 +255,14 @@ public class DiscountDAOImpl implements DiscountDAO {
 
         try (
                 Connection conn = DBConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS);) {
+                PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS);
+        ) {
             pstmt.setInt(1, dProduct.getDiscountId());
             pstmt.setInt(2, dProduct.getProduct().getId());
             pstmt.setFloat(3, dProduct.getDiscountPercentage());
             pstmt.setTimestamp(4, DateCommon.convertDateToTimestamp(dProduct.getStartDate()));
             pstmt.setTimestamp(5, DateCommon.convertDateToTimestamp(dProduct.getEndDate()));
-            System.out.println(pstmt.toString());
+            
             if (pstmt.executeUpdate() > 0) {
                 try (ResultSet ids = pstmt.getGeneratedKeys()) {
                     if (ids.next()) {
@@ -274,6 +276,38 @@ public class DiscountDAOImpl implements DiscountDAO {
             Logger.getLogger(DiscountDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean discountHasData(Discount discount) {
+        try(
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement st = conn.prepareStatement(
+                        " SELECT * "
+                        + " FROM "
+                        + "  discounts as d "
+                        + "  LEFT JOIN discount_product AS d_p ON d_p.discount_id = d.discount_id "
+                        + "  LEFT JOIN order_items AS o_i ON o_i.discount_product_id = d_p.discount_product_id "
+                        + " WHERE d.discount_id = ?"
+                        + " AND ( "
+                        + "    d_p.discount_product_id is not null "
+                        + "    or o_i.discount_product_id is not null "
+                        + "  )"
+                        + " LIMIT 0, 1"
+                )
+        ) {
+            st.setInt(1, discount.getId());
+            ResultSet rs = st.executeQuery();
+            
+            if (rs.next()) {
+                return true;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DiscountDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         return false;
     }
 

@@ -21,4 +21,6 @@ public interface DiscountService extends BaseService<Discount> {
     boolean createDiscountProduct(ProductDiscount dProduct);
 
     ProductDiscount findOverlapDiscountProduct(ProductDiscount dProduct);
+    
+    boolean discountHasData(Discount discount);
 }

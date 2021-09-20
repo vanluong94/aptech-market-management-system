@@ -36,7 +36,7 @@ public class BrandEditPage extends Page {
                 Brand brand = brandService.findById(id);
 
                 if(brand == null){
-                    I18n.getEntityMessage("brand", "entity.error.idNotFound");
+                    I18n.printEntityMessage("brand", "entity.error.idNotFound");
                     retry = true;
                 }else{
                     System.out.println("\n");
