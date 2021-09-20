@@ -123,4 +123,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeDAO.existsByUsername(username);
     }
 
+    @Override
+    public boolean empHasData(Employee emp) throws Exception {
+        return employeeDAO.empHasData(emp);
+    }
+
 }

@@ -19,4 +19,6 @@ public interface EmployeeService extends BaseService<Employee> {
     List<Employee> findByNameEmployee(String username) throws Exception;
 
     boolean existsByUsername(String username) throws Exception;
+    
+    boolean empHasData(Employee emp) throws Exception;
 }
