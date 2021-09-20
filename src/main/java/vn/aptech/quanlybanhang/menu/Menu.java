@@ -42,7 +42,7 @@ public abstract class Menu extends MenuUI {
             retry = false;
             
             try {
-                this.handle(AppScanner.scanIntWithi18Message("msg.choice.enter"));
+                this.handle(AppScanner.scanIntWithMessage(I18n.getMessage("msg.choice.enter"), true));
             } catch (MenuException ex) {
                 System.out.println(ex.getMessage());
                 retry = true;

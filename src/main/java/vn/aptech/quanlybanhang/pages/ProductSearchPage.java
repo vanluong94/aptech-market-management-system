@@ -44,40 +44,9 @@ public class ProductSearchPage extends Page {
                     return;
                 }
                 
-                I18n.print("entity.msg.foundBaseOn", I18n.getMessage("product.label.singular"), search);
+                I18n.print("entity.msg.foundBaseOn", I18n.getMessage("product.label.plural"), search);
                 
-                List<Object[]> rows = new ArrayList<>();
-                for (Product product : products.getResults()) {
-                    Object[] row = {
-                        product.getId(),
-                        product.getBrand().getName(),
-                        product.getCategory().getName(),
-                        product.getSupplier().getName(),
-                        product.getEmployee().getName(),
-                        product.getName(),
-                        product.getPriceString(),
-                        product.getQuantityInStock(),
-                        product.getCreatedAt(),
-                        product.getUpdatedAt()
-                    };
-                    rows.add(row);
-                }
-                
-                String[] headers = {
-                    "ID",
-                    I18n.getMessage("brand.label.singular"),
-                    I18n.getMessage("category.label.singular"),
-                    I18n.getMessage("supplier.label.singular"),
-                    I18n.getMessage("employee.label.singular"),
-                    I18n.getMessage("product.label.singular"),
-                    I18n.getMessage("product.price"),
-                    I18n.getMessage("product.qty"),
-                    I18n.getMessage("entity.createdAt"),
-                    I18n.getMessage("entity.updatedAt")
-                };
-                
-                TableUI tableUI = new TableUI(headers, rows);
-                tableUI.display();
+                Product.toTable(products.getResults()).display();
 
                 if (products.needsPagination()) {
                     products.displayPagination();
@@ -87,7 +56,7 @@ public class ProductSearchPage extends Page {
                 } else {
                     page = 0;
                 }
-                choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("product", "entity.confirm.searchAnOther"));
+                choice = AppScanner.scanStringWithMessage(I18n.getMessage("entity.confirm.searchAnOther"));
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }

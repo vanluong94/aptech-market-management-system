@@ -42,7 +42,7 @@ public class DiscountDetailPage extends Page {
                     I18n.printEntityMessage("discount", "entity.error.idNotFound");
                 } else {
                     this.displayDiscountDetail(discount);
-                    if (!AppScanner.confirm(I18n.getEntityMessage("discount", "entity.confirm.searchAnOther"))) {
+                    if (!AppScanner.confirm(I18n.getMessage("entity.confirm.searchAnOther"))) {
                         break;
                     }
                 }

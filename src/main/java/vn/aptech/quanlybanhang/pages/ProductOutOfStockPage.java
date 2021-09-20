@@ -26,10 +26,9 @@ public class ProductOutOfStockPage extends Page {
         try {
 
             int page = 1;
+            ProductService productService = new ProductServiceImpl();
 
             do {
-
-                ProductService productService = new ProductServiceImpl();
                 PaginatedResults<Product> results = productService.selectOutOfStock(page);
                 
                 if(results.getResults().isEmpty()) {
