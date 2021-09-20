@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.service.OrderService;
 import vn.aptech.quanlybanhang.service.OrderServiceImpl;
@@ -22,13 +23,13 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  * @author Vu Duy Long <vuduylong1999@gmail.com>
  */
 public class CashierTodayOrderPage extends Page {
-
+    
     private final OrderService orderService;
-
+    
     public CashierTodayOrderPage() {
         this.orderService = new OrderServiceImpl();
     }
-
+    
     @Override
     public void displayContent() {
         try {
@@ -40,12 +41,12 @@ public class CashierTodayOrderPage extends Page {
                     return;
                 }
                 List<Object[]> rows = new ArrayList<>();
-
+                
                 for (Order order : results.getResults()) {
                     Object[] row = {
                         order.getId(),
                         order.getEmployee().getName(),
-                        order.getCustomer().getName(),
+                        StringCommon.safeNullObject(order.getCustomer().getName()),
                         order.getDatetimeString(),
                         order.getAmountString()
                     };
@@ -60,7 +61,7 @@ public class CashierTodayOrderPage extends Page {
                 };
                 TableUI tableUI = new TableUI(headers, rows);
                 tableUI.display();
-
+                
                 if (results.needsPagination()) {
                     results.displayPagination();
                     results.displayPaginationMenu();
@@ -77,10 +78,10 @@ public class CashierTodayOrderPage extends Page {
             Logger.getLogger(CashierTodayOrderPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     @Override
     public String getTitle() {
         return I18n.getMessage("title.cashierTodayOrders");
     }
-
+    
 }

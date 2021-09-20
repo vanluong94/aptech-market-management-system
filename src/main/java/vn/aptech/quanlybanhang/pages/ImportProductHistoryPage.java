@@ -28,38 +28,36 @@ public class ImportProductHistoryPage extends Page {
     public ImportProductHistoryPage() {
         this.importProductService = new ImportProductServiceImpl();
     }
-    
+
     @Override
     public void displayContent() {
         try {
-            
+
             I18n.getMessage("product.import.msg.recently");
-            
+
             List<ImportProduct> importProducts = importProductService.findAll();
             if (importProducts.isEmpty()) {
                 I18n.printEntityMessage("product", "entity.msg.emptyResults");
             } else {
-                DateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
                 List<Object[]> rows = new ArrayList<>();
-                
+
                 // transfer data to table row
                 for (ImportProduct importProduct : importProducts) {
                     Object[] row = {
                         importProduct.getId(),
-                        importProduct.getPrice(),
-                        importProduct.getQuantity(),
+                        importProduct.getPriceString(),
+                        importProduct.getQtyString(),
                         importProduct.getSupplier().getName(),
-                        dateFormat.format(importProduct.getCreatedAt()),
-                    };
+                        importProduct.getCreatedAtString(),};
 
                     rows.add(row);
                 }
 
                 String[] headers = {
-                    "ID", 
-                    I18n.getMessage("product.price"), 
-                    I18n.getMessage("product.qty"), 
-                    I18n.getMessage("supplier.label.singular"), 
+                    "ID",
+                    I18n.getMessage("product.price"),
+                    I18n.getMessage("product.qty"),
+                    I18n.getMessage("supplier.label.singular"),
                     I18n.getMessage("product.import.datetime")
                 };
 
@@ -71,12 +69,12 @@ public class ImportProductHistoryPage extends Page {
         } catch (Exception ex) {
             Logger.getLogger(ImportProductHistoryPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
     @Override
     public String getTitle() {
         return I18n.getMessage("product.import.title.history");
     }
-    
+
 }

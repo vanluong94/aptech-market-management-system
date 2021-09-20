@@ -22,6 +22,10 @@ public class StringCommon {
         return NumberFormat.getCurrencyInstance(localeVN).format(input);
     }
 
+    public static String formatNumberCommas(int num) {
+        return String.format("%,d", num);
+    }
+
     public static String safeNullObject(String str) {
         if (isNullOrBlank(str)) {
             return "-";

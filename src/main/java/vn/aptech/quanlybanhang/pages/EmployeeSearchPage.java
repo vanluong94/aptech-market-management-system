@@ -50,7 +50,7 @@ public class EmployeeSearchPage extends Page {
                     TableUI tableUI = new TableUI(headers, rows);
                     tableUI.display();
                 }
-                String choice = AppScanner.scanStringWithMessage(I18n.getMessage("entity.confirm.searchAnother"));
+                String choice = AppScanner.scanStringWithMessage(I18n.getMessage("entity.confirm.searchAnOther"));
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }
