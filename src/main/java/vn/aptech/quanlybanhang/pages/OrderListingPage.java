@@ -32,7 +32,7 @@ public class OrderListingPage extends Page {
                 PaginatedResults<Order> results = orderService.select(page);
                 
                 if(results.getResults().isEmpty()) {
-                    I18n.getEntityMessage("order", "entity.msg.emptyResults");
+                    I18n.printEntityMessage("order", "entity.msg.emptyResults");
                     return;
                 }
                 

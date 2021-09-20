@@ -25,7 +25,7 @@ public class EmployeeSearchPage extends Page {
                 String keyword = AppScanner.scanStringWithi18Message("employee.scan.searchName");
                 List<Employee> employees = employeeDAOImpl.findByNameEmployee(keyword);
                 if (employees.isEmpty()) {
-                    I18n.getEntityMessage("employee", "entity.msg.emptyResults");
+                    I18n.printEntityMessage("employee", "entity.msg.emptyResults");
                 } else {
                     List<Object[]> rows = new ArrayList<>();
                     for (Employee ep : employees) {

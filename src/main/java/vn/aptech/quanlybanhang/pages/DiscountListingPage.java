@@ -30,7 +30,7 @@ public class DiscountListingPage extends Page {
             try {
                 List<Discount> discounts = discountService.findAll();
                 if (discounts.isEmpty()) {
-                    I18n.getEntityMessage("discount", "entity.msg.emptyResults");
+                    I18n.printEntityMessage("discount", "entity.msg.emptyResults");
                 } else {
                     List<Object[]> rows = new ArrayList<>();
                     for (Discount discount : discounts) {

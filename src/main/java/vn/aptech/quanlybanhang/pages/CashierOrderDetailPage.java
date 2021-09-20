@@ -28,7 +28,7 @@ public class CashierOrderDetailPage extends Page {
                 int orderId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("order", "entity.scan.id.detail"));
                 Order order = orderService.findByCashierId(orderId);
                 if (order == null) {
-                    I18n.getEntityMessage("order", "entity.error.idNotFound");
+                    I18n.printEntityMessage("order", "entity.error.idNotFound");
                 } else {
                     List<Object[]> rows = new ArrayList<>();
                     Object[] row = {

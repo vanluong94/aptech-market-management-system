@@ -30,7 +30,7 @@ public class InventoryMenu extends Menu {
         menuItems.put(7, new InventoryMenuStatistic());
         menuItems.put(8, new ChangePasswordPage());
         
-        menuItems.put(9, new SignoutMenuItem());
+        menuItems.put(-1, new SignoutMenuItem());
         menuItems.put(0, new ExitMenuItem());
         
         return menuItems;

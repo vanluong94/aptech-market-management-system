@@ -11,8 +11,6 @@ import vn.aptech.quanlybanhang.entities.Discount;
 import vn.aptech.quanlybanhang.exception.InputInvalidException;
 import vn.aptech.quanlybanhang.service.DiscountService;
 import vn.aptech.quanlybanhang.service.DiscountServiceImpl;
-import vn.aptech.quanlybanhang.service.ProductService;
-import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 import vn.aptech.quanlybanhang.utilities.I18n;
 
@@ -23,7 +21,6 @@ public class DiscountDeletePage extends Page {
     public void displayContent() {
         
         DiscountService discountService = new DiscountServiceImpl();
-        ProductService productService = new ProductServiceImpl();
         
         while(true){
             
@@ -32,7 +29,7 @@ public class DiscountDeletePage extends Page {
                 Discount discount = discountService.findById(id);
 
                 if (discount == null) {
-                    I18n.getEntityMessage("discount", "entity.error.idNotFound");
+                    I18n.printEntityMessage("discount", "entity.error.idNotFound");
                     continue;
                 } 
                 

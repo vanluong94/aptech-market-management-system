@@ -48,7 +48,8 @@ public class DiscountDAOImpl implements DiscountDAO {
         int rowsAffected = -1;
         try (
                 Connection conn = DBConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);) {
+                PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
+        ) {
 
             conn.setAutoCommit(false);
 
@@ -254,13 +255,14 @@ public class DiscountDAOImpl implements DiscountDAO {
 
         try (
                 Connection conn = DBConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS);) {
+                PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS);
+        ) {
             pstmt.setInt(1, dProduct.getDiscountId());
             pstmt.setInt(2, dProduct.getProduct().getId());
             pstmt.setFloat(3, dProduct.getDiscountPercentage());
             pstmt.setTimestamp(4, DateCommon.convertDateToTimestamp(dProduct.getStartDate()));
             pstmt.setTimestamp(5, DateCommon.convertDateToTimestamp(dProduct.getEndDate()));
-            System.out.println(pstmt.toString());
+            
             if (pstmt.executeUpdate() > 0) {
                 try (ResultSet ids = pstmt.getGeneratedKeys()) {
                     if (ids.next()) {

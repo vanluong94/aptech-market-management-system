@@ -79,7 +79,6 @@ public class AppScanner {
                 } else {
                     return input;
                 }
-                return input;
             } catch (java.util.InputMismatchException e) {
                 getScanner().nextLine(); // clear line in case input mismatch
                 I18n.print("input.invalidType");

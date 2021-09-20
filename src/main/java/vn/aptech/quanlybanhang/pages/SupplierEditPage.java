@@ -27,7 +27,7 @@ public class SupplierEditPage extends Page {
                 
                 Supplier supplier = supplierService.findById(id);
                 if (supplier == null) {
-                    I18n.getEntityMessage("supplier", "entity.error.idNotFound");
+                    I18n.printEntityMessage("supplier", "entity.error.idNotFound");
                     retry = true;
                 } else {
                     I18n.print("supplier.msg.update");
