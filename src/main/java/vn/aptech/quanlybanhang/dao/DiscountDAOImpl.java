@@ -277,4 +277,36 @@ public class DiscountDAOImpl implements DiscountDAO {
         return false;
     }
 
+    @Override
+    public boolean discountHasData(Discount discount) {
+        try(
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement st = conn.prepareStatement(
+                        " SELECT * "
+                        + " FROM "
+                        + "  discounts as d "
+                        + "  LEFT JOIN discount_product AS d_p ON d_p.discount_id = d.discount_id "
+                        + "  LEFT JOIN order_items AS o_i ON o_i.discount_product_id = d_p.discount_product_id "
+                        + " WHERE d.discount_id = ?"
+                        + " AND ( "
+                        + "    d_p.discount_product_id is not null "
+                        + "    or o_i.discount_product_id is not null "
+                        + "  )"
+                        + " LIMIT 0, 1"
+                )
+        ) {
+            st.setInt(1, discount.getId());
+            ResultSet rs = st.executeQuery();
+            
+            if (rs.next()) {
+                return true;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DiscountDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return false;
+    }
+
 }

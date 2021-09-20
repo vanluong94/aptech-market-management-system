@@ -79,4 +79,9 @@ public class DiscountServiceImpl implements DiscountService {
         return this.discountDAO.findOverlapDiscountProduct(dProduct);
     }
 
+    @Override
+    public boolean discountHasData(Discount discount) {
+        return this.discountDAO.discountHasData(discount);
+    }
+
 }
