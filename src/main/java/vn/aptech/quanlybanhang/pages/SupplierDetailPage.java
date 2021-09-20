@@ -46,8 +46,8 @@ public class SupplierDetailPage extends Page {
                         break;
                     }
                 }
-            } catch (Exception ex) {
-                Logger.getLogger(SupplierDetailPage.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             } 
         } while ("y".equalsIgnoreCase(choice));
     }
