@@ -3,10 +3,12 @@
  */
 package vn.aptech.quanlybanhang.entities;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import vn.aptech.quanlybanhang.common.StringCommon;
+import vn.aptech.quanlybanhang.constant.Constant;
 import vn.aptech.quanlybanhang.service.AuthServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.I18n;
@@ -188,20 +190,6 @@ public class Product extends BaseEntity {
     public String getDiscountPriceString() {
         return StringCommon.convertDoubleToVND(this.getDiscountPrice());
     }
-    
-    /**
-     * @return the orderItems
-     */
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    /**
-     * @param orderItems the orderItems to set
-     */
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
 
     public static TableUI toTable(List<Product> products) {
 
@@ -223,6 +211,8 @@ public class Product extends BaseEntity {
             if (!AuthServiceImpl.getCurrentEmployee().isCashier()) {
                 row.add(product.getSupplier().getName() != null ? product.getSupplier().getName() : "");
                 row.add(product.getEmployee().getName() != null ? product.getEmployee().getName() : "");
+                row.add(product.getCreatedAtString());
+                row.add(product.getUpdatedAtString());
             }
 
             rows.add(row.toArray());
@@ -241,10 +231,22 @@ public class Product extends BaseEntity {
         if(!AuthServiceImpl.getCurrentEmployee().isCashier()) {
             headers.add(I18n.getMessage("supplier.label.singular"));
             headers.add(I18n.getMessage("employee.label.singular"));
+            headers.add(I18n.getMessage("entity.createdAt"));
+            headers.add(I18n.getMessage("entity.updatedAt"));
         }
 
         return new TableUI(headers.toArray(new String[0]), rows);
 
+    }
+
+    public String getCreatedAtString() {
+        SimpleDateFormat SDFormat = new SimpleDateFormat(Constant.DATE_TIME_SIMPLE_FORMAT);
+        return SDFormat.format(this.getCreatedAt());
+    }
+    
+    public String getUpdatedAtString() {
+        SimpleDateFormat SDFormat = new SimpleDateFormat(Constant.DATE_TIME_SIMPLE_FORMAT);
+        return SDFormat.format(this.getUpdatedAt());
     }
     
 

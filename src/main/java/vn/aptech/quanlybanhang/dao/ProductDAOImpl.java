@@ -13,8 +13,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.common.DateCommon;
 import vn.aptech.quanlybanhang.constant.Constant;
+import vn.aptech.quanlybanhang.entities.Brand;
+import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.entities.ImportProduct;
 import vn.aptech.quanlybanhang.entities.Product;
+import vn.aptech.quanlybanhang.entities.Supplier;
 import vn.aptech.quanlybanhang.service.ImportProductService;
 import vn.aptech.quanlybanhang.service.ImportProductServiceImpl;
 import vn.aptech.quanlybanhang.utilities.DBConnection;
@@ -33,7 +36,8 @@ public class ProductDAOImpl implements ProductDAO {
             + " JOIN brands ON brands.brand_id = products.brand_id"
             + " JOIN categories ON categories.category_id = products.category_id"
             + " JOIN employees ON employees.employee_id = products.employee_id"
-            + " JOIN suppliers ON suppliers.supplier_id = products.supplier_id";
+            + " JOIN suppliers ON suppliers.supplier_id = products.supplier_id"
+            + " LIMIT ?, ? ";
 
     private final static String SQL_GET_ONE
             = " SELECT "
@@ -423,7 +427,45 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public PaginatedResults<Product> select(int page) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        PaginatedResults<Product> pagination = new PaginatedResults<>(page, Constant.PER_PAGE);
+        List<Product> products = new ArrayList<>();
+
+        try (
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement st = conn.prepareStatement(SQL_SELECT_ALL);
+        ) {
+            
+            st.setInt(1, pagination.getOffset());
+            st.setInt(2, pagination.getPerPage());
+            
+            // query items
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Product product = this.mapRersultSetToObject(rs);
+
+                product.getBrand().setName(rs.getString("brand_name"));
+                product.getSupplier().setName(rs.getString("supplier_name"));
+                product.getCategory().setName(rs.getString("category_name"));
+                product.getEmployee().setName(rs.getString("employee_name"));
+
+                products.add(product);
+            }
+
+            pagination.setResults(products);
+
+            // query count
+            String sqlCount = PaginatedResults.parseCountSQL(SQL_SELECT_ALL);
+            try(Statement stCount = conn.createStatement()){
+                ResultSet countRs = stCount.executeQuery(sqlCount);
+                if (countRs.next()) {
+                    pagination.setTotalItems(countRs.getInt(1));
+                }
+            }
+        }
+
+        return pagination;
     }
 
     @Override
@@ -497,6 +539,51 @@ public class ProductDAOImpl implements ProductDAO {
             }
         }
         return amount;
+    }
+
+    @Override
+    public Product findFirstProductByBrand(Brand brand) throws Exception {
+        try(
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM products WHERE brand_id = ? LIMIT 0,1");
+        ){
+            st.setInt(1, brand.getId());
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return this.mapRersultSetToObject(rs);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Product findFirstProductBySupplier(Supplier sup) throws Exception {
+        try(
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM products WHERE supplier_id = ? LIMIT 0,1");
+        ){
+            st.setInt(1, sup.getId());
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return this.mapRersultSetToObject(rs);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Product findFirstProductByCategory(Category cat) throws Exception {
+        try(
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM products WHERE category_id = ? LIMIT 0,1");
+        ){
+            st.setInt(1, cat.getId());
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return this.mapRersultSetToObject(rs);
+            }
+        }
+        return null;
     }
 
 }

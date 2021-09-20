@@ -11,6 +11,7 @@ import vn.aptech.quanlybanhang.entities.Brand;
 import vn.aptech.quanlybanhang.service.BrandService;
 import vn.aptech.quanlybanhang.service.BrandServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -31,7 +32,7 @@ public class BrandCreatePage extends Page {
             
             brandService.create(brand);
             
-            System.out.println("\nThêm Nhãn hàng thành công");
+            I18n.printEntityMessage("brand", "entity.msg.created");
         } catch (Exception ex) {
             Logger.getLogger(BrandCreatePage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -39,7 +40,7 @@ public class BrandCreatePage extends Page {
 
     @Override
     public String getTitle() {
-        return "Thêm Nhãn hàng";
+        return I18n.getEntityMessage("brand", "entity.title.create");
     }
     
 }
