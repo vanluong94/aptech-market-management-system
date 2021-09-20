@@ -210,16 +210,32 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public boolean deleteById(int id) throws Exception {
-        int rowsAffected = -1;
-        try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE);
-            pstmt.setInt(1, id);
-            rowsAffected = pstmt.executeUpdate();
-
+        try (
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement delPDiscountStmt = conn.prepareStatement("DELETE FROM discount_product WHERE product_id = ?");
+                PreparedStatement delPImportStmt = conn.prepareStatement("DELETE FROM import_products WHERE product_id = ?");
+                PreparedStatement delProductStmt = conn.prepareStatement(SQL_DELETE);
+        ) {
+            
+            conn.setAutoCommit(false);
+            delProductStmt.setInt(1, id);
+            delPDiscountStmt.setInt(1, id);
+            delPImportStmt.setInt(1, id);
+            
+            delPDiscountStmt.executeUpdate();
+            delPImportStmt.executeUpdate();
+            
+            if (delProductStmt.executeUpdate() > 0) {
+                conn.commit();
+                return true;
+            } else {
+                conn.rollback();
+            }
+            
+            return false;
         } catch (SQLException e) {
             throw e;
         }
-        return rowsAffected > 0;
     }
 
     @Override
@@ -584,6 +600,21 @@ public class ProductDAOImpl implements ProductDAO {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean productHasOrder(Product product) throws Exception {
+        try(
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM order_items WHERE product_id = ? LIMIT 0,1");
+        ){
+            st.setInt(1, product.getId());
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

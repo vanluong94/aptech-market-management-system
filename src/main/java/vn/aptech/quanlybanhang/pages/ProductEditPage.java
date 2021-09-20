@@ -22,31 +22,46 @@ public class ProductEditPage extends Page {
         
         ProductService productService = new ProductServiceImpl();
         
-        ProductSearchPage searchPage = new ProductSearchPage();
-        searchPage.displayContent();
-        
         String choice = null;
         do {
             try {
                 int id = AppScanner.scanIntWithMessage(I18n.getEntityMessage("product", "entity.scan.id.edit"));
                 Product product = productService.findById(id);
                 if (product == null) {
-                    I18n.getEntityMessage("product", "entity.error.idNotFound");
+                    I18n.printEntityMessage("product", "entity.error.idNotFound");
                 } else {
-                    I18n.print("product.msg.update");
                     
-                    String name = AppScanner.scanStringWithMessage(I18n.getMessage("product.scan.name"));
-                    double price = AppScanner.scanDoubleWithMessage(I18n.getMessage("product.scan.price"));
-                    int qty = AppScanner.scanIntWithMessage(I18n.getMessage("product.scan.qty"));
-                    if (name.length() > 0) {
-                        product.setName(name);
+                    // confirm update name
+                    if (AppScanner.confirm(I18n.getMessage("product.confirm.update", I18n.getMessage("product.name")))) {
+                        product.setName(AppScanner.scanStringWithMessage(I18n.getMessage("product.scan.name")));
                     }
-                    if (price > 0) {
-                        product.setPrice(price);
+                    
+                    if (AppScanner.confirm(I18n.getMessage("product.confirm.update", I18n.getMessage("product.price")))) {
+                        double price = 0;
+                        while (price <= 100) {
+                            price = AppScanner.scanDoubleWithMessage(I18n.getMessage("product.scan.price"));
+
+                            if (price <= 100) {
+                                I18n.print("product.error.invalidPrice");
+                            } else {
+                                product.setPrice(price);
+                            }
+                        }
                     }
-                    if (qty > 0) {
-                        product.setQuantityInStock(qty);
+                    
+                    if (AppScanner.confirm(I18n.getMessage("product.confirm.update", I18n.getMessage("product.qty")))) {
+                        int qty = -1;
+                        while (qty < 0) {
+                            qty = AppScanner.scanIntWithMessage(I18n.getMessage("product.scan.qty"), true); // quantity can be = 0
+
+                            if (qty < 0) {
+                                I18n.print("product.error.invalidQty");
+                            } else {
+                                product.setQuantityInStock(qty);
+                            }
+                        }
                     }
+
                     if (productService.update(product)) {
                         I18n.printEntityMessage("product", "entity.msg.updated");
                     } else {

@@ -78,11 +78,7 @@ public class ProductServiceImpl implements ProductService {
         if (product.getName().trim().length() == 0) {
             throw new InputInvalidException(I18n.getMessage("product.error.emptyName"));
         }
-
-        if (product.getQuantityInStock() == 0) {
-            throw new InputInvalidException(I18n.getMessage("product.error.invalidQty"));
-        }
-
+        
         if (product.getPrice() <= 100) {
             throw new InputInvalidException(I18n.getMessage("product.error.invalidPrice"));
         }
@@ -139,6 +135,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findFirstProductByCategory(Category cat) throws Exception {
         return this.productDAO.findFirstProductByCategory(cat);
+    }
+
+    @Override
+    public boolean productHasOrder(Product product) throws Exception {
+        return this.productDAO.productHasOrder(product);
     }
 
 }
