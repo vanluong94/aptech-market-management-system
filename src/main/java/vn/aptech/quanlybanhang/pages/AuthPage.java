@@ -69,7 +69,7 @@ public class AuthPage extends Page {
                     System.out.println(I18n.getMessage("page.auth.login.invalid"));
                 }
             } catch (Exception ex) {
-                System.out.println("Lỗi ngoại lệ: " + ex.getMessage());
+                System.out.println(ex.getMessage());
             }
         } while (emp == null);
     }
