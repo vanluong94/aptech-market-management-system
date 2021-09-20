@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.entities.Brand;
 import vn.aptech.quanlybanhang.entities.Category;
 import vn.aptech.quanlybanhang.entities.Product;
@@ -23,6 +24,7 @@ import vn.aptech.quanlybanhang.service.SupplierService;
 import vn.aptech.quanlybanhang.service.SupplierServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
+import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
@@ -45,111 +47,140 @@ public class ImportProductPage extends Page {
     @Override
     public void displayContent() {
         try {
-            System.out.println("Bạn có muốn xem danh sách thương hiệu? [y/N]");
-            List<Brand> brands = brandService.findAll();
-            if (brands.isEmpty()) {
-                System.out.println("Chưa có thương hiệu nào.");
-                System.out.println("Bạn có muốn thêm thương hiệu mới không? [y/N]");
-            } else {
-                List<Object[]> rows = new ArrayList<>();
-                
-                // transfer data to table row
-                for (Brand brand : brands) {
-                    Object[] row = {
-                        brand.getId(),
-                        brand.getName()
-                    };
-
-                    rows.add(row);
-                }
-
-                String[] headers = {"ID", "Tên thương hiệu"};
-
-                TableUI theTable = new TableUI(headers, rows);
-                theTable.display();
-            }
-
-            int brandId = AppScanner.scanIntWithMessage("Nhập mã thương hiệu: ");
-            Brand brand = brandService.findById(brandId);
-            if (brand == null) {
-                System.out.println("Không tồn tại mã thương hiệu này");
-            }
-            
-            System.out.println("Bạn có muốn xem danh sách danh mục? [y/N]");
-            List<Category> categories = categoryService.findAll();
-            if (categories.isEmpty()) {
-                System.out.println("Chưa có danh mục nào.");
-                System.out.println("Bạn có muốn thêm danh mục mới không? [y/N]");
-            } else {
-                List<Object[]> rows = new ArrayList<>();
-                
-                // transfer data to table row
-                for (Category category : categories) {
-                    Object[] row = {
-                        category.getId(),
-                        category.getName()
-                    };
-
-                    rows.add(row);
-                }
-
-                String[] headers = {"ID", "Tên danh mục"};
-
-                TableUI theTable = new TableUI(headers, rows);
-                theTable.display();
-            }
-            
-            int categoryId = AppScanner.scanIntWithMessage("Nhập mã danh mục: ");
-            Category category = categoryService.findById(categoryId);
-            if (category == null) {
-                System.out.println("Không tồn tại mã danh mục này");
-            }
-            
-            System.out.println("Bạn có muốn xem danh sách nhà cung cấp? [y/N]");
-            List<Supplier> suppliers = supplierService.findAll();
-            if (suppliers.isEmpty()) {
-                System.out.println("Chưa có nhà cung cấp nào.");
-                System.out.println("Bạn có muốn thêm nhà cung cấp mới không? [y/N]");
-            } else {
-                List<Object[]> rows = new ArrayList<>();
-                
-                // transfer data to table row
-                for (Supplier supplier : suppliers) {
-                    Object[] row = {
-                        supplier.getId(),
-                        supplier.getName()
-                    };
-
-                    rows.add(row);
-                }
-
-                String[] headers = {"ID", "Tên nhà cung cấp"};
-
-                TableUI theTable = new TableUI(headers, rows);
-                theTable.display();
-            }
-
-            int supplierId = AppScanner.scanIntWithMessage("Nhập mã nhà cung cấp: ");
-            Supplier supplier = supplierService.findById(supplierId);
-            if (supplier == null) {
-                System.out.println("Không tồn tại mã nhà cung cấp này");
-            }
-            
-            String name = AppScanner.scanStringWithMessage("Nhập tên sản phẩm: ");
-            double price = AppScanner.scanDoubleWithMessage("Nhập giá tiền: ");
-            int quantity = AppScanner.scanIntWithMessage("Nhập số lượng: ");
+            Brand brand = null;
+            Supplier supplier = null;
+            Category category = null;
             Product product = new Product();
-            product.setBrand(brand);
-            product.setCategory(category);
+            if (AppScanner.confirm(I18n.getMessage("entity.confirm.showList", I18n.getMessage("brand.label.plural")))) {
+                List<Brand> brands = brandService.findAll();
+                if (brands.isEmpty()) {
+                    I18n.printEntityMessage("brand", "entity.msg.emptyResults");
+                } else {
+                    List<Object[]> rows = new ArrayList<>();
+                    // transfer data to table row
+                    for (Brand b : brands) {
+                        Object[] row = {
+                            b.getId(),
+                            b.getName()
+                        };
+
+                        rows.add(row);
+                    }
+                    String[] headers = {"ID", I18n.getMessage("brand.name")};
+                    TableUI theTable = new TableUI(headers, rows);
+                    theTable.display();
+                }
+            }
+
+            while (brand == null) {
+                int brandId = AppScanner.scanIntWithi18Message("product.scan.brand");
+                I18n.print("product.msg.checkingBrandId");
+                brand = brandService.findById(brandId);
+                if (brand == null) {
+                    I18n.printEntityMessage("brand", "entity.error.idNotFound");
+                } else {
+                    I18n.print("entity.msg.foundName", I18n.getMessage("brand.label.singular"), brand.getName());
+                    product.setBrand(brand);
+                }
+            }
+
+            if (AppScanner.confirm(I18n.getMessage("entity.confirm.showList", I18n.getMessage("category.label.plural")))) {
+                List<Category> categories = categoryService.findAll();
+                if (categories.isEmpty()) {
+                    I18n.printEntityMessage("category", "entity.msg.emptyResults");
+                } else {
+                    List<Object[]> rows = new ArrayList<>();
+                    // transfer data to table row
+                    for (Category c : categories) {
+                        Object[] row = {
+                            c.getId(),
+                            c.getName()
+                        };
+                        rows.add(row);
+                    }
+                    String[] headers = {"ID", I18n.getMessage("category.name")};
+                    TableUI theTable = new TableUI(headers, rows);
+                    theTable.display();
+                }
+            }
+
+            while (category == null) {
+                int categoryId = AppScanner.scanIntWithi18Message("product.scan.category");
+                I18n.print("product.msg.checkingCategoryId");
+                category = categoryService.findById(categoryId);
+                if (category == null) {
+                    I18n.printEntityMessage("category", "entity.error.idNotFound");
+                } else {
+                    I18n.print("entity.msg.foundName", I18n.getMessage("category.label.singular"), category.getName());
+                    product.setCategory(category);
+                }
+            }
+
+            if (AppScanner.confirm(I18n.getMessage("entity.confirm.showList", I18n.getMessage("supplier.label.plural")))) {
+                List<Supplier> suppliers = supplierService.findAll();
+                if (suppliers.isEmpty()) {
+                    I18n.printEntityMessage("supplier", "entity.msg.emptyResults");
+                } else {
+                    List<Object[]> rows = new ArrayList<>();
+                    // transfer data to table row
+                    for (Supplier s : suppliers) {
+                        Object[] row = {
+                            s.getId(),
+                            s.getName()
+                        };
+                        rows.add(row);
+                    }
+                    String[] headers = {"ID", I18n.getMessage("supplier.name")};
+                    TableUI theTable = new TableUI(headers, rows);
+                    theTable.display();
+                }
+            }
+
+            while (supplier == null) {
+                int supplierId = AppScanner.scanIntWithi18Message("product.scan.supplier");
+                I18n.print("product.msg.checkingSupplierId");
+                supplier = supplierService.findById(supplierId);
+                if (supplier == null) {
+                    I18n.printEntityMessage("supplier", "entity.error.idNotFound");
+                } else {
+                    I18n.print("entity.msg.foundName", I18n.getMessage("supplier.label.singular"), supplier.getName());
+                    product.setSupplier(supplier);
+                }
+            }
+            String name = "";
+
+            while (ValidateCommon.isValidStringLength(name, 3, 100)) {
+                name = AppScanner.scanStringWithi18Message("product.scan.name");
+
+                if (ValidateCommon.isValidStringLength(name, 3, 100)) {
+                    I18n.print("product.error.invalidNameLength", new Object[]{3, 100});
+                }
+            }
+            double price = 0;
+            while (price <= 100) {
+                price = AppScanner.scanDoubleWithMessage(I18n.getMessage("product.scan.price"));
+
+                if (price <= 100) {
+                    I18n.print("product.error.invalidPrice");
+                }
+            }
+
+            int qty = 0;
+            while (qty <= 0) {
+                qty = AppScanner.scanIntWithi18Message("product.scan.qty");
+
+                if (qty <= 0) {
+                    I18n.print("product.error.invalidQty");
+                }
+            }
             product.setEmployee(AuthServiceImpl.getCurrentEmployee());
             product.setName(name);
             product.setPrice(price);
-            product.setQuantityInStock(quantity);
-            product.setSupplier(supplier);
+            product.setQuantityInStock(qty);
             if (productService.create(product)) {
-                System.out.println("Thêm sản phẩm mới thành công!");
+                I18n.printEntityMessage("product", "entity.msg.created");
             } else {
-                System.out.println("Đã xảy ra lỗi");
+                I18n.printEntityMessage("product", "entity.msg.createFailed");
             }
         } catch (SQLException ex) {
             Logger.getLogger(ImportProductPage.class.getName()).log(Level.SEVERE, null, ex);
@@ -160,7 +191,7 @@ public class ImportProductPage extends Page {
 
     @Override
     public String getTitle() {
-        return "Nhập hàng";
+        return I18n.getMessage("product.import.label");
     }
 
 }
