@@ -32,7 +32,7 @@ public class SupplierSearchPage extends Page {
                 if (suppliers.isEmpty()) {
                     I18n.printEntityMessage("supplier", "entity.msg.emptyResults");
                 } else {
-                    I18n.print("entity.msg.foundBaseOn", I18n.getMessage("supplier.label.singular"), search);
+                    I18n.print("entity.msg.foundBaseOn", I18n.getMessage("supplier.label.plural"), search);
                     List<Object[]> rows = new ArrayList<>();
                     for (Supplier supplier : suppliers) {
                         Object[] row = {
@@ -45,7 +45,7 @@ public class SupplierSearchPage extends Page {
                     String[] headers = {"ID", I18n.getMessage("supplier.name"), I18n.getMessage("supplier.addr")};
                     TableUI theTable = new TableUI(headers, rows);
                     theTable.display();
-                    choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("supplier", "entity.confirm.searchAnother"));
+                    choice = AppScanner.scanStringWithMessage(I18n.getMessage("entity.confirm.searchAnother"));
                     if (!"y".equalsIgnoreCase(choice)) {
                         break;
                     }

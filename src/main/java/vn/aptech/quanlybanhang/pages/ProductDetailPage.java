@@ -20,7 +20,7 @@ public class ProductDetailPage extends Page {
     public void displayContent() {
         ProductService productService = new ProductServiceImpl();
         String choice = null;
-        do {          
+        while(true) {          
             try {
                 int productId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("product", "entity.scan.id.detail"));
                 Product product = productService.findById(productId);
@@ -37,8 +37,8 @@ public class ProductDetailPage extends Page {
                         product.getName(),
                         product.getPriceString(),
                         product.getQuantityInStock(),
-                        product.getCreatedAt(),
-                        product.getUpdatedAt()
+                        product.getCreatedAtString(),
+                        product.getUpdatedAtString()
                     };
                     rows.add(row);
                     
@@ -57,15 +57,18 @@ public class ProductDetailPage extends Page {
                     TableUI tableUI = new TableUI(headers,rows);
                     tableUI.display();
             
-                    choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("product", "entity.confirm.findAnother"));
+                    choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("product", "entity.confirm.findMore"));
+                    
                     if (!"y".equalsIgnoreCase(choice)) {
                         break;
                     }
+                    
+                    System.out.println(""); //space line
                 }
             } catch (Exception ex) {
                 Logger.getLogger(ProductDetailPage.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } while ("y".equalsIgnoreCase(choice));
+        }
     }
 
     @Override

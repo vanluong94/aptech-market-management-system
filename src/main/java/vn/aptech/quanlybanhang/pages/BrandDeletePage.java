@@ -9,6 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Brand;
 import vn.aptech.quanlybanhang.exception.InputInvalidException;
+import vn.aptech.quanlybanhang.service.ProductService;
+import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.service.BrandService;
 import vn.aptech.quanlybanhang.service.BrandServiceImpl;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
@@ -16,19 +18,17 @@ import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
  *
- * @author vanluong
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class BrandDeletePage extends Page {
 
     @Override
     public void displayContent() {
+        
         BrandService brandService = new BrandServiceImpl();
+        ProductService productService = new ProductServiceImpl();
         
-        boolean retry;
-        
-        do{
-            
-            retry = false;
+        while(true){
             
             try{
                 int id = AppScanner.scanIntWithMessage(I18n.getEntityMessage("brand", "entity.scan.id.delete"));
@@ -36,21 +36,35 @@ public class BrandDeletePage extends Page {
 
                 if (brand == null) {
                     I18n.getEntityMessage("brand", "entity.error.idNotFound");
-                    retry = true;
-                } else if( brandService.deleteById(brand.getId()) ){
-                    I18n.printEntityMessage("brand", "entity.msg.deleted");
-                } else {
-                    I18n.printEntityMessage("brand", "entity.error.deleteFailed");
+                    continue;
+                } 
+                
+                System.out.println("");
+                I18n.print("entity.msg.foundName", I18n.getMessage("brand.label.singular"), brand.getName());
+                System.out.println("");
+                
+                if (AppScanner.confirm(I18n.getEntityMessage("brand", "entity.confirm.delete"))) {
+                    if (productService.findFirstProductByBrand(brand) != null) {
+                        I18n.print("brand.error.delete");
+                    } else if (brandService.deleteById(brand.getId())) {
+                        I18n.printEntityMessage("brand", "entity.msg.deleted");
+                    } else {
+                        I18n.printEntityMessage("brand", "entity.error.deleteFailed");
+                    }
+                }
+                
+                System.out.println("");
+                if (!AppScanner.confirm(I18n.getEntityMessage("brand", "entity.confirm.deleteAnother"))) {
+                    System.out.println("");
+                    break;
                 }
             }catch(InputInvalidException e){
                 System.out.println(e.getMessage());
-                retry = true;
             } catch (Exception ex) {
                 Logger.getLogger(BrandDeletePage.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            
-        }while(retry);
+        }
     }
 
     @Override

@@ -20,9 +20,9 @@ public class ProductDeletePage extends Page {
             ProductService productService = new ProductServiceImpl();
             int productId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("product", "entity.scan.id.delete"));
             if (productService.deleteById(productId)) {
-                System.out.println("Xóa Sản phẩm thành công!");
+                I18n.printEntityMessage("product", "entity.msg.deleted");
             }else{
-                System.out.println("Đã xảy ra lỗi");
+                I18n.printEntityMessage("product", "entity.error.deleteFailed");
             }
         } catch (Exception e) {
               Logger.getLogger(ProductServiceImpl.class.getName()).log(Level.SEVERE, null, e);

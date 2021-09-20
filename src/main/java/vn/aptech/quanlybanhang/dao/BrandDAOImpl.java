@@ -50,7 +50,8 @@ public class BrandDAOImpl implements BrandDAO {
 
         try (
                 Connection conn = DBConnection.getConnection();
-                Statement stTotal = conn.createStatement();) {
+                Statement stTotal = conn.createStatement();
+        ) {
 
             ResultSet rsTotal = stTotal.executeQuery(SQL_COUNT_ALL);
             if (rsTotal.next()) {
