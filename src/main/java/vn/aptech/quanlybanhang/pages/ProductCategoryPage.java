@@ -36,13 +36,13 @@ public class ProductCategoryPage extends Page {
             do {
                 int categoryId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("category", "entity.scan.id.detail"));
                 PaginatedResults<Product> products = productService.findByCategoryId(page, categoryId);
-                
+
                 if (products.getResults().isEmpty()) {
                     I18n.printEntityMessage("product", "entity.msg.emptyResults");
                     return;
                 }
-                
-                List<Object[]> rows = new ArrayList<Object[]>();
+
+                List<Object[]> rows = new ArrayList<>();
                 for (Product product : products.getResults()) {
                     Object[] row = {
                         product.getId(),
@@ -53,13 +53,13 @@ public class ProductCategoryPage extends Page {
                         product.getName(),
                         product.getPriceString(),
                         product.getQuantityInStock(),
-                        product.getCreatedAt(),
-                        product.getUpdatedAt()
+                        product.getCreatedAtString(),
+                        product.getUpdatedAtString()
                     };
                     rows.add(row);
                 }
                 String[] headers = {
-                    "ID", 
+                    "ID",
                     I18n.getMessage("brand.label.singular"),
                     I18n.getMessage("category.label.singular"),
                     I18n.getMessage("supplier.label.singular"),
@@ -70,7 +70,7 @@ public class ProductCategoryPage extends Page {
                     I18n.getMessage("entity.createdAt"),
                     I18n.getMessage("entity.updatedAt")
                 };
-                
+
                 TableUI tableUI = new TableUI(headers, rows);
                 tableUI.display();
 
@@ -83,7 +83,7 @@ public class ProductCategoryPage extends Page {
                     page = 0;
                 }
 
-                choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("category", "entity.confirm.findAnOther"));
+                choice = AppScanner.scanStringWithMessage(I18n.getMessage("entity.confirm.searchAnOther"));
                 if (!"y".equalsIgnoreCase(choice)) {
                     break;
                 }
