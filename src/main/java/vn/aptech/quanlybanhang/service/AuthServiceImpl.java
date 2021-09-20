@@ -9,6 +9,7 @@ import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.dao.AuthDAO;
 import vn.aptech.quanlybanhang.dao.AuthDAOImpl;
 import vn.aptech.quanlybanhang.entities.Employee;
+import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.Md5;
 
 /**
@@ -29,10 +30,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Employee login(String username, String password) {
         if (username == null || password == null) {
-            throw new CommonException("Username và Password không được để trống");
+            throw new CommonException(I18n.getMessage("page.auth.login.required"));
         }
         if (!ValidateCommon.isValidUsername(username)) {
-            throw new CommonException("Username sai định dạng");
+            throw new CommonException(I18n.getMessage("employee.error.username.invalid"));
         }
         Employee employee = authDAO.login(username, Md5.encode(password));
         if (employee != null) {
