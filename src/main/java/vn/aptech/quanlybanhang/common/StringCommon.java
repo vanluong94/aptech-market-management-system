@@ -4,6 +4,7 @@
 package vn.aptech.quanlybanhang.common;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  *
@@ -16,7 +17,7 @@ public class StringCommon {
     }
 
     public static String convertDoubleToVND(double input) {
-        return NumberFormat.getCurrencyInstance().format(input);
+        return NumberFormat.getCurrencyInstance(new Locale("vi", "VN")).format(input);
     }
 
     public static String safeNullObject(String str) {
