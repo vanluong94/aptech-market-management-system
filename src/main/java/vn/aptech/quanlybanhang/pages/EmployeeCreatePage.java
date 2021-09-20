@@ -3,8 +3,7 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.entities.Department;
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.service.EmployeeService;
@@ -19,47 +18,49 @@ import vn.aptech.quanlybanhang.utilities.Md5;
  */
 public class EmployeeCreatePage extends Page {
 
+    private final EmployeeService employeeService;
+
+    public EmployeeCreatePage() {
+        this.employeeService = new EmployeeServiceImpl();
+    }
+
     @Override
     public void displayContent() {
-
         try {
-            EmployeeService employeeService = new EmployeeServiceImpl();
+            String name = AppScanner.scanStringWithi18Message("employee.scan.name");
+            String address = AppScanner.scanStringWithi18Message("employee.scan.addr");
+            String phone = AppScanner.scanStringWithi18Message("employee.scan.phone");
 
-            String employeeName = AppScanner.scanStringWithi18Message("employee.scan.name");
-            String employeeAddress = AppScanner.scanStringWithi18Message("employee.scan.addr");
-            String employeePhone = AppScanner.scanStringWithi18Message("employee.scan.phone");
-
-            int employeeDepartment = 0;
+            int department = 0;
             do {
-                employeeDepartment = AppScanner.scanIntWithMessage(
+                department = AppScanner.scanIntWithMessage(
                         I18n.getMessage("employee.scan.dept")
                         + String.format("(1=%s; 2=%s; 3=%s", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY)
                 );
 
-                if (employeeDepartment < 1 || employeeDepartment > 3) {
+                if (department < 1 || department > 3) {
                     I18n.print("employee.error.invalidDept");
                 }
-            } while (employeeDepartment < 1 || employeeDepartment > 3);
+            } while (department < 1 || department > 3);
 
-            String employeeUsername;
+            String username;
             do {
-                employeeUsername = AppScanner.scanStringWithi18Message("employee.scan.username");
-
-                if (employeeUsername.length() < 6) {
+                username = AppScanner.scanStringWithi18Message("employee.scan.username");
+                if (username.length() < 6) {
                     I18n.print("employee.error.invalidUsernameLength");
                 }
-            } while (employeeUsername.length() < 6);
+            } while (username.length() < 6);
 
-            String employeePassword;
+            String password;
             do {
-                employeePassword = AppScanner.scanStringWithi18Message("employee.scan.password");
+                password = AppScanner.scanStringWithi18Message("employee.scan.password");
 
-                if (employeeUsername.length() < 6) {
+                if (username.length() < 6) {
                     I18n.print("employee.error.invalidPassLength");
                 }
-            } while (employeeUsername.length() < 6);
+            } while (username.length() < 6);
 
-            Employee employee = new Employee(employeeName, employeeAddress, employeePhone, Department.fromInt(employeeDepartment), employeeUsername, Md5.encode(employeePassword));
+            Employee employee = new Employee(name, address, phone, Department.fromInt(department), username, Md5.encode(password));
             if (employeeService.create(employee)) {
                 I18n.printEntityMessage("employee", "entity.msg.created");
             } else {

@@ -3,9 +3,6 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Department;
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.service.EmployeeService;

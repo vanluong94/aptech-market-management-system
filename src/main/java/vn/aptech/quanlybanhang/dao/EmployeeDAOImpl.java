@@ -222,7 +222,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                return true;
+                int numberOfRows = rs.getInt(1);
+                return numberOfRows > 0;
             }
         } catch (SQLException e) {
             throw e;

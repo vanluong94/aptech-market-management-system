@@ -26,7 +26,7 @@ public class ValidateCommon {
 
     public static boolean isValidUsername(String name) throws PatternSyntaxException {
         validateNullObject(name, "Username");
-        String regex = "^[a-z][a-z0-9_.]{5,29}$";
+        String regex = "^[a-z][a-z0-9_.]{3,29}$";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(name);
         return m.matches();
@@ -37,6 +37,14 @@ public class ValidateCommon {
         String regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(password);
+        return m.matches();
+    }
+
+    public static boolean isValidVietnamesePhoneNumber(String phone) {
+        validateNullObject(phone, "Phone");
+        String regex = "^(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(phone);
         return m.matches();
     }
 
