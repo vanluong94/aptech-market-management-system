@@ -142,7 +142,7 @@ public class OrderServiceImpl implements OrderService {
             FileUtils.writeByteArrayToFile(bill, jasperPrintService.exportReportXlsx(jp));
             file = bill.getAbsolutePath();
         } catch (FileNotFoundException e) {
-            throw new CommonException(Response.SYSTEM_ERROR, "FileNotFoundException khi requestReportXlsx thực hiện tạo JasperPrint. Chi tiết: " + e.getMessage());
+            throw new CommonException("FileNotFoundException khi requestReportXlsx thực hiện tạo JasperPrint. Chi tiết: " + e.getMessage());
         }
         return file;
     }

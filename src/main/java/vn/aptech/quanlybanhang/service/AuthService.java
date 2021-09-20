@@ -11,6 +11,6 @@ import vn.aptech.quanlybanhang.entities.Employee;
  */
 public interface AuthService {
 
-    Employee login(Employee emp);
+    Employee login(String username, String password);
 
 }

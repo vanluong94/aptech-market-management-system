@@ -4,17 +4,50 @@
 package vn.aptech.quanlybanhang.common;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  *
  * @author Nguyen Ba Tuan Anh <anhnbt.it@gmail.com>
  */
 public class ValidateCommon {
+
     public static void validateNullObject(Object object, String objectName) {
         if (object instanceof String) {
-            if (StringCommon.isNullOrBlank(String.valueOf(object)))
-                throw new CommonException(Response.MISSING_PARAM, MessageCommon.getMessage(MessageContent.MISSING_PARAM, objectName));
-        } else if (Objects.isNull(object))
-            throw new CommonException(Response.MISSING_PARAM, MessageCommon.getMessage(MessageContent.MISSING_PARAM, objectName));
+            if (StringCommon.isNullOrBlank(String.valueOf(object))) {
+                throw new CommonException(MessageCommon.getMessage(MessageContent.MISSING_PARAM, objectName));
+            }
+        } else if (Objects.isNull(object)) {
+            throw new CommonException(MessageCommon.getMessage(MessageContent.MISSING_PARAM, objectName));
+        }
+    }
+
+    public static boolean isValidUsername(String name) throws PatternSyntaxException {
+        validateNullObject(name, "Username");
+        String regex = "^[a-z][a-z0-9_.]{5,29}$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(name);
+        return m.matches();
+    }
+
+    public static boolean isValidPassword(String password) throws PatternSyntaxException {
+        validateNullObject(password, "Password");
+        String regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(password);
+        return m.matches();
+    }
+
+    public static boolean isValidCharacter(String name) throws PatternSyntaxException {
+        String regex = "^[A-Za-z0-9\\s\\-_,\\.:;()''\"\"]+$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(name);
+        return m.matches();
+    }
+
+    public static boolean isValidStringLength(String str, int min, int max) {
+        return str.length() < min || str.length() > max;
     }
 }

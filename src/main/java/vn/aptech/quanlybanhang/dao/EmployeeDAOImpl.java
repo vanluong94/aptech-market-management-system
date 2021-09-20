@@ -29,6 +29,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             + "department = ?, username = ?, password = ? WHERE employee_id = ?";
     private final static String SQL_GET_ONE_BY_USERNAME_PASSWORD = "SELECT * FROM employees WHERE username = ? AND password = ?";
     private final static String SQL_FIND_BY_NAME = "SELECT * FROM employees WHERE employee_name LIKE ?";
+    private final static String SQL_EXISTS_BY_USERNAME = "SELECT count(employee_id) FROM employees WHERE username = ?";
 
     @Override
     public boolean create(Employee object) throws Exception {
@@ -212,6 +213,21 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public PaginatedResults<Employee> select(int page) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean existsByUsername(String username) throws Exception {
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(SQL_EXISTS_BY_USERNAME);
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw e;
+        }
+        return false;
     }
 
 }
