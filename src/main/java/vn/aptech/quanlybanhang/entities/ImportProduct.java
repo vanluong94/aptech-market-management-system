@@ -3,7 +3,10 @@
  */
 package vn.aptech.quanlybanhang.entities;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import vn.aptech.quanlybanhang.common.StringCommon;
+import vn.aptech.quanlybanhang.constant.Constant;
 
 /**
  *
@@ -81,6 +84,10 @@ public class ImportProduct {
         this.employee = employee;
     }
 
+    public String getQtyString() {
+        return StringCommon.formatNumberCommas(quantity);
+    }
+
     /**
      * @return the quantity
      */
@@ -93,6 +100,10 @@ public class ImportProduct {
      */
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getPriceString() {
+        return StringCommon.convertDoubleToVND(price);
     }
 
     /**
@@ -121,6 +132,11 @@ public class ImportProduct {
      */
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getCreatedAtString() {
+        SimpleDateFormat SDFormat = new SimpleDateFormat(Constant.DATE_TIME_SIMPLE_FORMAT);
+        return SDFormat.format(createdAt);
     }
 
 }
