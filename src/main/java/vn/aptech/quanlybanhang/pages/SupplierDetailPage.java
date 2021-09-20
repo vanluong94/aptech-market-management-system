@@ -25,7 +25,7 @@ public class SupplierDetailPage extends Page {
         String choice = null;
         do {           
             try {
-                int supplierId = AppScanner.scanIntWithMessage(I18n.getMessage("supplier", "entity.scan.id.detail"));
+                int supplierId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("supplier", "entity.scan.id.detail"));
                 Supplier supplier = supplierService.findById(supplierId);
                 if (supplier == null) {
                     I18n.printEntityMessage("supplier", "entity.error.idNotFound");
@@ -41,7 +41,7 @@ public class SupplierDetailPage extends Page {
                     String[] headers = {"ID", I18n.getMessage("supplier.name"), I18n.getMessage("supplier.addr")};
                     TableUI theTable = new TableUI(headers, rows);
                     theTable.display();
-                    choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("supplier", "entity.confirm.findAnother"));
+                    choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("supplier", "entity.confirm.findMore"));
                     if (!"y".equalsIgnoreCase(choice)) {
                         break;
                     }

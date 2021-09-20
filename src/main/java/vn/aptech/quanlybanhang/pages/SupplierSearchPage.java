@@ -45,7 +45,7 @@ public class SupplierSearchPage extends Page {
                     String[] headers = {"ID", I18n.getMessage("supplier.name"), I18n.getMessage("supplier.addr")};
                     TableUI theTable = new TableUI(headers, rows);
                     theTable.display();
-                    choice = AppScanner.scanStringWithMessage(I18n.getMessage("entity.confirm.searchAnother"));
+                    choice = AppScanner.scanStringWithMessage(I18n.getMessage("entity.confirm.searchAnOther"));
                     if (!"y".equalsIgnoreCase(choice)) {
                         break;
                     }

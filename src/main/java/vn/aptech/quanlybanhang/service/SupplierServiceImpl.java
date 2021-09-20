@@ -3,10 +3,11 @@
  */
 package vn.aptech.quanlybanhang.service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.common.CommonException;
+import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.dao.SupplierDAO;
 import vn.aptech.quanlybanhang.dao.SupplierDAOImpl;
 import vn.aptech.quanlybanhang.entities.Supplier;
@@ -25,7 +26,12 @@ public class SupplierServiceImpl implements SupplierService {
     public boolean create(Supplier object) throws Exception {
         if (object == null) {
             throw new Exception(I18n.getMessage("app.error.object.null"));
-
+        }
+        if (ValidateCommon.isValidStringLength(object.getName(), 3, 50)) {
+            throw new CommonException(I18n.getMessage("entity.error.invalidNameLength", new Object[]{"3", "50"}));
+        }
+        if (ValidateCommon.isValidStringLength(object.getAddress(), 3, 255)) {
+            throw new CommonException(I18n.getMessage("entity.error.invalidAddressLength", new Object[]{"3", "255"}));
         }
         return supplierDAO.create(object);
     }
@@ -45,7 +51,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public Supplier findById(int id) throws Exception {
         if (id < 1) {
-            throw new Exception(I18n.getMessage("input.invalidID"));
+            throw new CommonException(I18n.getMessage("input.invalidID"));
         }
         return supplierDAO.findById(id);
     }
@@ -56,8 +62,14 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public boolean update(Supplier id) throws Exception {
-        return this.supplierDAO.update(id);
+    public boolean update(Supplier object) throws Exception {
+        if (ValidateCommon.isValidStringLength(object.getName(), 3, 50)) {
+            throw new CommonException(I18n.getMessage("entity.error.invalidNameLength", new Object[]{"3", "50"}));
+        }
+        if (ValidateCommon.isValidStringLength(object.getAddress(), 3, 255)) {
+            throw new CommonException(I18n.getMessage("entity.error.invalidAddressLength", new Object[]{"3", "255"}));
+        }
+        return this.supplierDAO.update(object);
     }
 
     @Override
