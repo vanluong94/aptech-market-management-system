@@ -22,6 +22,7 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import org.apache.commons.io.FileUtils;
 import vn.aptech.quanlybanhang.common.CommonException;
+import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.constant.Constant;
 import vn.aptech.quanlybanhang.dao.OrderDAO;
 import vn.aptech.quanlybanhang.dao.OrderDAOImpl;
@@ -129,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("ItemDataSource", itemsJRBean);
             parameters.put("cashier", AuthServiceImpl.getCurrentEmployee().getName());
-            parameters.put("customerName", order.getCustomer().getName());
+            parameters.put("customerName", StringCommon.safeNullObject(order.getCustomer().getName())); // order might not have customer
             parameters.put("customerAddress", order.getCustomer().getAddress());
             parameters.put("customerPhone", order.getCustomer().getPhone());
             parameters.put("invoiceNumber", order.getId());

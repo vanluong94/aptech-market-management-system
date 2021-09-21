@@ -6,6 +6,7 @@ package vn.aptech.quanlybanhang.ui;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
 import vn.aptech.quanlybanhang.utilities.Config;
@@ -88,13 +89,30 @@ public class OrderUI {
     public void displayOrderDetail() {
         this.displayLine(String.format("%-11s: %s", I18n.getMessage("order.receipt.id"), order.getId()));
         this.displayLine(String.format("%-11s: %s", I18n.getMessage("order.receipt.timestamp"), order.getDatetimeString()));
-        this.displayLine(String.format(
-                "%-11s: %s (%s: %d)", 
-                I18n.getMessage("customer.label.singular"), 
-                order.getCustomer().getName(),
-                I18n.getMessage("customer.id"),
-                order.getCustomer().getId()
-        ));
+        
+        this.displayOrderCustomer();
+        this.displayOrderCashier();
+    }
+    
+    public void displayOrderCustomer() {
+        if (order.getCustomer().getId() > 0) {
+            this.displayLine(String.format(
+                    "%-11s: %s (%s: %d)", 
+                    I18n.getMessage("customer.label.singular"), 
+                    StringCommon.safeNullObject(order.getCustomer().getName()), // order might not have customer
+                    I18n.getMessage("customer.id"),
+                    order.getCustomer().getId()
+            ));
+        } else {
+            this.displayLine(String.format(
+                    "%-11s: %s", 
+                    I18n.getMessage("customer.label.singular"), 
+                    "-"
+            ));
+        }
+    }
+    
+    public void displayOrderCashier() {
         this.displayLine(String.format(
                 "%-11s: %s (%s: %d)", 
                 I18n.getMessage("order.receipt.cashier"), 

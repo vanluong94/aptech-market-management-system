@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.service.OrderService;
 import vn.aptech.quanlybanhang.service.OrderServiceImpl;
@@ -49,7 +50,7 @@ public class CashierStatisticPage extends Page {
                     Object[] row = {
                         order.getId(),
                         order.getEmployee().getName(),
-                        order.getCustomer().getName(),
+                        StringCommon.safeNullObject(order.getCustomer().getName()), // order might not have customer
                         order.getDatetimeString(),
                         order.getAmountString()
                     };
