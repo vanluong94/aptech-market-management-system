@@ -387,7 +387,7 @@ public class OrderDAOImpl implements OrderDAO {
             }
             pagination.setResults(orders);
             
-             try(PreparedStatement countStmt = conn.prepareStatement(PaginatedResults.parseCountSQL(SQL_CASHIER_STATISTICS))) {
+            try(PreparedStatement countStmt = conn.prepareStatement(PaginatedResults.parseCountSQL(SQL_CASHIER_STATISTICS))) {
                 countStmt.setDate(1, DateCommon.convertUtilDateToSqlDate(fromDate));
                 countStmt.setDate(2, DateCommon.convertUtilDateToSqlDate(toDate));
                 countStmt.setInt(3, AuthServiceImpl.getCurrentEmployee().getId());

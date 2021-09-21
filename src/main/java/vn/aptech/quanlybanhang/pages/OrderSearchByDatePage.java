@@ -86,7 +86,7 @@ public class OrderSearchByDatePage extends Page {
                     
                     if (results.getResults().isEmpty()) {
                         I18n.printEntityMessage("order", "entity.msg.emptyResults");
-                        return;
+                        break;
                     }
 
                     // transfer data to table row
