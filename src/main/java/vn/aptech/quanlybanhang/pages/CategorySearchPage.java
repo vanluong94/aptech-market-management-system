@@ -31,9 +31,6 @@ public class CategorySearchPage extends Page {
         try {
             List<Category> categories = categoryService.searchByName(keyword);
             List<Object[]> rows = new ArrayList<>();
-
-            System.out.println("\n\n");
-
             if (categories.isEmpty()) {
                 I18n.printEntityMessage("category", "entity.msg.emptyResults");
             } else {
