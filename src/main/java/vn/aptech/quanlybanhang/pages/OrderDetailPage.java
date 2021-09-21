@@ -29,21 +29,21 @@ public class OrderDetailPage extends Page {
     @Override
     public void displayContent() {
         try {
-            Order order = null;
-            do {
+            while(true) {
                 int orderId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("order", "entity.scan.id.detail"));
-                order = service.findById(orderId);
+                Order order = service.findById(orderId);
                 if (order == null) {
                     I18n.printEntityMessage("order", "entity.error.idNotFound");
+                    continue;
                 } else {
                     order.setOrderItems(service.getOrderItems(order));
                     OrderUI orderUI = new OrderUI(order);
                     orderUI.display();
                 }
                 if (!AppScanner.confirm("\n" + I18n.getEntityMessage("order", "entity.confirm.findMore"))) {
-                    return;
+                    break;
                 }
-            } while (order == null);
+            }
         } catch (Exception ex) {
             Logger.getLogger(OrderDetailPage.class.getName()).log(Level.SEVERE, null, ex);
         }
