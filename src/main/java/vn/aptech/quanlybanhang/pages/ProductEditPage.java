@@ -5,12 +5,15 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.menu.ProductMenu;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
+import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 import vn.aptech.quanlybanhang.utilities.I18n;
 
@@ -30,6 +33,12 @@ public class ProductEditPage extends Page {
                 if (product == null) {
                     I18n.printEntityMessage("product", "entity.error.idNotFound");
                 } else {
+                    
+                    // show product information first
+                    List<Product> products = new ArrayList<>();
+                    products.add(product);
+                    TableUI table = Product.toTable(products);
+                    table.display();
                     
                     // confirm update name
                     if (AppScanner.confirm(I18n.getMessage("product.confirm.update", I18n.getMessage("product.name")))) {
