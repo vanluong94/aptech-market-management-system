@@ -371,6 +371,15 @@ public class ProductDAOImpl implements ProductDAO {
                 products.add(product);
             }
             pagination.setResults(products);
+            
+            try(PreparedStatement countStmt = conn.prepareStatement(PaginatedResults.parseCountSQL(SQL_GET_BY_NAME))) {
+                countStmt.setString(1, "%" + name + "%");
+                countRs = countStmt.executeQuery();
+                if (countRs.next()) {
+                    pagination.setTotalItems(countRs.getInt(1));
+                }
+            } 
+            
         } finally {
             if (rs != null) {
                 rs.close();

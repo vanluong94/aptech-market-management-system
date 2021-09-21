@@ -29,36 +29,43 @@ public class ProductSearchPage extends Page {
     @Override
     public void displayContent() {
 
-        String choice = null;
+        
         try {
-            int page = 1;
-            do {
+            
+            while(true) {
+                
+                int page = 1;
+                
                 String search = AppScanner.scanStringWithMessage(I18n.getMessage("product.scan.searchName"));
-                PaginatedResults<Product> products = productService.findByName(page, search);
-
-                if (products.getResults().isEmpty()) {
-                    I18n.print("product", "entity.msg.emptyResults");
-                    return;
-                }
                 
-                I18n.print("entity.msg.foundBaseOn", I18n.getMessage("product.label.plural"), search);
-                
-                Product.toTable(products.getResults()).display();
+                do {
+                    
+                    PaginatedResults<Product> products = productService.findByName(page, search);
 
-                if (products.needsPagination()) {
-                    products.displayPagination();
-                    products.displayPaginationMenu();
-                    page = products.scanGoPage();
-                    System.out.println("\n\n");
-                } else {
-                    page = 0;
-                }
-                choice = AppScanner.scanStringWithMessage(I18n.getMessage("entity.confirm.searchAnOther"));
-                if (!"y".equalsIgnoreCase(choice)) {
+                    if (products.getResults().isEmpty()) {
+                        I18n.printEntityMessage("product", "entity.msg.emptyResults");
+                        break;
+                    }
+
+                    I18n.print("entity.msg.foundBaseOn", I18n.getMessage("product.label.plural"), search);
+
+                    Product.toTable(products.getResults()).display();
+
+                    if (products.needsPagination()) {
+                        products.displayPagination();
+                        products.displayPaginationMenu();
+                        page = products.scanGoPage();
+                        System.out.println("");
+                    } else {
+                        page = 0;
+                    }
+                    
+                } while (page > 0);
+                
+                if (!AppScanner.confirm(I18n.getMessage("entity.confirm.searchAnOther"))) {
                     break;
                 }
-            } while ("y".equalsIgnoreCase(choice) && page > 0);
-
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ProductSearchPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
