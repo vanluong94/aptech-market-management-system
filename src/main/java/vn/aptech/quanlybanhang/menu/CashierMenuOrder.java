@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import vn.aptech.quanlybanhang.menu.items.ExitMenuItem;
 import vn.aptech.quanlybanhang.menu.items.GoBackMenuItem;
 import vn.aptech.quanlybanhang.pages.CashierOrderDetailPage;
-import vn.aptech.quanlybanhang.pages.CashierTodayOrderPage;
+import vn.aptech.quanlybanhang.pages.CashierTodayOrdersPage;
 import vn.aptech.quanlybanhang.utilities.I18n;
 
 
@@ -17,7 +17,7 @@ public class CashierMenuOrder extends Menu {
     protected LinkedHashMap<Integer, MenuItem> registerMenuItems() {
         LinkedHashMap<Integer, MenuItem> menuItems = new LinkedHashMap<>();
 
-        menuItems.put(1, new CashierTodayOrderPage());
+        menuItems.put(1, new CashierTodayOrdersPage());
         menuItems.put(2, new CashierOrderDetailPage());
 
         menuItems.put(0, new ExitMenuItem());

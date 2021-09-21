@@ -248,12 +248,14 @@ public class OrderDAOImpl implements OrderDAO {
             pagination.setResults(orders);
 
             // query count
-            String sqlCount = PaginatedResults.parseCountSQL(SQL_SELECT_ALL);
-            Statement st = DBConnection.getConnection().createStatement();
-            ResultSet countRs = st.executeQuery(sqlCount);
-            if (countRs.next()) {
-                pagination.setTotalItems(countRs.getInt(1));
+            try (Statement st = conn.createStatement()) {
+                String sqlCount = PaginatedResults.parseCountSQL(SQL_SELECT_ALL);
+                ResultSet countRs = st.executeQuery(sqlCount);
+                if (countRs.next()) {
+                    pagination.setTotalItems(countRs.getInt(1));
+                }
             }
+            
         }
         return pagination;
     }
@@ -423,16 +425,16 @@ public class OrderDAOImpl implements OrderDAO {
             pagination.setResults(orders);
 
             // query count
-            String sqlCount = PaginatedResults.parseCountSQL(SQL_GET_BY_TIME_RANGE);
+            try (PreparedStatement stCount = conn.prepareStatement(PaginatedResults.parseCountSQL(SQL_GET_BY_TIME_RANGE))) {
+                stCount.setDate(1, DateCommon.convertUtilDateToSqlDate(fromDate));
+                stCount.setDate(2, DateCommon.convertUtilDateToSqlDate(toDate));
 
-            PreparedStatement stCount = DBConnection.getConnection().prepareStatement(sqlCount);
-            stCount.setDate(1, DateCommon.convertUtilDateToSqlDate(fromDate));
-            stCount.setDate(2, DateCommon.convertUtilDateToSqlDate(toDate));
-
-            ResultSet countRs = stCount.executeQuery();
-            if (countRs.next()) {
-                pagination.setTotalItems(countRs.getInt(1));
+                ResultSet countRs = stCount.executeQuery();
+                if (countRs.next()) {
+                    pagination.setTotalItems(countRs.getInt(1));
+                }
             }
+            
         }
         return pagination;
 

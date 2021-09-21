@@ -23,6 +23,10 @@ import vn.aptech.quanlybanhang.utilities.AppScanner;
 import vn.aptech.quanlybanhang.utilities.I18n;
 import vn.aptech.quanlybanhang.utilities.PaginatedResults;
 
+/**
+ * 
+ * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
+ */
 public class OrderSearchByDatePage extends Page {
     
     @Override
@@ -38,7 +42,7 @@ public class OrderSearchByDatePage extends Page {
             /**
              * repeat the whole searching process
              */
-            do {
+            while (true) {
                 
                 I18n.print("order.msg.enterTimerange");
 
@@ -124,15 +128,14 @@ public class OrderSearchByDatePage extends Page {
                 } while (page > 0);
 
                 /**
-                 * when we're out of loop, asking if user want to do another
-                 * search
+                 * when we're out of loop, 
+                 * asking if user want to do another search
                  */
-                choice = AppScanner.scanStringWithMessage(I18n.getMessage("order.confirm.searchAnotherTimerange"));
-                if (!"y".equalsIgnoreCase(choice)) {
+                if (!AppScanner.confirm(I18n.getMessage("order.confirm.searchAnotherTimerange"))) {
                     break;
                 }
                 
-            } while ("y".equalsIgnoreCase(choice));
+            }
             
         } catch (SQLException e) {
             System.out.println("Exception when OrderMenu.handleSearch: " + e.getMessage());
