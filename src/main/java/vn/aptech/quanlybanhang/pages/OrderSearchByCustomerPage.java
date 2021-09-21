@@ -33,14 +33,21 @@ public class OrderSearchByCustomerPage extends Page {
     public void displayContent() {
         String choice = null;
         try {
-            int page = 1;
-            do {
+            
+            while (true) {
+                
+                int page = 1;
                 String search = AppScanner.scanStringWithMessage(I18n.getMessage("customer.scan.searchPhone"));
-                PaginatedResults<Order> orders = orderService.findByCustomerPhone(page, search);
 
-                if (orders.getResults().isEmpty()) {
-                    I18n.printEntityMessage("order", "entity.msg.emptyResults");
-                } else {
+                do {
+
+                    PaginatedResults<Order> orders = orderService.findByCustomerPhone(page, search);
+
+                    if (orders.getResults().isEmpty()) {
+                        I18n.printEntityMessage("order", "entity.msg.emptyResults");
+                        continue;
+                    }
+
                     I18n.print("entity.msg.foundBaseOn", I18n.getMessage("order.label.plural"), search);
                     List<Object[]> rows = new ArrayList<>();
                     for (Order order : orders.getResults()) {
@@ -75,12 +82,13 @@ public class OrderSearchByCustomerPage extends Page {
                     } else {
                         page = 0;
                     }
-                    choice = AppScanner.scanStringWithMessage(I18n.getMessage("entity.confirm.searchAnOther"));
-                    if (!"y".equalsIgnoreCase(choice)) {
-                        break;
-                    }
+
+                } while (page > 0);
+
+                if (!AppScanner.confirm(I18n.getMessage("entity.confirm.searchAnOther"))) {
+                    break;
                 }
-            } while ("y".equalsIgnoreCase(choice) && page > 0);
+            }
 
         } catch (SQLException ex) {
             Logger.getLogger(OrderSearchByCustomerPage.class.getName()).log(Level.SEVERE, null, ex);

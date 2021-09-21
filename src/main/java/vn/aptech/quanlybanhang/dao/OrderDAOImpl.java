@@ -489,6 +489,17 @@ public class OrderDAOImpl implements OrderDAO {
                 orders.add(order);
             }
             pagination.setResults(orders);
+            
+
+            try (PreparedStatement stCount = conn.prepareStatement(PaginatedResults.parseCountSQL(SQL_GET_BY_CUSTOMER_PHONE))) {
+                stCount.setString(1, "%" + phone + "%");
+
+                countRs = stCount.executeQuery();
+                if (countRs.next()) {
+                    pagination.setTotalItems(countRs.getInt(1));
+                }
+            }
+            
         } finally {
             if (rs != null) {
                 rs.close();
