@@ -43,6 +43,7 @@ public class OrderDAOImpl implements OrderDAO {
             + "  orders "
             + "  JOIN employees ON employees.employee_id = orders.employee_id "
             + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
+            + " ORDER BY order_date DESC "
             + " LIMIT ?, ?";
     private final static String SQL_ORDER_DETAIL_OF_CASHIER = "SELECT "
             + "  orders.*, "
@@ -54,12 +55,13 @@ public class OrderDAOImpl implements OrderDAO {
             + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE "
             + "  orders.order_id = ? AND employees.employee_id = ?";
-    private final static String SQL_GET_TODAY_ORDERS = "SELECT orders.*,employees.employee_name, employees.employee_id,customers.customer_name,customers.customer_id FROM orders JOIN employees ON employees.employee_id = orders.employee_id LEFT JOIN customers ON customers.customer_id = orders.customer_id WHERE date(orders.order_date) = ? AND employees.employee_id = ? LIMIT ?,?";
+    private final static String SQL_GET_TODAY_ORDERS = "SELECT orders.*,employees.employee_name, employees.employee_id,customers.customer_name,customers.customer_id FROM orders JOIN employees ON employees.employee_id = orders.employee_id LEFT JOIN customers ON customers.customer_id = orders.customer_id WHERE date(orders.order_date) = ? AND employees.employee_id = ? ORDER BY order_date DESC LIMIT ?,?";
     private final static String SQL_CASHIER_STATISTICS = "SELECT orders.*,employees.employee_name,customers.customer_name"
             + " FROM orders"
             + " JOIN employees ON employees.employee_id = orders.employee_id"
             + " LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE orders.order_date BETWEEN ? AND ? AND employees.employee_id = ?"
+            + " ORDER BY order_date DESC "
             + " LIMIT ?,?";
     private final static String SQL_GET_ONE = "SELECT "
             + " orders.*, "
@@ -80,6 +82,7 @@ public class OrderDAOImpl implements OrderDAO {
             + " INNER JOIN orders ON customers.customer_id = orders.customer_id "
             + " LEFT JOIN employees ON employees.employee_id = orders.employee_id "
             + " WHERE customers.customer_phone LIKE ? "
+            + " ORDER BY order_date DESC "
             + " LIMIT ?,?";
 
     private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
@@ -105,6 +108,7 @@ public class OrderDAOImpl implements OrderDAO {
             + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE "
             + "  date(order_date) BETWEEN ? AND ?  "
+            + " ORDER BY order_date DESC "
             + " LIMIT ?, ?";
 
     @Override
