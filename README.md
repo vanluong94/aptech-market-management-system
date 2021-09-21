@@ -1,8 +1,33 @@
 # Phần mềm quản lý bán hàng
 
-## Hướng dẫn
-1. 
+## Hướng dẫn Build Jar và chạy trên Terminal
 
+1. Gõ lệnh `java -version` để check version Java
+
+2. Copy libs `mysql-connector-java-8.0.26.jar` vào thư mục cài đặt Java tương ứng
+`...\jdk1.8.0_301\jre\lib` và `\jre1.8.0_301\lib\ext`
+
+3. Vào `Environement Variables` > `User variables` chọn `Edit Path` > chọn `New`. Nhập đường dẫn vừa làm ở bước 2; ví dụ: `C:\Program Files\Java\jre1.8.0_301\lib\ext\mysql-connector-java-8.0.26.jar`
+
+4. Mở file `build.gradle` trong Project; Copy đoạn code dán vào dòng cuối:
+
+```
+jar {
+    manifest {
+        attributes(
+      'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+      'Main-Class': "$mainClassName"
+        )
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+```
+
+5. Đợi Gradle load xong. Tại Menu NetBeans chọn `Run` > `Clean and Build Main Project` hoặc nhấn `Shift + F11`
+
+6. Mở *Terminal* hoặc *Powershell* trỏ đến thư mục lưu project `\build\libs`. Gõ lệnh `java -jar tên_file.jar` để chạy.
 ## Hướng dẫn sử dụng Base UI
 
 ### Giới thiệu sơ
