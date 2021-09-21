@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
+import vn.aptech.quanlybanhang.utilities.Config;
 import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
@@ -36,9 +37,9 @@ public class OrderUI {
 
     public void displayHeader() {
         this.displayMargin();
-        this.displayCenter("SUPERMAKERT");
-        this.displayCenter(I18n.getMessage("order.receipt.addr", "19 Nguyễn Trãi, Thanh Xuân, Hà Nội"));
-        this.displayCenter(I18n.getMessage("order.receipt.phone", "0912345678"));
+        this.displayCenter("SUPERMARKET");
+        this.displayCenter(I18n.getMessage("order.receipt.addr", Config.get("app.receipt.addr")));
+        this.displayCenter(I18n.getMessage("order.receipt.phone", Config.get("app.receipt.phone")));
         this.displayMargin();
     }
 
