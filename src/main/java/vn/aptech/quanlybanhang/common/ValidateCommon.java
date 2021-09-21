@@ -55,7 +55,7 @@ public class ValidateCommon {
         return m.matches();
     }
 
-    public static boolean isValidStringLength(String str, int min, int max) {
+    public static boolean isInvalidStringLength(String str, int min, int max) {
         return str.length() < min || str.length() > max;
     }
 }

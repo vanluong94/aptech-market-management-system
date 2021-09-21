@@ -30,10 +30,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (object == null) {
             throw new Exception(I18n.getMessage("app.error.object.null"));
         }
-        if (ValidateCommon.isValidStringLength(object.getName(), 3, 50)) {
+        if (ValidateCommon.isInvalidStringLength(object.getName(), 3, 50)) {
             throw new CommonException(I18n.getMessage("entity.error.invalidNameLength", new Object[]{"3", "50"}));
         }
-        if (ValidateCommon.isValidStringLength(object.getAddress(), 3, 255)) {
+        if (ValidateCommon.isInvalidStringLength(object.getAddress(), 3, 255)) {
             throw new CommonException(I18n.getMessage("entity.error.invalidAddressLength", new Object[]{"3", "255"}));
         }
         if (!ValidateCommon.isValidUsername(object.getUsername())) {
@@ -50,10 +50,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public boolean update(Employee object) throws Exception {
-        if (ValidateCommon.isValidStringLength(object.getName(), 3, 50)) {
+        if (ValidateCommon.isInvalidStringLength(object.getName(), 3, 50)) {
             throw new CommonException(I18n.getMessage("entity.error.invalidNameLength", new Object[]{"3", "50"}));
         }
-        if (ValidateCommon.isValidStringLength(object.getAddress(), 3, 255)) {
+        if (ValidateCommon.isInvalidStringLength(object.getAddress(), 3, 255)) {
             throw new CommonException(I18n.getMessage("entity.error.invalidAddressLength", new Object[]{"3", "255"}));
         }
         if (!ValidateCommon.isValidUsername(object.getUsername())) {

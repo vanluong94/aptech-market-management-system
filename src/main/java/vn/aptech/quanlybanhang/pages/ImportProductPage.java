@@ -149,10 +149,10 @@ public class ImportProductPage extends Page {
             }
             String name = "";
 
-            while (ValidateCommon.isValidStringLength(name, 3, 100)) {
+            while (ValidateCommon.isInvalidStringLength(name, 3, 100)) {
                 name = AppScanner.scanStringWithi18Message("product.scan.name");
 
-                if (ValidateCommon.isValidStringLength(name, 3, 100)) {
+                if (ValidateCommon.isInvalidStringLength(name, 3, 100)) {
                     I18n.print("product.error.invalidNameLength", new Object[]{3, 100});
                 }
             }
