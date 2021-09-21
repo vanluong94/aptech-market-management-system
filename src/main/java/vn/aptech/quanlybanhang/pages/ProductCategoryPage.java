@@ -29,66 +29,39 @@ public class ProductCategoryPage extends Page {
     @Override
     public void displayContent() {
 
-        String choice = null;
 
         try {
-            int page = 1;
-            do {
+            while (true) {
+                int page = 1;
                 int categoryId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("category", "entity.scan.id.detail"));
-                PaginatedResults<Product> products = productService.findByCategoryId(page, categoryId);
+                
+                do {
+                    
+                    PaginatedResults<Product> products = productService.findByCategoryId(page, categoryId);
 
-                if (products.getResults().isEmpty()) {
-                    I18n.printEntityMessage("product", "entity.msg.emptyResults");
-                    return;
-                }
+                    if (products.getResults().isEmpty()) {
+                        I18n.printEntityMessage("product", "entity.msg.emptyResults");
+                        break;
+                    }
 
-                List<Object[]> rows = new ArrayList<>();
-                for (Product product : products.getResults()) {
-                    Object[] row = {
-                        product.getId(),
-                        product.getBrand().getName(),
-                        product.getCategory().getName(),
-                        product.getSupplier().getName(),
-                        product.getEmployee().getName(),
-                        product.getName(),
-                        product.getPriceString(),
-                        product.getQuantityInStock(),
-                        product.getCreatedAtString(),
-                        product.getUpdatedAtString()
-                    };
-                    rows.add(row);
-                }
-                String[] headers = {
-                    "ID",
-                    I18n.getMessage("brand.label.singular"),
-                    I18n.getMessage("category.label.singular"),
-                    I18n.getMessage("supplier.label.singular"),
-                    I18n.getMessage("employee.label.singular"),
-                    I18n.getMessage("product.label.singular"),
-                    I18n.getMessage("product.price"),
-                    I18n.getMessage("product.qty"),
-                    I18n.getMessage("entity.createdAt"),
-                    I18n.getMessage("entity.updatedAt")
-                };
+                    TableUI tableUI = Product.toTable(products.getResults());
+                    tableUI.display();
 
-                TableUI tableUI = new TableUI(headers, rows);
-                tableUI.display();
+                    if (products.needsPagination()) {
+                        products.displayPagination();
+                        products.displayPaginationMenu();
+                        page = products.scanGoPage();
+                        System.out.println("");
+                    } else {
+                        page = 0;
+                    }
 
-                if (products.needsPagination()) {
-                    products.displayPagination();
-                    products.displayPaginationMenu();
-                    page = products.scanGoPage();
-                    System.out.println("\n\n");
-                } else {
-                    page = 0;
-                }
+                }while(page > 0);
 
-                choice = AppScanner.scanStringWithMessage(I18n.getMessage("entity.confirm.searchAnOther"));
-                if (!"y".equalsIgnoreCase(choice)) {
+                if (!AppScanner.confirm(I18n.getMessage("entity.confirm.searchAnOther"))) {
                     break;
                 }
-
-            } while ("y".equalsIgnoreCase(choice));
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ProductCategoryPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
