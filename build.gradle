@@ -24,6 +24,8 @@ dependencies {
     implementation group: 'net.sf.jasperreports', name: 'jasperreports-fonts', version: '6.17.0'
     // https://mvnrepository.com/artifact/commons-io/commons-io
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+    // https://mvnrepository.com/artifact/commons-validator/commons-validator
+    implementation group: 'commons-validator', name: 'commons-validator', version: '1.6'
     testImplementation     'junit:junit:4.13'
 }
 
@@ -33,4 +35,16 @@ run {
 
 compileJava {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+jar {
+    manifest {
+        attributes(
+      'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+      'Main-Class': "$mainClassName"
+        )
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }

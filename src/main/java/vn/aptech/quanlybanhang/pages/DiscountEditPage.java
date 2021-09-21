@@ -20,14 +20,14 @@ import vn.aptech.quanlybanhang.utilities.AppScanner;
 import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
- * 
+ *
  * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class DiscountEditPage extends Page {
 
     private Discount editingDiscount;
     private final DiscountService service;
-    
+
     public DiscountEditPage() {
         this.service = new DiscountServiceImpl();
     }
@@ -35,25 +35,25 @@ public class DiscountEditPage extends Page {
     @Override
     public void displayContent() {
         try {
-            
+
             do {
-                
+
                 int id = AppScanner.scanIntWithMessage(I18n.getEntityMessage("discount", "entity.scan.id.edit"));
                 editingDiscount = service.findById(id);
 
                 System.out.println("\n");
-                
+
                 if (editingDiscount == null) {
                     I18n.printEntityMessage("discount", "entity.error.idNotFound");
                 } else {
                     System.out.println(I18n.getMessage("discount.msg.foundOne") + editingDiscount.getName());
                     editingDiscount.setProductDiscounts(service.getDiscountProducts(editingDiscount));
-                    
+
                     this.displaySubmenu();
                 }
-                
-            }while(editingDiscount == null || AppScanner.confirm("\n" + I18n.getEntityMessage("discount", "entity.confirm.editAnother")));
-            
+
+            } while (editingDiscount == null || AppScanner.confirm("\n" + I18n.getEntityMessage("discount", "entity.confirm.editAnother")));
+
         } catch (Exception e) {
             Logger.getLogger(DiscountEditPage.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -64,24 +64,24 @@ public class DiscountEditPage extends Page {
     public String getTitle() {
         return I18n.getEntityMessage("discount", "entity.title.edit");
     }
-    
+
     private void displaySubmenu() throws Exception {
-        
-        do{
+
+        do {
             System.out.println("\n");
             System.out.println("1. " + I18n.getMessage("discount.submenu.editName"));
             System.out.println("2. " + I18n.getMessage("discount.submenu.deleteProduct"));
             System.out.println("3. " + I18n.getMessage("discount.submenu.addProduct"));
             System.out.println("4. " + I18n.getMessage("discount.submenu.editProduct"));
             System.out.println("\n");
-            
+
             int choice;
-            do{
+            do {
                 choice = AppScanner.scanIntWithi18Message("msg.choice.enter");
-            }while(choice < 1 && choice > 4);
+            } while (choice < 1 && choice > 4);
 
             System.out.println("\n");
-            switch(choice) {
+            switch (choice) {
                 case 1:
                     this.handleEditDiscountName();
                     break;
@@ -94,26 +94,26 @@ public class DiscountEditPage extends Page {
                 case 4:
                     this.handleEditProduct();
                     break;
-                default: 
+                default:
                     System.out.println(I18n.getMessage("msg.choice.invalid"));
                     break;
             }
 
-        }while(AppScanner.confirm("\n" + I18n.getMessage("discount.confirm.keepEditing")));
-        
+        } while (AppScanner.confirm("\n" + I18n.getMessage("discount.confirm.keepEditing")));
+
     }
-    
+
     private void handleEditDiscountName() throws Exception {
         String newName = AppScanner.scanStringWithMessage(I18n.getMessage("discount.scan.name.new"));
         this.editingDiscount.setName(newName);
-        
+
         if (this.service.update(editingDiscount)) {
             I18n.printEntityMessage("discount", "entity.msg.updated");
         } else {
             I18n.printEntityMessage("discount", "entity.error.updateFailed");
         }
     }
-    
+
     private void handleDeleteProduct() {
         ProductDiscount dProduct = this.scanExistedDiscountProduct();
         if (service.deleteDiscountProduct(dProduct)) {
@@ -123,7 +123,7 @@ public class DiscountEditPage extends Page {
             I18n.print("discount.error.product.deleteFailed");
         }
     }
-    
+
     private void handleAddProduct() {
         ProductDiscount dProduct = this.scanNewDiscountProduct();
         ProductDiscount oDisProduct = service.findOverlapDiscountProduct(dProduct);
@@ -143,43 +143,43 @@ public class DiscountEditPage extends Page {
             I18n.print("discount.error.product.addFailed");
         }
     }
-    
+
     private void handleEditProduct() {
         ProductDiscount dProduct = this.scanExistedDiscountProduct();
-        
-        if(AppScanner.confirm(I18n.getMessage("discount.confirm.product.editDiscount"))) {
+
+        if (AppScanner.confirm(I18n.getMessage("discount.confirm.product.editDiscount"))) {
             dProduct.setDiscountPercentage(dProduct.scanDiscountPercentage());
         }
-        
-        if(AppScanner.confirm(I18n.getMessage("discount.confirm.product.editStartDatetime"))) {
+
+        if (AppScanner.confirm(I18n.getMessage("discount.confirm.product.editStartDatetime"))) {
             dProduct.setStartDate(dProduct.scanStartDate());
         }
-        
-        if(AppScanner.confirm(I18n.getMessage("discount.confirm.product.editEndDatetime"))) {
-            dProduct.setEndDate(dProduct.scanEndDate());
+
+        if (AppScanner.confirm(I18n.getMessage("discount.confirm.product.editEndDatetime"))) {
+            dProduct.setEndDate(dProduct.scanEndDate(dProduct.getStartDate()));
         }
     }
-    
+
     private ProductDiscount scanNewDiscountProduct() {
-        
+
         Product product = null;
         ProductService productService = new ProductServiceImpl();
-        
+
         try {
-            while(product == null){
-                
+            while (product == null) {
+
                 int productId = AppScanner.scanIntWithi18Message("discount.scan.productId");
-                
+
                 if (this.editingDiscount.findProductDiscount(productId) != null) {
                     I18n.print("discount.error.product.existed");
                 } else {
-                    
+
                     product = productService.findById(productId);
-                    
+
                     if (product == null) {
                         I18n.printEntityMessage("product", "entity.error.idNotFound");
                     }
-                    
+
                 }
             }
         } catch (Exception ex) {
@@ -191,12 +191,12 @@ public class DiscountEditPage extends Page {
         dProduct.setDiscountPercentage(dProduct.scanDiscountPercentage());
         dProduct.setProduct(product);
         dProduct.setStartDate(dProduct.scanStartDate());
-        dProduct.setEndDate(dProduct.scanEndDate());
+        dProduct.setEndDate(dProduct.scanEndDate(dProduct.getStartDate()));
         dProduct.setDiscountId(this.editingDiscount.getId());
 
         return dProduct;
     }
- 
+
     private ProductDiscount scanExistedDiscountProduct() {
         ProductDiscount pDiscount = null;
         while (pDiscount == null) {
@@ -206,7 +206,7 @@ public class DiscountEditPage extends Page {
                 I18n.print("discount.error.product.notExisted");
             }
         }
-        
+
         return pDiscount;
     }
 

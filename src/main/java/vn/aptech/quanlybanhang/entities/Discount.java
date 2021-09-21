@@ -24,6 +24,7 @@ public class Discount extends BaseEntity {
 
     public Discount(String name) {
         this.name = name;
+        this.productDiscounts = new ArrayList<>();
     }
 
     /**

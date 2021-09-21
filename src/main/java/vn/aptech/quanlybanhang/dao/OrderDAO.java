@@ -21,7 +21,7 @@ public interface OrderDAO extends BaseDAO<Order> {
 
     List<OrderItem> getOrderItems(Order order) throws Exception;
 
-    PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws Exception;
+    PaginatedResults<Order> CashierStatistics(int page, Date fromDate, Date toDate) throws Exception;
 
     PaginatedResults<Order> findByCustomerPhone(int page, String phone) throws Exception;
 

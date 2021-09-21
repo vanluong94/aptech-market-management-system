@@ -188,6 +188,10 @@ public class DateCommon {
         return date2.getTime() - date1.getTime();
     }
 
+    public static Date getToday() {
+        return new Date();
+    }
+
     public static Date getBeginDay(Date date) {
         date = setHour(date, 0);
         date = setMinute(date, 0);
