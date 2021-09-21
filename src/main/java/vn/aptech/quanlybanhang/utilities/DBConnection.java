@@ -20,20 +20,20 @@ public class DBConnection {
     public static Connection conn;
 
     private final static String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private final static String SERVER = "35.247.137.54";
-    private final static String PORT = "3306";
-    private final static String DATABASE = "aptech_java_project";
-    private final static String USER = "aptech_participant";
-    private final static String PASSWORD = "tT2uOgleWf0n";
 
     public static Connection getConnection() {
 
         try {
             if (conn == null || conn.isClosed()) {
-                String url = String.format("jdbc:mysql://%s:%s/%s", SERVER, PORT, DATABASE);
+                String url = String.format(
+                        "jdbc:mysql://%s:%s/%s",
+                        Config.get("db.host"),
+                        Config.get("db.port"),
+                        Config.get("db.database")
+                );
                 System.out.println("Connecting...");
                 Class.forName(DRIVER);
-                conn = DriverManager.getConnection(url, USER, PASSWORD);
+                conn = DriverManager.getConnection(url, Config.get("db.user"), Config.get("db.password"));
             }
         } catch (SQLException | ClassNotFoundException  ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);

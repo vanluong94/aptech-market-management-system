@@ -64,11 +64,11 @@ public class OrderDAOImpl implements OrderDAO {
     private final static String SQL_GET_ONE = "SELECT "
             + " orders.*, "
             + " employees.employee_name, "
-            + " customers.customer_name "
+            + " customers.customer_name, "
             + " customers.customer_phone "
             + " FROM "
             + " orders "
-            + " JOIN employees ON employees.employee_id = orders.employee_id "
+            + " LEFT JOIN employees ON employees.employee_id = orders.employee_id "
             + " LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE orders.order_id = ?";
     private final static String SQL_GET_BY_CUSTOMER_PHONE = "SELECT "

@@ -42,7 +42,7 @@ public class CategoryDetailPage extends Page {
                     String[] headers = {"ID", I18n.getMessage("category.name"), I18n.getMessage("category.productsCount")};
                     TableUI theTable = new TableUI(headers, rows);
                     theTable.display();
-                    choice = AppScanner.scanStringWithMessage(I18n.getEntityMessage("category", "entity.confirm.findAnOther"));
+                    choice = AppScanner.scanStringWithMessage(I18n.getMessage("entity.confirm.searchAnOther"));
                     if (!"y".equalsIgnoreCase(choice)) {
                         break;
                     }

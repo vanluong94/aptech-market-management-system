@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class TableUI {
 
+    private final int extraSpaces = 3; // 3 characters for 2 spaces and 1 border
+    
     private int colMaxLength = 80;
     private int lineLength = 0;
 
@@ -27,20 +29,20 @@ public class TableUI {
         this.columnsLength = new ArrayList<>();
         this.columnsAlign = new ArrayList<>();
         this.rows = new ArrayList<>();
-    
+
         this.setHeaders(headers);
         this.setRows(rows);
         this.init();
-        
+
     }
-    
+
     private void init() {
         // find max line length for column
         for (int i = 0; i < this.getHeaders().length; i++) {
             // set column width to be 0 for temporary
             this.columnsLength.add(i, 0);
             this.maybeSetColMaxLength(this.getHeader(i).length(), i);
-            
+
             // add default align left for this column
             this.columnsAlign.add(i, "left");
         }
@@ -51,7 +53,7 @@ public class TableUI {
                 this.maybeSetColMaxLength(row[i].toString().length(), i);
             }
         }
-        
+
         this.computeLineLength();
     }
 
@@ -77,17 +79,22 @@ public class TableUI {
         String output = "";
 
         for (int i = 0; i < row.length; i++) {
-            int thisLength = this.getColLength(i) - 2;
+            int thisLength = this.getColLength(i) - this.extraSpaces; 
+            
             String thisContent = row[i].toString();
 
             if (thisContent.length() > thisLength) {
-                thisContent = thisContent.substring(0, thisLength - 4) + "...";
+                if (thisLength > 3) {
+                    thisContent = thisContent.substring(0, thisLength - 3) + "...";
+                } else {
+                    thisContent = thisContent.substring(0, thisLength);
+                }
             }
 
             if (thisContent.endsWith("₫") || this.getColAlign(i).equalsIgnoreCase("right")) {
-                output += String.format("|%" + (thisLength) + "s ", thisContent); // align right with price
+                output += String.format("| %" + (thisLength) + "s ", thisContent); // align right with price
             } else {
-                output += String.format("| %-" + (thisLength) + "s", thisContent);
+                output += String.format("| %-" + (thisLength) + "s ", thisContent);
 
             }
         }
@@ -110,8 +117,7 @@ public class TableUI {
     }
 
     public final void maybeSetColMaxLength(int thisLength, int i) {
-        // System.out.println(String.format("Check column length, column [%d] = %d", i, thisLength));
-        thisLength += 4; // plus 4 chars to add spaces and border
+        thisLength += this.extraSpaces; // plus chars to add spaces and border
 
         if (thisLength > this.getColLength(i) && thisLength <= this.getColMaxLength()) {
             this.columnsLength.set(i, thisLength);
@@ -123,8 +129,8 @@ public class TableUI {
     public int getColLength(int i) {
         return this.columnsLength.get(i);
     }
-    
-    public String getColAlign(int i){
+
+    public String getColAlign(int i) {
         return this.columnsAlign.get(i);
     }
 
@@ -164,7 +170,7 @@ public class TableUI {
     public List<Integer> getColumnsLength() {
         return columnsLength;
     }
-    
+
     public void setColumnsAlign(List<String> columns) {
         this.columnsAlign = columns;
     }

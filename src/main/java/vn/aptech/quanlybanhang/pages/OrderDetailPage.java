@@ -15,40 +15,35 @@ import vn.aptech.quanlybanhang.utilities.AppScanner;
 import vn.aptech.quanlybanhang.utilities.I18n;
 
 /**
- * 
+ *
  * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class OrderDetailPage extends Page {
 
+    private final OrderService service;
+
+    public OrderDetailPage() {
+        this.service = new OrderServiceImpl();
+    }
+
     @Override
     public void displayContent() {
-
         try {
-            int orderId;
-            Order order;
-            OrderService service = new OrderServiceImpl();
-
-            do{
-                orderId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("order", "entity.scan.id.detail"));
-
+            Order order = null;
+            do {
+                int orderId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("order", "entity.scan.id.detail"));
                 order = service.findById(orderId);
-
                 if (order == null) {
                     I18n.printEntityMessage("order", "entity.error.idNotFound");
-                }else{
+                } else {
                     order.setOrderItems(service.getOrderItems(order));
-
                     OrderUI orderUI = new OrderUI(order);
                     orderUI.display();
                 }
-                
-                if (!AppScanner.confirm("\n" + I18n.getEntityMessage("order", "entity.confirm.findAnOther"))) {
+                if (!AppScanner.confirm("\n" + I18n.getEntityMessage("order", "entity.confirm.findMore"))) {
                     return;
                 }
-
-            }while(order == null);
-            
-
+            } while (order == null);
         } catch (Exception ex) {
             Logger.getLogger(OrderDetailPage.class.getName()).log(Level.SEVERE, null, ex);
         }
