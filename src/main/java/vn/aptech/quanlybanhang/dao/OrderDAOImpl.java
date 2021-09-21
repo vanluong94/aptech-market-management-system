@@ -205,8 +205,7 @@ public class OrderDAOImpl implements OrderDAO {
 
     /**
      *
-     * @return
-     * @throws Exception
+     * @return @throws Exception
      */
     @Override
     public List<Order> findAll() throws Exception {
@@ -348,7 +347,7 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws Exception {
+    public PaginatedResults<Order> CashierStatistics(int page, Date fromDate, Date toDate) throws Exception {
         PaginatedResults<Order> pagination = new PaginatedResults<>(page, Constant.PER_PAGE);
         List<Order> orders = new ArrayList<>();
         Statement st = null;
@@ -356,8 +355,8 @@ public class OrderDAOImpl implements OrderDAO {
         ResultSet countRs = null;
         try (Connection conn = DBConnection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(SQL_CASHIER_STATISTICS);
-            pstmt.setDate(1, new java.sql.Date(DateCommon.convertStringToDateByPattern(fromDate, Constant.DATE_FORMAT).getTime()));
-            pstmt.setDate(2, new java.sql.Date(DateCommon.convertStringToDateByPattern(toDate, Constant.DATE_FORMAT).getTime()));
+            pstmt.setDate(1, DateCommon.convertUtilDateToSqlDate(fromDate));
+            pstmt.setDate(2, DateCommon.convertUtilDateToSqlDate(toDate));
             pstmt.setInt(3, AuthServiceImpl.getCurrentEmployee().getId());
             pstmt.setInt(4, pagination.getOffset());
             pstmt.setInt(5, pagination.getPerPage());

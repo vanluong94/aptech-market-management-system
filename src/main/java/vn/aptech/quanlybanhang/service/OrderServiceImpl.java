@@ -94,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PaginatedResults<Order> CashierStatistics(int page, String fromDate, String toDate) throws Exception {
+    public PaginatedResults<Order> CashierStatistics(int page, Date fromDate, Date toDate) throws Exception {
         return orderDAO.CashierStatistics(page, fromDate, toDate);
     }
 
