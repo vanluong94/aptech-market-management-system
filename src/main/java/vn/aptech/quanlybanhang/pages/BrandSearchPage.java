@@ -31,9 +31,9 @@ public class BrandSearchPage extends Page {
         
         do{
             try {
-                System.out.println("\n\n");
+                System.out.println("");
                 String search = AppScanner.scanStringWithi18Message("brand.scan.searchByName");
-                System.out.println("\n\n");
+                System.out.println("");
                 
                 List<Brand> brands = brandService.searchByName(search);
                 

@@ -71,7 +71,7 @@ public class OrderSearchByCustomerPage extends Page {
 
                         page = orders.scanGoPage();
 
-                        System.out.println("\n\n");
+                        System.out.println("");
                     } else {
                         page = 0;
                     }

@@ -103,7 +103,7 @@ public class CashierStatisticPage extends Page {
                     results.displayPagination();
                     results.displayPaginationMenu();
                     page = results.scanGoPage();
-                    System.out.println("\n\n");
+                    System.out.println("");
                 } else {
                     page = 0;
                 }
