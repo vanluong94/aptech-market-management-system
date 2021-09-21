@@ -27,20 +27,20 @@ public class TableUI {
         this.columnsLength = new ArrayList<>();
         this.columnsAlign = new ArrayList<>();
         this.rows = new ArrayList<>();
-    
+
         this.setHeaders(headers);
         this.setRows(rows);
         this.init();
-        
+
     }
-    
+
     private void init() {
         // find max line length for column
         for (int i = 0; i < this.getHeaders().length; i++) {
             // set column width to be 0 for temporary
             this.columnsLength.add(i, 0);
             this.maybeSetColMaxLength(this.getHeader(i).length(), i);
-            
+
             // add default align left for this column
             this.columnsAlign.add(i, "left");
         }
@@ -51,7 +51,7 @@ public class TableUI {
                 this.maybeSetColMaxLength(row[i].toString().length(), i);
             }
         }
-        
+
         this.computeLineLength();
     }
 
@@ -81,7 +81,11 @@ public class TableUI {
             String thisContent = row[i].toString();
 
             if (thisContent.length() > thisLength) {
-                thisContent = thisContent.substring(0, thisLength - 4) + "...";
+                if (thisLength > 4) {
+                    thisContent = thisContent.substring(0, thisLength - 4) + "...";
+                } else {
+                    thisContent = thisContent.substring(0, thisLength - 2);
+                }
             }
 
             if (thisContent.endsWith("₫") || this.getColAlign(i).equalsIgnoreCase("right")) {
@@ -123,8 +127,8 @@ public class TableUI {
     public int getColLength(int i) {
         return this.columnsLength.get(i);
     }
-    
-    public String getColAlign(int i){
+
+    public String getColAlign(int i) {
         return this.columnsAlign.get(i);
     }
 
@@ -164,7 +168,7 @@ public class TableUI {
     public List<Integer> getColumnsLength() {
         return columnsLength;
     }
-    
+
     public void setColumnsAlign(List<String> columns) {
         this.columnsAlign = columns;
     }
