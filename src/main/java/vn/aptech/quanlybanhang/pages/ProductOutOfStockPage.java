@@ -49,8 +49,6 @@ public class ProductOutOfStockPage extends Page {
                 } else {
                     page = 0;
                 }
-               
-                
             } while (page > 0);
 
         } catch (SQLException ex) {

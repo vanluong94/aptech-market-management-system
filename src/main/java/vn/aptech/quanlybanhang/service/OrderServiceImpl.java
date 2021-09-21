@@ -22,7 +22,6 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import org.apache.commons.io.FileUtils;
 import vn.aptech.quanlybanhang.common.CommonException;
-import vn.aptech.quanlybanhang.common.Response;
 import vn.aptech.quanlybanhang.constant.Constant;
 import vn.aptech.quanlybanhang.dao.OrderDAO;
 import vn.aptech.quanlybanhang.dao.OrderDAOImpl;
