@@ -29,7 +29,7 @@ public class ProductListingPage extends Page {
                 PaginatedResults<Product> results = productService.select(page);
 
                 if (results.getResults().isEmpty()) {
-                    I18n.print("product", "entity.msg.emptyResults");
+                    I18n.printEntityMessage("product", "entity.msg.emptyResults");
                     return;
                 }
 

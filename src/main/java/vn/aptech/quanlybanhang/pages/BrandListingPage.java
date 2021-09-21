@@ -57,7 +57,7 @@ public class BrandListingPage extends Page {
                 theTable.display(); //table
                 
                 if(results.needsPagination()) {
-                     results.displayPagination(); //pagination
+                    results.displayPagination(); //pagination
                     results.displayPaginationMenu(); //pagination menu
 
                     page = results.scanGoPage();
