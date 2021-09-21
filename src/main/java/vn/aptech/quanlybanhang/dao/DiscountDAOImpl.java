@@ -67,7 +67,7 @@ public class DiscountDAOImpl implements DiscountDAO {
             /**
              * insert discount products
              */
-            if (discount.getId() > 0) {
+            if (discount.getId() > 0 && !discount.getProductDiscounts().isEmpty()) {
 
                 try (PreparedStatement st = conn.prepareStatement(
                         "INSERT INTO discount_product "

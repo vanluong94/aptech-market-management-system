@@ -35,7 +35,6 @@ public class DiscountDetailPage extends Page {
     public void displayContent() {
         try {
             while (true) {
-                System.out.println("\n");
                 int discountId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("discount", "entity.scan.id.detail"));
                 Discount discount = discountService.findById(discountId);
                 if (discount == null) {
@@ -58,11 +57,11 @@ public class DiscountDetailPage extends Page {
     }
 
     private void displayDiscountDetail(Discount discount) {
-        
-        System.out.printf("\n\n[ID: %d] %s\n", discount.getId(), discount.getName());
+
+        System.out.printf("[ID: %d] %s\n", discount.getId(), discount.getName());
 
         List<ProductDiscount> dProducts = this.discountService.getDiscountProducts(discount);
-        
+
         I18n.print("discount.msg.productList");
         if (dProducts.size() < 1) {
             I18n.print("discount.msg.productNotFound");
@@ -80,15 +79,14 @@ public class DiscountDetailPage extends Page {
                     DateCommon.convertDateToString(dProduct.getEndDate(), Constant.DATE_TIME_SIMPLE_FORMAT)
                 };
                 rows.add(row);
-                System.out.println(dProduct.getStartDate());
             }
             String[] headers = {
-                "ID", 
-                I18n.getMessage("product.label.singular"), 
-                I18n.getMessage("product.price"), 
-                I18n.getMessage("product.price.sale"), 
-                I18n.getMessage("product.discount.percentage"), 
-                I18n.getMessage("discount.datetime.start"), 
+                "ID",
+                I18n.getMessage("product.label.singular"),
+                I18n.getMessage("product.price"),
+                I18n.getMessage("product.price.sale"),
+                I18n.getMessage("product.discount.percentage"),
+                I18n.getMessage("discount.datetime.start"),
                 I18n.getMessage("discount.datetime.end")
             };
             TableUI tableUI = new TableUI(headers, rows);
