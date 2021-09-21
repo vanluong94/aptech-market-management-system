@@ -36,14 +36,18 @@ public class CashierStatisticPage extends Page {
     @Override
     public void displayContent() {
         try {
-            int page = 1;
-            do {
+            
+            while (true) {
+                
+                
+                int page = 1;
                 /**
                  * enter time range
                  */
                 Date fromDate = null;
                 Date toDate = null;
                 Date toDay = DateCommon.getToday();
+                
                 do {
                     String fromDateStr = AppScanner.scanStringWithMessage(I18n.getMessage("order.scan.date.from", Constant.DATE_FORMAT), true);
                     fromDate = DateCommon.convertStringToDateByPattern(fromDateStr, Constant.DATE_FORMAT);
@@ -57,7 +61,7 @@ public class CashierStatisticPage extends Page {
                 } while (fromDate == null);
                 
                 do {
-                    String toDateStr = AppScanner.scanStringWithMessage(I18n.getMessage("order.scan.datetime.end", Constant.DATE_FORMAT));
+                    String toDateStr = AppScanner.scanStringWithMessage(I18n.getMessage("order.scan.date.to", Constant.DATE_FORMAT));
                     toDate = DateCommon.convertStringToDateByPattern(toDateStr, Constant.DATE_FORMAT);
                     if (!GenericValidator.isDate(toDateStr, Constant.DATE_FORMAT, true)) {
                         toDate = null;
@@ -71,44 +75,53 @@ public class CashierStatisticPage extends Page {
                     }
                 } while (toDate == null);
                 
-                PaginatedResults<Order> results = orderService.CashierStatistics(page, fromDate, toDate);
-                if (results.getResults().isEmpty()) {
-                    I18n.printEntityMessage("order", "entity.msg.emptyResults");
-                    return;
-                }
-                
-                List<Object[]> rows = new ArrayList<>();
-                
-                for (Order order : results.getResults()) {
-                    Object[] row = {
-                        order.getId(),
-                        order.getEmployee().getName(),
-                        StringCommon.safeNullObject(order.getCustomer().getName()), // order might not have customer
-                        order.getDatetimeString(),
-                        order.getAmountString()
+                do{
+                    
+                    PaginatedResults<Order> results = orderService.CashierStatistics(page, fromDate, toDate);
+                    
+                    if (results.getResults().isEmpty()) {
+                        I18n.printEntityMessage("order", "entity.msg.emptyResults");
+                        break;
+                    }
+
+                    List<Object[]> rows = new ArrayList<>();
+
+                    for (Order order : results.getResults()) {
+                        Object[] row = {
+                            order.getId(),
+                            order.getEmployee().getName(),
+                            StringCommon.safeNullObject(order.getCustomer().getName()), // order might not have customer
+                            order.getDatetimeString(),
+                            order.getAmountString()
+                        };
+                        rows.add(row);
+                    }
+                    String[] headers = {
+                        "ID",
+                        I18n.getMessage("order.emp"),
+                        I18n.getMessage("order.customer"),
+                        I18n.getMessage("entity.createdAt"),
+                        I18n.getMessage("order.total")
                     };
-                    rows.add(row);
-                }
-                String[] headers = {
-                    "ID",
-                    I18n.getMessage("order.emp"),
-                    I18n.getMessage("order.customer"),
-                    I18n.getMessage("entity.createdAt"),
-                    I18n.getMessage("order.total")
-                };
-                TableUI tableUI = new TableUI(headers, rows);
-                tableUI.display();
+                    TableUI tableUI = new TableUI(headers, rows);
+                    tableUI.display();
+
+                    if (results.needsPagination()) {
+                        results.displayPagination();
+                        results.displayPaginationMenu();
+                        page = results.scanGoPage();
+                        System.out.println("");
+                    } else {
+                        page = 0;
+                    }
+                    
+                } while (page > 0);
                 
-                if (results.needsPagination()) {
-                    results.displayPagination();
-                    results.displayPaginationMenu();
-                    page = results.scanGoPage();
-                    System.out.println("");
-                } else {
-                    page = 0;
+                if (!AppScanner.confirm(I18n.getMessage("entity.confirm.searchAnOther"))) {
+                    break;
                 }
                 
-            } while (page > 0);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(CashierStatisticPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
