@@ -16,7 +16,7 @@ import vn.aptech.quanlybanhang.utilities.I18n;
  */
 public class OrderUI {
 
-    private final int lineLength = 75;
+    private final int lineLength = 76;
 
     private final Order order;
 
@@ -51,13 +51,13 @@ public class OrderUI {
     public void displayProductsTable() {
         String[] headers = {
             I18n.getMessage("product.label.singular"),
-            I18n.getMessage("product.qty"),
+            I18n.getMessage("product.qty.short"),
             I18n.getMessage("product.price"),
             I18n.getMessage("product.price.sale"),
             I18n.getMessage("order.subtotal"),};
 
         List<Object[]> rows = new ArrayList<>();
-        List<Integer> colsLength = Arrays.asList(26, 5, 13, 13, 17);
+        List<Integer> colsLength = Arrays.asList(26, 6, 13, 13, 17);
         List<String> colsAlign = Arrays.asList("left", "right", "right", "right", "right");
 
         for (OrderItem item : order.getOrderItems()) {
@@ -78,17 +78,29 @@ public class OrderUI {
         table.setColumnsAlign(colsAlign);
         table.display();
 
-        System.out.println(String.format("| %-54s | %14s |", " ", " "));
-        System.out.println(String.format("| %-54s | %14s |", I18n.getMessage("order.receipt.total"), this.order.getAmountString()));
-        System.out.println(String.format("| %-54s | %14s |", " ", " "));
+        System.out.println(String.format("| %-55s | %14s |", " ", " "));
+        System.out.println(String.format("| %-55s | %14s |", I18n.getMessage("order.receipt.total"), this.order.getAmountString()));
+        System.out.println(String.format("| %-55s | %14s |", " ", " "));
         this.displayBorder();
     }
 
     public void displayOrderDetail() {
         this.displayLine(String.format("%-11s: %s", I18n.getMessage("order.receipt.id"), order.getId()));
         this.displayLine(String.format("%-11s: %s", I18n.getMessage("order.receipt.timestamp"), order.getDatetimeString()));
-        this.displayLine(String.format("%-11s: %s (Mã KH: %d)", I18n.getMessage("customer.label.singular"), order.getCustomer().getName(), order.getCustomer().getId()));
-        this.displayLine(String.format("%-11s: %s (Mã Thu Ngân: %d)", I18n.getMessage("order.receipt.cashier"), order.getEmployee().getName(), order.getEmployee().getId()));
+        this.displayLine(String.format(
+                "%-11s: %s (%s: %d)", 
+                I18n.getMessage("customer.label.singular"), 
+                order.getCustomer().getName(),
+                I18n.getMessage("customer.id"),
+                order.getCustomer().getId()
+        ));
+        this.displayLine(String.format(
+                "%-11s: %s (%s: %d)", 
+                I18n.getMessage("order.receipt.cashier"), 
+                order.getEmployee().getName(), 
+                I18n.getMessage("employee.id"),
+                order.getEmployee().getId()
+        ));
     }
 
     public void displayBorder() {
