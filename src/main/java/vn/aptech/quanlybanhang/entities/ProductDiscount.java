@@ -4,7 +4,9 @@
 package vn.aptech.quanlybanhang.entities;
 
 import java.util.Date;
+import org.apache.commons.validator.GenericValidator;
 import vn.aptech.quanlybanhang.common.DateCommon;
+import vn.aptech.quanlybanhang.constant.Constant;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 import vn.aptech.quanlybanhang.utilities.I18n;
 
@@ -115,37 +117,42 @@ public class ProductDiscount {
     }
 
     public Date scanStartDate() {
-        Date dateFrom = null;
-        String dateFormatPattern = "dd/MM/yyyy HH:mm";
+        Date fromDate = null;
+        Date toDay = DateCommon.getToday();
         do {
-            String dateFromStr = AppScanner.scanStringWithi18Message("discount.scan.datetime.start", dateFormatPattern);
-            dateFrom = DateCommon.convertStringToDateByPattern(dateFromStr, dateFormatPattern);
-
-            if (dateFrom == null) {
+            String fromDateStr = AppScanner.scanStringWithMessage(I18n.getMessage("discount.scan.datetime.start", Constant.DATE_TIME_FORMAT_MINUTES));
+            fromDate = DateCommon.convertStringToDateByPattern(fromDateStr, Constant.DATE_TIME_FORMAT_MINUTES);
+            if (!GenericValidator.isDate(fromDateStr, Constant.DATE_TIME_FORMAT_MINUTES, true)) {
+                fromDate = null;
                 I18n.print("discount.error.invalidDatetime");
+            } else if (toDay.after(fromDate)) {
+                fromDate = null;
+                I18n.print("discount.error.compareGreaterThanCurrentDate", I18n.getMessage("startDateTime"));
             }
-        } while (dateFrom == null);
+        } while (fromDate == null);
 
-        return dateFrom;
+        return fromDate;
     }
 
-    public Date scanEndDate() {
-        Date dateTo = null;
-        String dateFormatPattern = "dd/MM/yyyy HH:mm";
-
+    public Date scanEndDate(Date fromDate) {
+        Date toDate = null;
+        Date toDay = DateCommon.getToday();
         do {
-            String dateToStr = AppScanner.scanStringWithi18Message("discount.scan.datetime.end", dateFormatPattern);
-            dateTo = DateCommon.convertStringToDateByPattern(dateToStr, dateFormatPattern);
-
-            if (dateTo == null) {
-                I18n.print("discount.error.invalidDatetime");
-            } else if (this.startDate != null && dateTo.compareTo(this.startDate) <= 0) {
+            String toDateStr = AppScanner.scanStringWithMessage(I18n.getMessage("discount.scan.datetime.end", Constant.DATE_TIME_FORMAT_MINUTES));
+            toDate = DateCommon.convertStringToDateByPattern(toDateStr, Constant.DATE_TIME_FORMAT_MINUTES);
+            if (!GenericValidator.isDate(toDateStr, Constant.DATE_TIME_FORMAT_MINUTES, true)) {
+                toDate = null;
+                I18n.print("order.error.date.invalid");
+            } else if (toDay.after(toDate)) {
+                toDate = null;
+                I18n.print("discount.error.compareGreaterThanCurrentDate", I18n.getMessage("endDateTime"));
+            } else if (toDate.before(fromDate)) {
+                toDate = null;
                 I18n.print("discount.error.invalidTimeRange");
-                dateTo = null; // reset to repeat
             }
-        } while (dateTo == null);
+        } while (toDate == null);
 
-        return dateTo;
+        return toDate;
     }
 
     public float scanDiscountPercentage() {

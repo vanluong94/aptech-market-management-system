@@ -32,35 +32,34 @@ public class DiscountCreatePage extends Page {
         String discountName = AppScanner.scanStringWithMessage(I18n.getMessage("discount.scan.name"));
 
         try {
-            
+
             Discount discount = new Discount(discountName);
-            
-            if(AppScanner.confirm(I18n.getMessage("discount.confirm.addProduct"))) {
-                
+
+            if (AppScanner.confirm(I18n.getMessage("discount.confirm.addProduct"))) {
+
                 List<ProductDiscount> dProducts = new ArrayList<>();
-                
-                do{
+
+                do {
                     ProductDiscount dProduct = this.scanNewDiscountProduct();
                     ProductDiscount oDisProduct = discountService.findOverlapDiscountProduct(dProduct);
-                    
+
                     if (oDisProduct != null) {
                         I18n.print("discount.error.overlapTimeRange");
                     } else {
                         dProducts.add(dProduct);
                     }
-                    
-                }while(AppScanner.confirm(I18n.getMessage("discount.confirm.addAnotherProduct")));
-                
+
+                } while (AppScanner.confirm(I18n.getMessage("discount.confirm.addAnotherProduct")));
+
                 discount.setProductDiscounts(dProducts);
-                
+
             }
-            
-            if (!discountService.create(discount) || discount.getId() == 0 ) {
+
+            if (!discountService.create(discount) || discount.getId() == 0) {
                 I18n.printEntityMessage("discount", "entity.error.createFailed");
-            }else{
+            } else {
                 I18n.printEntityMessage("discount", "entity.msg.created");
             }
-            
 
         } catch (Exception ex) {
             Logger.getLogger(DiscountCreatePage.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,19 +70,19 @@ public class DiscountCreatePage extends Page {
     public String getTitle() {
         return I18n.getEntityMessage("discount", "entity.title.create");
     }
-    
+
     private ProductDiscount scanNewDiscountProduct() {
-        
+
         /**
          * input product_id
          */
         Product product = null;
         ProductService productService = new ProductServiceImpl();
         try {
-            while(product == null){
-                
+            while (product == null) {
+
                 product = productService.findById(AppScanner.scanIntWithi18Message("discount.scan.productId"));
-                
+
                 if (product == null) {
                     I18n.printEntityMessage("product", "entity.error.idNotFound");
                 }
@@ -97,7 +96,7 @@ public class DiscountCreatePage extends Page {
         pDiscount.setDiscountPercentage(pDiscount.scanDiscountPercentage());
         pDiscount.setProduct(product);
         pDiscount.setStartDate(pDiscount.scanStartDate());
-        pDiscount.setEndDate(pDiscount.scanEndDate());
+        pDiscount.setEndDate(pDiscount.scanEndDate(pDiscount.getStartDate()));
 
         return pDiscount;
     }
