@@ -32,7 +32,7 @@ public class OrderItem extends BaseEntity {
     }
 
     public OrderItem() {
-        this.discount = new ProductDiscount();
+        this.discount = new ProductDiscount(-1);
     }
 
     public OrderItem(Order order, int id, String productName, int quantity, double productPrice, double discountPrice) {
@@ -43,7 +43,7 @@ public class OrderItem extends BaseEntity {
         this.productPrice = productPrice;
         this.discountPrice = discountPrice;
 
-        this.discount = new ProductDiscount();
+        this.discount = new ProductDiscount(-1);
     }
 
     /**

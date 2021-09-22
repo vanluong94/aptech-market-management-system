@@ -456,6 +456,8 @@ public class ProductDAOImpl implements ProductDAO {
             product.setName(rs.getString("product_name"));
             product.setPrice(rs.getDouble("product_price"));
             product.setQuantityInStock(rs.getInt("product_stock"));
+            product.setCreatedAt(rs.getTimestamp("created_date"));
+            product.setUpdatedAt(rs.getTimestamp("updated_date"));
         } catch (SQLException ex) {
             throw ex;
         }

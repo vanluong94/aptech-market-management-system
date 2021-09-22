@@ -29,6 +29,10 @@ public class ProductDiscount {
 
     }
 
+    public ProductDiscount(int id) {
+        this.id = id;
+    }
+
     public ProductDiscount(int id, int discountId, Product product, float discount, Date startDate, Date endDate) {
         this.id = id;
         this.discountId = discountId;

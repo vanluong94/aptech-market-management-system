@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<property name="net.sf.jasperreports.default.font.name" value="Times New Roman"/>
@@ -263,7 +263,7 @@
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="260" height="30" uuid="a4ec9f70-c696-42f5-b8e4-1fc75e1f6b8d"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[NumberFormat.getCurrencyInstance().format($V{totalAmount})]]></textFieldExpression>
+								<textFieldExpression><![CDATA[NumberFormat.getCurrencyInstance($P{REPORT_LOCALE}).format($V{totalAmount})]]></textFieldExpression>
 							</textField>
 						</jr:tableFooter>
 						<jr:column width="60" uuid="1b0a41fc-6ad2-43ae-a297-660318b7c70b">
@@ -304,7 +304,7 @@
 									<reportElement x="0" y="0" width="100" height="30" uuid="cb68d627-d1cd-4d52-8824-9b7d24bfcb4c"/>
 									<box padding="4"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
-									<textFieldExpression><![CDATA[NumberFormat.getCurrencyInstance().format($F{productPrice})]]></textFieldExpression>
+									<textFieldExpression><![CDATA[NumberFormat.getCurrencyInstance($P{REPORT_LOCALE}).format($F{productPrice})]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -325,7 +325,7 @@
 									<reportElement x="0" y="0" width="100" height="30" uuid="02458e95-5dd6-4d45-94c6-639e7027170c"/>
 									<box padding="4"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
-									<textFieldExpression><![CDATA[NumberFormat.getCurrencyInstance().format($F{totalPrice})]]></textFieldExpression>
+									<textFieldExpression><![CDATA[NumberFormat.getCurrencyInstance($P{REPORT_LOCALE}).format($F{totalPrice})]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>

@@ -139,7 +139,11 @@ public class OrderDAOImpl implements OrderDAO {
                         pstmt.setString(3, orderItem.getProductName());
                         pstmt.setInt(4, orderItem.getQuantity());
                         pstmt.setDouble(5, orderItem.getProductPrice());
-                        pstmt.setInt(6, orderItem.getDiscount().getId());
+                        if (orderItem.getDiscount().getId() == -1) {
+                            pstmt.setNull(6, Types.INTEGER);
+                        } else {
+                            pstmt.setInt(6, orderItem.getDiscount().getId());
+                        }
                         pstmt.setDouble(7, orderItem.getDiscountPrice());
 
                         rowsAffected = pstmt.executeUpdate();

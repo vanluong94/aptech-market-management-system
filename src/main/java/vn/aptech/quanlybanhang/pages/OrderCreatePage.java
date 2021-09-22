@@ -3,14 +3,11 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vn.aptech.quanlybanhang.common.StringCommon;
-import vn.aptech.quanlybanhang.constant.Constant;
-import vn.aptech.quanlybanhang.dao.BrandDAOImpl;
 import vn.aptech.quanlybanhang.entities.Customer;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.entities.OrderItem;
@@ -25,7 +22,6 @@ import vn.aptech.quanlybanhang.service.ProductServiceImpl;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 import vn.aptech.quanlybanhang.utilities.I18n;
-import vn.aptech.quanlybanhang.utilities.FileUtils;
 
 /**
  *
@@ -126,10 +122,11 @@ public class OrderCreatePage extends Page {
                         I18n.getMessage("customer.label.singular"), 
                         String.format("%s (%s: %s)", customer.getName(), I18n.getMessage("customer.phone"), customer.getPhone())
                 );
-                
-                order.setCustomer(customer);
+            } else {
+                customer = new Customer(-1);
             }
             
+            order.setCustomer(customer);
 
             List<Object[]> rows = new ArrayList<>();
 

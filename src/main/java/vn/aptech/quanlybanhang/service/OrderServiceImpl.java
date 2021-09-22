@@ -11,8 +11,10 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -134,6 +136,7 @@ public class OrderServiceImpl implements OrderService {
             parameters.put("customerAddress", order.getCustomer().getAddress());
             parameters.put("customerPhone", order.getCustomer().getPhone());
             parameters.put("invoiceNumber", order.getId());
+            parameters.put(JRParameter.REPORT_LOCALE, new Locale("vi", "VN"));
 
             InputStream input = new FileInputStream(invoice);
             JasperDesign jasperDesign = JRXmlLoader.load(input);

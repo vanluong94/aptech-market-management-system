@@ -40,7 +40,7 @@ public class Product extends BaseEntity {
         this.employee = new Employee();
         this.category = new Category();
         this.orderItems = new ArrayList<>();
-        this.discount = new ProductDiscount();
+        this.discount = new ProductDiscount(-1);
     }
 
     /**
