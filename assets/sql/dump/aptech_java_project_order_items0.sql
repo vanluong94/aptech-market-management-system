@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
--- Host: 35.247.137.54    Database: aptech_java_project
+-- Host: localhost    Database: esupermarket_db
 -- ------------------------------------------------------
 -- Server version	8.0.26
 
@@ -32,12 +32,23 @@ CREATE TABLE `order_items` (
   `discount_product_id` int unsigned DEFAULT NULL,
   `discount_price` double DEFAULT NULL,
   PRIMARY KEY (`order_item_id`),
-  KEY `OrderItem_Product_Id_idx` (`product_id`),
-  KEY `OrderItem_Order_Id_idx` (`order_id`),
-  CONSTRAINT `OrderItem_Order_Id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
-  CONSTRAINT `OrderItem_Product_Id` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`)
+  KEY `order_items_product_id_idx` (`product_id`),
+  KEY `order_items_order_id_idx` (`order_id`),
+  KEY `order_items_discount_product_id_idx` (`discount_product_id`),
+  CONSTRAINT `order_items_discount_product_id` FOREIGN KEY (`discount_product_id`) REFERENCES `discount_product` (`discount_product_id`),
+  CONSTRAINT `order_items_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
+  CONSTRAINT `order_items_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order_items`
+--
+
+LOCK TABLES `order_items` WRITE;
+/*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -48,4 +59,4 @@ CREATE TABLE `order_items` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-09-22  7:37:53
+-- Dump completed on 2021-09-22  9:39:58
