@@ -23,42 +23,32 @@ public class EmployeeDeletePage extends Page {
 
     @Override
     public void displayContent() {
-        
-        while(true){
-            
-            try{
-                
+
+        while (true) {
+            try {
                 int employeeId = AppScanner.scanIntWithMessage(I18n.getEntityMessage("employee", "entity.scan.id.delete"));
                 Employee employee = employeeService.findById(employeeId);
-
                 if (employee == null) {
                     I18n.printEntityMessage("employee", "entity.error.idNotFound");
                     continue;
-                } 
-                
-                System.out.println("");
+                }
                 I18n.print("entity.msg.foundName", I18n.getMessage("employee.label.singular"), employee.getName());
-                System.out.println("");
-                
                 if (AppScanner.confirm(I18n.getEntityMessage("employee", "entity.confirm.delete"))) {
-                    if (employeeService.empHasData(employee)){
+                    if (employeeService.empHasData(employee)) {
                         I18n.print("employee.error.preventDelete");
                     } else if (employeeService.deleteById(employeeId)) {
                         I18n.printEntityMessage("employee", "entity.msg.deleted");
-                    }else{
+                    } else {
                         I18n.printEntityMessage("employee", "entity.error.deleteFailed");
                     }
                 }
-                
-                System.out.println("");
                 if (!AppScanner.confirm(I18n.getEntityMessage("employee", "entity.confirm.deleteAnother"))) {
-                    System.out.println("");
                     break;
                 }
-            } catch (Exception ex) {
-                Logger.getLogger(EmployeeDeletePage.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-            
+
         }
     }
 

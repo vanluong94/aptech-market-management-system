@@ -27,6 +27,7 @@ public class EmployeeSearchPage extends Page {
                 if (employees.isEmpty()) {
                     I18n.printEntityMessage("employee", "entity.msg.emptyResults");
                 } else {
+                    I18n.print("entity.msg.foundBaseOn", I18n.getMessage("employee.label.plural"), keyword);
                     List<Object[]> rows = new ArrayList<>();
                     for (Employee ep : employees) {
                         Object[] row = {
