@@ -33,10 +33,11 @@ public class ProductDAOImpl implements ProductDAO {
 
     private final static String SQL_SELECT_ALL = "SELECT products.*,suppliers.supplier_id,suppliers.supplier_name,brands.brand_name,brands.brand_id,categories.category_id,categories.category_name,employees.employee_name, employees.employee_id"
             + " FROM products"
-            + " JOIN brands ON brands.brand_id = products.brand_id"
-            + " JOIN categories ON categories.category_id = products.category_id"
-            + " JOIN employees ON employees.employee_id = products.employee_id"
-            + " JOIN suppliers ON suppliers.supplier_id = products.supplier_id"
+            + " LEFT JOIN brands ON brands.brand_id = products.brand_id"
+            + " LEFT JOIN categories ON categories.category_id = products.category_id"
+            + " LEFT JOIN employees ON employees.employee_id = products.employee_id"
+            + " LEFT JOIN suppliers ON suppliers.supplier_id = products.supplier_id"
+            + " ORDER BY products.product_id DESC"
             + " LIMIT ?, ? ";
 
     private final static String SQL_GET_ONE
@@ -114,7 +115,7 @@ public class ProductDAOImpl implements ProductDAO {
             + " LEFT JOIN categories ON products.category_id = categories.category_id"
             + " LEFT JOIN employees ON products.employee_id = employees.employee_id"
             + " LEFT JOIN suppliers ON products.supplier_id = suppliers.supplier_id"
-            + " WHERE product_name LIKE ? "
+            + " WHERE products.product_name LIKE ? "
             + " LIMIT ?,?";
     private final ImportProductService importProductService;
 

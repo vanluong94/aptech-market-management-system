@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.entities.Product;
 import vn.aptech.quanlybanhang.service.ProductService;
 import vn.aptech.quanlybanhang.service.ProductServiceImpl;
@@ -30,13 +31,13 @@ public class ProductDetailPage extends Page {
                     List<Object[]> rows = new ArrayList<>();
                     Object[] row = {
                         product.getId(),
-                        product.getBrand().getName(),
-                        product.getCategory().getName(),
-                        product.getSupplier().getName(),
-                        product.getEmployee().getName(),
+                        StringCommon.safeNullObject(product.getBrand().getName()),
+                        StringCommon.safeNullObject(product.getCategory().getName()),
+                        StringCommon.safeNullObject(product.getSupplier().getName()),
+                        StringCommon.safeNullObject(product.getEmployee().getName()),
                         product.getName(),
                         product.getPriceString(),
-                        product.getQuantityInStock(),
+                        StringCommon.formatNumberCommas(product.getQuantityInStock()),
                         product.getCreatedAtString(),
                         product.getUpdatedAtString()
                     };
@@ -65,8 +66,8 @@ public class ProductDetailPage extends Page {
                     
                     System.out.println(""); //space line
                 }
-            } catch (Exception ex) {
-                Logger.getLogger(ProductDetailPage.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
     }

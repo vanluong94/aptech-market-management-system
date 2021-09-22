@@ -33,10 +33,12 @@ public interface ProductService extends BaseService<Product> {
     PaginatedResults<Product> findAllByOrderByUnitsOnOrderDesc(int page, String fromDate, String toDate) throws Exception;
 
     double getStatisticAmount(Date fromDate, Date toDate) throws Exception;
-    
+
     boolean productHasOrder(Product product) throws Exception;
-    
+
     Product findFirstProductByBrand(Brand brand) throws Exception;
+
     Product findFirstProductBySupplier(Supplier sup) throws Exception;
+
     Product findFirstProductByCategory(Category cat) throws Exception;
 }

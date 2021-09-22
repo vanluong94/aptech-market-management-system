@@ -4,6 +4,7 @@
 package vn.aptech.quanlybanhang.utilities;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -22,6 +23,19 @@ public class FileUtils {
             // failed if files have whitespaces or special characters
             //return new File(resource.getFile());
             return new File(resource.toURI());
+        }
+
+    }
+
+    public InputStream getInputStreamFromResource(String fileName) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream input = classLoader.getResourceAsStream(fileName);
+        if (input == null) {
+            throw new IllegalArgumentException("file not found! " + fileName);
+        } else {
+            // failed if files have whitespaces or special characters
+            //return new File(resource.getFile());
+            return input;
         }
 
     }

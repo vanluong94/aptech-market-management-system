@@ -20,7 +20,7 @@ import vn.aptech.quanlybanhang.utilities.I18n;
  * @author Van Luong Thanh <c2105lm.tlvan@aptech.vn>
  */
 public class Product extends BaseEntity {
-
+    
     private int id;
     private Brand brand;
     private Category category;
@@ -32,7 +32,7 @@ public class Product extends BaseEntity {
     private int quantityInStock;
     private int unitsOnOrder;
     private List<OrderItem> orderItems;
-
+    
     public Product() {
         // Init object
         this.brand = new Brand();
@@ -126,15 +126,15 @@ public class Product extends BaseEntity {
     public void setName(String name) {
         this.name = name;
     }
-
+    
     public ProductDiscount getDiscount() {
         return discount;
     }
-
+    
     public void setDiscount(ProductDiscount discount) {
         this.discount = discount;
     }
-    
+
     /**
      * @return the price
      */
@@ -145,7 +145,7 @@ public class Product extends BaseEntity {
     public String getPriceString() {
         return StringCommon.convertDoubleToVND(price);
     }
-    
+
     /**
      * @param price the price to set
      */
@@ -168,9 +168,9 @@ public class Product extends BaseEntity {
     }
     
     public double getDiscountPrice() {
-        return this.getDiscount().getDiscountId() > 0 ? this.getPrice() * ( 100 - this.getDiscount().getDiscountPercentage()) / 100 : 0; 
+        return this.getDiscount().getDiscountId() > 0 ? this.getPrice() * (100 - this.getDiscount().getDiscountPercentage()) / 100 : 0;        
     }
-    
+
     /**
      *
      * @return
@@ -190,55 +190,54 @@ public class Product extends BaseEntity {
     public String getDiscountPriceString() {
         return StringCommon.convertDoubleToVND(this.getDiscountPrice());
     }
-
+    
     public static TableUI toTable(List<Product> products) {
 
         // transfer data to table row
         List<Object[]> rows = new ArrayList<>();
         
-
         for (Product product : products) {
-
+            
             List<Object> row = new ArrayList<>(Arrays.asList(
                     product.getId(),
                     product.getName(),
                     product.getPriceString(),
-                    product.getQuantityInStock(),
-                    product.getCategory().getName() != null ? product.getCategory().getName() : "",
-                    product.getBrand().getName() != null ? product.getBrand().getName() : ""
+                    StringCommon.formatNumberCommas(product.getQuantityInStock()),
+                    StringCommon.safeNullObject(product.getCategory().getName()),
+                    StringCommon.safeNullObject(product.getBrand().getName())
             ));
-
+            
             if (!AuthServiceImpl.getCurrentEmployee().isCashier()) {
-                row.add(product.getSupplier().getName() != null ? product.getSupplier().getName() : "");
-                row.add(product.getEmployee().getName() != null ? product.getEmployee().getName() : "");
+                row.add(StringCommon.safeNullObject(product.getSupplier().getName()));
+                row.add(StringCommon.safeNullObject(product.getEmployee().getName()));
                 row.add(product.getCreatedAtString());
                 row.add(product.getUpdatedAtString());
             }
-
+            
             rows.add(row.toArray());
-
+            
         }
         
         List<String> headers = new ArrayList<>(Arrays.asList(
-                "ID", 
-                I18n.getMessage("product.label.singular"), 
+                "ID",
+                I18n.getMessage("product.label.singular"),
                 I18n.getMessage("product.price"),
                 I18n.getMessage("product.qty"),
                 I18n.getMessage("category.label.singular"),
                 I18n.getMessage("brand.label.singular")
         ));
         
-        if(!AuthServiceImpl.getCurrentEmployee().isCashier()) {
+        if (!AuthServiceImpl.getCurrentEmployee().isCashier()) {
             headers.add(I18n.getMessage("supplier.label.singular"));
             headers.add(I18n.getMessage("employee.label.singular"));
             headers.add(I18n.getMessage("entity.createdAt"));
             headers.add(I18n.getMessage("entity.updatedAt"));
         }
-
+        
         return new TableUI(headers.toArray(new String[0]), rows);
-
+        
     }
-
+    
     public String getCreatedAtString() {
         SimpleDateFormat SDFormat = new SimpleDateFormat(Constant.DATE_TIME_SIMPLE_FORMAT);
         return SDFormat.format(this.getCreatedAt());
@@ -249,5 +248,4 @@ public class Product extends BaseEntity {
         return SDFormat.format(this.getUpdatedAt());
     }
     
-
 }
