@@ -45,12 +45,10 @@ public class ProductOutOfStockPage extends Page {
 
                     page = results.scanGoPage();
 
-                    System.out.println("\n\n");
+                    System.out.println("");
                 } else {
                     page = 0;
                 }
-               
-                
             } while (page > 0);
 
         } catch (SQLException ex) {

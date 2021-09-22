@@ -33,24 +33,25 @@ public class SupplierEditPage extends Page {
                     retry = true;
                 } else {
                     I18n.print("supplier.msg.update");
-                    String name = AppScanner.scanStringWithi18Message("supplier.scan.name.new");
-                    String address = AppScanner.scanStringWithi18Message("supplier.scan.addr.new");
-
-                    while (ValidateCommon.isValidStringLength(name, 3, 100)) {
-                        name = AppScanner.scanStringWithi18Message("product.scan.name");
-
-                        if (ValidateCommon.isValidStringLength(name, 3, 100)) {
+                    
+                    String name, address;
+                    
+                    do{
+                        name = AppScanner.scanStringWithMessage(I18n.getMessage("supplier.scan.name.new"), true);
+                        
+                        if (name.length() > 0 && ValidateCommon.isInvalidStringLength(name, 3, 100)) {
                             I18n.print("entity.error.invalidNameLength", new Object[]{3, 100});
                         }
-                    }
-
-                    while (ValidateCommon.isValidStringLength(address, 3, 255)) {
-                        address = AppScanner.scanStringWithi18Message("supplier.scan.addr.new");
-
-                        if (ValidateCommon.isValidStringLength(address, 3, 255)) {
+                    }while(name.length() > 0 && ValidateCommon.isInvalidStringLength(name, 3, 100));
+                    
+                    do{
+                        address = AppScanner.scanStringWithMessage(I18n.getMessage("supplier.scan.addr.new"), true);
+                        
+                        if (address.length() > 0 && ValidateCommon.isInvalidStringLength(address, 3, 255)) {
                             I18n.print("entity.error.invalidNameLength", new Object[]{3, 255});
                         }
-                    }
+                        
+                    }while(address.length() > 0 && ValidateCommon.isInvalidStringLength(address, 3, 255));
 
                     if (name.length() > 0) {
                         supplier.setName(name);

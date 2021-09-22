@@ -4,8 +4,6 @@
 package vn.aptech.quanlybanhang.pages;
 
 import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,11 +20,11 @@ import vn.aptech.quanlybanhang.utilities.PaginatedResults;
  *
  * @author Vu Duy Long <vuduylong1999@gmail.com>
  */
-public class CashierTodayOrderPage extends Page {
+public class CashierTodayOrdersPage extends Page {
     
     private final OrderService orderService;
     
-    public CashierTodayOrderPage() {
+    public CashierTodayOrdersPage() {
         this.orderService = new OrderServiceImpl();
     }
     
@@ -66,7 +64,7 @@ public class CashierTodayOrderPage extends Page {
                     results.displayPagination();
                     results.displayPaginationMenu();
                     page = results.scanGoPage();
-                    System.out.println("\n\n");
+                    System.out.println("");
                 } else {
                     page = 0;
                 }
@@ -75,7 +73,7 @@ public class CashierTodayOrderPage extends Page {
         } catch (SQLException e) {
             System.out.println("Exception when ProductMenu.handleSearch: " + e.getMessage());
         } catch (Exception ex) {
-            Logger.getLogger(CashierTodayOrderPage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CashierTodayOrdersPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

@@ -34,7 +34,7 @@ public class CategoryEditPage extends Page {
                 if (theCat != null) {
 
                     HeaderUI.display(I18n.getEntityMessage("category", "category.information"));
-                    System.out.println(theCat.toString());
+                    I18n.print("entity.msg.foundName", I18n.getMessage("category.label.singular"), theCat.getName());
 
                     HeaderUI.display(I18n.getMessage("category.msg.update"));
                     String newName = AppScanner.scanStringWithi18Message("category.scan.newName");

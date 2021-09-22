@@ -62,7 +62,7 @@ public class BrandListingPage extends Page {
 
                     page = results.scanGoPage();
 
-                    System.out.println("\n\n");
+                    System.out.println("");
                 } else {
                     page = 0; 
                }

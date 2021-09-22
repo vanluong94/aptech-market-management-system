@@ -71,7 +71,6 @@ public class ProductBestSalePage extends Page {
                     I18n.getMessage("product.qty"),
                     I18n.getMessage("product.soldQty"),
                     I18n.getMessage("category.label.singular"),
-                    I18n.getMessage("category.label.singular"),
                     I18n.getMessage("brand.label.singular"),
                     I18n.getMessage("supplier.label.singular")
                 };
@@ -85,7 +84,7 @@ public class ProductBestSalePage extends Page {
 
                     page = results.scanGoPage();
 
-                    System.out.println("\n\n");
+                    System.out.println("");
                 } else {
                     page = 0;
                 }

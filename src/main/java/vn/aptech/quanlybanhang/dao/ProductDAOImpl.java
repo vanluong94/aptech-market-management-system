@@ -326,6 +326,15 @@ public class ProductDAOImpl implements ProductDAO {
                 products.add(product);
             }
             pagination.setResults(products);
+            
+            try(PreparedStatement countStmt = conn.prepareStatement(PaginatedResults.parseCountSQL(SQL_GET_BY_CATEGORY_ID))) {
+                countStmt.setInt(1, id);
+                countRs = countStmt.executeQuery();
+                if (countRs.next()) {
+                    pagination.setTotalItems(countRs.getInt(1));
+                }
+            } 
+            
         } finally {
             if (rs != null) {
                 rs.close();
@@ -422,12 +431,14 @@ public class ProductDAOImpl implements ProductDAO {
             pagination.setResults(products);
 
             // query count
-            String sqlCount = PaginatedResults.parseCountSQL(SQL_SELECT_OUT_STOCK);
-            Statement st = DBConnection.getConnection().createStatement();
-            ResultSet countRs = st.executeQuery(sqlCount);
-            if (countRs.next()) {
-                pagination.setTotalItems(countRs.getInt(1));
+            try(Statement st = conn.createStatement()) {
+                String sqlCount = PaginatedResults.parseCountSQL(SQL_SELECT_OUT_STOCK);
+                ResultSet countRs = st.executeQuery(sqlCount);
+                if (countRs.next()) {
+                    pagination.setTotalItems(countRs.getInt(1));
+                }
             }
+            
         }
 
         return pagination;

@@ -43,6 +43,7 @@ public class OrderDAOImpl implements OrderDAO {
             + "  orders "
             + "  JOIN employees ON employees.employee_id = orders.employee_id "
             + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
+            + " ORDER BY order_date DESC "
             + " LIMIT ?, ?";
     private final static String SQL_ORDER_DETAIL_OF_CASHIER = "SELECT "
             + "  orders.*, "
@@ -54,12 +55,13 @@ public class OrderDAOImpl implements OrderDAO {
             + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE "
             + "  orders.order_id = ? AND employees.employee_id = ?";
-    private final static String SQL_GET_TODAY_ORDERS = "SELECT orders.*,employees.employee_name, employees.employee_id,customers.customer_name,customers.customer_id FROM orders JOIN employees ON employees.employee_id = orders.employee_id LEFT JOIN customers ON customers.customer_id = orders.customer_id WHERE date(orders.order_date) = ? AND employees.employee_id = ? LIMIT ?,?";
+    private final static String SQL_GET_TODAY_ORDERS = "SELECT orders.*,employees.employee_name, employees.employee_id,customers.customer_name,customers.customer_id FROM orders JOIN employees ON employees.employee_id = orders.employee_id LEFT JOIN customers ON customers.customer_id = orders.customer_id WHERE date(orders.order_date) = ? AND employees.employee_id = ? ORDER BY order_date DESC LIMIT ?,?";
     private final static String SQL_CASHIER_STATISTICS = "SELECT orders.*,employees.employee_name,customers.customer_name"
             + " FROM orders"
             + " JOIN employees ON employees.employee_id = orders.employee_id"
             + " LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE orders.order_date BETWEEN ? AND ? AND employees.employee_id = ?"
+            + " ORDER BY order_date DESC "
             + " LIMIT ?,?";
     private final static String SQL_GET_ONE = "SELECT "
             + " orders.*, "
@@ -80,6 +82,7 @@ public class OrderDAOImpl implements OrderDAO {
             + " INNER JOIN orders ON customers.customer_id = orders.customer_id "
             + " LEFT JOIN employees ON employees.employee_id = orders.employee_id "
             + " WHERE customers.customer_phone LIKE ? "
+            + " ORDER BY order_date DESC "
             + " LIMIT ?,?";
 
     private final static String SQL_GET_PRODUCTS = "SELECT * FROM order_items WHERE order_id = ?";
@@ -105,6 +108,7 @@ public class OrderDAOImpl implements OrderDAO {
             + "  LEFT JOIN customers ON customers.customer_id = orders.customer_id "
             + " WHERE "
             + "  date(order_date) BETWEEN ? AND ?  "
+            + " ORDER BY order_date DESC "
             + " LIMIT ?, ?";
 
     @Override
@@ -244,12 +248,14 @@ public class OrderDAOImpl implements OrderDAO {
             pagination.setResults(orders);
 
             // query count
-            String sqlCount = PaginatedResults.parseCountSQL(SQL_SELECT_ALL);
-            Statement st = DBConnection.getConnection().createStatement();
-            ResultSet countRs = st.executeQuery(sqlCount);
-            if (countRs.next()) {
-                pagination.setTotalItems(countRs.getInt(1));
+            try (Statement st = conn.createStatement()) {
+                String sqlCount = PaginatedResults.parseCountSQL(SQL_SELECT_ALL);
+                ResultSet countRs = st.executeQuery(sqlCount);
+                if (countRs.next()) {
+                    pagination.setTotalItems(countRs.getInt(1));
+                }
             }
+            
         }
         return pagination;
     }
@@ -306,6 +312,15 @@ public class OrderDAOImpl implements OrderDAO {
                 orders.add(order);
             }
             pagination.setResults(orders);
+            
+            try(PreparedStatement countStmt = conn.prepareStatement(PaginatedResults.parseCountSQL(SQL_GET_TODAY_ORDERS))) {
+                countStmt.setDate(1, DateCommon.convertUtilDateToSqlDate(new Date()));
+                countStmt.setInt(2, AuthServiceImpl.getCurrentEmployee().getId());
+                countRs = countStmt.executeQuery();
+                if (countRs.next()) {
+                    pagination.setTotalItems(countRs.getInt(1));
+                }
+            } 
         } finally {
             if (rs != null) {
                 rs.close();
@@ -371,6 +386,16 @@ public class OrderDAOImpl implements OrderDAO {
                 orders.add(order);
             }
             pagination.setResults(orders);
+            
+            try(PreparedStatement countStmt = conn.prepareStatement(PaginatedResults.parseCountSQL(SQL_CASHIER_STATISTICS))) {
+                countStmt.setDate(1, DateCommon.convertUtilDateToSqlDate(fromDate));
+                countStmt.setDate(2, DateCommon.convertUtilDateToSqlDate(toDate));
+                countStmt.setInt(3, AuthServiceImpl.getCurrentEmployee().getId());
+                countRs = countStmt.executeQuery();
+                if (countRs.next()) {
+                    pagination.setTotalItems(countRs.getInt(1));
+                }
+            } 
         } finally {
             if (rs != null) {
                 rs.close();
@@ -419,16 +444,16 @@ public class OrderDAOImpl implements OrderDAO {
             pagination.setResults(orders);
 
             // query count
-            String sqlCount = PaginatedResults.parseCountSQL(SQL_GET_BY_TIME_RANGE);
+            try (PreparedStatement stCount = conn.prepareStatement(PaginatedResults.parseCountSQL(SQL_GET_BY_TIME_RANGE))) {
+                stCount.setDate(1, DateCommon.convertUtilDateToSqlDate(fromDate));
+                stCount.setDate(2, DateCommon.convertUtilDateToSqlDate(toDate));
 
-            PreparedStatement stCount = DBConnection.getConnection().prepareStatement(sqlCount);
-            stCount.setDate(1, DateCommon.convertUtilDateToSqlDate(fromDate));
-            stCount.setDate(2, DateCommon.convertUtilDateToSqlDate(toDate));
-
-            ResultSet countRs = stCount.executeQuery();
-            if (countRs.next()) {
-                pagination.setTotalItems(countRs.getInt(1));
+                ResultSet countRs = stCount.executeQuery();
+                if (countRs.next()) {
+                    pagination.setTotalItems(countRs.getInt(1));
+                }
             }
+            
         }
         return pagination;
 
@@ -485,6 +510,17 @@ public class OrderDAOImpl implements OrderDAO {
                 orders.add(order);
             }
             pagination.setResults(orders);
+            
+
+            try (PreparedStatement stCount = conn.prepareStatement(PaginatedResults.parseCountSQL(SQL_GET_BY_CUSTOMER_PHONE))) {
+                stCount.setString(1, "%" + phone + "%");
+
+                countRs = stCount.executeQuery();
+                if (countRs.next()) {
+                    pagination.setTotalItems(countRs.getInt(1));
+                }
+            }
+            
         } finally {
             if (rs != null) {
                 rs.close();

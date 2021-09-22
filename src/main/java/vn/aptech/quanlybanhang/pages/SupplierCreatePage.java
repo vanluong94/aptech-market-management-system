@@ -28,18 +28,18 @@ public class SupplierCreatePage extends Page {
             String name = AppScanner.scanStringWithi18Message("supplier.scan.name");
             String address = AppScanner.scanStringWithi18Message("supplier.scan.addr");
 
-            while (ValidateCommon.isValidStringLength(name, 3, 100)) {
+            while (ValidateCommon.isInvalidStringLength(name, 3, 100)) {
                 name = AppScanner.scanStringWithi18Message("supplier.scan.name");
 
-                if (ValidateCommon.isValidStringLength(name, 3, 100)) {
+                if (ValidateCommon.isInvalidStringLength(name, 3, 100)) {
                     I18n.print("entity.error.invalidNameLength", new Object[]{3, 100});
                 }
             }
 
-            while (ValidateCommon.isValidStringLength(address, 3, 255)) {
+            while (ValidateCommon.isInvalidStringLength(address, 3, 255)) {
                 address = AppScanner.scanStringWithi18Message("supplier.scan.addr");
 
-                if (ValidateCommon.isValidStringLength(address, 3, 255)) {
+                if (ValidateCommon.isInvalidStringLength(address, 3, 255)) {
                     I18n.print("entity.error.invalidNameLength", new Object[]{3, 255});
                 }
             }
