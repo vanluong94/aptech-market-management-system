@@ -3,6 +3,7 @@
  */
 package vn.aptech.quanlybanhang.pages;
 
+import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.common.ValidateCommon;
 import vn.aptech.quanlybanhang.entities.Department;
 import vn.aptech.quanlybanhang.entities.Employee;
@@ -35,7 +36,10 @@ public class EmployeeCreatePage extends Page {
             do {
                 department = AppScanner.scanIntWithMessage(
                         I18n.getMessage("employee.scan.dept")
-                        + String.format("(1=%s; 2=%s; 3=%s)", Department.ROLE_ADMIN, Department.ROLE_EMPLOYEE_CASHER, Department.ROLE_EMPLOYEE_INVENTORY)
+                        + String.format("(1=%s; 2=%s; 3=%s)", 
+                                StringCommon.getDepartmentString(Department.ROLE_ADMIN), 
+                                StringCommon.getDepartmentString(Department.ROLE_EMPLOYEE_CASHER), 
+                                StringCommon.getDepartmentString(Department.ROLE_EMPLOYEE_INVENTORY))
                 );
 
                 if (department < 1 || department > 3) {

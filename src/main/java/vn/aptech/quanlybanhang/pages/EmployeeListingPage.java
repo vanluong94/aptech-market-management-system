@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.entities.Employee;
 import vn.aptech.quanlybanhang.service.EmployeeService;
 import vn.aptech.quanlybanhang.service.EmployeeServiceImpl;
@@ -35,7 +36,7 @@ public class EmployeeListingPage extends Page {
                     employee.getName(),
                     employee.getAddress(),
                     employee.getPhone(),
-                    employee.getDepartment(),
+                    StringCommon.getDepartmentString(employee.getDepartment()),
                     employee.getUsername(),};
 
                 rows.add(row);
