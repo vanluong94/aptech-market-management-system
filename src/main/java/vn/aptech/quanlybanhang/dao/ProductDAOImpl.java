@@ -106,7 +106,7 @@ public class ProductDAOImpl implements ProductDAO {
             + " WHERE product_stock = 0"
             + " LIMIT ?,?";
     private final static String SQL_STATISTIC_AMOUNT = "SELECT SUM(amount) AS amount"
-            + " FROM orders WHERE order_date BETWEEN ? AND ?";
+            + " FROM orders WHERE date(order_date) BETWEEN ? AND ?";
 
     private final static String SQL_GET_BY_NAME = "SELECT "
             + " products.*, categories.category_name, brands.brand_name, employees.employee_name, suppliers.supplier_name"
