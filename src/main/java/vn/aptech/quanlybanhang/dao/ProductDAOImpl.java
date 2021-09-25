@@ -43,7 +43,7 @@ public class ProductDAOImpl implements ProductDAO {
     private final static String SQL_GET_ONE
             = " SELECT "
             + "     products.*,"
-            + "     d_products.discount_product_id,"
+            + "     d_products.*,"
             + "     suppliers.supplier_name,"
             + "     brands.brand_name,"
             + "     categories.category_name,"
