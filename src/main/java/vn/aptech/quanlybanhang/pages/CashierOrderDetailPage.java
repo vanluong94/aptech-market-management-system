@@ -14,6 +14,7 @@ import vn.aptech.quanlybanhang.common.StringCommon;
 import vn.aptech.quanlybanhang.entities.Order;
 import vn.aptech.quanlybanhang.service.OrderService;
 import vn.aptech.quanlybanhang.service.OrderServiceImpl;
+import vn.aptech.quanlybanhang.ui.OrderUI;
 import vn.aptech.quanlybanhang.ui.TableUI;
 import vn.aptech.quanlybanhang.utilities.AppScanner;
 import vn.aptech.quanlybanhang.utilities.I18n;
@@ -31,24 +32,9 @@ public class CashierOrderDetailPage extends Page {
                 if (order == null) {
                     I18n.printEntityMessage("order", "entity.error.idNotFound");
                 } else {
-                    List<Object[]> rows = new ArrayList<>();
-                    Object[] row = {
-                        order.getId(),
-                        order.getEmployee().getName(),
-                        StringCommon.safeNullObject(order.getCustomer().getName()), // order might not have customer
-                        order.getDatetimeString(),
-                        order.getAmountString()
-                    };
-                    rows.add(row);
-                    String[] headers = {
-                        "ID", 
-                        I18n.getMessage("order.emp"), 
-                        I18n.getMessage("order.customer"), 
-                        I18n.getMessage("entity.createdAt"),
-                        I18n.getMessage("order.total")
-                    };
-                    TableUI tableUI = new TableUI(headers, rows);
-                    tableUI.display();
+                    order.setOrderItems(orderService.getOrderItems(order));
+                    OrderUI orderUI = new OrderUI(order);
+                    orderUI.display();
                 }
 
                 choice = AppScanner.scanStringWithMessage(I18n.getMessage("entity.confirm.searchAnOther"));
